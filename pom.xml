@@ -15,6 +15,17 @@
         <module>dwca-validator-web</module>
     </modules>
 
+    <scm>
+      <connection>scm:git:git@github.com:gbif/dwca-validator.git</connection>
+      <developerConnection>scm:git:git@github.com:gbif/dwca-validator.git</developerConnection>
+      <url>scm:git:git@github.com:gbif/dwca-validator.git</url>
+    </scm>
+	
+    <issueManagement>
+      <system>GitHub</system>
+      <url>https://github.com/gbif/dwca-validator/issues</url>
+    </issueManagement>
+	
     <build>
         <pluginManagement>
             <plugins>
