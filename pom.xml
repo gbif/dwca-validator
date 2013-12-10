@@ -1,52 +1,60 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.gbif</groupId>
-    <artifactId>dwca-validator-parent</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0</version>
-    <name>DwcA-Validator Parent Project</name>
+	<parent>
+		<groupId>org.gbif</groupId>
+		<artifactId>motherpom</artifactId>
+		<version>11</version>
+	</parent>
 
-    <modules>
-        <module>dwca-validator-lib</module>
-        <module>dwca-validator-web</module>
-    </modules>
+	<groupId>org.gbif</groupId>
+	<artifactId>dwca-validator-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0</version>
+	<name>DwcA-Validator Parent Project</name>
 
-    <scm>
-      <connection>scm:git:git@github.com:gbif/dwca-validator.git</connection>
-      <developerConnection>scm:git:git@github.com:gbif/dwca-validator.git</developerConnection>
-      <url>scm:git:git@github.com:gbif/dwca-validator.git</url>
-    </scm>
-	
-    <issueManagement>
-      <system>GitHub</system>
-      <url>https://github.com/gbif/dwca-validator/issues</url>
-    </issueManagement>
-	
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
+	<modules>
+		<module>dwca-validator-lib</module>
+		<module>dwca-validator-web</module>
+	</modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+	<properties>
+		<dwca-reader.version>1.14</dwca-reader.version>
+		<junit.version>4.11</junit.version>
+	</properties>
+	<scm>
+		<connection>scm:git:git@github.com:gbif/dwca-validator.git</connection>
+		<developerConnection>scm:git:git@github.com:gbif/dwca-validator.git</developerConnection>
+		<url>scm:git:git@github.com:gbif/dwca-validator.git</url>
+	</scm>
+
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/gbif/dwca-validator/issues</url>
+	</issueManagement>
+
+	<repositories>
+		<repository>
+			<id>gbif-all</id>
+			<url>http://repository.gbif.org/content/groups/gbif</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.gbif</groupId>
+			<artifactId>dwca-reader</artifactId>
+			<version>${dwca-reader.version}</version>
+		</dependency>
+
+		<!-- TEST SCOPE -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>
