@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.gbif</groupId>
 		<artifactId>motherpom</artifactId>
-		<version>11</version>
+		<version>13</version>
 	</parent>
 
 	<groupId>org.gbif</groupId>
@@ -24,10 +24,11 @@
 		<dwca-reader.version>1.14</dwca-reader.version>
 		<junit.version>4.11</junit.version>
 	</properties>
+	
 	<scm>
 		<connection>scm:git:git@github.com:gbif/dwca-validator.git</connection>
 		<developerConnection>scm:git:git@github.com:gbif/dwca-validator.git</developerConnection>
-		<url>scm:git:git@github.com:gbif/dwca-validator.git</url>
+		<url>https://github.com/gbif/dwca-validator</url>
 	</scm>
 
 	<issueManagement>
