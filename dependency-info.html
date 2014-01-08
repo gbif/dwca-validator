@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20140108" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>dwca-validator-lib - Dependency Information</title>
+    <title>dwca-validator-web - Dependency Information</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.3.0.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -50,8 +50,8 @@
         </li>
       <li class="divider ">/</li>
                 <li class="">
-                    <a href="./" title="dwca-validator-lib">
-        dwca-validator-lib</a>
+                    <a href="./" title="dwca-validator-web">
+        dwca-validator-web</a>
         </li>
       <li class="divider ">/</li>
         <li class="">Dependency Information</li>
@@ -177,7 +177,7 @@
             </li>
               </ul>
         </li>
-                                                                                                                          
+                                                                                      
       <li>
     
                           <a href="project-reports.html" title="Project Reports">
@@ -256,37 +256,38 @@
 <div class="source">
 <pre>&lt;dependency&gt;
   &lt;groupId&gt;org.gbif&lt;/groupId&gt;
-  &lt;artifactId&gt;dwca-validator-lib&lt;/artifactId&gt;
+  &lt;artifactId&gt;dwca-validator-web&lt;/artifactId&gt;
   &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+  &lt;type&gt;war&lt;/type&gt;
 &lt;/dependency&gt;</pre></div></div>
 <div class="section">
 <h3>Apache Buildr<a name="Apache_Buildr"></a></h3><a name="Apache_Buildr"></a>
 <div class="source">
-<pre>'org.gbif:dwca-validator-lib:jar:1.0-SNAPSHOT'</pre></div></div>
+<pre>'org.gbif:dwca-validator-web:war:1.0-SNAPSHOT'</pre></div></div>
 <div class="section">
 <h3>Apache Ant<a name="Apache_Ant"></a></h3><a name="Apache_Ant"></a>
 <div class="source">
-<pre>&lt;dependency org=&quot;org.gbif&quot; name=&quot;dwca-validator-lib&quot; rev=&quot;1.0-SNAPSHOT&quot;&gt;
-  &lt;artifact name=&quot;dwca-validator-lib&quot; type=&quot;jar&quot; /&gt;
+<pre>&lt;dependency org=&quot;org.gbif&quot; name=&quot;dwca-validator-web&quot; rev=&quot;1.0-SNAPSHOT&quot;&gt;
+  &lt;artifact name=&quot;dwca-validator-web&quot; type=&quot;war&quot; /&gt;
 &lt;/dependency&gt;</pre></div></div>
 <div class="section">
 <h3>Groovy Grape<a name="Groovy_Grape"></a></h3><a name="Groovy_Grape"></a>
 <div class="source">
 <pre>@Grapes(
-@Grab(group='org.gbif', module='dwca-validator-lib', version='1.0-SNAPSHOT')
+@Grab(group='org.gbif', module='dwca-validator-web', version='1.0-SNAPSHOT')
 )</pre></div></div>
 <div class="section">
 <h3>Grails<a name="Grails"></a></h3><a name="Grails"></a>
 <div class="source">
-<pre>compile 'org.gbif:dwca-validator-lib:1.0-SNAPSHOT'</pre></div></div>
+<pre>compile 'org.gbif:dwca-validator-web:1.0-SNAPSHOT'</pre></div></div>
 <div class="section">
 <h3>Leiningen<a name="Leiningen"></a></h3><a name="Leiningen"></a>
 <div class="source">
-<pre>[org.gbif/dwca-validator-lib &quot;1.0-SNAPSHOT&quot;]</pre></div></div>
+<pre>[org.gbif/dwca-validator-web &quot;1.0-SNAPSHOT&quot;]</pre></div></div>
 <div class="section">
 <h3>SBT<a name="SBT"></a></h3><a name="SBT"></a>
 <div class="source">
-<pre>libraryDependencies += &quot;org.gbif&quot; %% &quot;dwca-validator-lib&quot; % &quot;1.0-SNAPSHOT&quot;</pre></div></div></div>
+<pre>libraryDependencies += &quot;org.gbif&quot; %% &quot;dwca-validator-web&quot; % &quot;1.0-SNAPSHOT&quot;</pre></div></div></div>
                   </div>
             </div>
           </div>
