@@ -25,6 +25,7 @@
     <!-- versions -->
     <dwc-api.version>1.5-SNAPSHOT</dwc-api.version>
 		<dwca-reader.version>1.15-SNAPSHOT</dwca-reader.version>
+		<logback.version>1.0.13</logback.version>
 		<junit.version>4.11</junit.version>
 	</properties>
 
@@ -57,6 +58,12 @@
         <groupId>org.gbif</groupId>
         <artifactId>dwca-reader</artifactId>
         <version>${dwca-reader.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
+        <scope>runtime</scope>
       </dependency>
 
       <!-- TEST SCOPE -->
