@@ -18,4 +18,19 @@
     </repository>
   </repositories>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>dwc-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.gbif</groupId>
+      <artifactId>dwca-reader</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+  </dependencies>
 </project>
