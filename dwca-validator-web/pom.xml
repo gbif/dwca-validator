@@ -2,19 +2,22 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.gbif</groupId>
-		<artifactId>dwca-validator-parent</artifactId>
-		<version>1.0</version>
-	</parent>
+  <parent>
+    <groupId>org.gbif</groupId>
+    <artifactId>dwca-validator-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
 
-	<groupId>org.gbif</groupId>
-	<artifactId>dwca-validator-web</artifactId>
-	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
+  <artifactId>dwca-validator-web</artifactId>
+  <name>dwca-validator-web</name>
+  <packaging>war</packaging>
 
-	<name>dwca-validator-web</name>
-	<url>http://maven.apache.org</url>
+  <repositories>
+    <repository>
+      <id>gbif-all</id>
+      <url>http://repository.gbif.org/content/groups/gbif</url>
+    </repository>
+  </repositories>
 
 	<build>
 		<finalName>dwca-validator-web</finalName>
