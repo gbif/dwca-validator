@@ -19,7 +19,26 @@
     </repository>
   </repositories>
 
-	<build>
-		<finalName>dwca-validator-web</finalName>
-	</build>
+  <build>
+    <!-- to start up the app from commandline only do: mvn -->
+    <defaultGoal>jetty:run</defaultGoal>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <configuration>
+          <stopKey>stop</stopKey>
+          <stopPort>15327</stopPort>
+          <scanIntervalSeconds>10</scanIntervalSeconds>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <attachClasses>true</attachClasses>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>
