@@ -14,6 +14,8 @@ import java.io.File;
 public class ArchiveStructureHandler {
 
   /**
+   * Inspect the content of the archive to ensure all needed files are present.
+   * 
    * @param archive
    */
   public void inspectArchiveContent(Archive archive) {

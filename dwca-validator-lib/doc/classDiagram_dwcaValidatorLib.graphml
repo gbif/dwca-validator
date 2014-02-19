@@ -31,8 +31,8 @@
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel>-metaValidator : Validator
 -emlValidators : Map&lt;Profile,Validator&gt;</y:AttributeLabel>
-            <y:MethodLabel>+inspectArchiveFile(ArchiveFile)
-+inspectMetaDescriptor(BasicMetadata)
+            <y:MethodLabel>+inspectArchiveContent(Archive)
++inspectMetaXML(File)
 +inspectEML(Eml)</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
@@ -519,7 +519,6 @@
     </node>
     <node id="n24">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="29.25" width="151.47859922178998" x="335.92144941634234" y="246.875"/>
@@ -541,7 +540,6 @@
     </node>
     <node id="n25">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="29.25" width="151.47859922178998" x="338.8410749027237" y="279.25097276264603"/>
@@ -762,7 +760,6 @@
       </data>
     </edge>
     <edge id="e20" source="n5" target="n24">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -773,7 +770,6 @@
       </data>
     </edge>
     <edge id="e21" source="n5" target="n25">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>

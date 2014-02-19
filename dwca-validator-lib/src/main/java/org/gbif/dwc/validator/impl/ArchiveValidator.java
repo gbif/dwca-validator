@@ -35,10 +35,6 @@ public class ArchiveValidator implements ArchiveValidatorIF {
   // contentHandler is used to validate core and extensions
   private ArchiveContentHandler contentHandler;
 
-  public static void main(String[] args) {
-    LOGGER.error("test");
-  }
-
   public void setStructureHandler(ArchiveStructureHandler structureHandler) {
     this.structureHandler = structureHandler;
   }
