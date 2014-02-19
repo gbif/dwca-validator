@@ -1,8 +1,9 @@
 package org.gbif.dwc.validator.handler;
 
-import org.gbif.dwc.text.ArchiveFile;
-import org.gbif.metadata.BasicMetadata;
+import org.gbif.dwc.text.Archive;
 import org.gbif.metadata.eml.Eml;
+
+import java.io.File;
 
 /**
  * Handler responsible for the validation of the structure of the archive.
@@ -12,7 +13,10 @@ import org.gbif.metadata.eml.Eml;
  */
 public class ArchiveStructureHandler {
 
-  public void inspectArchiveFile(ArchiveFile archiveFile) {
+  /**
+   * @param archive
+   */
+  public void inspectArchiveContent(Archive archive) {
 
   }
 
@@ -20,7 +24,9 @@ public class ArchiveStructureHandler {
 
   }
 
-  public void inspectMetaDescriptor(BasicMetadata metaData) {
+  public void inspectMetaXML(File metaXML) {
 
   }
+
+
 }
