@@ -78,7 +78,7 @@
             </y:ModelParameter>
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="enum" use3DEffect="true">
-            <y:AttributeLabel>CORE,EXT,CONTENT</y:AttributeLabel>
+            <y:AttributeLabel>STRUCTURE,CORE,EXT</y:AttributeLabel>
             <y:MethodLabel/>
           </y:UML>
         </y:UMLClassNode>
@@ -230,7 +230,6 @@
     </node>
     <node id="n10">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="102.0" width="202.0" x="904.6666666666665" y="473.5"/>
@@ -252,7 +251,6 @@
     </node>
     <node id="n11">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="40.0" width="178.0" x="1125.0" y="473.5"/>
@@ -363,7 +361,6 @@
       </data>
     </edge>
     <edge id="e9" source="n10" target="n7">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -374,7 +371,6 @@
       </data>
     </edge>
     <edge id="e10" source="n11" target="n7">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
