@@ -2,6 +2,7 @@ package org.gbif.dwc.validator.result;
 
 import org.gbif.dwc.validator.result.impl.FileWriterResultAccumulator;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +54,9 @@ public class FileWriterResultAccumulatorMultiThreadTest {
    */
   private void testThread(final int threadCount) throws InterruptedException, ExecutionException {
     FileWriterResultAccumulator initFwra = null;
-
+    String fileName = "test_" + threadCount + ".txt";
     try {
-      initFwra = new FileWriterResultAccumulator("test_" + threadCount + ".txt");
+      initFwra = new FileWriterResultAccumulator(fileName);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -74,7 +75,7 @@ public class FileWriterResultAccumulatorMultiThreadTest {
           boolean success = true;
           for (String currDummyId : dummyIdList) {
             result.setId(currDummyId);
-            success = (success && fwra.append(result));
+            success = (success && fwra.accumulate(result));
           }
           return success;
         }
@@ -86,6 +87,8 @@ public class FileWriterResultAccumulatorMultiThreadTest {
     // call all threads and wait for completion
     List<Future<Boolean>> futures = executorService.invokeAll(tasks);
 
+    fwra.close();
+    new File(fileName).delete();
     // Validate
     Assert.assertEquals(futures.size(), threadCount);
     Assert.assertEquals(threadCount * NUMBER_OF_DATA, fwra.getCount());
