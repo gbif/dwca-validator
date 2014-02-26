@@ -30,9 +30,9 @@
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="interface" use3DEffect="true">
             <y:AttributeLabel/>
-            <y:MethodLabel>+append(ValidationResult)
-+commit()
-+getTotalResult()
+            <y:MethodLabel>+accumulateValidationResult)
++close()
++getCount()
 +getTotalPassed()
 +getTotalWarning()
 +getTotalError()</y:MethodLabel>
