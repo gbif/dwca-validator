@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * ResultAccumulatorIF implementation using a FileWriter.
+ * This implementation writes directly to the file on each 'accumulate' calls.
  * 
  * @author cgendreau
  */
@@ -45,6 +46,7 @@ public class FileWriterResultAccumulator implements ResultAccumulatorIF {
   public void close() {
     if (fw != null) {
       try {
+        fw.flush();
         fw.close();
       } catch (IOException ioEx) {
         LOGGER.error("Can't close FileWriter", ioEx);
@@ -56,5 +58,4 @@ public class FileWriterResultAccumulator implements ResultAccumulatorIF {
   public int getCount() {
     return count.get();
   }
-
 }

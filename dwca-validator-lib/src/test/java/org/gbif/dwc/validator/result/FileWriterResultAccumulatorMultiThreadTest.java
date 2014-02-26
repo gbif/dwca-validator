@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.result;
 
 import org.gbif.dwc.validator.result.impl.FileWriterResultAccumulator;
+import org.gbif.dwc.validator.result.impl.ThresholdResultAccumulator;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +18,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test FileWriterResultAccumulator in a multithreads context.
+ * Test FileWriterResultAccumulator in a multi-thread context.
  * 
  * @author cgendreau
  */
@@ -26,7 +27,7 @@ public class FileWriterResultAccumulatorMultiThreadTest {
   private static final int NUMBER_OF_DATA = 10000;
 
   /**
-   * Generate a list of random alphabetic strings
+   * Generate a list of random alphabetic strings.
    * 
    * @param size
    * @param strLength
@@ -42,7 +43,19 @@ public class FileWriterResultAccumulatorMultiThreadTest {
 
   @Test
   public void testFileWriterResultAccumulator16Threads() throws InterruptedException, ExecutionException {
-    testThread(16);
+    long t = System.currentTimeMillis();
+    ResultAccumulatorIF fwra = null;
+    String fileName = "test_FileWriterResultAccumulator16Threads.txt";
+    try {
+      fwra = new FileWriterResultAccumulator(fileName);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    testThread(fwra, 16);
+    System.out.println("FileWriterResultAccumulator took " + (System.currentTimeMillis() - t) + " ms");
+    // clean up
+    new File(fileName).delete();
   }
 
   /**
@@ -52,15 +65,8 @@ public class FileWriterResultAccumulatorMultiThreadTest {
    * @throws InterruptedException
    * @throws ExecutionException
    */
-  private void testThread(final int threadCount) throws InterruptedException, ExecutionException {
-    FileWriterResultAccumulator initFwra = null;
-    String fileName = "test_" + threadCount + ".txt";
-    try {
-      initFwra = new FileWriterResultAccumulator(fileName);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    final FileWriterResultAccumulator fwra = initFwra;
+  private void testThread(final ResultAccumulatorIF resultAccumulator, final int threadCount)
+    throws InterruptedException, ExecutionException {
 
     List<Callable<Boolean>> tasks = new ArrayList<Callable<Boolean>>();
     for (int i = 0; i < threadCount; i++) {
@@ -75,7 +81,7 @@ public class FileWriterResultAccumulatorMultiThreadTest {
           boolean success = true;
           for (String currDummyId : dummyIdList) {
             result.setId(currDummyId);
-            success = (success && fwra.accumulate(result));
+            success = (success && resultAccumulator.accumulate(result));
           }
           return success;
         }
@@ -87,10 +93,26 @@ public class FileWriterResultAccumulatorMultiThreadTest {
     // call all threads and wait for completion
     List<Future<Boolean>> futures = executorService.invokeAll(tasks);
 
-    fwra.close();
-    new File(fileName).delete();
+    resultAccumulator.close();
     // Validate
     Assert.assertEquals(futures.size(), threadCount);
-    Assert.assertEquals(threadCount * NUMBER_OF_DATA, fwra.getCount());
+    Assert.assertEquals(threadCount * NUMBER_OF_DATA, resultAccumulator.getCount());
+  }
+
+  @Test
+  public void testThresholdResultAccumulator16Threads() throws InterruptedException, ExecutionException {
+    long t = System.currentTimeMillis();
+    ResultAccumulatorIF ra = null;
+    String fileName = "test_ThresholdResultAccumulator16Threads.txt";
+    try {
+      ra = new ThresholdResultAccumulator(fileName);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    testThread(ra, 16);
+    System.out.println("ThresholdResultAccumulator took " + (System.currentTimeMillis() - t) + " ms");
+    // clean up
+    new File(fileName).delete();
   }
 }
