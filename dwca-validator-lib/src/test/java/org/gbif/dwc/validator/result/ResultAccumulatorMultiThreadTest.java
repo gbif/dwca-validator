@@ -1,5 +1,6 @@
 package org.gbif.dwc.validator.result;
 
+import org.gbif.dwc.validator.mock.MockDataGenerator;
 import org.gbif.dwc.validator.result.impl.FileWriterResultAccumulator;
 import org.gbif.dwc.validator.result.impl.ThresholdResultAccumulator;
 
@@ -13,7 +14,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -22,24 +22,9 @@ import org.junit.Test;
  * 
  * @author cgendreau
  */
-public class FileWriterResultAccumulatorMultiThreadTest {
+public class ResultAccumulatorMultiThreadTest {
 
   private static final int NUMBER_OF_DATA = 10000;
-
-  /**
-   * Generate a list of random alphabetic strings.
-   * 
-   * @param size
-   * @param strLength
-   * @return
-   */
-  public List<String> newRandomDataList(int size, int strLength) {
-    List<String> dataList = new ArrayList<String>(size);
-    for (int i = 0; i < size; i++) {
-      dataList.add(RandomStringUtils.randomAlphabetic(strLength));
-    }
-    return dataList;
-  }
 
   @Test
   public void testFileWriterResultAccumulator16Threads() throws InterruptedException, ExecutionException {
@@ -71,7 +56,7 @@ public class FileWriterResultAccumulatorMultiThreadTest {
     List<Callable<Boolean>> tasks = new ArrayList<Callable<Boolean>>();
     for (int i = 0; i < threadCount; i++) {
       // new set of random data for each thread but same FileWriterResultAccumulator.
-      final List<String> dummyIdList = newRandomDataList(NUMBER_OF_DATA, 4);
+      final List<String> dummyIdList = MockDataGenerator.newRandomDataList(NUMBER_OF_DATA, 4);
       final ValidationResult result = new ValidationResult();
 
       Callable<Boolean> task = new Callable<Boolean>() {
@@ -105,7 +90,7 @@ public class FileWriterResultAccumulatorMultiThreadTest {
     ResultAccumulatorIF ra = null;
     String fileName = "test_ThresholdResultAccumulator16Threads.txt";
     try {
-      ra = new ThresholdResultAccumulator(fileName);
+      ra = new ThresholdResultAccumulator(fileName, 1000);
     } catch (IOException e) {
       e.printStackTrace();
     }

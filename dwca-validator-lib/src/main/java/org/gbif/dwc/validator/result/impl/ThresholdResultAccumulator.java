@@ -82,10 +82,11 @@ public class ThresholdResultAccumulator implements ResultAccumulatorIF {
     String resultLine = null;
     try {
       while (currentResult != null && (numberWritten < howMany)) {
-        currentResult = queue.poll();
         resultLine = currentResult.getId();
         fw.write(resultLine);
         numberWritten++;
+
+        currentResult = queue.poll();
       }
     } catch (IOException ioEx) {
       LOGGER.error("Can't flush to file using FileWriter", ioEx);
