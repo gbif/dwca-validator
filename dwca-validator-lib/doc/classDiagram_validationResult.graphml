@@ -30,7 +30,7 @@
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="interface" use3DEffect="true">
             <y:AttributeLabel/>
-            <y:MethodLabel>+accumulateValidationResult)
+            <y:MethodLabel>+accumulate(ValidationResult)
 +close()
 +getCount()
 +getTotalPassed()
@@ -171,10 +171,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="87.56809338521384" width="151.33333333333326" x="931.4999999999999" y="338.5"/>
+          <y:Geometry height="107.0" width="175.16666666666652" x="931.4999999999999" y="338.5"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="116.328125" x="17.50260416666663" y="26.1328125">ValidationTypeIF<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="116.328125" x="29.419270833333258" y="26.1328125">ValidationTypeIF<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -183,7 +183,8 @@
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="interface" use3DEffect="true">
             <y:AttributeLabel/>
-            <y:MethodLabel>getDescription()</y:MethodLabel>
+            <y:MethodLabel>getId():String
+getDescriptionKey():String</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -192,7 +193,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="107.0" width="212.53939688715946" x="643.8553015564204" y="328.7840466926069"/>
+          <y:Geometry height="107.0" width="212.53939688715946" x="643.8553015564204" y="340.06809338521384"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="167.4267578125" x="22.556319537329728" y="3.0">ValidationResultElement<y:LabelModel>
@@ -232,10 +233,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="102.0" width="202.0" x="904.6666666666665" y="473.5"/>
+          <y:Geometry height="102.0" width="202.0" x="858.4246284501057" y="491.4830148619959"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="138.88134765625" x="31.559326171875" y="26.1328125">BasicValidationType<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="165.94775390625" x="18.026123046875" y="26.1328125">StructureValidationType<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -243,7 +244,7 @@
             </y:ModelParameter>
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="enum" use3DEffect="true">
-            <y:AttributeLabel>UNIQUENESS,EML_STRUCTURE,...</y:AttributeLabel>
+            <y:AttributeLabel>EML_SCHEMA,...</y:AttributeLabel>
             <y:MethodLabel/>
           </y:UML>
         </y:UMLClassNode>
