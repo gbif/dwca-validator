@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.handler;
 
 import org.gbif.dwc.text.ArchiveFile;
+import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 
 /**
  * Handler responsible for the validation of the content of the archive.
@@ -10,11 +11,11 @@ import org.gbif.dwc.text.ArchiveFile;
  */
 public class ArchiveContentHandler {
 
-  public void inspectCore(ArchiveFile archiveFile) {
+  public void inspectCore(ArchiveFile archiveFile, ResultAccumulatorIF resultAccumulator) {
 
   }
 
-  public void inspectExtension(ArchiveFile archiveFile) {
+  public void inspectExtension(ArchiveFile archiveFile, ResultAccumulatorIF resultAccumulator) {
 
   }
 

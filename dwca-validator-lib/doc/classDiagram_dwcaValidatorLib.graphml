@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:y="http://www.yworks.com/xml/graphml" xmlns:yed="http://www.yworks.com/xml/yed/3" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
-  <!--Created by yFiles for Java 2.11-->
+  <!--Created by yFiles for Java 2.9-->
   <key for="graphml" id="d0" yfiles.type="resources"/>
   <key for="port" id="d1" yfiles.type="portgraphics"/>
   <key for="port" id="d2" yfiles.type="portgeometry"/>
@@ -18,10 +18,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="132.5" width="266.5" x="-53.5" y="-14.5"/>
+          <y:Geometry height="132.5" width="329.96425097276267" x="-116.96425097276267" y="-14.5"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="168.58203125" x="48.958984375" y="3.0">ArchiveStructureHandler<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="168.58203125" x="80.69110986138134" y="3.0">ArchiveStructureHandler<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -31,9 +31,9 @@
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel>-metaValidator : Validator
 -emlValidators : Map&lt;Profile,Validator&gt;</y:AttributeLabel>
-            <y:MethodLabel>+inspectArchiveContent(Archive)
-+inspectMetaXML(File)
-+inspectEML(Eml)</y:MethodLabel>
+            <y:MethodLabel>+inspectArchiveContent(Archive,ResultAccumulatorIF)
++inspectMetaXML(File,ResultAccumulatorIF)
++inspectEML(Eml,ResultAccumulatorIF)</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -127,7 +127,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="132.5" width="300.19941634241263" x="548.125" y="195.25"/>
+          <y:Geometry height="132.5" width="300.19941634241263" x="598.8146551724138" y="160.0"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="179.6904296875" x="60.254493327456316" y="26.1328125">ChainableRecordEvaluator<y:LabelModel>
@@ -172,10 +172,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="100.0" width="215.0" x="580.0" y="44.44163424124508"/>
+          <y:Geometry height="99.99999999999989" width="316.37931034482756" x="590.7247081712064" y="1.7500000000001137"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="159.98095703125" x="27.509521484375" y="3.0">ArchiveContentHandler<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="159.98095703125" x="78.19917665678878" y="3.0">ArchiveContentHandler<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -184,8 +184,8 @@
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel/>
-            <y:MethodLabel>+inspectCore(ArchiveFile)
-+inspectExtension(ArchiveFile)</y:MethodLabel>
+            <y:MethodLabel>+inspectCore(ArchiveFile,ResultAccumulatorIF)
++inspectExtension(ArchiveFile,ResultAccumulatorIF)</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -194,7 +194,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="30.5" width="215.0" x="851.342412451362" y="-121.62499999999977"/>
+          <y:Geometry height="30.5" width="215.0" x="932.8243514915694" y="-105.25"/>
           <y:Fill color="#3366FF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="207.53125" x="3.734375" y="3.0">org.gbif.dwca.model.Extension<y:LabelModel>
@@ -236,7 +236,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="30.5" width="210.0" x="-25.25" y="-115.0"/>
+          <y:Geometry height="30.5" width="210.0" x="-56.982125486381335" y="-115.0"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="200.47900390625" x="4.760498046875" y="3.0">javax.xml.validation.Validator<y:LabelModel>
@@ -320,7 +320,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="100.0" width="354.3512970168613" x="920.75" y="113.34375000000009"/>
+          <y:Geometry height="100.0" width="354.3512970168613" x="932.8243514915694" y="160.0"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="89.5283203125" x="132.41148835218064" y="3.0">ChainBuilder<y:LabelModel>
@@ -342,10 +342,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="29.25" width="158.75" x="611.0" y="-120.99999999999977"/>
+          <y:Geometry height="70.12875417130147" width="194.375" x="651.7268633436202" y="-120.99999999999977"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="115.4140625" x="21.66796875" y="3.0">ArchiveValidator<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="115.4140625" x="39.48046875" y="3.0">ArchiveValidator<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -353,7 +353,7 @@
             </y:ModelParameter>
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
-            <y:AttributeLabel/>
+            <y:AttributeLabel>+validateArchive(File dwcaFile)</y:AttributeLabel>
             <y:MethodLabel/>
           </y:UML>
         </y:UMLClassNode>
@@ -363,7 +363,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="93.23832684824905" width="230.0" x="575.375" y="-268.05933852140083"/>
+          <y:Geometry height="93.23832684824905" width="230.0" x="633.9143633436202" y="-268.05933852140083"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="127.18896484375" x="51.405517578125" y="26.1328125">ArchiveValidatorIF<y:LabelModel>
@@ -479,7 +479,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="100.0" width="200.5393968871595" x="297.60530155642033" y="30.14202334630346"/>
+          <y:Geometry height="100.0" width="200.5393968871595" x="297.60530155642033" y="1.75"/>
           <y:Fill color="#339966" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="142.1884765625" x="29.175460162329756" y="26.1328125">ResultAccumulatorIF<y:LabelModel>
@@ -662,7 +662,7 @@
     <edge id="e10" source="n15" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-79.38140869140625" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="-97.19534686231239" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="plain"/>
           <y:BendStyle smoothed="false"/>

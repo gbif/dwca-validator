@@ -3,6 +3,7 @@ package org.gbif.dwc.validator;
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.validator.handler.ArchiveStructureHandler;
 import org.gbif.dwc.validator.impl.ArchiveValidator;
+import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.metadata.eml.Eml;
 
 import java.io.File;
@@ -33,20 +34,20 @@ public class ArchiveValidatorTest {
     }
 
     @Override
-    public void inspectArchiveContent(Archive archive) {
-      super.inspectArchiveContent(archive);
+    public void inspectArchiveContent(Archive archive, ResultAccumulatorIF resultAccumulator) {
+      super.inspectArchiveContent(archive,resultAccumulator);
       inspectArchiveContentCalled = true;
     }
 
     @Override
-    public void inspectEML(Eml eml) {
-      super.inspectEML(eml);
+    public void inspectEML(Eml eml, ResultAccumulatorIF resultAccumulator) {
+      super.inspectEML(eml,resultAccumulator);
       inspectEMLCalled = true;
     }
 
     @Override
-    public void inspectMetaXML(File metaXML) {
-      super.inspectMetaXML(metaXML);
+    public void inspectMetaXML(File metaXML, ResultAccumulatorIF resultAccumulator) {
+      super.inspectMetaXML(metaXML,resultAccumulator);
       inspectMetaXMLCalled = true;
     }
   }
