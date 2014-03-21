@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator;
 
 import org.gbif.dwc.text.Archive;
+import org.gbif.dwc.validator.handler.ArchiveContentHandler;
 import org.gbif.dwc.validator.handler.ArchiveStructureHandler;
 import org.gbif.dwc.validator.impl.ArchiveValidator;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
@@ -35,19 +36,19 @@ public class ArchiveValidatorTest {
 
     @Override
     public void inspectArchiveContent(Archive archive, ResultAccumulatorIF resultAccumulator) {
-      super.inspectArchiveContent(archive,resultAccumulator);
+      super.inspectArchiveContent(archive, resultAccumulator);
       inspectArchiveContentCalled = true;
     }
 
     @Override
     public void inspectEML(Eml eml, ResultAccumulatorIF resultAccumulator) {
-      super.inspectEML(eml,resultAccumulator);
+      super.inspectEML(eml, resultAccumulator);
       inspectEMLCalled = true;
     }
 
     @Override
     public void inspectMetaXML(File metaXML, ResultAccumulatorIF resultAccumulator) {
-      super.inspectMetaXML(metaXML,resultAccumulator);
+      super.inspectMetaXML(metaXML, resultAccumulator);
       inspectMetaXMLCalled = true;
     }
   }
@@ -64,6 +65,7 @@ public class ArchiveValidatorTest {
     testDwcFolder.mkdir();
     validator.setWorkingFolder(testDwcFolder.getAbsolutePath());
     validator.setStructureHandler(structureHandler);
+    validator.setContentHandler(new ArchiveContentHandler());
 
     try {
       File testDwca = new File(getClass().getResource("/dwca/vascan_dwca.zip").toURI());
