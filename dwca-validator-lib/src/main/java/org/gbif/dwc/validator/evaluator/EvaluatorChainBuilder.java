@@ -12,6 +12,7 @@ import org.gbif.dwc.validator.evaluator.impl.ValueEvaluator;
  */
 public class EvaluatorChainBuilder {
 
+
   /**
    * Build a validation chain for DarwinCore core component.
    * 

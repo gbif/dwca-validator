@@ -22,7 +22,7 @@ public class ArchiveContentHandler {
    */
   public void inspectCore(ArchiveFile archiveFile, ResultAccumulatorIF resultAccumulator) {
     ChainableRecordEvaluator coreChain = EvaluatorChainBuilder.buildCoreChain();
-    inspectDwcComponent(archiveFile, coreChain);
+    inspectDwcComponent(archiveFile, coreChain, resultAccumulator);
   }
 
   /**
@@ -30,11 +30,13 @@ public class ArchiveContentHandler {
    * 
    * @param dwcaComponent
    * @param evaluatorChain head of the evaluators chain
+   * @param resultAccumulator
    */
-  private void inspectDwcComponent(ArchiveFile dwcaComponent, ChainableRecordEvaluator evaluatorChain) {
+  private void inspectDwcComponent(ArchiveFile dwcaComponent, ChainableRecordEvaluator evaluatorChain,
+    ResultAccumulatorIF resultAccumulator) {
     RecordIterator recordIt = RecordIterator.build(dwcaComponent, false);
     while (recordIt.hasNext()) {
-      evaluatorChain.doEval(recordIt.next());
+      evaluatorChain.doEval(recordIt.next(), resultAccumulator);
     }
   }
 
