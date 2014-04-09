@@ -171,10 +171,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="99.99999999999989" width="316.37931034482756" x="590.7247081712064" y="1.7500000000001137"/>
+          <y:Geometry height="99.99999999999989" width="318.3458708543817" x="584.909830212004" y="1.7500000000001137"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="159.98095703125" x="78.19917665678878" y="3.0">ArchiveContentHandler<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="159.98095703125" x="79.18245691156585" y="3.0">ArchiveContentHandler<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -182,7 +182,7 @@
             </y:ModelParameter>
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
-            <y:AttributeLabel/>
+            <y:AttributeLabel>-evaluationChainProvider:EvaluationChainProviderIF</y:AttributeLabel>
             <y:MethodLabel>+inspectCore(ArchiveFile,ResultAccumulatorIF)
 +inspectExtension(ArchiveFile,ResultAccumulatorIF)</y:MethodLabel>
           </y:UML>
@@ -941,18 +941,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e28" source="n26" target="n29">
-      <data key="d9"/>
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
-          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
-          <y:Arrows source="none" target="plain"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e29" source="n27" target="n2">
+    <edge id="e28" source="n27" target="n2">
       <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -963,7 +952,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e30" source="n27" target="n20">
+    <edge id="e29" source="n27" target="n20">
       <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
@@ -974,7 +963,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e31" source="n27" target="n1">
+    <edge id="e30" source="n27" target="n1">
       <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
