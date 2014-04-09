@@ -29,7 +29,7 @@ public abstract class ChainableRecordEvaluator {
 
   protected abstract void postIterate();
 
-  public void setNextElement(ChainableRecordEvaluator nextElement) {
+  void setNextElement(ChainableRecordEvaluator nextElement) {
     this.nextElement = nextElement;
   }
 }

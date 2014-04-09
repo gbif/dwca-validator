@@ -4,14 +4,26 @@ import org.gbif.dwc.validator.result.type.ValidationTypeIF;
 
 /**
  * Object holding validation result for a specific validation type.
+ * This object is immutable.
  * 
  * @author cgendreau
  */
 public class ValidationResultElement {
 
-  private ValidationTypeIF type;
-  private Result result;
-  private String explanation;
+  private final ValidationTypeIF type;
+  private final Result result;
+  private final String explanation;
+
+  /**
+   * @param type
+   * @param result
+   * @param explanation
+   */
+  public ValidationResultElement(ValidationTypeIF type, Result result, String explanation) {
+    this.type = type;
+    this.result = result;
+    this.explanation = explanation;
+  }
 
   public String getExplanation() {
     return explanation;
@@ -23,18 +35,6 @@ public class ValidationResultElement {
 
   public ValidationTypeIF getType() {
     return type;
-  }
-
-  public void setExplanation(String explanation) {
-    this.explanation = explanation;
-  }
-
-  public void setResult(Result result) {
-    this.result = result;
-  }
-
-  public void setType(ValidationTypeIF type) {
-    this.type = type;
   }
 
 }

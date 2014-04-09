@@ -1,17 +1,31 @@
 package org.gbif.dwc.validator.result;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Main object holding validation results for a specific id within a context.
+ * This object is immutable.
  * 
  * @author cgendreau
  */
 public class ValidationResult {
 
-  private String id;
-  private ValidationContext context;
-  private List<ValidationResultElement> results;
+  private final String id;
+  private final ValidationContext context;
+  private final List<ValidationResultElement> results;
+
+  /**
+   * @param id The identifier is relative to the context.
+   * @param context
+   * @param results
+   */
+  public ValidationResult(String id, ValidationContext context, List<ValidationResultElement> results) {
+    this.id = id;
+    this.context = context;
+    this.results = Collections.unmodifiableList(new ArrayList<ValidationResultElement>(results));
+  }
 
   public ValidationContext getContext() {
     return context;
@@ -23,22 +37,5 @@ public class ValidationResult {
 
   public List<ValidationResultElement> getResults() {
     return results;
-  }
-
-  public void setContext(ValidationContext context) {
-    this.context = context;
-  }
-
-  /**
-   * The identifier is relative to the context.
-   * 
-   * @param id
-   */
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public void setResults(List<ValidationResultElement> results) {
-    this.results = results;
   }
 }

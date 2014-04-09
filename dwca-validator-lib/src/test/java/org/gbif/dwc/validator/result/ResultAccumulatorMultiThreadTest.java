@@ -57,7 +57,6 @@ public class ResultAccumulatorMultiThreadTest {
     for (int i = 0; i < threadCount; i++) {
       // new set of random data for each thread but same FileWriterResultAccumulator.
       final List<String> dummyIdList = MockDataGenerator.newRandomDataList(NUMBER_OF_DATA, 4);
-      final ValidationResult result = new ValidationResult();
 
       Callable<Boolean> task = new Callable<Boolean>() {
 
@@ -65,8 +64,7 @@ public class ResultAccumulatorMultiThreadTest {
         public Boolean call() {
           boolean success = true;
           for (String currDummyId : dummyIdList) {
-            result.setId(currDummyId);
-            success = (success && resultAccumulator.accumulate(result));
+            success = (success && resultAccumulator.accumulate(new ValidationResult(currDummyId, null, null)));
           }
           return success;
         }

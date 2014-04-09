@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.result;
 
 /**
- * Accumuluate results from various validations.
+ * Accumulate results from various validations.
  * Implementations must the thread-safe after initialization.
  * In other words, once created, the object can be shared among different threads to
  * accumulate results.
