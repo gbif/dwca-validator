@@ -1,1 +1,3 @@
-org.gbif
+org.gbif.dwc.validator
+org.gbif.dwc.validator.mock
+org.gbif.dwc.validator.result

@@ -1,1 +1,10 @@
 org.gbif
+org.gbif.dwc.validator
+org.gbif.dwc.validator.evaluator
+org.gbif.dwc.validator.evaluator.impl
+org.gbif.dwc.validator.handler
+org.gbif.dwc.validator.impl
+org.gbif.dwc.validator.result
+org.gbif.dwc.validator.result.impl
+org.gbif.dwc.validator.result.type
+org.gbif.dwc.validator.rule
