@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.evaluator.impl;
 
 import org.gbif.dwc.record.Record;
-import org.gbif.dwc.validator.evaluator.ChainableRecordEvaluator;
+import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 
 /**
@@ -10,16 +10,19 @@ import org.gbif.dwc.validator.result.ResultAccumulatorIF;
  * 
  * @author cgendreau
  */
-public class UniquenessEvaluator extends ChainableRecordEvaluator {
+public class UniquenessEvaluator implements RecordEvaluatorIF {
+
+  public UniquenessEvaluator() {
+  }
 
   @Override
-  protected void handleEval(Record record, ResultAccumulatorIF resultAccumulator) {
+  public void handleEval(Record record, ResultAccumulatorIF resultAccumulator) {
     // TODO Auto-generated method stub
 
   }
 
   @Override
-  protected void postIterate() {
+  public void postIterate() {
     // TODO Auto-generated method stub
 
   }

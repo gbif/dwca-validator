@@ -2,7 +2,7 @@ package org.gbif.dwc.validator.evaluator.impl;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.ConceptTerm;
-import org.gbif.dwc.validator.evaluator.ChainableRecordEvaluator;
+import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  * 
  * @author cgendreau
  */
-public class ValueEvaluator extends ChainableRecordEvaluator {
+public class ValueEvaluator implements RecordEvaluatorIF {
 
   // hold all evaluation rules per ConceptTerm
   private final Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm;
@@ -40,7 +40,7 @@ public class ValueEvaluator extends ChainableRecordEvaluator {
   }
 
   @Override
-  protected void handleEval(Record record, ResultAccumulatorIF resultAccumulator) {
+  public void handleEval(Record record, ResultAccumulatorIF resultAccumulator) {
     // only iterate over terms we have a rule for
     for (ConceptTerm currTerm : rulesPerTerm.keySet()) {
       for (EvaluationRuleIF<String> currRule : rulesPerTerm.get(currTerm)) {
@@ -50,7 +50,7 @@ public class ValueEvaluator extends ChainableRecordEvaluator {
   }
 
   @Override
-  protected void postIterate() {
+  public void postIterate() {
     // noop
   }
 }

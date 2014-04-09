@@ -2,8 +2,8 @@ package org.gbif.dwc.validator.handler;
 
 import org.gbif.dwc.record.RecordIterator;
 import org.gbif.dwc.text.ArchiveFile;
-import org.gbif.dwc.validator.evaluator.ChainableRecordEvaluator;
-import org.gbif.dwc.validator.evaluator.EvaluatorChainBuilder;
+import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
+import org.gbif.dwc.validator.evaluator.chain.EvaluationChainProviderIF;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 
 /**
@@ -14,6 +14,12 @@ import org.gbif.dwc.validator.result.ResultAccumulatorIF;
  */
 public class ArchiveContentHandler {
 
+  private final EvaluationChainProviderIF evaluationChainProvider;
+
+  public ArchiveContentHandler(EvaluationChainProviderIF evaluationChainProvider) {
+    this.evaluationChainProvider = evaluationChainProvider;
+  }
+
   /**
    * Inspect DarwinCore core component.
    * 
@@ -21,7 +27,7 @@ public class ArchiveContentHandler {
    * @param resultAccumulator
    */
   public void inspectCore(ArchiveFile archiveFile, ResultAccumulatorIF resultAccumulator) {
-    ChainableRecordEvaluator coreChain = EvaluatorChainBuilder.buildCoreChain();
+    ChainableRecordEvaluator coreChain = evaluationChainProvider.getCoreChain();
     inspectDwcComponent(archiveFile, coreChain, resultAccumulator);
   }
 

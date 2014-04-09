@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator;
 
 import org.gbif.dwc.text.Archive;
+import org.gbif.dwc.validator.evaluator.chain.DefaultEvaluationChainProvider;
 import org.gbif.dwc.validator.handler.ArchiveContentHandler;
 import org.gbif.dwc.validator.handler.ArchiveStructureHandler;
 import org.gbif.dwc.validator.impl.ArchiveValidator;
@@ -13,7 +14,6 @@ import java.net.URISyntaxException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -65,7 +65,7 @@ public class ArchiveValidatorTest {
     testDwcFolder.mkdir();
     validator.setWorkingFolder(testDwcFolder.getAbsolutePath());
     validator.setStructureHandler(structureHandler);
-    validator.setContentHandler(new ArchiveContentHandler());
+    validator.setContentHandler(new ArchiveContentHandler(new DefaultEvaluationChainProvider()));
 
     try {
       File testDwca = new File(getClass().getResource("/dwca/vascan_dwca.zip").toURI());
