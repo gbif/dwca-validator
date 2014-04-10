@@ -11,19 +11,19 @@
 <a class="jxr_linenumber" name="1" href="#1">1</a>   <strong class="jxr_keyword">package</strong> org.gbif.dwc.validator;
 <a class="jxr_linenumber" name="2" href="#2">2</a>   
 <a class="jxr_linenumber" name="3" href="#3">3</a>   <strong class="jxr_keyword">import</strong> org.gbif.dwc.text.Archive;
-<a class="jxr_linenumber" name="4" href="#4">4</a>   <strong class="jxr_keyword">import</strong> org.gbif.dwc.validator.handler.ArchiveContentHandler;
-<a class="jxr_linenumber" name="5" href="#5">5</a>   <strong class="jxr_keyword">import</strong> org.gbif.dwc.validator.handler.ArchiveStructureHandler;
-<a class="jxr_linenumber" name="6" href="#6">6</a>   <strong class="jxr_keyword">import</strong> org.gbif.dwc.validator.impl.ArchiveValidator;
-<a class="jxr_linenumber" name="7" href="#7">7</a>   <strong class="jxr_keyword">import</strong> org.gbif.dwc.validator.result.ResultAccumulatorIF;
-<a class="jxr_linenumber" name="8" href="#8">8</a>   <strong class="jxr_keyword">import</strong> org.gbif.metadata.eml.Eml;
-<a class="jxr_linenumber" name="9" href="#9">9</a>   
-<a class="jxr_linenumber" name="10" href="#10">10</a>  <strong class="jxr_keyword">import</strong> java.io.File;
-<a class="jxr_linenumber" name="11" href="#11">11</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
-<a class="jxr_linenumber" name="12" href="#12">12</a>  <strong class="jxr_keyword">import</strong> java.net.URISyntaxException;
-<a class="jxr_linenumber" name="13" href="#13">13</a>  
-<a class="jxr_linenumber" name="14" href="#14">14</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.io.FileUtils;
-<a class="jxr_linenumber" name="15" href="#15">15</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
-<a class="jxr_linenumber" name="16" href="#16">16</a>  
+<a class="jxr_linenumber" name="4" href="#4">4</a>   <strong class="jxr_keyword">import</strong> org.gbif.dwc.validator.evaluator.chain.DefaultEvaluationChainProvider;
+<a class="jxr_linenumber" name="5" href="#5">5</a>   <strong class="jxr_keyword">import</strong> org.gbif.dwc.validator.handler.ArchiveContentHandler;
+<a class="jxr_linenumber" name="6" href="#6">6</a>   <strong class="jxr_keyword">import</strong> org.gbif.dwc.validator.handler.ArchiveStructureHandler;
+<a class="jxr_linenumber" name="7" href="#7">7</a>   <strong class="jxr_keyword">import</strong> org.gbif.dwc.validator.impl.ArchiveValidator;
+<a class="jxr_linenumber" name="8" href="#8">8</a>   <strong class="jxr_keyword">import</strong> org.gbif.dwc.validator.result.ResultAccumulatorIF;
+<a class="jxr_linenumber" name="9" href="#9">9</a>   <strong class="jxr_keyword">import</strong> org.gbif.metadata.eml.Eml;
+<a class="jxr_linenumber" name="10" href="#10">10</a>  
+<a class="jxr_linenumber" name="11" href="#11">11</a>  <strong class="jxr_keyword">import</strong> java.io.File;
+<a class="jxr_linenumber" name="12" href="#12">12</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
+<a class="jxr_linenumber" name="13" href="#13">13</a>  <strong class="jxr_keyword">import</strong> java.net.URISyntaxException;
+<a class="jxr_linenumber" name="14" href="#14">14</a>  
+<a class="jxr_linenumber" name="15" href="#15">15</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.io.FileUtils;
+<a class="jxr_linenumber" name="16" href="#16">16</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
 <a class="jxr_linenumber" name="17" href="#17">17</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertTrue;
 <a class="jxr_linenumber" name="18" href="#18">18</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.fail;
 <a class="jxr_linenumber" name="19" href="#19">19</a>  
@@ -75,7 +75,7 @@
 <a class="jxr_linenumber" name="65" href="#65">65</a>      testDwcFolder.mkdir();
 <a class="jxr_linenumber" name="66" href="#66">66</a>      validator.setWorkingFolder(testDwcFolder.getAbsolutePath());
 <a class="jxr_linenumber" name="67" href="#67">67</a>      validator.setStructureHandler(structureHandler);
-<a class="jxr_linenumber" name="68" href="#68">68</a>      validator.setContentHandler(<strong class="jxr_keyword">new</strong> ArchiveContentHandler());
+<a class="jxr_linenumber" name="68" href="#68">68</a>      validator.setContentHandler(<strong class="jxr_keyword">new</strong> ArchiveContentHandler(<strong class="jxr_keyword">new</strong> DefaultEvaluationChainProvider()));
 <a class="jxr_linenumber" name="69" href="#69">69</a>  
 <a class="jxr_linenumber" name="70" href="#70">70</a>      <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="71" href="#71">71</a>        File testDwca = <strong class="jxr_keyword">new</strong> File(getClass().getResource(<span class="jxr_string">"/dwca/vascan_dwca.zip"</span>).toURI());

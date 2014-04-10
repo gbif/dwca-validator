@@ -9,19 +9,19 @@
 <pre><span class="sourceLineNo">001</span>package org.gbif.dwc.validator;<a name="line.1"></a>
 <span class="sourceLineNo">002</span><a name="line.2"></a>
 <span class="sourceLineNo">003</span>import org.gbif.dwc.text.Archive;<a name="line.3"></a>
-<span class="sourceLineNo">004</span>import org.gbif.dwc.validator.handler.ArchiveContentHandler;<a name="line.4"></a>
-<span class="sourceLineNo">005</span>import org.gbif.dwc.validator.handler.ArchiveStructureHandler;<a name="line.5"></a>
-<span class="sourceLineNo">006</span>import org.gbif.dwc.validator.impl.ArchiveValidator;<a name="line.6"></a>
-<span class="sourceLineNo">007</span>import org.gbif.dwc.validator.result.ResultAccumulatorIF;<a name="line.7"></a>
-<span class="sourceLineNo">008</span>import org.gbif.metadata.eml.Eml;<a name="line.8"></a>
-<span class="sourceLineNo">009</span><a name="line.9"></a>
-<span class="sourceLineNo">010</span>import java.io.File;<a name="line.10"></a>
-<span class="sourceLineNo">011</span>import java.io.IOException;<a name="line.11"></a>
-<span class="sourceLineNo">012</span>import java.net.URISyntaxException;<a name="line.12"></a>
-<span class="sourceLineNo">013</span><a name="line.13"></a>
-<span class="sourceLineNo">014</span>import org.apache.commons.io.FileUtils;<a name="line.14"></a>
-<span class="sourceLineNo">015</span>import org.junit.Test;<a name="line.15"></a>
-<span class="sourceLineNo">016</span><a name="line.16"></a>
+<span class="sourceLineNo">004</span>import org.gbif.dwc.validator.evaluator.chain.DefaultEvaluationChainProvider;<a name="line.4"></a>
+<span class="sourceLineNo">005</span>import org.gbif.dwc.validator.handler.ArchiveContentHandler;<a name="line.5"></a>
+<span class="sourceLineNo">006</span>import org.gbif.dwc.validator.handler.ArchiveStructureHandler;<a name="line.6"></a>
+<span class="sourceLineNo">007</span>import org.gbif.dwc.validator.impl.ArchiveValidator;<a name="line.7"></a>
+<span class="sourceLineNo">008</span>import org.gbif.dwc.validator.result.ResultAccumulatorIF;<a name="line.8"></a>
+<span class="sourceLineNo">009</span>import org.gbif.metadata.eml.Eml;<a name="line.9"></a>
+<span class="sourceLineNo">010</span><a name="line.10"></a>
+<span class="sourceLineNo">011</span>import java.io.File;<a name="line.11"></a>
+<span class="sourceLineNo">012</span>import java.io.IOException;<a name="line.12"></a>
+<span class="sourceLineNo">013</span>import java.net.URISyntaxException;<a name="line.13"></a>
+<span class="sourceLineNo">014</span><a name="line.14"></a>
+<span class="sourceLineNo">015</span>import org.apache.commons.io.FileUtils;<a name="line.15"></a>
+<span class="sourceLineNo">016</span>import org.junit.Test;<a name="line.16"></a>
 <span class="sourceLineNo">017</span>import static org.junit.Assert.assertTrue;<a name="line.17"></a>
 <span class="sourceLineNo">018</span>import static org.junit.Assert.fail;<a name="line.18"></a>
 <span class="sourceLineNo">019</span><a name="line.19"></a>
@@ -73,7 +73,7 @@
 <span class="sourceLineNo">065</span>    testDwcFolder.mkdir();<a name="line.65"></a>
 <span class="sourceLineNo">066</span>    validator.setWorkingFolder(testDwcFolder.getAbsolutePath());<a name="line.66"></a>
 <span class="sourceLineNo">067</span>    validator.setStructureHandler(structureHandler);<a name="line.67"></a>
-<span class="sourceLineNo">068</span>    validator.setContentHandler(new ArchiveContentHandler());<a name="line.68"></a>
+<span class="sourceLineNo">068</span>    validator.setContentHandler(new ArchiveContentHandler(new DefaultEvaluationChainProvider()));<a name="line.68"></a>
 <span class="sourceLineNo">069</span><a name="line.69"></a>
 <span class="sourceLineNo">070</span>    try {<a name="line.70"></a>
 <span class="sourceLineNo">071</span>      File testDwca = new File(getClass().getResource("/dwca/vascan_dwca.zip").toURI());<a name="line.71"></a>
