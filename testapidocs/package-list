@@ -1,4 +1,5 @@
 org.gbif.dwc.validator
+org.gbif.dwc.validator.evaluator
 org.gbif.dwc.validator.mock
 org.gbif.dwc.validator.result
 org.gbif.dwc.validator.rule.value
