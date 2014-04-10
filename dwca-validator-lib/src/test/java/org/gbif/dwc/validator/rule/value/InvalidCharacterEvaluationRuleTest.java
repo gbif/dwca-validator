@@ -45,6 +45,7 @@ public class InvalidCharacterEvaluationRuleTest {
   private void testAlwaysValidString(InvalidCharacterEvaluationRule rule) {
     assertNull(rule.evaluate("test"));
     assertNull(rule.evaluate("test 2"));
+    assertNull(rule.evaluate("éä@%&*"));
   }
 
   private void testNeverValidString(InvalidCharacterEvaluationRule rule) {

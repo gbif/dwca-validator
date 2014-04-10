@@ -75,6 +75,11 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
 
   @Override
   public ValidationResultElement evaluate(String str) {
+
+    if (str == null) {
+      return null;
+    }
+
     int indexIn = charMatcher.indexIn(str);
     if (indexIn > 0) {
       return new ValidationResultElement(ContentValidationType.RECORD_CONTENT, Result.WARNING, str
