@@ -42,11 +42,11 @@ public class ValueEvaluator implements RecordEvaluatorIF {
   @Override
   public void handleEval(Record record, ResultAccumulatorIF resultAccumulator) {
     // only iterate over terms we have a rule for
-    for (ConceptTerm currTerm : rulesPerTerm.keySet()) {
-      for (EvaluationRuleIF<String> currRule : rulesPerTerm.get(currTerm)) {
-        currRule.evaluate(record.value(currTerm), resultAccumulator);
-      }
-    }
+// for (ConceptTerm currTerm : rulesPerTerm.keySet()) {
+// for (EvaluationRuleIF<String> currRule : rulesPerTerm.get(currTerm)) {
+// currRule.evaluate(record.value(currTerm));
+// }
+// }
   }
 
   @Override
