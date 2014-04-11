@@ -1,8 +1,8 @@
 package org.gbif.dwc.validator.result;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Main object holding validation results for a specific id within a context.
@@ -24,7 +24,13 @@ public class ValidationResult {
   public ValidationResult(String id, ValidationContext context, List<ValidationResultElement> results) {
     this.id = id;
     this.context = context;
-    this.results = Collections.unmodifiableList(new ArrayList<ValidationResultElement>(results));
+
+    // shouldn't we throw an exception or maybe create an empty list?
+    if (results == null) {
+      this.results = null;
+    } else {
+      this.results = ImmutableList.copyOf(results);
+    }
   }
 
   public ValidationContext getContext() {
