@@ -6,7 +6,7 @@ package org.gbif.dwc.validator.result.type;
  * @author cgendreau
  */
 public enum ContentValidationType implements ValidationTypeIF {
-  RECORD_CONTENT(1, "record.content");
+  RECORD_CONTENT(1, "record.content"), FIELD_UNIQUENESS(2, "field.uniqueness");
 
   private static final String PREFIX = "CV-";
   private String id;

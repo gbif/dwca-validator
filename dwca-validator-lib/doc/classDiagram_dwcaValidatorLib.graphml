@@ -140,7 +140,8 @@
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel>-recordEvaluator:RecordEvaluatorIF
 -nextElement:ChainableRecordEvaluator</y:AttributeLabel>
-            <y:MethodLabel>+doEval(Record)</y:MethodLabel>
+            <y:MethodLabel>+doEval(Record)
++postIterate(ResultAccumulatorIF)</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -319,10 +320,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="70.12875417130147" width="194.375" x="651.7268633436202" y="-120.99999999999977"/>
+          <y:Geometry height="75.3384356999639" width="318.3458708543817" x="584.4784806371877" y="-127.66921784998195"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="115.4140625" x="39.48046875" y="3.0">ArchiveValidator<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="115.4140625" x="101.46590417719085" y="3.0">ArchiveValidator<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -330,7 +331,7 @@
             </y:ModelParameter>
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
-            <y:AttributeLabel>+validateArchive(File dwcaFile)</y:AttributeLabel>
+            <y:AttributeLabel>+validateArchive(File dwcaFile,ResultAccumulatorIF)</y:AttributeLabel>
             <y:MethodLabel/>
           </y:UML>
         </y:UMLClassNode>
@@ -340,10 +341,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="93.23832684824905" width="230.0" x="633.9143633436202" y="-268.05933852140083"/>
+          <y:Geometry height="99.99999999999989" width="351.12509554140127" x="568.0888682936779" y="-268.05933852140083"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="127.18896484375" x="51.405517578125" y="26.1328125">ArchiveValidatorIF<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="127.18896484375" x="111.96806534882563" y="26.1328125">ArchiveValidatorIF<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -352,7 +353,7 @@
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="interface" use3DEffect="true">
             <y:AttributeLabel/>
-            <y:MethodLabel>+validateArchive(File dwcaFile)</y:MethodLabel>
+            <y:MethodLabel>+validateArchive(File dwcaFile,ResultAccumulatorIF)</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -538,7 +539,6 @@
     </node>
     <node id="n25">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="100.0" width="269.9108280254777" x="609.127351626456" y="318.25"/>
@@ -554,14 +554,13 @@
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="interface" use3DEffect="true">
             <y:AttributeLabel/>
             <y:MethodLabel>+handleEval(Record,ResultAccumulatorIF)
-+postIterate()</y:MethodLabel>
++handlePostIterate(ResultAccumulatorIF)</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
     </node>
     <node id="n26">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="88.96019108280268" width="286.4101658681734" x="1435.672199443832" y="7.269904458598717"/>
@@ -583,7 +582,6 @@
     </node>
     <node id="n27">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="84.42120622568098" width="242.6411889596602" x="1457.5566878980885" y="646.836353854288"/>
@@ -605,7 +603,6 @@
     </node>
     <node id="n28">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="110.37834394904456" width="498.8918895966028" x="957.7594055201694" y="335.5085116731517"/>
@@ -627,7 +624,6 @@
     </node>
     <node id="n29">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="110.37834394904456" width="381.9261146496815" x="1016.2422929936299" y="165.4223411154345"/>
@@ -711,7 +707,7 @@
     <edge id="e6" source="n14" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-97.19534686231239" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="-159.1857869575642" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="plain"/>
           <y:BendStyle smoothed="false"/>
@@ -819,7 +815,6 @@
       </data>
     </edge>
     <edge id="e17" source="n1" target="n25">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -830,7 +825,6 @@
       </data>
     </edge>
     <edge id="e18" source="n20" target="n25">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -841,7 +835,6 @@
       </data>
     </edge>
     <edge id="e19" source="n2" target="n25">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -852,7 +845,6 @@
       </data>
     </edge>
     <edge id="e20" source="n3" target="n25">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -863,7 +855,6 @@
       </data>
     </edge>
     <edge id="e21" source="n5" target="n25">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -874,7 +865,6 @@
       </data>
     </edge>
     <edge id="e22" source="n5" target="n5">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -887,7 +877,6 @@
       </data>
     </edge>
     <edge id="e23" source="n27" target="n26">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -898,7 +887,6 @@
       </data>
     </edge>
     <edge id="e24" source="n28" target="n29">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -909,7 +897,6 @@
       </data>
     </edge>
     <edge id="e25" source="n29" target="n5">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -920,7 +907,6 @@
       </data>
     </edge>
     <edge id="e26" source="n27" target="n3">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -931,7 +917,6 @@
       </data>
     </edge>
     <edge id="e27" source="n27" target="n28">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -942,7 +927,6 @@
       </data>
     </edge>
     <edge id="e28" source="n27" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -953,7 +937,6 @@
       </data>
     </edge>
     <edge id="e29" source="n27" target="n20">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -964,7 +947,6 @@
       </data>
     </edge>
     <edge id="e30" source="n27" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
