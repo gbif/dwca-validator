@@ -70,5 +70,4 @@ public class ArchiveValidator implements ArchiveValidatorIF {
       LOGGER.error("Can't open archive", e);
     }
   }
-
 }

@@ -1,18 +1,25 @@
 package org.gbif.dwc.validator.structure.evaluator;
 
+import org.gbif.metadata.MetadataException;
+import org.gbif.metadata.MetadataFactory;
+
 import java.io.File;
 
 /**
  * @author melecoq
  */
-public abstract class MetaDescriptorEvaluator {
+public class MetaDescriptorEvaluator {
 
   /**
    * @author melecoq
+   * @throws MetadataException
    */
-  public void doEval(File metaXML) {
-
+  public void doEval(File metaXML) throws MetadataException {
+    handleEval(metaXML);
   }
 
-  public abstract void handleEval(File metaXML);
+  protected void handleEval(File metaXML) throws MetadataException {
+    MetadataFactory metadataValidatator = new MetadataFactory();
+    metadataValidatator.read(metaXML);
+  }
 }
