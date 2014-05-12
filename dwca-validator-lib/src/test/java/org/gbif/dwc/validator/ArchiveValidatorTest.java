@@ -5,8 +5,8 @@ import org.gbif.dwc.validator.evaluator.chain.DefaultEvaluationChainProvider;
 import org.gbif.dwc.validator.handler.ArchiveContentHandler;
 import org.gbif.dwc.validator.handler.ArchiveStructureHandler;
 import org.gbif.dwc.validator.impl.ArchiveValidator;
+import org.gbif.dwc.validator.result.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.metadata.eml.Eml;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +14,7 @@ import java.net.URISyntaxException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -41,7 +42,7 @@ public class ArchiveValidatorTest {
     }
 
     @Override
-    public void inspectEML(Eml eml, ResultAccumulatorIF resultAccumulator) {
+    public void inspectEML(File eml, ResultAccumulatorIF resultAccumulator) {
       super.inspectEML(eml, resultAccumulator);
       inspectEMLCalled = true;
     }
@@ -54,7 +55,7 @@ public class ArchiveValidatorTest {
   }
 
   /**
-   * Simply test that we can extract anm archive and call the appropriate method in ArchiveValidator.
+   * Simply test that we can extract an archive and call the appropriate method in ArchiveValidator.
    */
   @Test
   public void testValidateArchive() {
@@ -69,7 +70,8 @@ public class ArchiveValidatorTest {
 
     try {
       File testDwca = new File(getClass().getResource("/dwca/vascan_dwca.zip").toURI());
-      validator.validateArchive(testDwca);
+
+      validator.validateArchive(testDwca, new InMemoryResultAccumulator());
       // this archive does not contain EML file
       assertTrue(structureHandler.inspectArchiveContentCalled && structureHandler.inspectMetaXMLCalled);
     } catch (URISyntaxException e) {
