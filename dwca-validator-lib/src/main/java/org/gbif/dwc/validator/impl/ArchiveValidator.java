@@ -7,20 +7,17 @@ import org.gbif.dwc.validator.ArchiveValidatorIF;
 import org.gbif.dwc.validator.handler.ArchiveContentHandler;
 import org.gbif.dwc.validator.handler.ArchiveStructureHandler;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.metadata.eml.Eml;
-import org.gbif.metadata.eml.EmlFactory;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
 
 /**
  * Main DarwinCore archive validation implementation.
+ * TODO: change to immutable class
  * 
  * @author cgendreau
  */
@@ -32,8 +29,6 @@ public class ArchiveValidator implements ArchiveValidatorIF {
   private String workingFolder = ".";
 
   private ArchiveStructureHandler structureHandler;
-
-  // contentHandler is used to validate core and extensions
   private ArchiveContentHandler contentHandler;
 
   public void setContentHandler(ArchiveContentHandler contentHandler) {
@@ -49,11 +44,10 @@ public class ArchiveValidator implements ArchiveValidatorIF {
   }
 
   @Override
-  public void validateArchive(File dwcaFile) {
+  public void validateArchive(File dwcaFile, ResultAccumulatorIF resultAccumulator) {
     File tmpFolder = new File(new File(workingFolder), UUID.randomUUID().toString());
 
     try {
-      ResultAccumulatorIF resultAccumulator = null;// new FileWriterResultAccumulator("");
       Archive dwc = ArchiveFactory.openArchive(dwcaFile, tmpFolder);
       structureHandler.inspectArchiveContent(dwc, resultAccumulator);
 
@@ -62,9 +56,9 @@ public class ArchiveValidator implements ArchiveValidatorIF {
         structureHandler.inspectMetaXML(metaFile, resultAccumulator);
       }
 
+      // Inspect the eml, if present
       if (dwc.getMetadataLocation() != null) {
-        Eml eml = EmlFactory.build(new FileInputStream(dwc.getMetadataLocationFile()));
-        structureHandler.inspectEML(eml, resultAccumulator);
+        structureHandler.inspectEML(dwc.getMetadataLocationFile(), resultAccumulator);
       }
 
       // Inspect the core
@@ -74,8 +68,6 @@ public class ArchiveValidator implements ArchiveValidatorIF {
       LOGGER.error("Can't open archive", e);
     } catch (IOException e) {
       LOGGER.error("Can't open archive", e);
-    } catch (SAXException e) {
-      LOGGER.error("Can't read EML", e);
     }
   }
 

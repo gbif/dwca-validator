@@ -2,7 +2,6 @@ package org.gbif.dwc.validator.handler;
 
 import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.metadata.eml.Eml;
 
 import java.io.File;
 
@@ -23,7 +22,7 @@ public class ArchiveStructureHandler {
 
   }
 
-  public void inspectEML(Eml eml, ResultAccumulatorIF resultAccumulator) {
+  public void inspectEML(File eml, ResultAccumulatorIF resultAccumulator) {
 
   }
 

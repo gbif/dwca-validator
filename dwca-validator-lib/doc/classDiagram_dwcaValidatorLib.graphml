@@ -33,7 +33,7 @@
 -emlValidators : Map&lt;Profile,Validator&gt;</y:AttributeLabel>
             <y:MethodLabel>+inspectArchiveContent(Archive,ResultAccumulatorIF)
 +inspectMetaXML(File,ResultAccumulatorIF)
-+inspectEML(Eml,ResultAccumulatorIF)</y:MethodLabel>
++inspectEML(File,ResultAccumulatorIF)</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
