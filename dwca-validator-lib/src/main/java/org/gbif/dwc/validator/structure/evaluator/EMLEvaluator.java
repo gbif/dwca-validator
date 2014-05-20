@@ -19,6 +19,10 @@ public class EMLEvaluator {
 
   public class EMLInvalidException extends Exception {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -9106531880413469993L;
     Exception exception;
 
 
