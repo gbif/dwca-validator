@@ -1,15 +1,20 @@
-package org.gbif.dwc.validator.result;
+package org.gbif.dwc.validator.result.impl;
+
+import org.gbif.dwc.validator.result.ResultAccumulatorIF;
+import org.gbif.dwc.validator.result.ValidationResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * In memory ResultAccumulatorIF for testing purpose only.
+ * In memory ResultAccumulatorIF, maximum number of accumulated results is defined
+ * by MAX_RESULT.
  * 
  * @author cgendreau
  */
 public class InMemoryResultAccumulator implements ResultAccumulatorIF {
 
+  private static final int MAX_RESULT = 100;
   private final List<ValidationResult> validationResultsList;
 
   public InMemoryResultAccumulator() {
@@ -18,7 +23,10 @@ public class InMemoryResultAccumulator implements ResultAccumulatorIF {
 
   @Override
   public boolean accumulate(ValidationResult result) {
-    return validationResultsList.add(result);
+    if (validationResultsList.size() < MAX_RESULT) {
+      return validationResultsList.add(result);
+    }
+    return false;
   }
 
   @Override
