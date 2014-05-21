@@ -2,6 +2,8 @@ package org.gbif.dwc.validator.result;
 
 import org.gbif.dwc.validator.result.type.ValidationTypeIF;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * Object holding validation result for a specific validation type.
  * This object is immutable.
@@ -36,5 +38,12 @@ public class ValidationResultElement {
   public ValidationTypeIF getType() {
     return type;
   }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this).append("type", type).append("result", result).append("explanation", explanation)
+      .toString();
+  }
+
 
 }

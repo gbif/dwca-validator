@@ -60,7 +60,7 @@ public class ValueEvaluator implements RecordEvaluatorIF {
   }
 
   @Override
-  public void postIterate() {
+  public void handlePostIterate(ResultAccumulatorIF resultAccumulator) {
     // noop
   }
 }

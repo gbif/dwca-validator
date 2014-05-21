@@ -8,10 +8,14 @@ import org.gbif.dwc.validator.result.ValidationContext;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Default implementation of EvaluationChainProviderIF using the default builder.
@@ -19,6 +23,8 @@ import java.util.Map;
  * @author cgendreau
  */
 public class DefaultEvaluationChainProvider implements EvaluationChainProviderIF {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEvaluationChainProvider.class);
 
   /**
    * Build a default Map<ConceptTerm, List<EvaluationRuleIF<String>>> for ValueEvaluator.
@@ -40,9 +46,14 @@ public class DefaultEvaluationChainProvider implements EvaluationChainProviderIF
 
   @Override
   public ChainableRecordEvaluator getCoreChain() {
-    return DefaultChainableRecordEvaluatorBuilder
-      .create(new ValueEvaluator(buildDefaultValueEvaluatorRulesPerTermMap(), ValidationContext.CORE))
-      .linkTo(new UniquenessEvaluator()).build();
+    try {
+      return DefaultChainableRecordEvaluatorBuilder
+        .create(new ValueEvaluator(buildDefaultValueEvaluatorRulesPerTermMap(), ValidationContext.CORE))
+        .linkTo(new UniquenessEvaluator()).build();
+    } catch (IOException ioEx) {
+      LOGGER.error("Can't create core chain", ioEx);
+    }
+    return null;
   }
 
 }

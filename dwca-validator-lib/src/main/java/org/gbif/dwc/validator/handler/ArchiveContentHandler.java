@@ -16,6 +16,11 @@ public class ArchiveContentHandler {
 
   private final EvaluationChainProviderIF evaluationChainProvider;
 
+  /**
+   * TODO: set working folder to avoid writing at root
+   * 
+   * @param evaluationChainProvider
+   */
   public ArchiveContentHandler(EvaluationChainProviderIF evaluationChainProvider) {
     this.evaluationChainProvider = evaluationChainProvider;
   }
@@ -44,6 +49,7 @@ public class ArchiveContentHandler {
     while (recordIt.hasNext()) {
       evaluatorChain.doEval(recordIt.next(), resultAccumulator);
     }
+    evaluatorChain.postIterate(resultAccumulator);
   }
 
   public void inspectExtension(ArchiveFile archiveFile, ResultAccumulatorIF resultAccumulator) {

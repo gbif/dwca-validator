@@ -32,4 +32,16 @@ public class ChainableRecordEvaluator {
       nextElement.doEval(record, resultAccumulator);
     }
   }
+
+  /**
+   * Do postIterate and call next element in the chain (if there is one).
+   * 
+   * @param resultAccumulator
+   */
+  public void postIterate(ResultAccumulatorIF resultAccumulator) {
+    recordEvaluator.handlePostIterate(resultAccumulator);
+    if (nextElement != null) {
+      nextElement.postIterate(resultAccumulator);
+    }
+  }
 }
