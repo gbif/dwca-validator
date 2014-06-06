@@ -12,6 +12,8 @@ import java.util.ResourceBundle;
  */
 public class ArchiveValidatorConfig {
 
+  public static final String ENDLINE = System.getProperty("line.separator");
+
   private static final String BUNDLE_NAME = "language_resources";
 
   private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, Locale.ENGLISH);

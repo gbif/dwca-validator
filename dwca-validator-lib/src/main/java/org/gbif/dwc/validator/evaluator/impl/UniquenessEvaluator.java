@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.evaluator.impl;
 
 import org.gbif.dwc.record.Record;
+import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
@@ -37,7 +38,7 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
   private static final Logger LOGGER = LoggerFactory.getLogger(UniquenessEvaluator.class);
   org.gbif.utils.file.FileUtils GBIF_FILE_UTILS = new org.gbif.utils.file.FileUtils();
   private static final int BUFFER_THRESHOLD = 1000;
-  private static final String ENDLINE = System.getProperty("line.separator");
+
   private static final String FILE_EXT = ".txt";
 
   private final List<String> idList;
@@ -86,7 +87,7 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
     try {
       // ensure list is empty
       for (String curr : idList) {
-        fw.write(curr + ENDLINE);
+        fw.write(curr + ArchiveValidatorConfig.ENDLINE);
       }
       fw.flush();
     } catch (IOException ioEx) {
@@ -102,7 +103,7 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
     // sort the file containing the id
     try {
       GBIF_FILE_UTILS.sort(new File(fileName), new File(sortedFileName), Charsets.UTF_8.toString(), 0, null, null,
-        ENDLINE, 0);
+        ArchiveValidatorConfig.ENDLINE, 0);
     } catch (IOException ioEx) {
       LOGGER.error("Can't sort id file", ioEx);
     }
