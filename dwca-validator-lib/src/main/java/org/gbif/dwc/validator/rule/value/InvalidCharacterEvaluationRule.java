@@ -17,6 +17,7 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
 
   /**
    * Builder used to customized, if needed, the InvalidCharacterEvaluationRule.
+   * Also ensure usage of immutable object.
    * 
    * @author cgendreau
    */
@@ -66,7 +67,9 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
   }
 
   /**
-   * Simple alias of InvalidCharacterEvaluationRuleBuilder.create() for code readability.
+   * Simple alias of InvalidCharacterEvaluationRuleBuilder.create() for code readability so we can use
+   * InvalidCharacterEvaluationRule.createRule() instead of
+   * InvalidCharacterEvaluationRule.InvalidCharacterEvaluationRuleBuilder.create()
    * 
    * @return default InvalidCharacterEvaluationRuleBuilder
    */
