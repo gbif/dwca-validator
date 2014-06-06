@@ -6,6 +6,7 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.evaluator.impl.UniquenessEvaluator;
+import org.gbif.dwc.validator.result.ValidationContext;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Test UniquenessEvaluator with mock records.
@@ -24,14 +26,17 @@ import static org.junit.Assert.assertTrue;
  */
 public class UniquenessEvaluatorTest {
 
-  private Record buildMockRecord(String id) {
+  private Record buildMockRecord(String id, String catalogNumber) {
     // create a mock Record
     ArchiveField idField = new ArchiveField(0, DwcTerm.occurrenceID, null, DataType.string);
     ArchiveField scientificNameField = new ArchiveField(1, DwcTerm.scientificName, null, DataType.string);
+    ArchiveField catalogNumberField = new ArchiveField(2, DwcTerm.catalogNumber, null, DataType.string);
     List<ArchiveField> fieldList = new ArrayList<ArchiveField>();
     fieldList.add(scientificNameField);
+    fieldList.add(catalogNumberField);
+
     RecordImpl testRecord = new RecordImpl(idField, fieldList, "rowType", false);
-    testRecord.setRow(new String[] {id, "gulo\tgulo"});
+    testRecord.setRow(new String[] {id, "gulo\tgulo", catalogNumber});
     return testRecord;
   }
 
@@ -41,17 +46,37 @@ public class UniquenessEvaluatorTest {
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
-      UniquenessEvaluator valueEvaluator = new UniquenessEvaluator();
-      valueEvaluator.handleEval(buildMockRecord("1"), resultAccumulator);
-      valueEvaluator.handleEval(buildMockRecord("1"), resultAccumulator);
+      UniquenessEvaluator valueEvaluator = UniquenessEvaluator.create().build();
+      valueEvaluator.handleEval(buildMockRecord("1", "1"), resultAccumulator);
+      valueEvaluator.handleEval(buildMockRecord("1", "2"), resultAccumulator);
 
       valueEvaluator.handlePostIterate(resultAccumulator);
     } catch (IOException e) {
       e.printStackTrace();
+      fail();
     }
 
     assertTrue(resultAccumulator.getValidationResultsList().size() > 0);
     assertEquals("1", resultAccumulator.getValidationResultsList().get(0).getId());
+  }
+
+  @Test
+  public void testUniquenessEvaluatorOnAnotherTerm() {
+
+    InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
+
+    try {
+      UniquenessEvaluator valueEvaluator =
+        UniquenessEvaluator.create().on(DwcTerm.catalogNumber, ValidationContext.CORE).build();
+      valueEvaluator.handleEval(buildMockRecord("1", "1"), resultAccumulator);
+      valueEvaluator.handleEval(buildMockRecord("2", "1"), resultAccumulator);
+
+      valueEvaluator.handlePostIterate(resultAccumulator);
+    } catch (IOException e) {
+      e.printStackTrace();
+      fail();
+    }
+    assertTrue(resultAccumulator.getValidationResultsList().size() > 0);
   }
 
   @Test
@@ -60,15 +85,15 @@ public class UniquenessEvaluatorTest {
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
-      UniquenessEvaluator valueEvaluator = new UniquenessEvaluator();
-      valueEvaluator.handleEval(buildMockRecord("1"), resultAccumulator);
-      valueEvaluator.handleEval(buildMockRecord("2"), resultAccumulator);
+      UniquenessEvaluator valueEvaluator = UniquenessEvaluator.create().build();
+      valueEvaluator.handleEval(buildMockRecord("1", "1"), resultAccumulator);
+      valueEvaluator.handleEval(buildMockRecord("2", "1"), resultAccumulator);
 
       valueEvaluator.handlePostIterate(resultAccumulator);
     } catch (IOException e) {
       e.printStackTrace();
+      fail();
     }
-
     assertTrue(resultAccumulator.getValidationResultsList().isEmpty());
   }
 

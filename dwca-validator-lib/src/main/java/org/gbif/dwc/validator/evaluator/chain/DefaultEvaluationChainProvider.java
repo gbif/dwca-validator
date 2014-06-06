@@ -49,7 +49,7 @@ public class DefaultEvaluationChainProvider implements EvaluationChainProviderIF
     try {
       return DefaultChainableRecordEvaluatorBuilder
         .create(new ValueEvaluator(buildDefaultValueEvaluatorRulesPerTermMap(), ValidationContext.CORE))
-        .linkTo(new UniquenessEvaluator()).build();
+        .linkTo(UniquenessEvaluator.create().build()).build();
     } catch (IOException ioEx) {
       LOGGER.error("Can't create core chain", ioEx);
     }

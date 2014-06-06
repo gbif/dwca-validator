@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.evaluator.impl;
 
 import org.gbif.dwc.record.Record;
+import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
 import org.gbif.dwc.validator.result.Result;
@@ -29,11 +30,59 @@ import org.slf4j.LoggerFactory;
  * This implementation will write a new file with all the id and then sort it using org.gbif.utils.file.FileUtils.
  * GBIF FileUtils can also sort directly on the archive file, it may be a better solution than writing a new
  * file containing all the id.
- * TODO allow to specify fields that should be unique (e.g. occurrenceId or taxonId)
  * 
  * @author cgendreau
  */
 public class UniquenessEvaluator implements RecordEvaluatorIF {
+
+  /**
+   * Builder of UniquenessEvaluator object.
+   * Return UniquenessEvaluator is NOT totally immutable due to file access.
+   * 
+   * @author cgendreau
+   */
+  public static class UniquenessEvaluatorBuilder {
+
+    private ValidationContext evaluatorContext;
+    private ConceptTerm term;
+
+    private UniquenessEvaluatorBuilder(ValidationContext evaluatorContext) {
+      this.evaluatorContext = evaluatorContext;
+    }
+
+    /**
+     * Create with default value. Using coreId, ValidationContext.CORE
+     * 
+     * @return
+     */
+    public static UniquenessEvaluatorBuilder create() {
+      return new UniquenessEvaluatorBuilder(ValidationContext.CORE);
+    }
+
+    public UniquenessEvaluator build() throws IOException, IllegalStateException {
+      if (evaluatorContext == null) {
+        throw new IllegalStateException("The reference data must be set");
+      }
+      return new UniquenessEvaluator(term, evaluatorContext);
+    }
+
+    /**
+     * Set on which ConceptTerm the evaluation should be made.
+     * 
+     * @param term
+     * @param evaluatorContext context of the provided term
+     * @return
+     */
+    public UniquenessEvaluatorBuilder on(ConceptTerm term, ValidationContext evaluatorContext) {
+      this.evaluatorContext = evaluatorContext;
+      this.term = term;
+      return this;
+    }
+  }
+
+  private final ValidationContext evaluatorContext;
+  private final ConceptTerm term;
+  private final String conceptTermString;
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UniquenessEvaluator.class);
   org.gbif.utils.file.FileUtils GBIF_FILE_UTILS = new org.gbif.utils.file.FileUtils();
@@ -47,12 +96,26 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
   private final String fileName;
   private final String sortedFileName;
 
-  public UniquenessEvaluator() throws IOException {
+  /**
+   * @param evaluatorContext
+   * @param term id term is null, the coreId will be used
+   * @throws IOException
+   */
+  private UniquenessEvaluator(ConceptTerm term, ValidationContext evaluatorContext) throws IOException {
+    this.evaluatorContext = evaluatorContext;
+    this.term = term;
+
+    this.conceptTermString = term != null ? term.simpleName() : "coreId";
+
     idList = new ArrayList<String>(BUFFER_THRESHOLD);
     String randomUUID = UUID.randomUUID().toString();
     fileName = randomUUID + FILE_EXT;
     sortedFileName = randomUUID + "_sorted" + FILE_EXT;
     fw = new FileWriter(new File(fileName));
+  }
+
+  public static UniquenessEvaluatorBuilder create() {
+    return UniquenessEvaluatorBuilder.create();
   }
 
   /**
@@ -68,9 +131,14 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
    */
   @Override
   public void handleEval(Record record, ResultAccumulatorIF resultAccumulator) {
-    if (idList.size() < BUFFER_THRESHOLD) {
+
+    if (term == null) {
       idList.add(record.id());
     } else {
+      idList.add(record.value(term));
+    }
+
+    if (idList.size() >= BUFFER_THRESHOLD) {
       try {
         for (String curr : idList) {
           fw.write(curr);
@@ -119,10 +187,9 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
       while ((currentLine = br.readLine()) != null) {
         if (previousLine.equalsIgnoreCase(currentLine)) {
           validationResultElement =
-            new ValidationResultElement(ContentValidationType.FIELD_UNIQUENESS, Result.ERROR, "coreId " + currentLine
-              + " was already used.");
-          resultAccumulator.accumulate(new ValidationResult(currentLine, ValidationContext.CORE,
-            validationResultElement));
+            new ValidationResultElement(ContentValidationType.FIELD_UNIQUENESS, Result.ERROR,
+              ArchiveValidatorConfig.getLocalizedString("evaluator.uniqueness", currentLine, conceptTermString));
+          resultAccumulator.accumulate(new ValidationResult(currentLine, evaluatorContext, validationResultElement));
         }
         previousLine = currentLine;
       }
