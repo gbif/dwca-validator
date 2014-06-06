@@ -114,7 +114,8 @@ public class ToBeMovedFileUtils {
       // get the stdout and stderr from the command that was run
       InputStream err = process.getErrorStream();
       int exitValue = process.waitFor();
-      if (exitValue == 0) {
+      // grep will return 0 if there is a diff and 1 if there is no diff, other value is an error.
+      if (exitValue == 0 || exitValue == 1) {
         success = true;
       } else {
         LOG.warn("Error sorting file with unix grep");
