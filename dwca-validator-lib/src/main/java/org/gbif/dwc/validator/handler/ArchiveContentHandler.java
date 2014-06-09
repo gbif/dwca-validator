@@ -50,6 +50,8 @@ public class ArchiveContentHandler {
       evaluatorChain.doEval(recordIt.next(), resultAccumulator);
     }
     evaluatorChain.postIterate(resultAccumulator);
+
+    evaluatorChain.cleanup();
   }
 
   public void inspectExtension(ArchiveFile archiveFile, ResultAccumulatorIF resultAccumulator) {

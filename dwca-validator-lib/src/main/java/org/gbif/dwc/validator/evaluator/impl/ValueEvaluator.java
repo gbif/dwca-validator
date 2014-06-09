@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ChainableRecordEvaluator to check the values inside a record.
+ * RecordEvaluatorIF implementation to check the values inside a record.
  * This validation is about what the value is and not what the value represents.
  * TODO: Evaluate the possibility to add its own builder and offer more options like applyToAll
  * 

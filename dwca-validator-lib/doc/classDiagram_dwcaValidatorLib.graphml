@@ -42,7 +42,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="55.0" width="184.0" x="362.43949044585986" y="505.594682230869"/>
+          <y:Geometry height="55.0" width="184.0" x="405.3949044585987" y="661.5469569671284"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="145.01318359375" x="19.493408203125" y="3.0">UniquenessEvaluator<y:LabelModel>
@@ -63,7 +63,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="55.0" width="230.0" x="811.9394904458599" y="505.594682230869"/>
+          <y:Geometry height="55.0" width="230.0" x="690.8143949044586" y="614.0469569671284"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="200.75830078125" x="14.620849609375" y="3.0">ReferentialIntegretyEvaluator<y:LabelModel>
@@ -106,10 +106,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="100.0" width="306.71611493597675" x="590.7247081712064" y="165.4223411154345"/>
+          <y:Geometry height="125.873054474708" width="305.4136945538112" x="590.7247081712064" y="150.251945525292"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="179.6904296875" x="63.512842624238374" y="3.0">ChainableRecordEvaluator<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="179.6904296875" x="62.86163243315559" y="3.0">ChainableRecordEvaluator<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -120,7 +120,8 @@
             <y:AttributeLabel>-recordEvaluator:RecordEvaluatorIF
 -nextElement:ChainableRecordEvaluator</y:AttributeLabel>
             <y:MethodLabel>+doEval(Record)
-+postIterate(ResultAccumulatorIF)</y:MethodLabel>
++postIterate(ResultAccumulatorIF)
++cleanup()</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -415,7 +416,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="55.0" width="151.47859922178998" x="616.7427978388562" y="505.594682230869"/>
+          <y:Geometry height="55.0" width="151.47859922178998" x="827.9447128801208" y="505.594682230869"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="104.15966796875" x="23.65946562651999" y="3.0">ValueEvaluator<y:LabelModel>
@@ -478,7 +479,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="29.25" width="151.47859922178998" x="335.92144941634234" y="246.875"/>
+          <y:Geometry height="29.25" width="151.47859922178998" x="329.4093475055143" y="230.87645914396902"/>
           <y:Fill color="#339966" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="104.55322265625" x="23.46268828276999" y="3.0">ValidationType<y:LabelModel>
@@ -605,7 +606,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="110.37834394904456" width="381.9261146496815" x="1016.2422929936299" y="165.4223411154345"/>
+          <y:Geometry height="110.37834394904456" width="381.9261146496815" x="1016.2422929936299" y="160.23316914091222"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="238.787109375" x="71.56950263734075" y="26.1328125">ChainableRecordEvaluatorBuilderIF<y:LabelModel>
@@ -619,6 +620,27 @@
             <y:AttributeLabel/>
             <y:MethodLabel>+build():ChainableRecordEvaluator build
 +linkTo(RecordEvaluatorIF):ChainableRecordEvaluatorBuilderIF</y:MethodLabel>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n29">
+      <data key="d4"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="84.2025321982369" width="269.9108280254777" x="510.9154140127389" y="476.3921500326321"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="176.53564453125" x="46.687591747113856" y="26.1328125">StatefulRecordEvaluatorIF<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="-0.03703090122767855" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="interface" use3DEffect="true">
+            <y:AttributeLabel/>
+            <y:MethodLabel>+cleanup()</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -793,7 +815,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e17" source="n1" target="n24">
+    <edge id="e17" source="n19" target="n24">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -803,7 +825,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e18" source="n19" target="n24">
+    <edge id="e18" source="n2" target="n29">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -813,17 +835,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e19" source="n2" target="n24">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
-          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
-          <y:Arrows source="none" target="white_delta"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e20" source="n4" target="n24">
+    <edge id="e19" source="n4" target="n24">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -833,11 +845,11 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e21" source="n4" target="n4">
+    <edge id="e20" source="n4" target="n4">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
-            <y:Point x="744.8693898430165" y="97.3598411154345"/>
+            <y:Point x="744.8693898430165" y="82.189445525292"/>
           </y:Path>
           <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="plain"/>
@@ -845,7 +857,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e22" source="n26" target="n25">
+    <edge id="e21" source="n26" target="n25">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -855,7 +867,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e23" source="n27" target="n28">
+    <edge id="e22" source="n27" target="n28">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -865,7 +877,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e24" source="n28" target="n4">
+    <edge id="e23" source="n28" target="n4">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -875,7 +887,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e25" source="n26" target="n2">
+    <edge id="e24" source="n26" target="n2">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -885,7 +897,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e26" source="n26" target="n27">
+    <edge id="e25" source="n26" target="n27">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -895,7 +907,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e27" source="n26" target="n19">
+    <edge id="e26" source="n26" target="n19">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -905,12 +917,34 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e28" source="n26" target="n1">
+    <edge id="e27" source="n26" target="n1">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="white_diamond" target="none"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e28" source="n1" target="n29">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="dashed" width="1.0"/>
+          <y:Arrows source="none" target="white_delta"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e29" source="n29" target="n24">
+      <data key="d9"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="white_delta"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>

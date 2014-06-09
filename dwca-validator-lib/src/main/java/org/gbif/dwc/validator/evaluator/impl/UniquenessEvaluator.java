@@ -3,7 +3,7 @@ package org.gbif.dwc.validator.evaluator.impl;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
-import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
+import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluatorIF;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.ValidationContext;
@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author cgendreau
  */
-public class UniquenessEvaluator implements RecordEvaluatorIF {
+public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
 
   /**
    * Builder of UniquenessEvaluator object.
@@ -143,9 +143,10 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
   }
 
   /**
-   * Clean generated files
+   * Delete generated files.
    */
-  private void cleanup() {
+  @Override
+  public void cleanup() {
     idRecordingFile.delete();
     sortedIdFile.delete();
   }
@@ -227,6 +228,5 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
         LOGGER.error("Can't close BufferedReader", ioEx);
       }
     }
-    cleanup();
   }
 }
