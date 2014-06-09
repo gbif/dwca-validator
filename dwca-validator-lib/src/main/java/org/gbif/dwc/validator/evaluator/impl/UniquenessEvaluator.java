@@ -25,11 +25,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ChainableRecordEvaluator to check the uniqueness of specific fields.
- * This ChainableRecordEvaluator will only produce results on postIterate() call.
+ * RecordEvaluatorIF implementation to check the uniqueness of specific fields.
+ * This RecordEvaluator will only produce results on postIterate() call.
  * This implementation will write a new file with all the id and then sort it using org.gbif.utils.file.FileUtils.
  * GBIF FileUtils can also sort directly on the archive file, it may be a better solution than writing a new
- * file containing all the id.
+ * file containing all the id but referential integrity check needs the resulting file.
  * 
  * @author cgendreau
  */
@@ -45,6 +45,7 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
 
     private ValidationContext evaluatorContext;
     private ConceptTerm term;
+    private File workingFolder;
 
     private UniquenessEvaluatorBuilder(ValidationContext evaluatorContext) {
       this.evaluatorContext = evaluatorContext;
@@ -61,13 +62,23 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
 
     public UniquenessEvaluator build() throws IOException, IllegalStateException {
       if (evaluatorContext == null) {
-        throw new IllegalStateException("The reference data must be set");
+        throw new IllegalStateException("The evaluatorContext must be set");
       }
-      return new UniquenessEvaluator(term, evaluatorContext);
+
+      if (workingFolder != null) {
+        if (!workingFolder.exists() || !workingFolder.isDirectory()) {
+          throw new IllegalStateException("workingFolder must exist as a directory");
+        }
+      } else {
+        workingFolder = new File(".");
+      }
+
+      return new UniquenessEvaluator(term, evaluatorContext, workingFolder);
     }
 
     /**
      * Set on which ConceptTerm the evaluation should be made.
+     * Override default values.
      * 
      * @param term
      * @param evaluatorContext context of the provided term
@@ -76,6 +87,17 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
     public UniquenessEvaluatorBuilder on(ConceptTerm term, ValidationContext evaluatorContext) {
       this.evaluatorContext = evaluatorContext;
       this.term = term;
+      return this;
+    }
+
+    /**
+     * Set working folder to save temporary files.
+     * 
+     * @param workingFolder
+     * @return
+     */
+    public UniquenessEvaluatorBuilder workingFolder(File workingFolder) {
+      this.workingFolder = workingFolder;
       return this;
     }
   }
@@ -88,30 +110,32 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
   org.gbif.utils.file.FileUtils GBIF_FILE_UTILS = new org.gbif.utils.file.FileUtils();
   private static final int BUFFER_THRESHOLD = 1000;
 
-  private static final String FILE_EXT = ".txt";
-
   private final List<String> idList;
   private final FileWriter fw;
 
-  private final String fileName;
-  private final String sortedFileName;
+  private final File idRecordingFile;
+  private final File sortedIdFile;
 
   /**
    * @param evaluatorContext
    * @param term id term is null, the coreId will be used
+   * @param workingFolder place to save temporary files
    * @throws IOException
    */
-  private UniquenessEvaluator(ConceptTerm term, ValidationContext evaluatorContext) throws IOException {
+  private UniquenessEvaluator(ConceptTerm term, ValidationContext evaluatorContext, File workingFolder)
+    throws IOException {
     this.evaluatorContext = evaluatorContext;
     this.term = term;
-
     this.conceptTermString = term != null ? term.simpleName() : "coreId";
 
     idList = new ArrayList<String>(BUFFER_THRESHOLD);
     String randomUUID = UUID.randomUUID().toString();
-    fileName = randomUUID + FILE_EXT;
-    sortedFileName = randomUUID + "_sorted" + FILE_EXT;
-    fw = new FileWriter(new File(fileName));
+    String fileName = randomUUID + ArchiveValidatorConfig.TEXT_FILE_EXT;
+    String sortedFileName = randomUUID + "_sorted" + ArchiveValidatorConfig.TEXT_FILE_EXT;
+
+    idRecordingFile = new File(workingFolder, fileName);
+    sortedIdFile = new File(workingFolder, sortedFileName);
+    fw = new FileWriter(idRecordingFile);
   }
 
   public static UniquenessEvaluatorBuilder create() {
@@ -122,8 +146,8 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
    * Clean generated files
    */
   private void cleanup() {
-    new File(fileName).delete();
-    new File(sortedFileName).delete();
+    idRecordingFile.delete();
+    sortedIdFile.delete();
   }
 
   /**
@@ -170,7 +194,7 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
 
     // sort the file containing the id
     try {
-      GBIF_FILE_UTILS.sort(new File(fileName), new File(sortedFileName), Charsets.UTF_8.toString(), 0, null, null,
+      GBIF_FILE_UTILS.sort(idRecordingFile, sortedIdFile, Charsets.UTF_8.toString(), 0, null, null,
         ArchiveValidatorConfig.ENDLINE, 0);
     } catch (IOException ioEx) {
       LOGGER.error("Can't sort id file", ioEx);
@@ -182,7 +206,7 @@ public class UniquenessEvaluator implements RecordEvaluatorIF {
       String previousLine = "";
       String currentLine;
 
-      br = new BufferedReader(new FileReader(sortedFileName));
+      br = new BufferedReader(new FileReader(sortedIdFile));
       ValidationResultElement validationResultElement = null;
       while ((currentLine = br.readLine()) != null) {
         if (previousLine.equalsIgnoreCase(currentLine)) {

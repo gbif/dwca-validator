@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 public class ArchiveValidatorConfig {
 
   public static final String ENDLINE = System.getProperty("line.separator");
+  public static final String TEXT_FILE_EXT = ".txt";
 
   private static final String BUNDLE_NAME = "language_resources";
 
