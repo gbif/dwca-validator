@@ -151,6 +151,28 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
     sortedIdFile.delete();
   }
 
+  private void flushCurrentIdList() {
+    try {
+      for (String curr : idList) {
+        fw.write(curr + ArchiveValidatorConfig.ENDLINE);
+      }
+      fw.flush();
+    } catch (IOException ioEx) {
+      LOGGER.error("Can't write to file using FileWriter", ioEx);
+    }
+    idList.clear();
+  }
+
+  /**
+   * Returns the file used(or to be used) to store the sorted ID.
+   * The file may or may not exist yet.
+   * 
+   * @return
+   */
+  public File getSortedIdFile() {
+    return sortedIdFile;
+  }
+
   /**
    * Record each fields that shall be unique.
    */
@@ -164,33 +186,18 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
     }
 
     if (idList.size() >= BUFFER_THRESHOLD) {
-      try {
-        for (String curr : idList) {
-          fw.write(curr);
-        }
-      } catch (IOException ioEx) {
-        LOGGER.error("Can't write to file using FileWriter", ioEx);
-      }
-      idList.clear();
+      flushCurrentIdList();
     }
   }
 
   @Override
   public void handlePostIterate(ResultAccumulatorIF resultAccumulator) {
+    flushCurrentIdList();
+
     try {
-      // ensure list is empty
-      for (String curr : idList) {
-        fw.write(curr + ArchiveValidatorConfig.ENDLINE);
-      }
-      fw.flush();
+      fw.close();
     } catch (IOException ioEx) {
-      LOGGER.error("Can't write to file using FileWriter", ioEx);
-    } finally {
-      try {
-        fw.close();
-      } catch (IOException ioEx) {
-        LOGGER.error("Can't close UniquenessEvaluator FileWriter properly", ioEx);
-      }
+      LOGGER.error("Can't close UniquenessEvaluator FileWriter properly", ioEx);
     }
 
     // sort the file containing the id
