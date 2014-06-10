@@ -32,7 +32,7 @@ public class ArchiveContentHandler {
    * @param resultAccumulator
    */
   public void inspectCore(ArchiveFile archiveFile, ResultAccumulatorIF resultAccumulator) {
-    ChainableRecordEvaluator coreChain = evaluationChainProvider.getCoreChain();
+    ChainableRecordEvaluator coreChain = evaluationChainProvider.getCoreChain(archiveFile);
     inspectDwcComponent(archiveFile, coreChain, resultAccumulator);
   }
 

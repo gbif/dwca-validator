@@ -5,64 +5,133 @@ import org.gbif.dwc.validator.handler.ArchiveContentHandler;
 import org.gbif.dwc.validator.handler.ArchiveStructureHandler;
 import org.gbif.dwc.validator.impl.ArchiveValidator;
 import org.gbif.dwc.validator.result.ValidationResult;
+import org.gbif.dwc.validator.result.ValidationResultElement;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.UrlValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Main class used to run the library in command line.
+ * Main class used to run the library from command line.
+ * Only zipped archive can be validated for now.
  * 
  * @author cgendreau
  */
 public class ValidatorMain {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(ValidatorMain.class);
+
   public ValidatorMain(String[] args) {
 
     Map<String, String> cliArgs = CliManager.parseCommandLine(args);
-
-    String sourceFilePath = cliArgs.get(CliManager.CLI_SOURCE);
+    String sourceFileLocation = cliArgs.get(CliManager.CLI_SOURCE);
 
     // ensure source file was provided
-    if (StringUtils.isBlank(sourceFilePath)) {
+    if (StringUtils.isBlank(sourceFileLocation)) {
       CliManager.printHelp();
       return;
     }
 
+    String sourceIdentifier = Long.toString(System.currentTimeMillis());
+    File workingFolder = new File("validator-dwca-" + sourceIdentifier);
+    workingFolder.mkdir();
+
+    if (isURL(sourceFileLocation)) {
+      System.out.println("Downloading file from: " + sourceFileLocation);
+      File dFile = new File(workingFolder, workingFolder + ".zip");
+      try {
+        downloadFile(new URL(sourceFileLocation), dFile);
+        // sourceFileLocation is now the downloaded file
+        sourceFileLocation = dFile.getAbsolutePath();
+      } catch (MalformedURLException e) {
+        LOGGER.error("Issue source file URL: " + sourceFileLocation, e);
+      }
+    }
+
     // ensure the source file exists
-    if (!new File(sourceFilePath).exists()) {
-      System.out.println("The file " + sourceFilePath + " could not be found.");
+    if (!new File(sourceFileLocation).exists()) {
+      System.out.println("The file " + sourceFileLocation + " could not be found.");
       return;
     }
 
     ArchiveValidator archiveValidator = new ArchiveValidator();
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
-    File testDwcFolder = new File("validator-dwca-" + System.currentTimeMillis());
-    testDwcFolder.mkdir();
-    archiveValidator.setWorkingFolder(testDwcFolder.getAbsolutePath());
+    archiveValidator.setWorkingFolder(workingFolder.getAbsolutePath());
     archiveValidator.setStructureHandler(new ArchiveStructureHandler());
     archiveValidator.setContentHandler(new ArchiveContentHandler(new DefaultEvaluationChainProvider()));
 
     // run validation
-    archiveValidator.validateArchive(new File(sourceFilePath), resultAccumulator);
+    archiveValidator.validateArchive(new File(sourceFileLocation), resultAccumulator);
 
     // Print results
     if (resultAccumulator.getCount() > 0) {
       System.out.println("The Dwc-A file looks invalid according to current default validation chain:");
+      System.out.println("Validation chain output(s):");
       for (ValidationResult vr : resultAccumulator.getValidationResultsList()) {
-        System.out.println(vr);
+        System.out.println(vr.getContext() + " : " + vr.getId());
+        for (ValidationResultElement el : vr.getResults()) {
+          System.out.println("->" + el.getResult() + "," + el.getType() + ":" + el.getExplanation());
+        }
       }
     } else {
       System.out.println("The Dwc-A file looks valid according to current default validation chain.");
     }
 
+    // cleanup
+    FileUtils.deleteQuietly(workingFolder);
   }
 
   public static void main(String[] args) {
     new ValidatorMain(args);
   }
 
+  /**
+   * Download a file from a URL and save it locally.
+   * 
+   * @param url
+   * @param destinationFile
+   * @return
+   */
+  private boolean downloadFile(URL url, File destinationFile) {
+    OutputStream os = null;
+    InputStream is = null;
+    boolean success = false;
+
+    try {
+      os = new FileOutputStream(destinationFile);
+      is = url.openStream();
+
+      // Download the file
+      IOUtils.copy(is, os);
+      success = true;
+    } catch (FileNotFoundException e) {
+      LOGGER.error("Issue while downloading " + url, e);
+    } catch (IOException e) {
+      LOGGER.error("Issue while downloading " + url, e);
+    } finally {
+      IOUtils.closeQuietly(os);
+      IOUtils.closeQuietly(is);
+    }
+    return success;
+  }
+
+  private boolean isURL(String source) {
+    UrlValidator urlValidator = new UrlValidator(UrlValidator.ALLOW_LOCAL_URLS);
+    return urlValidator.isValid(source);
+  }
 }

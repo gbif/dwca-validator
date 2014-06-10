@@ -2,6 +2,7 @@ package org.gbif.dwc.validator.evaluator.chain;
 
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.validator.evaluator.impl.UniquenessEvaluator;
 import org.gbif.dwc.validator.evaluator.impl.ValueEvaluator;
 import org.gbif.dwc.validator.result.ValidationContext;
@@ -44,12 +45,32 @@ public class DefaultEvaluationChainProvider implements EvaluationChainProviderIF
     return rulesPerTerm;
   }
 
+  /**
+   * TODO, set workingFolder, receive ArchiveFile to avoid creating unnecessary Evaluators.
+   */
   @Override
-  public ChainableRecordEvaluator getCoreChain() {
+  public ChainableRecordEvaluator getCoreChain(ArchiveFile archiveFile) {
+
     try {
-      return DefaultChainableRecordEvaluatorBuilder
-        .create(new ValueEvaluator(buildDefaultValueEvaluatorRulesPerTermMap(), ValidationContext.CORE))
-        .linkTo(UniquenessEvaluator.create().build()).build();
+      // Check uniqueness on 'coreId'
+      UniquenessEvaluator uniquenessEvaluator = UniquenessEvaluator.create().build();
+
+      ValueEvaluator valueEvaluator =
+        new ValueEvaluator(buildDefaultValueEvaluatorRulesPerTermMap(), ValidationContext.CORE);
+
+      // Taxon only evaluators
+      if (DwcTerm.Taxon.qualifiedName().equals(archiveFile.getRowType())) {
+        // for taxon only
+        // if(archiveFile.getField(DwcTerm.acceptedNameUsageID) != null){
+        // ReferentialIntegrityEvaluator referentialIntegrityEvaluator =
+        // ReferentialIntegrityEvaluator.create(ValidationContext.CORE, DwcTerm.parentNameUsageID)
+        // .referTo(ValidationContext.CORE, DwcTerm.taxonID, uniquenessEvaluator.getSortedIdFile()).build();
+        // }
+      }
+
+      return DefaultChainableRecordEvaluatorBuilder.create(valueEvaluator).linkTo(uniquenessEvaluator).build();
+    } catch (IllegalStateException e) {
+      LOGGER.error("Can't create core chain", e);
     } catch (IOException ioEx) {
       LOGGER.error("Can't create core chain", ioEx);
     }

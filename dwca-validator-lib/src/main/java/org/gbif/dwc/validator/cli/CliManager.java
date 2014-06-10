@@ -24,7 +24,7 @@ public class CliManager {
 
   static {
     cmdLineOptions = new Options();
-    cmdLineOptions.addOption(CLI_SOURCE, true, "source DarwinCore Archive file");
+    cmdLineOptions.addOption(CLI_SOURCE, true, "Path or URL pointing to the DarwinCore Archive file");
   }
 
   /**
