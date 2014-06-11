@@ -26,15 +26,15 @@ public class ToBeMovedFileUtils {
   private static final Logger LOG = LoggerFactory.getLogger(ToBeMovedFileUtils.class);
 
   /**
-   * Write to result all the lines from the input file that were NOT found in reference file.
-   * referenceFile and inputFile must be sorted.
+   * Write to resultFile all the lines from the input file that were NOT found in reference file.
+   * Warning: referenceFile and inputFile must be sorted.
    * 
    * @param referenceFile sorted file
    * @param inputFile sorted file
    * @param result file where to write results
    * @return
    */
-  public boolean diffFileInJava(File referenceFile, File inputFile, File result) {
+  public boolean diffFileInJava(File referenceFile, File inputFile, File resultFile) {
     PrintWriter resultWriter = null;
     BufferedReader inputFileBr = null;
     BufferedReader refFileBr = null;
@@ -46,7 +46,7 @@ public class ToBeMovedFileUtils {
 
       inputFileBr = new BufferedReader(new FileReader(inputFile));
       refFileBr = new BufferedReader(new FileReader(referenceFile));
-      resultWriter = new PrintWriter(new FileWriter(result));
+      resultWriter = new PrintWriter(new FileWriter(resultFile));
 
       inputFileLine = inputFileBr.readLine();
       refFileLine = refFileBr.readLine();
@@ -66,13 +66,13 @@ public class ToBeMovedFileUtils {
             break;
           }
         }
-
         inputFileLine = inputFileBr.readLine();
       }
       success = true;
     } catch (IOException e) {
       LOG.warn("Caught Exception", e);
     } finally {
+      resultWriter.flush();
       IOUtils.closeQuietly(inputFileBr);
       IOUtils.closeQuietly(refFileBr);
       IOUtils.closeQuietly(resultWriter);
@@ -82,17 +82,17 @@ public class ToBeMovedFileUtils {
   }
 
   /**
-   * Write to result all the lines from the input file that were NOT found in reference file.
-   * referenceFile and inputFile must be sorted.
-   * This is done using 'grep' on unix-based system.
+   * Write to resultFile all the lines from the input file that were NOT found in reference file.
+   * There is no restriction about if the files(referenceFile and inputFile) should be sorted or not.
+   * This is done using 'awk' on unix-based system.
    * 
-   * @param referenceFile sorted file
-   * @param inputFile sorted file
+   * @param referenceFile
+   * @param inputFile
    * @param result file where to write results
    * @return
    * @throws IOException
    */
-  public boolean diffFileInUnix(File referenceFile, File inputFile, File result) throws IOException {
+  public boolean diffFileInUnix(File referenceFile, File inputFile, File resultFile) throws IOException {
 
     boolean success = false;
     try {
@@ -105,17 +105,18 @@ public class ToBeMovedFileUtils {
       // make sure we use the C locale (not sure it is useful for grep)
       env.put("LC_ALL", "C");
 
+      // store lines of referenceFile in a array them compare the lines of inputFile against the array.
       String command =
-        "grep -Fxvf " + referenceFile.getAbsolutePath() + ' ' + inputFile.getAbsolutePath() + " > "
-          + result.getAbsolutePath();
-
+        "awk 'FNR==NR{a[$0];next}!($0 in a)' " + referenceFile.getAbsolutePath() + ' ' + inputFile.getAbsolutePath()
+          + " > " + resultFile.getAbsolutePath();
       cmds.add(command);
+
       Process process = pb.start();
       // get the stdout and stderr from the command that was run
       InputStream err = process.getErrorStream();
       int exitValue = process.waitFor();
       // grep will return 0 if there is a diff and 1 if there is no diff, other value is an error.
-      if (exitValue == 0 || exitValue == 1) {
+      if (exitValue == 0) {
         success = true;
       } else {
         LOG.warn("Error sorting file with unix grep");
