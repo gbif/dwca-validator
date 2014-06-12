@@ -23,7 +23,7 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
    */
   public static class InvalidCharacterEvaluationRuleBuilder {
 
-    private final CharMatcher currentCharMatcher;
+    private CharMatcher currentCharMatcher;
 
     private InvalidCharacterEvaluationRuleBuilder(CharMatcher currentCharMatcher) {
       this.currentCharMatcher = currentCharMatcher;
@@ -44,7 +44,8 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
      * @return
      */
     public InvalidCharacterEvaluationRuleBuilder allowFormattingWhiteSpace() {
-      return new InvalidCharacterEvaluationRuleBuilder(currentCharMatcher.and(CharMatcher.BREAKING_WHITESPACE.negate()));
+      this.currentCharMatcher = currentCharMatcher.and(CharMatcher.BREAKING_WHITESPACE.negate());
+      return this;
     }
 
     /**
@@ -62,6 +63,9 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
   // default rule is no invisible character, except space.
   private static CharMatcher DEFAULT_CHAR_MATCHER = CharMatcher.INVISIBLE.and(CharMatcher.isNot(' '));
 
+  /**
+   * InvalidCharacterEvaluationRule are created using the builder InvalidCharacterEvaluationRuleBuilder.
+   */
   private InvalidCharacterEvaluationRule(CharMatcher charMatcher) {
     this.charMatcher = charMatcher;
   }

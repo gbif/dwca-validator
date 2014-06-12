@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
- * Ensure InvalidCharacterEvaluationRule object obtained by the builder work as expected.
+ * Ensure InvalidCharacterEvaluationRule object obtained by the builder works as expected.
  * 
  * @author cgendreau
  */

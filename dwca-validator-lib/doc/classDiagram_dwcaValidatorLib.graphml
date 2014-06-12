@@ -152,7 +152,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="99.99999999999989" width="318.3458708543817" x="584.909830212004" y="1.7500000000001137"/>
+          <y:Geometry height="99.99999999999989" width="318.3458708543817" x="584.909830212004" y="1.7500000000000568"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="159.98095703125" x="79.18245691156585" y="3.0">ArchiveContentHandler<y:LabelModel>
@@ -416,10 +416,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="55.0" width="151.47859922178998" x="827.9447128801208" y="505.594682230869"/>
+          <y:Geometry height="55.0" width="167.1076438077772" x="827.944712880121" y="505.594682230869"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="104.15966796875" x="23.65946562651999" y="3.0">ValueEvaluator<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="104.15966796875" x="31.473987919513604" y="3.0">ValueEvaluator<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -543,10 +543,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="88.96019108280268" width="286.4101658681734" x="1435.672199443832" y="7.269904458598717"/>
+          <y:Geometry height="94.48009554140128" width="330.69245886180374" x="1435.6721994438317" y="7.269904458598717"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="180.15380859375" x="53.128178637211704" y="26.1328125">EvaluationChainProviderIF<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="180.15380859375" x="75.26932513402687" y="26.1328125">EvaluationChainProviderIF<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -555,7 +555,7 @@
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="interface" use3DEffect="true">
             <y:AttributeLabel/>
-            <y:MethodLabel>+getCoreChain():ChainableRecordEvaluator</y:MethodLabel>
+            <y:MethodLabel>+getCoreChain(ArchiveFile):ChainableRecordEvaluator</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -564,7 +564,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="84.42120622568098" width="242.6411889596602" x="1457.5566878980885" y="646.836353854288"/>
+          <y:Geometry height="84.42120622568098" width="242.6411889596602" x="1479.6978343949036" y="614.0469569671284"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="217.3701171875" x="12.635535886080106" y="3.0">DefaultEvaluationChainProvider<y:LabelModel>
@@ -928,7 +928,6 @@
       </data>
     </edge>
     <edge id="e28" source="n1" target="n29">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -939,7 +938,6 @@
       </data>
     </edge>
     <edge id="e29" source="n29" target="n24">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
