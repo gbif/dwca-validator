@@ -60,7 +60,7 @@ public class ControlledVocabularyEvaluationRule implements EvaluationRuleIF<Stri
     public ControlledVocabularyEvaluationRule build() throws IllegalStateException {
       if (term == null || vocabularySet == null || vocabularySet.size() < 1) {
         throw new IllegalStateException(
-          "ControlledVocabularyEvaluationRule must be built on a ConceptTerm and at least on vocabulary entry.");
+          "ControlledVocabularyEvaluationRule must be built on a ConceptTerm and at least one vocabulary entry.");
       }
       return new ControlledVocabularyEvaluationRule(term, vocabularySet);
     }

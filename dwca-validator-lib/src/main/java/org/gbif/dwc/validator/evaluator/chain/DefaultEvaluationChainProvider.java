@@ -8,6 +8,7 @@ import org.gbif.dwc.validator.evaluator.impl.ValueEvaluator;
 import org.gbif.dwc.validator.result.ValidationContext;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule;
+import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +41,14 @@ public class DefaultEvaluationChainProvider implements EvaluationChainProviderIF
     // register an InvalidCharacterEvaluationRule for scientificName
     List<EvaluationRuleIF<String>> ruleList = new ArrayList<EvaluationRuleIF<String>>();
     ruleList.add(InvalidCharacterEvaluationRule.createRule().build());
+
+    // lat,lng rule list
+    List<EvaluationRuleIF<String>> latLngRuleList = new ArrayList<EvaluationRuleIF<String>>();
+    latLngRuleList.add(NumericalValueEvaluationRule.createRule().build());
+
     rulesPerTerm.put(DwcTerm.scientificName, ruleList);
+    rulesPerTerm.put(DwcTerm.decimalLatitude, latLngRuleList);
+    rulesPerTerm.put(DwcTerm.decimalLongitude, latLngRuleList);
 
     return rulesPerTerm;
   }

@@ -4,8 +4,6 @@ import org.gbif.dwc.validator.evaluator.chain.DefaultEvaluationChainProvider;
 import org.gbif.dwc.validator.handler.ArchiveContentHandler;
 import org.gbif.dwc.validator.handler.ArchiveStructureHandler;
 import org.gbif.dwc.validator.impl.ArchiveValidator;
-import org.gbif.dwc.validator.result.ValidationResult;
-import org.gbif.dwc.validator.result.ValidationResultElement;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 
 import java.io.File;
@@ -75,22 +73,14 @@ public class ValidatorMain {
     archiveValidator.setStructureHandler(new ArchiveStructureHandler());
     archiveValidator.setContentHandler(new ArchiveContentHandler(new DefaultEvaluationChainProvider()));
 
+    long startTime = System.currentTimeMillis();
     // run validation
     archiveValidator.validateArchive(new File(sourceFileLocation), resultAccumulator);
 
+    System.out.println("Validation took: " + (System.currentTimeMillis() - startTime) + " ms");
+
     // Print results
-    if (resultAccumulator.getCount() > 0) {
-      System.out.println("The Dwc-A file looks invalid according to current default validation chain:");
-      System.out.println("Validation chain output(s):");
-      for (ValidationResult vr : resultAccumulator.getValidationResultsList()) {
-        System.out.println(vr.getContext() + " : " + vr.getId());
-        for (ValidationResultElement el : vr.getResults()) {
-          System.out.println("->" + el.getResult() + "," + el.getType() + ":" + el.getExplanation());
-        }
-      }
-    } else {
-      System.out.println("The Dwc-A file looks valid according to current default validation chain.");
-    }
+    CliReportPrinter.printReport(resultAccumulator);
 
     // cleanup
     FileUtils.deleteQuietly(workingFolder);
@@ -130,6 +120,12 @@ public class ValidatorMain {
     return success;
   }
 
+  /**
+   * Check if the provided source is a URL or not.
+   * 
+   * @param source
+   * @return
+   */
   private boolean isURL(String source) {
     UrlValidator urlValidator = new UrlValidator(UrlValidator.ALLOW_LOCAL_URLS);
     return urlValidator.isValid(source);

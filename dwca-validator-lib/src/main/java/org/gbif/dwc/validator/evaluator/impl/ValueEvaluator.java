@@ -18,6 +18,7 @@ import java.util.Map;
 /**
  * RecordEvaluatorIF implementation to check the values inside a record.
  * This validation is about what the value is and not what the value represents.
+ * The evaluation of the values is made by ConceptTerm, using a list of EvaluationRuleIF.
  * TODO: Evaluate the possibility to add its own builder and offer more options like applyToAll
  * 
  * @author cgendreau
