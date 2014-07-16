@@ -19,11 +19,101 @@ import java.util.Map;
  * RecordEvaluatorIF implementation to check the values inside a record.
  * This validation is about what the value is and not what the value represents.
  * The evaluation of the values is made by ConceptTerm, using a list of EvaluationRuleIF.
- * TODO: Evaluate the possibility to add its own builder and offer more options like applyToAll
  * 
  * @author cgendreau
  */
 public class ValueEvaluator implements RecordEvaluatorIF {
+
+  /**
+   * Builder of ValueEvaluator object.
+   * 
+   * @author cgendreau
+   */
+  public static class ValueEvaluatorBuilder {
+
+    private final ValidationContext evaluatorContext;
+    private Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm;
+
+    private ValueEvaluatorBuilder(ValidationContext evaluatorContext) {
+      this.evaluatorContext = evaluatorContext;
+    }
+
+    /**
+     * Create with default value. Using coreId, ValidationContext.CORE
+     * 
+     * @return
+     */
+    public static ValueEvaluatorBuilder create() {
+      return new ValueEvaluatorBuilder(ValidationContext.CORE);
+    }
+
+
+    /**
+     * Add a rule for a ConceptTerm value.
+     * 
+     * @param term
+     * @param rule
+     * @return
+     */
+    public ValueEvaluatorBuilder addRule(ConceptTerm term, EvaluationRuleIF<String> rule) {
+      if (rulesPerTerm == null) {
+        rulesPerTerm = new HashMap<ConceptTerm, List<EvaluationRuleIF<String>>>();
+      }
+
+      if (rulesPerTerm.get(term) == null) {
+        rulesPerTerm.put(term, new ArrayList<EvaluationRuleIF<String>>());
+      }
+      rulesPerTerm.get(term).add(rule);
+
+      return this;
+    }
+
+    /**
+     * Add a rule to multiple ConceptTerm
+     * 
+     * @param terms
+     * @param rule
+     * @return
+     */
+    public ValueEvaluatorBuilder addRule(List<ConceptTerm> terms, EvaluationRuleIF<String> rule) {
+      for (ConceptTerm currTerm : terms) {
+        addRule(currTerm, rule);
+      }
+      return this;
+    }
+
+    /**
+     * Add multiple rules to a ConceptTerm.
+     * 
+     * @param term
+     * @param rules
+     * @return
+     */
+    public ValueEvaluatorBuilder addRules(ConceptTerm term, List<EvaluationRuleIF<String>> rules) {
+      for (EvaluationRuleIF<String> currRule : rules) {
+        addRule(term, currRule);
+      }
+      return this;
+    }
+
+    /**
+     * Build ValueEvaluator.
+     * 
+     * @return immutable ValueEvaluator object
+     * @throws IllegalStateException
+     */
+    public ValueEvaluator build() throws IllegalStateException {
+      if (evaluatorContext == null) {
+        throw new IllegalStateException("The evaluatorContext must be set");
+      }
+
+      if (rulesPerTerm == null || rulesPerTerm.size() == 0) {
+        throw new IllegalStateException("The rulesPerTerm must contains at least one element");
+      }
+
+      return new ValueEvaluator(rulesPerTerm, evaluatorContext);
+    }
+  }
 
   // hold all evaluation rules per ConceptTerm
   private final Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm;

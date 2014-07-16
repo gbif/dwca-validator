@@ -1,20 +1,14 @@
 package org.gbif.dwc.validator.evaluator.chain;
 
-import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.validator.evaluator.impl.UniquenessEvaluator;
 import org.gbif.dwc.validator.evaluator.impl.ValueEvaluator;
-import org.gbif.dwc.validator.result.ValidationContext;
-import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.evaluator.impl.ValueEvaluator.ValueEvaluatorBuilder;
 import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule;
 import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRule;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,28 +23,21 @@ public class DefaultEvaluationChainProvider implements EvaluationChainProviderIF
   private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEvaluationChainProvider.class);
 
   /**
-   * Build a default Map<ConceptTerm, List<EvaluationRuleIF<String>>> for ValueEvaluator.
-   * TODO Evaluate the possibility to move the creation of Evaluators in their own class.
+   * Build a default ValueEvaluator.
    * 
    * @return
    */
-  private Map<ConceptTerm, List<EvaluationRuleIF<String>>> buildDefaultValueEvaluatorRulesPerTermMap() {
-    Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm =
-      new HashMap<ConceptTerm, List<EvaluationRuleIF<String>>>();
+  private ValueEvaluator buildDefaultValueEvaluator() {
 
-    // register an InvalidCharacterEvaluationRule for scientificName
-    List<EvaluationRuleIF<String>> ruleList = new ArrayList<EvaluationRuleIF<String>>();
-    ruleList.add(InvalidCharacterEvaluationRule.createRule().build());
+    ValueEvaluatorBuilder rulesBuilder = ValueEvaluatorBuilder.create();
 
-    // lat,lng rule list
-    List<EvaluationRuleIF<String>> latLngRuleList = new ArrayList<EvaluationRuleIF<String>>();
-    latLngRuleList.add(NumericalValueEvaluationRule.createRule().build());
+    NumericalValueEvaluationRule numericalValueEvaluationRule = NumericalValueEvaluationRule.createRule().build();
 
-    rulesPerTerm.put(DwcTerm.scientificName, ruleList);
-    rulesPerTerm.put(DwcTerm.decimalLatitude, latLngRuleList);
-    rulesPerTerm.put(DwcTerm.decimalLongitude, latLngRuleList);
+    rulesBuilder.addRule(DwcTerm.scientificName, InvalidCharacterEvaluationRule.createRule().build());
+    rulesBuilder.addRule(DwcTerm.decimalLatitude, numericalValueEvaluationRule);
+    rulesBuilder.addRule(DwcTerm.decimalLongitude, numericalValueEvaluationRule);
 
-    return rulesPerTerm;
+    return rulesBuilder.build();
   }
 
   /**
@@ -63,8 +50,7 @@ public class DefaultEvaluationChainProvider implements EvaluationChainProviderIF
       // Check uniqueness on 'coreId'
       UniquenessEvaluator uniquenessEvaluator = UniquenessEvaluator.create().build();
 
-      ValueEvaluator valueEvaluator =
-        new ValueEvaluator(buildDefaultValueEvaluatorRulesPerTermMap(), ValidationContext.CORE);
+      ValueEvaluator valueEvaluator = buildDefaultValueEvaluator();
 
       // Taxon only evaluators
       if (DwcTerm.Taxon.qualifiedName().equals(archiveFile.getRowType())) {
