@@ -11,6 +11,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.xml.sax.SAXException;
 
+import org.gbif.metadata.eml.Eml;
 
 /**
  * @author melecoq
