@@ -16,6 +16,11 @@ public class ArchiveContentHandler {
 
   private final EvaluationChainProviderIF evaluationChainProvider;
 
+  /**
+   * TODO: set working folder to avoid writing at root
+   * 
+   * @param evaluationChainProvider
+   */
   public ArchiveContentHandler(EvaluationChainProviderIF evaluationChainProvider) {
     this.evaluationChainProvider = evaluationChainProvider;
   }
@@ -27,7 +32,7 @@ public class ArchiveContentHandler {
    * @param resultAccumulator
    */
   public void inspectCore(ArchiveFile archiveFile, ResultAccumulatorIF resultAccumulator) {
-    ChainableRecordEvaluator coreChain = evaluationChainProvider.getCoreChain();
+    ChainableRecordEvaluator coreChain = evaluationChainProvider.getCoreChain(archiveFile);
     inspectDwcComponent(archiveFile, coreChain, resultAccumulator);
   }
 
@@ -44,6 +49,9 @@ public class ArchiveContentHandler {
     while (recordIt.hasNext()) {
       evaluatorChain.doEval(recordIt.next(), resultAccumulator);
     }
+    evaluatorChain.postIterate(resultAccumulator);
+
+    evaluatorChain.cleanup();
   }
 
   public void inspectExtension(ArchiveFile archiveFile, ResultAccumulatorIF resultAccumulator) {

@@ -1,8 +1,10 @@
 package org.gbif.dwc.validator.result;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Main object holding validation results for a specific id within a context.
@@ -33,6 +35,17 @@ public class ValidationResult {
     }
   }
 
+  /**
+   * Constructor to use only with one ValidationResultElement.
+   * 
+   * @param id
+   * @param context
+   * @param result
+   */
+  public ValidationResult(String id, ValidationContext context, ValidationResultElement result) {
+    this(id, context, Arrays.asList(result));
+  }
+
   public ValidationContext getContext() {
     return context;
   }
@@ -43,5 +56,10 @@ public class ValidationResult {
 
   public List<ValidationResultElement> getResults() {
     return results;
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this).append("id", id).append("context", context).append("results", results).toString();
   }
 }

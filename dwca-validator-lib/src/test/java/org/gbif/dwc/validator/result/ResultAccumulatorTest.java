@@ -6,6 +6,7 @@ import org.gbif.dwc.validator.result.impl.ThresholdResultAccumulator;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -41,7 +42,7 @@ public class ResultAccumulatorTest {
 
   private void testResultAccumulator(ResultAccumulatorIF fwra, List<String> dummyIdList) {
     for (String currDummyId : dummyIdList) {
-      fwra.accumulate(new ValidationResult(currDummyId, null, null));
+      fwra.accumulate(new ValidationResult(currDummyId, null, new ArrayList<ValidationResultElement>()));
     }
     fwra.close();
   }

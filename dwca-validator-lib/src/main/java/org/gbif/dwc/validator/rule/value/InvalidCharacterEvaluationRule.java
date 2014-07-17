@@ -1,5 +1,6 @@
 package org.gbif.dwc.validator.rule.value;
 
+import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
@@ -16,12 +17,13 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
 
   /**
    * Builder used to customized, if needed, the InvalidCharacterEvaluationRule.
+   * Also ensure usage of immutable object.
    * 
    * @author cgendreau
    */
   public static class InvalidCharacterEvaluationRuleBuilder {
 
-    private final CharMatcher currentCharMatcher;
+    private CharMatcher currentCharMatcher;
 
     private InvalidCharacterEvaluationRuleBuilder(CharMatcher currentCharMatcher) {
       this.currentCharMatcher = currentCharMatcher;
@@ -42,7 +44,8 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
      * @return
      */
     public InvalidCharacterEvaluationRuleBuilder allowFormattingWhiteSpace() {
-      return new InvalidCharacterEvaluationRuleBuilder(currentCharMatcher.and(CharMatcher.BREAKING_WHITESPACE.negate()));
+      this.currentCharMatcher = currentCharMatcher.and(CharMatcher.BREAKING_WHITESPACE.negate());
+      return this;
     }
 
     /**
@@ -60,12 +63,17 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
   // default rule is no invisible character, except space.
   private static CharMatcher DEFAULT_CHAR_MATCHER = CharMatcher.INVISIBLE.and(CharMatcher.isNot(' '));
 
+  /**
+   * InvalidCharacterEvaluationRule are created using the builder InvalidCharacterEvaluationRuleBuilder.
+   */
   private InvalidCharacterEvaluationRule(CharMatcher charMatcher) {
     this.charMatcher = charMatcher;
   }
 
   /**
-   * Simple alias of InvalidCharacterEvaluationRuleBuilder.create() for code readability.
+   * Simple alias of InvalidCharacterEvaluationRuleBuilder.create() for code readability so we can use
+   * InvalidCharacterEvaluationRule.createRule() instead of
+   * InvalidCharacterEvaluationRule.InvalidCharacterEvaluationRuleBuilder.create()
    * 
    * @return default InvalidCharacterEvaluationRuleBuilder
    */
@@ -82,8 +90,8 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
 
     int indexIn = charMatcher.indexIn(str);
     if (indexIn > 0) {
-      return new ValidationResultElement(ContentValidationType.RECORD_CONTENT, Result.WARNING, str
-        + "contains invalid character at position " + indexIn);
+      return new ValidationResultElement(ContentValidationType.RECORD_CONTENT, Result.WARNING,
+        ArchiveValidatorConfig.getLocalizedString("rule.invalid_character", str, indexIn));
     }
     return null;
   }

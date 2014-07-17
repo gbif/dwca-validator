@@ -5,9 +5,9 @@ import org.gbif.dwc.validator.evaluator.chain.DefaultEvaluationChainProvider;
 import org.gbif.dwc.validator.handler.ArchiveContentHandler;
 import org.gbif.dwc.validator.handler.ArchiveStructureHandler;
 import org.gbif.dwc.validator.impl.ArchiveValidator;
-import org.gbif.dwc.validator.result.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.structure.evaluator.EMLEvaluator.EMLInvalidException;
+import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 
 import java.io.File;
 import java.io.IOException;

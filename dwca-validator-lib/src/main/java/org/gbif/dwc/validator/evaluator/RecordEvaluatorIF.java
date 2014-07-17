@@ -12,5 +12,10 @@ public interface RecordEvaluatorIF {
 
   void handleEval(Record record, ResultAccumulatorIF resultAccumulator);
 
-  void postIterate();
+  /**
+   * Called after rows iteration.
+   * 
+   * @param resultAccumulator
+   */
+  void handlePostIterate(ResultAccumulatorIF resultAccumulator);
 }
