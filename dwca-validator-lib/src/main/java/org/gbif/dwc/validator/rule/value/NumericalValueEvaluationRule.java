@@ -6,15 +6,12 @@ import org.gbif.dwc.validator.result.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * Simple numerical value evaluation rule.
  * Check if the provided String is a number with optional decimals and optional minus sign.
- * All other notations are not supported (at least for now).
- * TODO: add support for lower and upper bounds evaluation
+ * Evaluation is using Double.parseDouble.
  * 
  * @author cgendreau
  */
@@ -28,6 +25,8 @@ public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
    */
   public static class NumericalValueEvaluationRuleBuilder {
 
+    private Number lowerBound;
+    private Number upperBound;
 
     private NumericalValueEvaluationRuleBuilder() {
     }
@@ -42,21 +41,44 @@ public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
     }
 
     /**
+     * Set a lower and upper inclusive bounds for the evaluation.
+     * 
+     * @param lowerBound not null lower inclusive bound
+     * @param upperBound not null upper inclusive bound
+     * @throws IllegalArgumentException is lowerBound or upperBound is null or if lowerBound is greater than upperBound.
+     */
+    public NumericalValueEvaluationRuleBuilder boundedBy(Number lowerBound, Number upperBound) {
+      if (lowerBound == null || upperBound == null || (lowerBound.doubleValue() > upperBound.doubleValue())) {
+        throw new IllegalArgumentException();
+      }
+
+      this.lowerBound = lowerBound;
+      this.upperBound = upperBound;
+      return this;
+    }
+
+    /**
      * Build an immutable NumericalValueEvaluationRule instance
      * 
      * @return immutable NumericalValueEvaluationRule
      */
     public NumericalValueEvaluationRule build() {
-      return new NumericalValueEvaluationRule();
+      return new NumericalValueEvaluationRule(lowerBound, upperBound);
     }
   }
 
-  private static final Pattern NUMBER_CANDIDATE = Pattern.compile("^[-]?(\\d*[.])?\\d+$");
+  private final Number lowerBound;
+  private final Number upperBound;
 
   /**
    * NumericalValueEvaluationRule are created using the builder NumericalValueEvaluationRuleBuilder.
+   * 
+   * @param minBound lower bound or null
+   * @param maxBound upper bound or null
    */
-  private NumericalValueEvaluationRule() {
+  private NumericalValueEvaluationRule(Number lowerBound, Number upperBound) {
+    this.lowerBound = lowerBound;
+    this.upperBound = upperBound;
   }
 
   /**
@@ -70,13 +92,30 @@ public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
     return NumericalValueEvaluationRuleBuilder.create();
   }
 
+  private ValidationResultElement createNonNumericalValidationResultElement(String value) {
+    return new ValidationResultElement(ContentValidationType.RECORD_CONTENT, Result.WARNING,
+      ArchiveValidatorConfig.getLocalizedString("rule.non_numerical", value));
+  }
+
+  private ValidationResultElement createNumericalOutOfBoundsValidationResultElement(String value) {
+    return new ValidationResultElement(ContentValidationType.RECORD_CONTENT, Result.WARNING,
+      ArchiveValidatorConfig.getLocalizedString("rule.numerical_out_of_bounds", value, lowerBound, upperBound));
+  }
+
   @Override
   public ValidationResultElement evaluate(String str) {
-    if (StringUtils.isNotBlank(str) && !NUMBER_CANDIDATE.matcher(str).matches()) {
-      return new ValidationResultElement(ContentValidationType.RECORD_CONTENT, Result.WARNING,
-        ArchiveValidatorConfig.getLocalizedString("rule.non_numerical", str));
+    if (StringUtils.isNotBlank(str)) {
+      try {
+        Double value = Double.parseDouble(str);
+        if (lowerBound != null && upperBound != null) {
+          if (value.doubleValue() < lowerBound.doubleValue() || value.doubleValue() > upperBound.doubleValue()) {
+            return createNumericalOutOfBoundsValidationResultElement(str);
+          }
+        }
+      } catch (NumberFormatException nfEx) {
+        return createNonNumericalValidationResultElement(str);
+      }
     }
     return null;
   }
-
 }
