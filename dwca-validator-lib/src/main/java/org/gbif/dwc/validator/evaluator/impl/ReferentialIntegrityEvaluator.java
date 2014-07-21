@@ -4,6 +4,7 @@ import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluatorIF;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.ValidationContext;
@@ -33,6 +34,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author cgendreau
  */
+@RecordEvaluator(key = "referentialIntegrityEvaluator")
 public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF {
 
   /**
@@ -43,9 +45,11 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
    */
   public static class ReferentialIntegrityEvaluatorBuilder {
 
+    private final String key = ReferentialIntegrityEvaluator.class.getAnnotation(RecordEvaluator.class).key();
     private final ValidationContext evaluatorContext;
     private final ConceptTerm term;
 
+    // for future use
     private ValidationContext referedEvaluatorContext;
     private ConceptTerm referredTerm;
     private File referenceFile;
@@ -74,11 +78,11 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
         workingFolder = new File(".");
       }
 
-      return new ReferentialIntegrityEvaluator(evaluatorContext, term, referredTerm, referenceFile, workingFolder);
+      return new ReferentialIntegrityEvaluator(key, evaluatorContext, term, referredTerm, referenceFile, workingFolder);
     }
 
-    public ReferentialIntegrityEvaluatorBuilder referTo(ValidationContext evaluatorContext, ConceptTerm referredTerm,
-      File referenceFile) {
+    public ReferentialIntegrityEvaluatorBuilder referTo(ValidationContext referedEvaluatorContext,
+      ConceptTerm referredTerm, File referenceFile) {
       this.referedEvaluatorContext = referedEvaluatorContext;
       this.referredTerm = referredTerm;
       this.referenceFile = referenceFile;
@@ -101,6 +105,7 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
   org.gbif.utils.file.FileUtils GBIF_FILE_UTILS = new org.gbif.utils.file.FileUtils();
   private static final int BUFFER_THRESHOLD = 1000;
 
+  private final String key;
   private final ValidationContext evaluatorContext;
   private final ConceptTerm term;
   private final ConceptTerm referredTerm;
@@ -123,9 +128,10 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
    * @param workingFolder parent folder for generated files
    * @throws IOException
    */
-  private ReferentialIntegrityEvaluator(ValidationContext evaluatorContext, ConceptTerm term, ConceptTerm referredTerm,
-    File referenceFile, File workingFolder) throws IOException {
+  private ReferentialIntegrityEvaluator(String key, ValidationContext evaluatorContext, ConceptTerm term,
+    ConceptTerm referredTerm, File referenceFile, File workingFolder) throws IOException {
 
+    this.key = key;
     this.evaluatorContext = evaluatorContext;
     this.term = term;
     this.referredTerm = referredTerm;
@@ -167,6 +173,11 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
       LOGGER.error("Can't write to file using FileWriter", ioEx);
     }
     idList.clear();
+  }
+
+  @Override
+  public String getKey() {
+    return key;
   }
 
   @Override

@@ -95,7 +95,7 @@ public class ControlledVocabularyEvaluationRule implements EvaluationRuleIF<Stri
     }
 
     if (!vocabularySet.contains(str)) {
-      return new ValidationResultElement(ContentValidationType.RECORD_CONTENT, Result.ERROR,
+      return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.ERROR,
         ArchiveValidatorConfig.getLocalizedString("rule.controlled_vocabulary", str, term.simpleName()));
     }
     return null;

@@ -4,6 +4,7 @@ import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluatorIF;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.ValidationContext;
@@ -33,6 +34,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author cgendreau
  */
+@RecordEvaluator(key = "uniquenessEvaluator")
 public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
 
   /**
@@ -43,6 +45,7 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
    */
   public static class UniquenessEvaluatorBuilder {
 
+    private final String key = UniquenessEvaluator.class.getAnnotation(RecordEvaluator.class).key();
     private ValidationContext evaluatorContext;
     private ConceptTerm term;
     private File workingFolder;
@@ -73,7 +76,7 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
         workingFolder = new File(".");
       }
 
-      return new UniquenessEvaluator(term, evaluatorContext, workingFolder);
+      return new UniquenessEvaluator(key, term, evaluatorContext, workingFolder);
     }
 
     /**
@@ -102,6 +105,7 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
     }
   }
 
+  private final String key;
   private final ValidationContext evaluatorContext;
   private final ConceptTerm term;
   private final String conceptTermString;
@@ -122,8 +126,9 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
    * @param workingFolder place to save temporary files
    * @throws IOException
    */
-  private UniquenessEvaluator(ConceptTerm term, ValidationContext evaluatorContext, File workingFolder)
+  private UniquenessEvaluator(String key, ConceptTerm term, ValidationContext evaluatorContext, File workingFolder)
     throws IOException {
+    this.key = key;
     this.evaluatorContext = evaluatorContext;
     this.term = term;
     this.conceptTermString = term != null ? term.simpleName() : "coreId";
@@ -161,6 +166,11 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
       LOGGER.error("Can't write to file using FileWriter", ioEx);
     }
     idList.clear();
+  }
+
+  @Override
+  public String getKey() {
+    return key;
   }
 
   /**

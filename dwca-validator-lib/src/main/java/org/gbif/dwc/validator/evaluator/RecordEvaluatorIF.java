@@ -10,12 +10,17 @@ import org.gbif.dwc.validator.result.ResultAccumulatorIF;
  */
 public interface RecordEvaluatorIF {
 
-  void handleEval(Record record, ResultAccumulatorIF resultAccumulator);
+  /**
+   * Returns the key to use to uniquely identify the Evaluator implementation.
+   */
+  public String getKey();
+
+  public void handleEval(Record record, ResultAccumulatorIF resultAccumulator);
 
   /**
    * Called after rows iteration.
    * 
    * @param resultAccumulator
    */
-  void handlePostIterate(ResultAccumulatorIF resultAccumulator);
+  public void handlePostIterate(ResultAccumulatorIF resultAccumulator);
 }

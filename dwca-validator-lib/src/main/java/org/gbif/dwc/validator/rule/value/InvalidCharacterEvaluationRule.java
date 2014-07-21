@@ -90,7 +90,7 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
 
     int indexIn = charMatcher.indexIn(str);
     if (indexIn > 0) {
-      return new ValidationResultElement(ContentValidationType.RECORD_CONTENT, Result.WARNING,
+      return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.WARNING,
         ArchiveValidatorConfig.getLocalizedString("rule.invalid_character", str, indexIn));
     }
     return null;
