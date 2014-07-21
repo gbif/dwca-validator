@@ -42,7 +42,8 @@ public class ResultAccumulatorTest {
 
   private void testResultAccumulator(ResultAccumulatorIF fwra, List<String> dummyIdList) {
     for (String currDummyId : dummyIdList) {
-      fwra.accumulate(new ValidationResult(currDummyId, null, new ArrayList<ValidationResultElement>()));
+      fwra.accumulate(new ValidationResult(currDummyId, "testResultAccumulator", null,
+        new ArrayList<ValidationResultElement>()));
     }
     fwra.close();
   }

@@ -15,16 +15,20 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class ValidationResult {
 
   private final String id;
+  private final String evaluatorKey;
   private final ValidationContext context;
   private final List<ValidationResultElement> results;
 
   /**
    * @param id The identifier is relative to the context.
+   * @param evaluatorKey key of the validator who generated this entry
    * @param context
    * @param results
    */
-  public ValidationResult(String id, ValidationContext context, List<ValidationResultElement> results) {
+  public ValidationResult(String id, String evaluatorKey, ValidationContext context,
+    List<ValidationResultElement> results) {
     this.id = id;
+    this.evaluatorKey = evaluatorKey;
     this.context = context;
 
     // shouldn't we throw an exception or maybe create an empty list?
@@ -39,11 +43,12 @@ public class ValidationResult {
    * Constructor to use only with one ValidationResultElement.
    * 
    * @param id
+   * @param evaluatorKey key of the validator who generated this entry
    * @param context
    * @param result
    */
-  public ValidationResult(String id, ValidationContext context, ValidationResultElement result) {
-    this(id, context, Arrays.asList(result));
+  public ValidationResult(String id, String evaluatorKey, ValidationContext context, ValidationResultElement result) {
+    this(id, evaluatorKey, context, Arrays.asList(result));
   }
 
   public ValidationContext getContext() {
@@ -60,6 +65,7 @@ public class ValidationResult {
 
   @Override
   public String toString() {
-    return new ToStringBuilder(this).append("id", id).append("context", context).append("results", results).toString();
+    return new ToStringBuilder(this).append("id", id).append("evaluatorKey", evaluatorKey).append("context", context)
+      .append("results", results).toString();
   }
 }

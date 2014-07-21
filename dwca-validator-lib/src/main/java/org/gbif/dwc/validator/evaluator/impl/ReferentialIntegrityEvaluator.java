@@ -231,7 +231,7 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
           new ValidationResultElement(ContentValidationType.FIELD_REFERENTIAL_INTEGRITY, Result.ERROR,
             ArchiveValidatorConfig.getLocalizedString("evaluator.referential_integrity", currentLine, term,
               referredTerm));
-        resultAccumulator.accumulate(new ValidationResult(currentLine, evaluatorContext, validationResultElement));
+        resultAccumulator.accumulate(new ValidationResult(currentLine, key, evaluatorContext, validationResultElement));
       }
     } catch (IOException ioEx) {
       LOGGER.error("Can't sort id file", ioEx);

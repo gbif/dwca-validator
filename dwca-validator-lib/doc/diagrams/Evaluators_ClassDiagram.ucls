@@ -15,7 +15,7 @@
   <class id="2" language="java" name="org.gbif.dwc.validator.evaluator.impl.ValueEvaluator" project="dwca-validator-lib" 
     file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/impl/ValueEvaluator.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="143" width="511" x="-151" y="233"/>    
+    <position height="180" width="572" x="-73" y="223"/>    
     <display autosize="false" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -181,91 +181,91 @@
   </class>  
   <dependency id="17">    
     <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="5"/>  
+    <end type="TARGET" refId="1"/>  
   </dependency>  
-  <realization id="18">    
-    <end type="SOURCE" refId="5"/>    
+  <dependency id="18">    
+    <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="3"/>  
-  </realization>  
-  <nesting id="19">    
+  </dependency>  
+  <dependency id="19">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <nesting id="20">    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="4"/>  
   </nesting>  
-  <realization id="20">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="3"/>  
-  </realization>  
-  <dependency id="21">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="9"/>  
-  </dependency>  
+  <nesting id="21">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="16"/>  
+  </nesting>  
   <realization id="22">    
-    <end type="SOURCE" refId="14"/>    
+    <end type="SOURCE" refId="15"/>    
     <end type="TARGET" refId="3"/>  
   </realization>  
   <dependency id="23">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <nesting id="24">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="11"/>  
-  </nesting>  
-  <realization id="25">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="10"/>  
-  </realization>  
-  <realization id="26">    
     <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="7"/>  
-  </realization>  
-  <association id="27">    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <dependency id="24">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <association id="25">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="28" name="recordEvaluator"/>      
-      <multiplicity id="29" minimum="0" maximum="1"/>    
+      <attribute id="26" name="recordEvaluator"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <dependency id="30">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
-  <dependency id="31">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="1"/>  
-  </dependency>  
-  <nesting id="32">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="16"/>  
-  </nesting>  
-  <dependency id="33">    
+  <realization id="28">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="8"/>  
+  </realization>  
+  <dependency id="29">    
     <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="1"/>  
+    <end type="TARGET" refId="5"/>  
   </dependency>  
-  <association id="34">    
+  <dependency id="30">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <realization id="31">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="7"/>  
+  </realization>  
+  <realization id="32">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <realization id="33">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <realization id="34">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="10"/>  
+  </realization>  
+  <realization id="35">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <association id="36">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="35" name="nextElement"/>      
-      <multiplicity id="36" minimum="0" maximum="1"/>    
+      <attribute id="37" name="nextElement"/>      
+      <multiplicity id="38" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <realization id="37">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="8"/>  
-  </realization>  
-  <dependency id="38">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="2"/>  
-  </dependency>  
-  <realization id="39">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="3"/>  
-  </realization>  
-  <nesting id="40">    
+  <nesting id="39">    
     <end type="SOURCE" refId="14"/>    
     <end type="TARGET" refId="13"/>  
+  </nesting>  
+  <nesting id="40">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="11"/>  
   </nesting>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     accessors="true" visibility="true">    

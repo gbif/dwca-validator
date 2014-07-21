@@ -231,7 +231,8 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
           validationResultElement =
             new ValidationResultElement(ContentValidationType.FIELD_UNIQUENESS, Result.ERROR,
               ArchiveValidatorConfig.getLocalizedString("evaluator.uniqueness", currentLine, conceptTermString));
-          resultAccumulator.accumulate(new ValidationResult(currentLine, evaluatorContext, validationResultElement));
+          resultAccumulator
+            .accumulate(new ValidationResult(currentLine, key, evaluatorContext, validationResultElement));
         }
         previousLine = currentLine;
       }

@@ -158,7 +158,7 @@ public class ValueEvaluator implements RecordEvaluatorIF {
     }
 
     if (elementList != null && elementList.size() > 0) {
-      resultAccumulator.accumulate(new ValidationResult(record.id(), evaluatorContext, elementList));
+      resultAccumulator.accumulate(new ValidationResult(record.id(), key, evaluatorContext, elementList));
     }
   }
 
