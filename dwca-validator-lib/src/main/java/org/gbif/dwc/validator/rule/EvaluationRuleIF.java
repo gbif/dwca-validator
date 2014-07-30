@@ -17,6 +17,6 @@ public interface EvaluationRuleIF<T> {
    * @param obj
    * @return null if no ValidationResultElement is needed, ValidationResultElement instance otherwise.
    */
-  public ValidationResultElement evaluate(T obj);
+  ValidationResultElement evaluate(T obj);
 
 }

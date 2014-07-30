@@ -16,18 +16,18 @@ public interface ResultAccumulatorIF {
    * @param result
    * @return result were successfully appended
    */
-  public boolean accumulate(ValidationResult result);
+  boolean accumulate(ValidationResult result);
 
   /**
    * Close the accumulator and its underlying structure.
    */
-  public void close();
+  void close();
 
   /**
    * Get the total of result accumulated by this accumulator.
    * 
    * @return count
    */
-  public int getCount();
+  int getCount();
 
 }

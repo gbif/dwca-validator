@@ -10,6 +10,6 @@ public interface StatefulRecordEvaluatorIF extends RecordEvaluatorIF {
   /**
    * Free all resources
    */
-  public void cleanup();
+  void cleanup();
 
 }

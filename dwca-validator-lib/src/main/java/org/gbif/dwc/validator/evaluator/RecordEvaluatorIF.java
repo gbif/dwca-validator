@@ -13,14 +13,14 @@ public interface RecordEvaluatorIF {
   /**
    * Returns the key to use to uniquely identify the Evaluator implementation.
    */
-  public String getKey();
+  String getKey();
 
-  public void handleEval(Record record, ResultAccumulatorIF resultAccumulator);
+  void handleEval(Record record, ResultAccumulatorIF resultAccumulator);
 
   /**
    * Called after rows iteration.
    * 
    * @param resultAccumulator
    */
-  public void handlePostIterate(ResultAccumulatorIF resultAccumulator);
+  void handlePostIterate(ResultAccumulatorIF resultAccumulator);
 }
