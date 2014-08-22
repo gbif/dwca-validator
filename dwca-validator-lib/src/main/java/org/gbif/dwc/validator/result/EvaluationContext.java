@@ -1,10 +1,10 @@
 package org.gbif.dwc.validator.result;
 
 /**
- * Enumeration of possible validation contexts.
+ * Enumeration of possible evaluation contexts.
  * 
  * @author cgendreau
  */
-public enum ValidationContext {
+public enum EvaluationContext {
   STRUCTURE, CORE, EXT;
 }

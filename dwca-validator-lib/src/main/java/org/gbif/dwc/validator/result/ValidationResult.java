@@ -16,7 +16,7 @@ public class ValidationResult {
 
   private final String id;
   private final String evaluatorKey;
-  private final ValidationContext context;
+  private final EvaluationContext context;
   private final List<ValidationResultElement> results;
 
   /**
@@ -25,7 +25,7 @@ public class ValidationResult {
    * @param context
    * @param results
    */
-  public ValidationResult(String id, String evaluatorKey, ValidationContext context,
+  public ValidationResult(String id, String evaluatorKey, EvaluationContext context,
     List<ValidationResultElement> results) {
     this.id = id;
     this.evaluatorKey = evaluatorKey;
@@ -47,11 +47,11 @@ public class ValidationResult {
    * @param context
    * @param result
    */
-  public ValidationResult(String id, String evaluatorKey, ValidationContext context, ValidationResultElement result) {
+  public ValidationResult(String id, String evaluatorKey, EvaluationContext context, ValidationResultElement result) {
     this(id, evaluatorKey, context, Arrays.asList(result));
   }
 
-  public ValidationContext getContext() {
+  public EvaluationContext getContext() {
     return context;
   }
 

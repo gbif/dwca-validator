@@ -2,9 +2,11 @@ package org.gbif.dwc.validator.evaluator.chain;
 
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveFile;
+import org.gbif.dwc.validator.evaluator.impl.ReferentialIntegrityEvaluator;
 import org.gbif.dwc.validator.evaluator.impl.UniquenessEvaluator;
 import org.gbif.dwc.validator.evaluator.impl.ValueEvaluator;
 import org.gbif.dwc.validator.evaluator.impl.ValueEvaluator.ValueEvaluatorBuilder;
+import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule;
 import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRule;
 
@@ -52,17 +54,22 @@ public class DefaultEvaluationChainProvider implements EvaluationChainProviderIF
 
       ValueEvaluator valueEvaluator = buildDefaultValueEvaluator();
 
+      ChainableRecordEvaluatorBuilderIF chainBuilder =
+        DefaultChainableRecordEvaluatorBuilder.create(valueEvaluator).linkTo(uniquenessEvaluator);
+
       // Taxon only evaluators
       if (DwcTerm.Taxon.qualifiedName().equals(archiveFile.getRowType())) {
-        // for taxon only
-        // if(archiveFile.getField(DwcTerm.acceptedNameUsageID) != null){
-        // ReferentialIntegrityEvaluator referentialIntegrityEvaluator =
-        // ReferentialIntegrityEvaluator.create(ValidationContext.CORE, DwcTerm.parentNameUsageID)
-        // .referTo(ValidationContext.CORE, DwcTerm.taxonID, uniquenessEvaluator.getSortedIdFile()).build();
-        // }
+        // Check if acceptedNameUsageID is actually used in this file
+        if (archiveFile.getField(DwcTerm.acceptedNameUsageID) != null) {
+          ReferentialIntegrityEvaluator referentialIntegrityEvaluator =
+            ReferentialIntegrityEvaluator.create(EvaluationContext.CORE, DwcTerm.acceptedNameUsageID)
+              .referTo(EvaluationContext.CORE, DwcTerm.taxonID, uniquenessEvaluator.getSortedIdFile())
+              .supportMultipleValues("|").build();
+          chainBuilder = chainBuilder.linkTo(referentialIntegrityEvaluator);
+        }
       }
 
-      return DefaultChainableRecordEvaluatorBuilder.create(valueEvaluator).linkTo(uniquenessEvaluator).build();
+      return chainBuilder.build();
     } catch (IllegalStateException e) {
       LOGGER.error("Can't create core chain", e);
     } catch (IOException ioEx) {

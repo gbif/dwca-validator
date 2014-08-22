@@ -7,7 +7,7 @@ import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluatorIF;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.dwc.validator.result.ValidationContext;
+import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.ValidationResult;
 import org.gbif.dwc.validator.result.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
@@ -46,11 +46,11 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
   public static class UniquenessEvaluatorBuilder {
 
     private final String key = UniquenessEvaluator.class.getAnnotation(RecordEvaluator.class).key();
-    private ValidationContext evaluatorContext;
+    private EvaluationContext evaluatorContext;
     private ConceptTerm term;
     private File workingFolder;
 
-    private UniquenessEvaluatorBuilder(ValidationContext evaluatorContext) {
+    private UniquenessEvaluatorBuilder(EvaluationContext evaluatorContext) {
       this.evaluatorContext = evaluatorContext;
     }
 
@@ -60,7 +60,7 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
      * @return
      */
     public static UniquenessEvaluatorBuilder create() {
-      return new UniquenessEvaluatorBuilder(ValidationContext.CORE);
+      return new UniquenessEvaluatorBuilder(EvaluationContext.CORE);
     }
 
     public UniquenessEvaluator build() throws IOException, IllegalStateException {
@@ -87,7 +87,7 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
      * @param evaluatorContext context of the provided term
      * @return
      */
-    public UniquenessEvaluatorBuilder on(ConceptTerm term, ValidationContext evaluatorContext) {
+    public UniquenessEvaluatorBuilder on(ConceptTerm term, EvaluationContext evaluatorContext) {
       this.evaluatorContext = evaluatorContext;
       this.term = term;
       return this;
@@ -106,7 +106,7 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
   }
 
   private final String key;
-  private final ValidationContext evaluatorContext;
+  private final EvaluationContext evaluatorContext;
   private final ConceptTerm term;
   private final String conceptTermString;
 
@@ -126,7 +126,7 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
    * @param workingFolder place to save temporary files
    * @throws IOException
    */
-  private UniquenessEvaluator(String key, ConceptTerm term, ValidationContext evaluatorContext, File workingFolder)
+  private UniquenessEvaluator(String key, ConceptTerm term, EvaluationContext evaluatorContext, File workingFolder)
     throws IOException {
     this.key = key;
     this.evaluatorContext = evaluatorContext;

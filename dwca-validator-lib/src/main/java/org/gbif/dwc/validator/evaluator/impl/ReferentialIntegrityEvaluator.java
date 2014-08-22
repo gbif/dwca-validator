@@ -7,7 +7,7 @@ import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluatorIF;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.dwc.validator.result.ValidationContext;
+import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.ValidationResult;
 import org.gbif.dwc.validator.result.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
@@ -46,23 +46,23 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
   public static class ReferentialIntegrityEvaluatorBuilder {
 
     private final String key = ReferentialIntegrityEvaluator.class.getAnnotation(RecordEvaluator.class).key();
-    private final ValidationContext evaluatorContext;
+    private final EvaluationContext evaluatorContext;
     private final ConceptTerm term;
 
     // for future use
-    private ValidationContext referedEvaluatorContext;
+    private EvaluationContext referedEvaluatorContext;
     private ConceptTerm referredTerm;
     private File referenceFile;
     private String multipleValuesSeparator = null;
 
     private File workingFolder;
 
-    private ReferentialIntegrityEvaluatorBuilder(ValidationContext evaluatorContext, ConceptTerm term) {
+    private ReferentialIntegrityEvaluatorBuilder(EvaluationContext evaluatorContext, ConceptTerm term) {
       this.evaluatorContext = evaluatorContext;
       this.term = term;
     }
 
-    public static ReferentialIntegrityEvaluatorBuilder create(ValidationContext evaluatorContext, ConceptTerm term) {
+    public static ReferentialIntegrityEvaluatorBuilder create(EvaluationContext evaluatorContext, ConceptTerm term) {
       return new ReferentialIntegrityEvaluatorBuilder(evaluatorContext, term);
     }
 
@@ -83,7 +83,7 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
         referenceFile, workingFolder);
     }
 
-    public ReferentialIntegrityEvaluatorBuilder referTo(ValidationContext referedEvaluatorContext,
+    public ReferentialIntegrityEvaluatorBuilder referTo(EvaluationContext referedEvaluatorContext,
       ConceptTerm referredTerm, File referenceFile) {
       this.referedEvaluatorContext = referedEvaluatorContext;
       this.referredTerm = referredTerm;
@@ -120,7 +120,7 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
   private static final int BUFFER_THRESHOLD = 1000;
 
   private final String key;
-  private final ValidationContext evaluatorContext;
+  private final EvaluationContext evaluatorContext;
   private final ConceptTerm term;
   private final ConceptTerm referredTerm;
   private final File referenceFile;
@@ -145,7 +145,7 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
    * @param workingFolder parent folder for generated files
    * @throws IOException
    */
-  private ReferentialIntegrityEvaluator(String key, ValidationContext evaluatorContext, ConceptTerm term,
+  private ReferentialIntegrityEvaluator(String key, EvaluationContext evaluatorContext, ConceptTerm term,
     String multipleValuesSeparator, ConceptTerm referredTerm, File referenceFile, File workingFolder)
     throws IOException {
 
@@ -168,7 +168,7 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
     fw = new FileWriter(idRecordingFile);
   }
 
-  public static ReferentialIntegrityEvaluatorBuilder create(ValidationContext evaluatorContext, ConceptTerm term) {
+  public static ReferentialIntegrityEvaluatorBuilder create(EvaluationContext evaluatorContext, ConceptTerm term) {
     return new ReferentialIntegrityEvaluatorBuilder(evaluatorContext, term);
   }
 

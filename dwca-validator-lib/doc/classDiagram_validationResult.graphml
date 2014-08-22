@@ -57,7 +57,7 @@
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
             <y:AttributeLabel>-id:String
 -evaluatorKey:String
--context:ValidationContext
+-context:EvaluationContext
 -results:List&lt;ValidationResultElement&gt;</y:AttributeLabel>
             <y:MethodLabel/>
           </y:UML>
@@ -71,7 +71,7 @@
           <y:Geometry height="82.0" width="195.0" x="642.5665542103477" y="12.284046692606921"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="123.71044921875" x="35.644775390625" y="26.1328125">ValidationContext<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="125.84326171875" x="34.578369140625" y="26.1328125">EvaluationContext<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -274,7 +274,6 @@ getDescriptionKey():String</y:MethodLabel>
     </node>
     <node id="n12">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="95.10934182590233" width="202.0" x="998.3927813163482" y="543.5"/>
@@ -405,7 +404,6 @@ getDescriptionKey():String</y:MethodLabel>
       </data>
     </edge>
     <edge id="e11" source="n12" target="n7">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
