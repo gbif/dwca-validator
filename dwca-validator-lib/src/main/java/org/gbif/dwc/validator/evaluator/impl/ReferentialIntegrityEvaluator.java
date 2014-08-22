@@ -53,6 +53,7 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
     private ValidationContext referedEvaluatorContext;
     private ConceptTerm referredTerm;
     private File referenceFile;
+    private String multipleValuesSeparator = null;
 
     private File workingFolder;
 
@@ -78,7 +79,8 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
         workingFolder = new File(".");
       }
 
-      return new ReferentialIntegrityEvaluator(key, evaluatorContext, term, referredTerm, referenceFile, workingFolder);
+      return new ReferentialIntegrityEvaluator(key, evaluatorContext, term, multipleValuesSeparator, referredTerm,
+        referenceFile, workingFolder);
     }
 
     public ReferentialIntegrityEvaluatorBuilder referTo(ValidationContext referedEvaluatorContext,
@@ -86,6 +88,18 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
       this.referedEvaluatorContext = referedEvaluatorContext;
       this.referredTerm = referredTerm;
       this.referenceFile = referenceFile;
+      return this;
+    }
+
+    /**
+     * Should the evaluator accept multiple values using a defined separator.
+     * e.g. 1234|2345
+     * 
+     * @param separator
+     * @return
+     */
+    public ReferentialIntegrityEvaluatorBuilder supportMultipleValues(String separator) {
+      this.multipleValuesSeparator = separator;
       return this;
     }
 
@@ -110,6 +124,7 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
   private final ConceptTerm term;
   private final ConceptTerm referredTerm;
   private final File referenceFile;
+  private final String multipleValuesSeparator;
 
   private final List<String> idList;
 
@@ -120,20 +135,24 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
   private final File diffFile;
 
   /**
+   * @param key
    * @param evaluatorContext Context of the term, core or extension. Should be more precise in the future about the
    *        extension.
    * @param term provided ConceptTerm to evaluate
+   * @param multipleValuesSeparator separator used for multiple values or null
    * @param referredTerm ConceptTerm that the provided term should refer to.
    * @param referenceFile
    * @param workingFolder parent folder for generated files
    * @throws IOException
    */
   private ReferentialIntegrityEvaluator(String key, ValidationContext evaluatorContext, ConceptTerm term,
-    ConceptTerm referredTerm, File referenceFile, File workingFolder) throws IOException {
+    String multipleValuesSeparator, ConceptTerm referredTerm, File referenceFile, File workingFolder)
+    throws IOException {
 
     this.key = key;
     this.evaluatorContext = evaluatorContext;
     this.term = term;
+    this.multipleValuesSeparator = multipleValuesSeparator;
     this.referredTerm = referredTerm;
     this.referenceFile = referenceFile;
     idList = new ArrayList<String>(BUFFER_THRESHOLD);
@@ -183,9 +202,16 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
   @Override
   public void handleEval(Record record, ResultAccumulatorIF resultAccumulator) {
     String value = record.value(term);
+
     // only record non-blank value
     if (StringUtils.isNotBlank(value)) {
-      idList.add(value);
+      if (multipleValuesSeparator == null || !value.contains(multipleValuesSeparator)) {
+        idList.add(value);
+      } else {
+        for (String currValue : StringUtils.split(value, multipleValuesSeparator)) {
+          idList.add(currValue);
+        }
+      }
       if (idList.size() >= BUFFER_THRESHOLD) {
         flushCurrentIdList();
       }

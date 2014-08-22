@@ -38,14 +38,29 @@ public class ReferentialIntegrityEvaluatorTest {
     return testRecord;
   }
 
+  /**
+   * Get the reference file containing all the valid id for the tests.
+   * 
+   * @return
+   */
+  public File getReferenceFile() {
+    File referenceFile = null;
+    try {
+      referenceFile =
+        new File(this.getClass().getResource("/files/ReferentialIntegrityEvaluatorTest_referenceFile.txt").toURI());
+    } catch (URISyntaxException e) {
+      e.printStackTrace();
+    }
+    return referenceFile;
+  }
+
   @Test
-  public void ReferentialIntegretyEvaluatorCorrectId() {
+  public void referentialIntegrityEvaluatorCorrectId() {
 
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
-      File referenceFile =
-        new File(this.getClass().getResource("/files/ReferentialIntegrityEvaluatorTest_referenceFile.txt").toURI());
+      File referenceFile = getReferenceFile();
 
       ReferentialIntegrityEvaluator valueEvaluator =
         ReferentialIntegrityEvaluator.create(ValidationContext.CORE, DwcTerm.acceptedNameUsageID)
@@ -60,20 +75,17 @@ public class ReferentialIntegrityEvaluatorTest {
       valueEvaluator.cleanup();
     } catch (IOException e) {
       e.printStackTrace();
-    } catch (URISyntaxException e) {
-      e.printStackTrace();
     }
     assertTrue(resultAccumulator.getValidationResultsList().size() == 0);
   }
 
   @Test
-  public void ReferentialIntegretyEvaluatorIncorrectId() {
+  public void referentialIntegrityEvaluatorIncorrectId() {
 
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
-      File referenceFile =
-        new File(this.getClass().getResource("/files/ReferentialIntegrityEvaluatorTest_referenceFile.txt").toURI());
+      File referenceFile = getReferenceFile();
 
       ReferentialIntegrityEvaluator valueEvaluator =
         ReferentialIntegrityEvaluator.create(ValidationContext.CORE, DwcTerm.acceptedNameUsageID)
@@ -85,9 +97,48 @@ public class ReferentialIntegrityEvaluatorTest {
       valueEvaluator.cleanup();
     } catch (IOException e) {
       e.printStackTrace();
-    } catch (URISyntaxException e) {
-      e.printStackTrace();
     }
     assertTrue(resultAccumulator.getValidationResultsList().size() == 1);
+  }
+
+  @Test
+  public void referentialIntegrityEvaluatorMultipleCorrectId() {
+    InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
+
+    try {
+      File referenceFile = getReferenceFile();
+
+      // Test multiple id
+      ReferentialIntegrityEvaluator valueEvaluator =
+        ReferentialIntegrityEvaluator.create(ValidationContext.CORE, DwcTerm.acceptedNameUsageID)
+          .referTo(ValidationContext.CORE, DwcTerm.taxonID, referenceFile).supportMultipleValues("|").build();
+      valueEvaluator.handleEval(buildMockRecord("1", "3|4"), resultAccumulator);
+      valueEvaluator.handlePostIterate(resultAccumulator);
+      valueEvaluator.cleanup();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    assertTrue(resultAccumulator.getValidationResultsList().size() == 0);
+  }
+
+  @Test
+  public void referentialIntegrityEvaluatorMultipleIncorrectId() {
+    InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
+
+    try {
+      File referenceFile = getReferenceFile();
+
+      // Test multiple id
+      ReferentialIntegrityEvaluator valueEvaluator =
+        ReferentialIntegrityEvaluator.create(ValidationContext.CORE, DwcTerm.acceptedNameUsageID)
+          .referTo(ValidationContext.CORE, DwcTerm.taxonID, referenceFile).supportMultipleValues("|").build();
+      valueEvaluator.handleEval(buildMockRecord("1", "3|z"), resultAccumulator);
+      valueEvaluator.handleEval(buildMockRecord("2", "z|3"), resultAccumulator);
+      valueEvaluator.handlePostIterate(resultAccumulator);
+      valueEvaluator.cleanup();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    assertTrue(resultAccumulator.getValidationResultsList().size() == 2);
   }
 }

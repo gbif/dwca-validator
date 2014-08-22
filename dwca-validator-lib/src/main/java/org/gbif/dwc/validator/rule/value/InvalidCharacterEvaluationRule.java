@@ -90,8 +90,9 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
 
     int indexIn = charMatcher.indexIn(str);
     if (indexIn > 0) {
+      // Remove invalid character from the error message to avoid display issues (e.g. NULL char)
       return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.WARNING,
-        ArchiveValidatorConfig.getLocalizedString("rule.invalid_character", str, indexIn));
+        ArchiveValidatorConfig.getLocalizedString("rule.invalid_character", charMatcher.removeFrom(str), indexIn));
     }
     return null;
   }
