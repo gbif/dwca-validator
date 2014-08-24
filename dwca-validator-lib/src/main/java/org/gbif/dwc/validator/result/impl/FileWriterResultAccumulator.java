@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.result.impl;
 
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.dwc.validator.result.ValidationResult;
+import org.gbif.dwc.validator.result.EvaluationResult;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -29,7 +29,7 @@ public class FileWriterResultAccumulator implements ResultAccumulatorIF {
   }
 
   @Override
-  public boolean accumulate(ValidationResult result) {
+  public boolean accumulate(EvaluationResult result) {
     // TODO of course, this is incomplete.
     String resultLine = result.getId();
     try {

@@ -57,8 +57,8 @@ public class UniquenessEvaluatorTest {
       fail();
     }
 
-    assertTrue(resultAccumulator.getValidationResultsList().size() > 0);
-    assertEquals("1", resultAccumulator.getValidationResultsList().get(0).getId());
+    assertTrue(resultAccumulator.getEvaluationResultList().size() > 0);
+    assertEquals("1", resultAccumulator.getEvaluationResultList().get(0).getId());
   }
 
   @Test
@@ -78,7 +78,7 @@ public class UniquenessEvaluatorTest {
       e.printStackTrace();
       fail();
     }
-    assertTrue(resultAccumulator.getValidationResultsList().size() > 0);
+    assertTrue(resultAccumulator.getEvaluationResultList().size() > 0);
   }
 
   @Test
@@ -97,7 +97,7 @@ public class UniquenessEvaluatorTest {
       e.printStackTrace();
       fail();
     }
-    assertTrue(resultAccumulator.getValidationResultsList().isEmpty());
+    assertTrue(resultAccumulator.getEvaluationResultList().isEmpty());
   }
 
 }

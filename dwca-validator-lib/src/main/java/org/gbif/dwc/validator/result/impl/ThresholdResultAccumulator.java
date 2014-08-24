@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.result.impl;
 
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.dwc.validator.result.ValidationResult;
+import org.gbif.dwc.validator.result.EvaluationResult;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -23,7 +23,7 @@ public class ThresholdResultAccumulator implements ResultAccumulatorIF {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ThresholdResultAccumulator.class);
   protected static final int DEFAULT_THRESHOLD = 1000;
-  private final ConcurrentLinkedQueue<ValidationResult> queue;
+  private final ConcurrentLinkedQueue<EvaluationResult> queue;
 
   private final FileWriter fw;
   private final int threshold;
@@ -37,7 +37,7 @@ public class ThresholdResultAccumulator implements ResultAccumulatorIF {
   public ThresholdResultAccumulator(String filePath, int threshold) throws IOException {
     fw = new FileWriter(new File(filePath));
     this.threshold = threshold;
-    queue = new ConcurrentLinkedQueue<ValidationResult>();
+    queue = new ConcurrentLinkedQueue<EvaluationResult>();
     count = new AtomicInteger(0);
   }
 
@@ -48,7 +48,7 @@ public class ThresholdResultAccumulator implements ResultAccumulatorIF {
    * @return
    */
   @Override
-  public boolean accumulate(ValidationResult result) {
+  public boolean accumulate(EvaluationResult result) {
     queue.add(result);
 
     if (count.incrementAndGet() == threshold && flushing.compareAndSet(false, true)) {
@@ -78,7 +78,7 @@ public class ThresholdResultAccumulator implements ResultAccumulatorIF {
    */
   private void flush(int howMany) {
     int numberWritten = 0;
-    ValidationResult currentResult = queue.poll();
+    EvaluationResult currentResult = queue.poll();
     String resultLine = null;
     try {
       while (currentResult != null && (numberWritten < howMany)) {
@@ -98,8 +98,8 @@ public class ThresholdResultAccumulator implements ResultAccumulatorIF {
    * Flush all remaining content of the queue to the file.
    */
   private void flushAll() {
-    Iterator<ValidationResult> queueIterator = queue.iterator();
-    ValidationResult currentResult = null;
+    Iterator<EvaluationResult> queueIterator = queue.iterator();
+    EvaluationResult currentResult = null;
     try {
       while (queueIterator.hasNext()) {
         currentResult = queueIterator.next();

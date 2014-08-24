@@ -8,7 +8,7 @@ import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.ValidationResult;
+import org.gbif.dwc.validator.result.EvaluationResult;
 import org.gbif.dwc.validator.result.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.util.ToBeMovedFileUtils;
@@ -257,7 +257,7 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
           new ValidationResultElement(ContentValidationType.FIELD_REFERENTIAL_INTEGRITY, Result.ERROR,
             ArchiveValidatorConfig.getLocalizedString("evaluator.referential_integrity", currentLine, term,
               referredTerm));
-        resultAccumulator.accumulate(new ValidationResult(currentLine, key, evaluatorContext, validationResultElement));
+        resultAccumulator.accumulate(new EvaluationResult(currentLine, key, evaluatorContext, validationResultElement));
       }
     } catch (IOException ioEx) {
       LOGGER.error("Can't sort id file", ioEx);

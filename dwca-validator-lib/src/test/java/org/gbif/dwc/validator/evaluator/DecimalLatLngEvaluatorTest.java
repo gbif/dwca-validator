@@ -47,9 +47,9 @@ public class DecimalLatLngEvaluatorTest {
     decimalLatLngEvaluator.handleEval(buildMockRecord("1", "a", "40"), resultAccumulator);
     decimalLatLngEvaluator.handleEval(buildMockRecord("2", "70", "b"), resultAccumulator);
 
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultsList(), "1",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "1",
       ContentValidationType.RECORD_CONTENT_VALUE));
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultsList(), "2",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "2",
       ContentValidationType.RECORD_CONTENT_VALUE));
   }
 
@@ -63,11 +63,11 @@ public class DecimalLatLngEvaluatorTest {
     decimalLatLngEvaluator.handleEval(buildMockRecord("2", "91", "40"), resultAccumulator);
     decimalLatLngEvaluator.handleEval(buildMockRecord("3", "70", "181"), resultAccumulator);
 
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultsList(), "1",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "1",
       ContentValidationType.RECORD_CONTENT_BOUNDS));
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultsList(), "2",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "2",
       ContentValidationType.RECORD_CONTENT_BOUNDS));
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultsList(), "3",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "3",
       ContentValidationType.RECORD_CONTENT_BOUNDS));
   }
 
@@ -79,12 +79,12 @@ public class DecimalLatLngEvaluatorTest {
     decimalLatLngEvaluator.handleEval(buildMockRecord("1", "-120", "40"), resultAccumulator);
     decimalLatLngEvaluator.handleEval(buildMockRecord("2", "0", "0"), resultAccumulator);
 
-    assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getValidationResultsList(), "1",
+    assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getEvaluationResultList(), "1",
       ArchiveValidatorConfig.getLocalizedString("evaluator.decimal_lat_lng.inverted", "-120", "40")));
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultsList(), "1",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "1",
       ContentValidationType.RECORD_CONTENT_VALUE));
 
-    assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getValidationResultsList(), "2",
+    assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getEvaluationResultList(), "2",
       ArchiveValidatorConfig.getLocalizedString("evaluator.decimal_lat_lng.zero", "0", "0")));
   }
 
@@ -97,7 +97,7 @@ public class DecimalLatLngEvaluatorTest {
     decimalLatLngEvaluator.handleEval(buildMockRecord("1", "30.001", "40.001"), resultAccumulator);
     decimalLatLngEvaluator.handleEval(buildMockRecord("2", "30", "120"), resultAccumulator);
 
-    assertTrue(resultAccumulator.getValidationResultsList().isEmpty());
+    assertTrue(resultAccumulator.getEvaluationResultList().isEmpty());
   }
 
 }

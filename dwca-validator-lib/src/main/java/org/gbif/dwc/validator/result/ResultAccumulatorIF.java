@@ -16,7 +16,7 @@ public interface ResultAccumulatorIF {
    * @param result
    * @return result were successfully appended
    */
-  boolean accumulate(ValidationResult result);
+  boolean accumulate(EvaluationResult result);
 
   /**
    * Close the accumulator and its underlying structure.

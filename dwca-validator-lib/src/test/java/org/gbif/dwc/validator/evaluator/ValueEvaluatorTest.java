@@ -49,8 +49,8 @@ public class ValueEvaluatorTest {
 
     valueEvaluator.handleEval(buildMockRecord("1"), resultAccumulator);
 
-    assertTrue(resultAccumulator.getValidationResultsList().size() > 0);
-    assertEquals("1", resultAccumulator.getValidationResultsList().get(0).getId());
+    assertTrue(resultAccumulator.getEvaluationResultList().size() > 0);
+    assertEquals("1", resultAccumulator.getEvaluationResultList().get(0).getId());
   }
 
 }

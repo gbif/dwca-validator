@@ -7,12 +7,12 @@ import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * Main object holding validation results for a specific id within a context.
+ * Main object holding evaluation results for a specific id within a context.
  * This object is immutable.
  * 
  * @author cgendreau
  */
-public class ValidationResult {
+public class EvaluationResult {
 
   private final String id;
   private final String evaluatorKey;
@@ -25,7 +25,7 @@ public class ValidationResult {
    * @param context
    * @param results
    */
-  public ValidationResult(String id, String evaluatorKey, EvaluationContext context,
+  public EvaluationResult(String id, String evaluatorKey, EvaluationContext context,
     List<ValidationResultElement> results) {
     this.id = id;
     this.evaluatorKey = evaluatorKey;
@@ -47,7 +47,7 @@ public class ValidationResult {
    * @param context
    * @param result
    */
-  public ValidationResult(String id, String evaluatorKey, EvaluationContext context, ValidationResultElement result) {
+  public EvaluationResult(String id, String evaluatorKey, EvaluationContext context, ValidationResultElement result) {
     this(id, evaluatorKey, context, Arrays.asList(result));
   }
 

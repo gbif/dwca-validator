@@ -76,7 +76,7 @@ public class ReferentialIntegrityEvaluatorTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    assertTrue(resultAccumulator.getValidationResultsList().size() == 0);
+    assertTrue(resultAccumulator.getEvaluationResultList().size() == 0);
   }
 
   @Test
@@ -98,7 +98,7 @@ public class ReferentialIntegrityEvaluatorTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    assertTrue(resultAccumulator.getValidationResultsList().size() == 1);
+    assertTrue(resultAccumulator.getEvaluationResultList().size() == 1);
   }
 
   @Test
@@ -118,7 +118,7 @@ public class ReferentialIntegrityEvaluatorTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    assertTrue(resultAccumulator.getValidationResultsList().size() == 0);
+    assertTrue(resultAccumulator.getEvaluationResultList().size() == 0);
   }
 
   @Test
@@ -139,6 +139,6 @@ public class ReferentialIntegrityEvaluatorTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    assertTrue(resultAccumulator.getValidationResultsList().size() == 2);
+    assertTrue(resultAccumulator.getEvaluationResultList().size() == 2);
   }
 }
