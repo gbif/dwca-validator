@@ -5,7 +5,7 @@ import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.EvaluationResult;
+import org.gbif.dwc.validator.result.ValidationResult;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.ValidationResultElement;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
@@ -158,7 +158,7 @@ public class ValueEvaluator implements RecordEvaluatorIF {
     }
 
     if (elementList != null && elementList.size() > 0) {
-      resultAccumulator.accumulate(new EvaluationResult(record.id(), key, evaluatorContext, elementList));
+      resultAccumulator.accumulate(new ValidationResult(record.id(), key, evaluatorContext, elementList));
     }
   }
 

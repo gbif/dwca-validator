@@ -6,7 +6,7 @@ import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.EvaluationResult;
+import org.gbif.dwc.validator.result.ValidationResult;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.ValidationResultElement;
@@ -128,7 +128,7 @@ public class DecimalLatLngEvaluator implements RecordEvaluatorIF {
         evaluationResultElementList.add(new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE,
           Result.WARNING, ArchiveValidatorConfig.getLocalizedString("evaluator.decimal_lat_lng.inverted", lat, lng)));
       }
-      resultAccumulator.accumulate(new EvaluationResult(id, key, EvaluationContext.CORE, evaluationResultElementList));
+      resultAccumulator.accumulate(new ValidationResult(id, key, EvaluationContext.CORE, evaluationResultElementList));
       // stop here since at least one NumericalValueEvaluation rule failed
       return;
     }
@@ -137,7 +137,7 @@ public class DecimalLatLngEvaluator implements RecordEvaluatorIF {
     Double dLng = Double.parseDouble(lng);
 
     if (dLat.doubleValue() == 0d || dLng.doubleValue() == 0d) {
-      resultAccumulator.accumulate(new EvaluationResult(id, key, EvaluationContext.CORE, new ValidationResultElement(
+      resultAccumulator.accumulate(new ValidationResult(id, key, EvaluationContext.CORE, new ValidationResultElement(
         ContentValidationType.RECORD_CONTENT_VALUE, Result.WARNING, ArchiveValidatorConfig.getLocalizedString(
           "evaluator.decimal_lat_lng.zero", lat, lng))));
     }

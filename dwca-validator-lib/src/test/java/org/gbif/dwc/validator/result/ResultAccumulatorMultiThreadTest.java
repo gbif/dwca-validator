@@ -65,7 +65,7 @@ public class ResultAccumulatorMultiThreadTest {
           boolean success = true;
           for (String currDummyId : dummyIdList) {
             success =
-              (success && resultAccumulator.accumulate(new EvaluationResult(currDummyId, "testResultAccumulator", null,
+              (success && resultAccumulator.accumulate(new ValidationResult(currDummyId, "testResultAccumulator", null,
                 new ArrayList<ValidationResultElement>())));
           }
           return success;
