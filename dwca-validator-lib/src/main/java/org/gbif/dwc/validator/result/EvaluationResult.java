@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * 
  * @author cgendreau
  */
-public class EvaluationResult {
+public class EvaluationResult implements EvaluationResultIF<ValidationResultElement> {
 
   private final String id;
   private final String evaluatorKey;
@@ -51,14 +51,17 @@ public class EvaluationResult {
     this(id, evaluatorKey, context, Arrays.asList(result));
   }
 
+  @Override
   public EvaluationContext getContext() {
     return context;
   }
 
+  @Override
   public String getId() {
     return id;
   }
 
+  @Override
   public List<ValidationResultElement> getResults() {
     return results;
   }

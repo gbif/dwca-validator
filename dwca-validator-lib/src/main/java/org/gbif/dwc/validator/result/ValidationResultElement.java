@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * 
  * @author cgendreau
  */
-public class ValidationResultElement {
+public class ValidationResultElement implements EvaluationResultElementIF {
 
   private final ValidationTypeIF type;
   private final Result result;

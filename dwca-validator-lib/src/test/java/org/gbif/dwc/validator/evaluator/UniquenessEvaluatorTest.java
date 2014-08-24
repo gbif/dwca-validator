@@ -5,9 +5,11 @@ import org.gbif.dwc.record.RecordImpl;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
+import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.evaluator.impl.UniquenessEvaluator;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
+import org.gbif.dwc.validator.result.type.ContentValidationType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +17,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -57,8 +58,8 @@ public class UniquenessEvaluatorTest {
       fail();
     }
 
-    assertTrue(resultAccumulator.getEvaluationResultList().size() > 0);
-    assertEquals("1", resultAccumulator.getEvaluationResultList().get(0).getId());
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "1",
+      ContentValidationType.FIELD_UNIQUENESS));
   }
 
   @Test
@@ -78,7 +79,9 @@ public class UniquenessEvaluatorTest {
       e.printStackTrace();
       fail();
     }
-    assertTrue(resultAccumulator.getEvaluationResultList().size() > 0);
+    // remember that the id in UniquenessEvaluator will be catalogNumber
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "1",
+      ContentValidationType.FIELD_UNIQUENESS));
   }
 
   @Test

@@ -6,9 +6,9 @@ import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
 import org.gbif.dwc.validator.result.EvaluationContext;
+import org.gbif.dwc.validator.result.EvaluationResult;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.dwc.validator.result.EvaluationResult;
 import org.gbif.dwc.validator.result.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRule;
@@ -114,21 +114,21 @@ public class DecimalLatLngEvaluator implements RecordEvaluatorIF {
     ValidationResultElement lngResultElement = lngNumericalValueEvaluationRule.evaluate(lng);
 
     if (latResultElement != null || lngResultElement != null) {
-      List<ValidationResultElement> validationResultElementList = new ArrayList<ValidationResultElement>();
+      List<ValidationResultElement> evaluationResultElementList = new ArrayList<ValidationResultElement>();
       if (latResultElement != null) {
-        validationResultElementList.add(latResultElement);
+        evaluationResultElementList.add(latResultElement);
       }
       if (lngResultElement != null) {
-        validationResultElementList.add(lngResultElement);
+        evaluationResultElementList.add(lngResultElement);
       }
 
       // try to swap lat and lng and re-evaluate
       if (latNumericalValueEvaluationRule.evaluate(lng) == null
         && lngNumericalValueEvaluationRule.evaluate(lat) == null) {
-        validationResultElementList.add(new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE,
+        evaluationResultElementList.add(new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE,
           Result.WARNING, ArchiveValidatorConfig.getLocalizedString("evaluator.decimal_lat_lng.inverted", lat, lng)));
       }
-      resultAccumulator.accumulate(new EvaluationResult(id, key, EvaluationContext.CORE, validationResultElementList));
+      resultAccumulator.accumulate(new EvaluationResult(id, key, EvaluationContext.CORE, evaluationResultElementList));
       // stop here since at least one NumericalValueEvaluation rule failed
       return;
     }
