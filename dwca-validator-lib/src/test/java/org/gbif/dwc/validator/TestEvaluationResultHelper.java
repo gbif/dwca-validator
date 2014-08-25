@@ -2,7 +2,7 @@ package org.gbif.dwc.validator;
 
 import org.gbif.dwc.validator.result.EvaluationResultElementIF;
 import org.gbif.dwc.validator.result.EvaluationResultIF;
-import org.gbif.dwc.validator.result.ValidationResultElement;
+import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ValidationTypeIF;
 
 import java.util.List;

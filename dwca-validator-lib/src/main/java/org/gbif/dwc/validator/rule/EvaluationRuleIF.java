@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.rule;
 
-import org.gbif.dwc.validator.result.ValidationResultElement;
+import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 
 /**
  * Evaluation rules are used against the value of a ConceptTerm within a record.

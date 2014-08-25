@@ -1,4 +1,7 @@
-package org.gbif.dwc.validator.result;
+package org.gbif.dwc.validator.result.impl.validation;
+
+import org.gbif.dwc.validator.result.EvaluationContext;
+import org.gbif.dwc.validator.result.EvaluationResultIF;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +15,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * 
  * @author cgendreau
  */
-public class EvaluationResult implements EvaluationResultIF<ValidationResultElement> {
+public class ValidationResult implements EvaluationResultIF<ValidationResultElement> {
 
   private final String id;
   private final String evaluatorKey;
@@ -25,7 +28,7 @@ public class EvaluationResult implements EvaluationResultIF<ValidationResultElem
    * @param context
    * @param results
    */
-  public EvaluationResult(String id, String evaluatorKey, EvaluationContext context,
+  public ValidationResult(String id, String evaluatorKey, EvaluationContext context,
     List<ValidationResultElement> results) {
     this.id = id;
     this.evaluatorKey = evaluatorKey;
@@ -47,7 +50,7 @@ public class EvaluationResult implements EvaluationResultIF<ValidationResultElem
    * @param context
    * @param result
    */
-  public EvaluationResult(String id, String evaluatorKey, EvaluationContext context, ValidationResultElement result) {
+  public ValidationResult(String id, String evaluatorKey, EvaluationContext context, ValidationResultElement result) {
     this(id, evaluatorKey, context, Arrays.asList(result));
   }
 

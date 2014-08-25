@@ -5,9 +5,9 @@ import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.ValidationResult;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.dwc.validator.result.ValidationResultElement;
+import org.gbif.dwc.validator.result.impl.validation.ValidationResult;
+import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 
 import java.util.ArrayList;

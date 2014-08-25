@@ -1,5 +1,7 @@
-package org.gbif.dwc.validator.result;
+package org.gbif.dwc.validator.result.impl.validation;
 
+import org.gbif.dwc.validator.result.EvaluationResultElementIF;
+import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ValidationTypeIF;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;

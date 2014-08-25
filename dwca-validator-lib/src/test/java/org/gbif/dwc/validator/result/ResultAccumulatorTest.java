@@ -3,6 +3,8 @@ package org.gbif.dwc.validator.result;
 import org.gbif.dwc.validator.mock.MockDataGenerator;
 import org.gbif.dwc.validator.result.impl.FileWriterResultAccumulator;
 import org.gbif.dwc.validator.result.impl.ThresholdResultAccumulator;
+import org.gbif.dwc.validator.result.impl.validation.ValidationResult;
+import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 
 import java.io.File;
 import java.io.IOException;

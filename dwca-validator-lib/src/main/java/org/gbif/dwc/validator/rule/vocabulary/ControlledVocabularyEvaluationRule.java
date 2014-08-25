@@ -3,7 +3,7 @@ package org.gbif.dwc.validator.rule.vocabulary;
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.result.ValidationResultElement;
+import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 
