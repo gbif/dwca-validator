@@ -30,7 +30,7 @@ public class BlankValueEvaluationRule implements EvaluationRuleIF<String> {
     }
 
     /**
-     * Creates a default BlankValueEvaluationRuleBuilder that rejects all blank values..
+     * Creates a default BlankValueEvaluationRuleBuilder that rejects all blank values.
      * 
      * @return
      */
