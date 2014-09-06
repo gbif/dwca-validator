@@ -6,7 +6,7 @@ package org.gbif.dwc.validator.result.type;
  * @author cgendreau
  */
 public enum StructureValidationType implements ValidationTypeIF {
-  EML_SCHEMA(1, "eml.schema");
+  EML_SCHEMA(1, "eml.schema"), METADATA_SCHEMA(2, "metadata.schema");
 
   private static final String PREFIX = "SV-";
   private String id;
