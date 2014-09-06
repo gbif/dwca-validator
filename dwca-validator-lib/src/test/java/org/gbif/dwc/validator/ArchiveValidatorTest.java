@@ -6,7 +6,6 @@ import org.gbif.dwc.validator.handler.ArchiveContentHandler;
 import org.gbif.dwc.validator.handler.ArchiveStructureHandler;
 import org.gbif.dwc.validator.impl.ArchiveValidator;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.dwc.validator.structure.evaluator.EMLEvaluator.EMLInvalidException;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 
 import java.io.File;
@@ -43,7 +42,7 @@ public class ArchiveValidatorTest {
     }
 
     @Override
-    public void inspectEML(File eml, ResultAccumulatorIF resultAccumulator) throws EMLInvalidException {
+    public void inspectEML(File eml, ResultAccumulatorIF resultAccumulator) {
       super.inspectEML(eml, resultAccumulator);
       inspectEMLCalled = true;
     }

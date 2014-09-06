@@ -2,7 +2,7 @@ package org.gbif.dwc.validator.rule.value;
 
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.result.ValidationResultElement;
+import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 
@@ -90,8 +90,9 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
 
     int indexIn = charMatcher.indexIn(str);
     if (indexIn > 0) {
-      return new ValidationResultElement(ContentValidationType.RECORD_CONTENT, Result.WARNING,
-        ArchiveValidatorConfig.getLocalizedString("rule.invalid_character", str, indexIn));
+      // Remove invalid character from the error message to avoid display issues (e.g. NULL char)
+      return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.WARNING,
+        ArchiveValidatorConfig.getLocalizedString("rule.invalid_character", charMatcher.removeFrom(str), indexIn));
     }
     return null;
   }

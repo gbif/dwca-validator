@@ -1,8 +1,9 @@
 package org.gbif.dwc.validator.cli;
 
-import org.gbif.dwc.validator.result.ValidationResult;
-import org.gbif.dwc.validator.result.ValidationResultElement;
+import org.gbif.dwc.validator.result.EvaluationResultElementIF;
+import org.gbif.dwc.validator.result.EvaluationResultIF;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
+import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 
 /**
  * Validation results report printer for command line usage.
@@ -22,10 +23,13 @@ public class CliReportPrinter {
     if (resultAccumulator.getCount() > 0) {
       System.out.println("The Dwc-A file looks invalid according to current default validation chain:");
       System.out.println("Validation chain output(s):");
-      for (ValidationResult vr : resultAccumulator.getValidationResultsList()) {
+      ValidationResultElement validationElement;
+      for (EvaluationResultIF<? extends EvaluationResultElementIF> vr : resultAccumulator.getEvaluationResultList()) {
         System.out.println(vr.getContext() + " : " + vr.getId());
-        for (ValidationResultElement el : vr.getResults()) {
-          System.out.println("->" + el.getResult() + "," + el.getType() + ":" + el.getExplanation());
+        for (EvaluationResultElementIF el : vr.getResults()) {
+          validationElement = (ValidationResultElement) el;
+          System.out.println("->" + validationElement.getResult() + "," + validationElement.getType() + ":"
+            + validationElement.getExplanation());
         }
       }
     } else {

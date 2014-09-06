@@ -13,12 +13,12 @@ public interface ValidationTypeIF {
    * 
    * @return
    */
-  public String getDescriptionKey();
+  String getDescriptionKey();
 
   /**
    * Id of this validation type.
    * 
    * @return
    */
-  public String getId();
+  String getId();
 }

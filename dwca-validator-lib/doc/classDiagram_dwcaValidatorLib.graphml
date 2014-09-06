@@ -449,7 +449,7 @@
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="interface" use3DEffect="true">
             <y:AttributeLabel/>
-            <y:MethodLabel>+accumulate(ValidationResult)</y:MethodLabel>
+            <y:MethodLabel>+accumulate(EvaluationResult)</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -503,7 +503,7 @@
           <y:Geometry height="29.25" width="151.47859922178998" x="338.8410749027237" y="279.25097276264603"/>
           <y:Fill color="#339966" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="113.74462890625" x="18.86698515776999" y="3.0">ValidationResult<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="115.87744140625" x="17.80057890776999" y="3.0">EvaluationResult<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -521,7 +521,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="100.0" width="269.9108280254777" x="609.127351626456" y="318.25"/>
+          <y:Geometry height="110.37834394904456" width="269.9108280254777" x="609.127351626456" y="318.25"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="125.15771484375" x="72.37655659086386" y="26.1328125">RecordEvaluatorIF<y:LabelModel>
@@ -533,7 +533,8 @@
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="interface" use3DEffect="true">
             <y:AttributeLabel/>
-            <y:MethodLabel>+handleEval(Record,ResultAccumulatorIF)
+            <y:MethodLabel>+getKey():String
++handleEval(Record,ResultAccumulatorIF)
 +handlePostIterate(ResultAccumulatorIF)</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>

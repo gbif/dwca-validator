@@ -3,10 +3,11 @@ package org.gbif.dwc.validator.evaluator.impl;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
+import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.dwc.validator.result.ValidationContext;
-import org.gbif.dwc.validator.result.ValidationResult;
-import org.gbif.dwc.validator.result.ValidationResultElement;
+import org.gbif.dwc.validator.result.impl.validation.ValidationResult;
+import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 
 import java.util.ArrayList;
@@ -16,12 +17,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * RecordEvaluatorIF implementation to check the values inside a record.
+ * General RecordEvaluatorIF implementation to check the values inside a record.
+ * If an evaluation requires more than one field or relies on a specific order of the EvaluationRuleIF to be
+ * accomplished this implementation should NOT be used.
  * This validation is about what the value is and not what the value represents.
  * The evaluation of the values is made by ConceptTerm, using a list of EvaluationRuleIF.
  * 
  * @author cgendreau
  */
+@RecordEvaluator(key = "valueEvaluator")
 public class ValueEvaluator implements RecordEvaluatorIF {
 
   /**
@@ -31,10 +35,11 @@ public class ValueEvaluator implements RecordEvaluatorIF {
    */
   public static class ValueEvaluatorBuilder {
 
-    private final ValidationContext evaluatorContext;
+    private final String key = ValueEvaluator.class.getAnnotation(RecordEvaluator.class).key();
+    private final EvaluationContext evaluatorContext;
     private Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm;
 
-    private ValueEvaluatorBuilder(ValidationContext evaluatorContext) {
+    private ValueEvaluatorBuilder(EvaluationContext evaluatorContext) {
       this.evaluatorContext = evaluatorContext;
     }
 
@@ -44,7 +49,7 @@ public class ValueEvaluator implements RecordEvaluatorIF {
      * @return
      */
     public static ValueEvaluatorBuilder create() {
-      return new ValueEvaluatorBuilder(ValidationContext.CORE);
+      return new ValueEvaluatorBuilder(EvaluationContext.CORE);
     }
 
 
@@ -111,19 +116,26 @@ public class ValueEvaluator implements RecordEvaluatorIF {
         throw new IllegalStateException("The rulesPerTerm must contains at least one element");
       }
 
-      return new ValueEvaluator(rulesPerTerm, evaluatorContext);
+      return new ValueEvaluator(key, rulesPerTerm, evaluatorContext);
     }
   }
 
+  private final String key;
   // hold all evaluation rules per ConceptTerm
   private final Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm;
-  private final ValidationContext evaluatorContext;
+  private final EvaluationContext evaluatorContext;
 
-  public ValueEvaluator(Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm,
-    ValidationContext evaluatorContext) {
+  public ValueEvaluator(String key, Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm,
+    EvaluationContext evaluatorContext) {
+    this.key = key;
     this.rulesPerTerm =
       Collections.unmodifiableMap(new HashMap<ConceptTerm, List<EvaluationRuleIF<String>>>(rulesPerTerm));
     this.evaluatorContext = evaluatorContext;
+  }
+
+  @Override
+  public String getKey() {
+    return key;
   }
 
   @Override
@@ -146,7 +158,7 @@ public class ValueEvaluator implements RecordEvaluatorIF {
     }
 
     if (elementList != null && elementList.size() > 0) {
-      resultAccumulator.accumulate(new ValidationResult(record.id(), evaluatorContext, elementList));
+      resultAccumulator.accumulate(new ValidationResult(record.id(), key, evaluatorContext, elementList));
     }
   }
 

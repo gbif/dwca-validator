@@ -10,6 +10,11 @@ import org.gbif.dwc.validator.result.ResultAccumulatorIF;
  */
 public interface RecordEvaluatorIF {
 
+  /**
+   * Returns the key to use to uniquely identify the Evaluator implementation.
+   */
+  String getKey();
+
   void handleEval(Record record, ResultAccumulatorIF resultAccumulator);
 
   /**

@@ -17,5 +17,5 @@ public interface ArchiveValidatorIF {
    * @param dwcaFile
    * @param resultAccumulator
    */
-  public void validateArchive(File dwcaFile, ResultAccumulatorIF resultAccumulator);
+  void validateArchive(File dwcaFile, ResultAccumulatorIF resultAccumulator);
 }

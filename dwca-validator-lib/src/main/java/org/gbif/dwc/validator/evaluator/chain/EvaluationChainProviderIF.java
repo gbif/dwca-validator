@@ -17,6 +17,6 @@ public interface EvaluationChainProviderIF {
    * @param archiveFile used to only includes necessary elements in the validation chain for a specific archive
    * @return head of the validation chain
    */
-  public ChainableRecordEvaluator getCoreChain(ArchiveFile archiveFile);
+  ChainableRecordEvaluator getCoreChain(ArchiveFile archiveFile);
 
 }

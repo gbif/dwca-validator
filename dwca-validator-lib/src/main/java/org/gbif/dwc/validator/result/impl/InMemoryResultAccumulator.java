@@ -1,7 +1,8 @@
 package org.gbif.dwc.validator.result.impl;
 
+import org.gbif.dwc.validator.result.EvaluationResultElementIF;
+import org.gbif.dwc.validator.result.EvaluationResultIF;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.dwc.validator.result.ValidationResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +16,16 @@ import java.util.List;
 public class InMemoryResultAccumulator implements ResultAccumulatorIF {
 
   private static final int MAX_RESULT = 100;
-  private final List<ValidationResult> validationResultsList;
+  private final List<EvaluationResultIF<? extends EvaluationResultElementIF>> evaluationResultList;
 
   public InMemoryResultAccumulator() {
-    validationResultsList = new ArrayList<ValidationResult>();
+    evaluationResultList = new ArrayList<EvaluationResultIF<? extends EvaluationResultElementIF>>();
   }
 
   @Override
-  public boolean accumulate(ValidationResult result) {
-    if (validationResultsList.size() < MAX_RESULT) {
-      return validationResultsList.add(result);
+  public boolean accumulate(EvaluationResultIF<? extends EvaluationResultElementIF> result) {
+    if (evaluationResultList.size() < MAX_RESULT) {
+      return evaluationResultList.add(result);
     }
     return false;
   }
@@ -36,11 +37,11 @@ public class InMemoryResultAccumulator implements ResultAccumulatorIF {
 
   @Override
   public int getCount() {
-    return validationResultsList.size();
+    return evaluationResultList.size();
   }
 
-  public List<ValidationResult> getValidationResultsList() {
-    return validationResultsList;
+  public List<EvaluationResultIF<? extends EvaluationResultElementIF>> getEvaluationResultList() {
+    return evaluationResultList;
   }
 
 }
