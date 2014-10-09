@@ -56,11 +56,24 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
     public InvalidCharacterEvaluationRule build() {
       return new InvalidCharacterEvaluationRule(currentCharMatcher);
     }
+
+    /**
+     * Reject the replacement character (\uFFFD) often seen with encoding issue.
+     * 
+     * @return
+     */
+    public InvalidCharacterEvaluationRuleBuilder rejectReplacementChar() {
+      this.currentCharMatcher = currentCharMatcher.or(CharMatcher.is(REPLACEMENT_CHAR));
+      return this;
+    }
   }
+
+  // replacement char \uFFFD
+  public static final char REPLACEMENT_CHAR = 65533;
 
   private final CharMatcher charMatcher;
 
-  // default rule is no invisible character, except space.
+  // default rule is no invisible character except space
   private static CharMatcher DEFAULT_CHAR_MATCHER = CharMatcher.INVISIBLE.and(CharMatcher.isNot(' '));
 
   /**

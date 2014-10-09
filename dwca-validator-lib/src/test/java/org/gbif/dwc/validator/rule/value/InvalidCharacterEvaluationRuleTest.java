@@ -16,6 +16,9 @@ public class InvalidCharacterEvaluationRuleTest {
   private static final char NULL_CHAR = 0;
   private static final char ESCAPE_CHAR = 27;
 
+  // replacement character normally seen in wrong encoding situation
+  private static final String REPLACEMENT_CHAR = "\uFFFD";
+
   // allowed if allowFormattingWhiteSpace() is used
   private static final String ENDLINE = System.getProperty("line.separator");
   private static final char VERTICAL_TAB_CHAR = 11;
@@ -29,6 +32,7 @@ public class InvalidCharacterEvaluationRuleTest {
     testNeverValidString(rule);
 
     assertNull(rule.evaluate("test" + VERTICAL_TAB_CHAR));
+    assertNull(rule.evaluate("test" + REPLACEMENT_CHAR));
   }
 
   @Test
@@ -40,6 +44,17 @@ public class InvalidCharacterEvaluationRuleTest {
 
     assertNotNull(rule.evaluate("test\t2"));
     assertNotNull(rule.evaluate("test" + ENDLINE));
+    assertNull(rule.evaluate("test" + REPLACEMENT_CHAR));
+  }
+
+  @Test
+  public void evaluateNoReplacementCharAllowed() {
+    InvalidCharacterEvaluationRule rule = InvalidCharacterEvaluationRule.createRule().rejectReplacementChar().build();
+
+    testAlwaysValidString(rule);
+    testNeverValidString(rule);
+
+    assertNotNull(rule.evaluate("test" + REPLACEMENT_CHAR));
   }
 
   private void testAlwaysValidString(InvalidCharacterEvaluationRule rule) {
