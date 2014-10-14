@@ -9,7 +9,7 @@ import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 import com.google.common.base.CharMatcher;
 
 /**
- * Rule use to ensure a String does not contain invalid characters.
+ * Rule used to ensure a String does not contain invalid characters.
  * 
  * @author cgendreau
  */
