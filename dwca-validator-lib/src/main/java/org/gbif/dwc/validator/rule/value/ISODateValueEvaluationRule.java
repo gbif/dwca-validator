@@ -6,6 +6,7 @@ import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 
+import org.apache.commons.lang3.StringUtils;
 import org.threeten.bp.DateTimeException;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.Year;
@@ -148,6 +149,10 @@ public class ISODateValueEvaluationRule implements EvaluationRuleIF<String> {
 
   @Override
   public ValidationResultElement evaluate(String str) {
+
+    if (StringUtils.isBlank(str)) {
+      return null;
+    }
 
     // if we can parse it as complete ISO date, it's fine
     if (canParse(str, ISO8601_BASIC_ISO_DATE, activeCompleteDateFormatter)) {

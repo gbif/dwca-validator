@@ -1,5 +1,7 @@
 package org.gbif.dwc.validator.rule.value;
 
+import org.gbif.dwc.validator.rule.value.BlankValueEvaluationRule.BlankValueEvaluationRuleBuilder;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
@@ -14,7 +16,7 @@ public class BlankValueEvaluationRuleTest {
 
   @Test
   public void evaluate() {
-    BlankValueEvaluationRule rule = BlankValueEvaluationRule.createRule().build();
+    BlankValueEvaluationRule rule = BlankValueEvaluationRuleBuilder.create().build();
 
     // should send result (error)
     assertNotNull(rule.evaluate(""));

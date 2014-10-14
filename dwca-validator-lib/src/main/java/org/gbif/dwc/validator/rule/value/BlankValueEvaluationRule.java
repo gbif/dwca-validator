@@ -48,17 +48,6 @@ public class BlankValueEvaluationRule implements EvaluationRuleIF<String> {
     }
   }
 
-  /**
-   * Simple alias of BlankValueEvaluationRuleBuilder.create() for code readability so we can use
-   * BlankValueEvaluationRuleBuilder.createRule() instead of
-   * BlankValueEvaluationRuleBuilder.BlankValueEvaluationRuleBuilder.create()
-   * 
-   * @return default BlankValueEvaluationRuleBuilder
-   */
-  public static BlankValueEvaluationRuleBuilder createRule() {
-    return BlankValueEvaluationRuleBuilder.create();
-  }
-
   @Override
   public ValidationResultElement evaluate(String str) {
 

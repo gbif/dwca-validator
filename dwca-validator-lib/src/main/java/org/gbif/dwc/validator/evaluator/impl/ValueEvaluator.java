@@ -29,18 +29,43 @@ import java.util.Map;
 public class ValueEvaluator implements RecordEvaluatorIF {
 
   /**
+   * Container object holding ValueEvaluator configurations.
+   * 
+   * @author cgendreau
+   */
+  public static class Configuration {
+
+    private EvaluationContext evaluatorContext;
+    private Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm;
+
+    public EvaluationContext getEvaluatorContext() {
+      return evaluatorContext;
+    }
+
+    public Map<ConceptTerm, List<EvaluationRuleIF<String>>> getRulesPerTerm() {
+      return rulesPerTerm;
+    }
+
+    public void setEvaluatorContext(EvaluationContext evaluatorContext) {
+      this.evaluatorContext = evaluatorContext;
+    }
+
+    public void setRulesPerTerm(Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm) {
+      this.rulesPerTerm = rulesPerTerm;
+    }
+  }
+
+  /**
    * Builder of ValueEvaluator object.
    * 
    * @author cgendreau
    */
   public static class ValueEvaluatorBuilder {
 
-    private final String key = ValueEvaluator.class.getAnnotation(RecordEvaluator.class).key();
-    private final EvaluationContext evaluatorContext;
-    private Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm;
+    private final Configuration configuration = new Configuration();
 
     private ValueEvaluatorBuilder(EvaluationContext evaluatorContext) {
-      this.evaluatorContext = evaluatorContext;
+      configuration.setEvaluatorContext(evaluatorContext);
     }
 
     /**
@@ -61,10 +86,11 @@ public class ValueEvaluator implements RecordEvaluatorIF {
      * @return
      */
     public ValueEvaluatorBuilder addRule(ConceptTerm term, EvaluationRuleIF<String> rule) {
-      if (rulesPerTerm == null) {
-        rulesPerTerm = new HashMap<ConceptTerm, List<EvaluationRuleIF<String>>>();
+      if (configuration.getRulesPerTerm() == null) {
+        configuration.setRulesPerTerm(new HashMap<ConceptTerm, List<EvaluationRuleIF<String>>>());
       }
 
+      Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm = configuration.getRulesPerTerm();
       if (rulesPerTerm.get(term) == null) {
         rulesPerTerm.put(term, new ArrayList<EvaluationRuleIF<String>>());
       }
@@ -108,29 +134,28 @@ public class ValueEvaluator implements RecordEvaluatorIF {
      * @throws IllegalStateException
      */
     public ValueEvaluator build() throws IllegalStateException {
-      if (evaluatorContext == null) {
+      if (configuration.getEvaluatorContext() == null) {
         throw new IllegalStateException("The evaluatorContext must be set");
       }
 
-      if (rulesPerTerm == null || rulesPerTerm.size() == 0) {
+      if (configuration.getRulesPerTerm() == null || configuration.getRulesPerTerm().size() == 0) {
         throw new IllegalStateException("The rulesPerTerm must contains at least one element");
       }
 
-      return new ValueEvaluator(key, rulesPerTerm, evaluatorContext);
+      return new ValueEvaluator(configuration);
     }
   }
 
-  private final String key;
+  private final String key = ValueEvaluator.class.getAnnotation(RecordEvaluator.class).key();
   // hold all evaluation rules per ConceptTerm
   private final Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm;
   private final EvaluationContext evaluatorContext;
 
-  public ValueEvaluator(String key, Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm,
-    EvaluationContext evaluatorContext) {
-    this.key = key;
+  public ValueEvaluator(Configuration configuration) {
+    this.evaluatorContext = configuration.getEvaluatorContext();
     this.rulesPerTerm =
-      Collections.unmodifiableMap(new HashMap<ConceptTerm, List<EvaluationRuleIF<String>>>(rulesPerTerm));
-    this.evaluatorContext = evaluatorContext;
+      Collections.unmodifiableMap(new HashMap<ConceptTerm, List<EvaluationRuleIF<String>>>(configuration
+        .getRulesPerTerm()));
   }
 
   @Override

@@ -1,0 +1,20 @@
+# linked to FileBasedValidationChainLoaderTest test class
+--- 
+rules:
+ - !!org.gbif.dwc.validator.rule.value.ISODateValueEvaluationRule  &isoDateVER
+   - !!org.gbif.dwc.validator.rule.value.ISODateValueEvaluationRule$Configuration
+     allowPartialDate			: false
+     allowMissingLeadingZeros	: false
+ - !!org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule &invalidCharacterVER
+   - !!org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule$Configuration
+     allowFormattingWhiteSpace	: false
+     rejectReplacementChar		: true
+
+evaluators:
+ - !!org.gbif.dwc.validator.evaluator.impl.ValueEvaluator
+   - !!org.gbif.dwc.validator.evaluator.impl.ValueEvaluator$Configuration
+     rulesPerTerm:
+       !!org.gbif.dwc.terms.DwcTerm 'eventDate' : [*isoDateVER]
+       !!org.gbif.dwc.terms.DwcTerm 'scientificName' : [*invalidCharacterVER]
+
+  
