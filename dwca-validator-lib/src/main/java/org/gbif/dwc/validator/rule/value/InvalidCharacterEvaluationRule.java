@@ -10,24 +10,47 @@ import com.google.common.base.CharMatcher;
 
 /**
  * Rule used to ensure a String does not contain invalid characters.
+ * Get instance using the builder InvalidCharacterEvaluationRuleBuilder
  * 
  * @author cgendreau
  */
 public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> {
 
   /**
+   * Container object holding InvalidCharacterEvaluationRule configurations.
+   * 
+   * @author cgendreau
+   */
+  public static class Configuration {
+
+    private boolean allowFormattingWhiteSpace = false;
+    private boolean rejectReplacementChar = false;
+
+    public boolean isAllowFormattingWhiteSpace() {
+      return allowFormattingWhiteSpace;
+    }
+
+    public boolean isRejectReplacementChar() {
+      return rejectReplacementChar;
+    }
+
+    public void setAllowFormattingWhiteSpace(boolean allowFormattingWhiteSpace) {
+      this.allowFormattingWhiteSpace = allowFormattingWhiteSpace;
+    }
+
+    public void setRejectReplacementChar(boolean rejectReplacementChar) {
+      this.rejectReplacementChar = rejectReplacementChar;
+    }
+  }
+
+  /**
    * Builder used to customized, if needed, the InvalidCharacterEvaluationRule.
-   * Also ensure usage of immutable object.
    * 
    * @author cgendreau
    */
   public static class InvalidCharacterEvaluationRuleBuilder {
 
-    private CharMatcher currentCharMatcher;
-
-    private InvalidCharacterEvaluationRuleBuilder(CharMatcher currentCharMatcher) {
-      this.currentCharMatcher = currentCharMatcher;
-    }
+    private final Configuration configuration = new Configuration();
 
     /**
      * Creates a default InvalidCharacterEvaluationRuleBuilder that rejects any invisible characters except space.
@@ -35,7 +58,27 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
      * @return
      */
     public static InvalidCharacterEvaluationRuleBuilder create() {
-      return new InvalidCharacterEvaluationRuleBuilder(DEFAULT_CHAR_MATCHER);
+      return new InvalidCharacterEvaluationRuleBuilder();
+    }
+
+    /**
+     * Create a CharMatcher object based on Configuration.
+     * 
+     * @param configuration
+     * @return
+     */
+    private static CharMatcher toCharMatcher(Configuration configuration) {
+      CharMatcher charMatcher = DEFAULT_CHAR_MATCHER;
+
+      if (configuration.allowFormattingWhiteSpace) {
+        charMatcher = charMatcher.and(CharMatcher.BREAKING_WHITESPACE.negate());
+      }
+
+      if (configuration.rejectReplacementChar) {
+        charMatcher = charMatcher.or(CharMatcher.is(REPLACEMENT_CHAR));
+      }
+
+      return charMatcher;
     }
 
     /**
@@ -44,7 +87,7 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
      * @return
      */
     public InvalidCharacterEvaluationRuleBuilder allowFormattingWhiteSpace() {
-      this.currentCharMatcher = currentCharMatcher.and(CharMatcher.BREAKING_WHITESPACE.negate());
+      configuration.setAllowFormattingWhiteSpace(true);
       return this;
     }
 
@@ -54,7 +97,7 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
      * @return immutable InvalidCharacterEvaluationRule
      */
     public InvalidCharacterEvaluationRule build() {
-      return new InvalidCharacterEvaluationRule(currentCharMatcher);
+      return new InvalidCharacterEvaluationRule(configuration);
     }
 
     /**
@@ -63,7 +106,7 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
      * @return
      */
     public InvalidCharacterEvaluationRuleBuilder rejectReplacementChar() {
-      this.currentCharMatcher = currentCharMatcher.or(CharMatcher.is(REPLACEMENT_CHAR));
+      configuration.setRejectReplacementChar(true);
       return this;
     }
   }
@@ -77,21 +120,13 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
   private static CharMatcher DEFAULT_CHAR_MATCHER = CharMatcher.INVISIBLE.and(CharMatcher.isNot(' '));
 
   /**
-   * InvalidCharacterEvaluationRule are created using the builder InvalidCharacterEvaluationRuleBuilder.
-   */
-  private InvalidCharacterEvaluationRule(CharMatcher charMatcher) {
-    this.charMatcher = charMatcher;
-  }
-
-  /**
-   * Simple alias of InvalidCharacterEvaluationRuleBuilder.create() for code readability so we can use
-   * InvalidCharacterEvaluationRule.createRule() instead of
-   * InvalidCharacterEvaluationRule.InvalidCharacterEvaluationRuleBuilder.create()
+   * Build immutable InvalidCharacterEvaluationRule from Configuration.
+   * Internally, the builder will be used to convert configurations into CharMatcher.
    * 
-   * @return default InvalidCharacterEvaluationRuleBuilder
+   * @param configuration
    */
-  public static InvalidCharacterEvaluationRuleBuilder createRule() {
-    return InvalidCharacterEvaluationRuleBuilder.create();
+  public InvalidCharacterEvaluationRule(Configuration configuration) {
+    this.charMatcher = InvalidCharacterEvaluationRuleBuilder.toCharMatcher(configuration);
   }
 
   @Override

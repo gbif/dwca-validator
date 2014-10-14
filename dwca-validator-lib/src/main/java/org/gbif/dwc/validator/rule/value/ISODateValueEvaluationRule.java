@@ -21,13 +21,40 @@ import org.threeten.bp.format.DateTimeFormatter;
 public class ISODateValueEvaluationRule implements EvaluationRuleIF<String> {
 
   /**
+   * Container object holding ISODateValueEvaluationRule configurations.
+   * 
+   * @author cgendreau
+   */
+  public static class Configuration {
+
+    private boolean allowPartialDate = false;
+    private boolean allowMissingLeadingZeros = false;
+
+    public boolean isAllowMissingLeadingZeros() {
+      return allowMissingLeadingZeros;
+    }
+
+    public boolean isAllowPartialDate() {
+      return allowPartialDate;
+    }
+
+    public void setAllowMissingLeadingZeros(boolean allowMissingLeadingZeros) {
+      this.allowMissingLeadingZeros = allowMissingLeadingZeros;
+    }
+
+    public void setAllowPartialDate(boolean allowPartialDate) {
+      this.allowPartialDate = allowPartialDate;
+    }
+  }
+
+  /**
    * Builder used to customized, if needed, the ISODateValueEvaluationRule.
    * 
    * @author cgendreau
    */
   public static class ISODateValueEvaluationRuleBuilder {
 
-    private final ISODateValueEvaluationRuleConfiguration configuration = new ISODateValueEvaluationRuleConfiguration();
+    private final Configuration configuration = new Configuration();
 
     /**
      * Creates a default ISODateValueEvaluationRuleBuilder.
@@ -69,33 +96,6 @@ public class ISODateValueEvaluationRule implements EvaluationRuleIF<String> {
 
   }
 
-  /**
-   * Container object holding ISODateValueEvaluationRule configurations.
-   * 
-   * @author cgendreau
-   */
-  public static class ISODateValueEvaluationRuleConfiguration {
-
-    private boolean allowPartialDate = false;
-    private boolean allowMissingLeadingZeros = false;
-
-    public boolean isAllowMissingLeadingZeros() {
-      return allowMissingLeadingZeros;
-    }
-
-    public boolean isAllowPartialDate() {
-      return allowPartialDate;
-    }
-
-    public void setAllowMissingLeadingZeros(boolean allowMissingLeadingZeros) {
-      this.allowMissingLeadingZeros = allowMissingLeadingZeros;
-    }
-
-    public void setAllowPartialDate(boolean allowPartialDate) {
-      this.allowPartialDate = allowPartialDate;
-    }
-  }
-
   private static final DateTimeFormatter ISO8601_BASIC_ISO_DATE = DateTimeFormatter.BASIC_ISO_DATE;
 
   private static final DateTimeFormatter ISO8601_ISO_DATE = DateTimeFormatter.ISO_DATE;
@@ -110,7 +110,7 @@ public class ISODateValueEvaluationRule implements EvaluationRuleIF<String> {
   private final DateTimeFormatter activeCompleteDateFormatter;
   private final DateTimeFormatter activePartialDateFormatter;
 
-  public ISODateValueEvaluationRule(ISODateValueEvaluationRuleConfiguration configuration) {
+  public ISODateValueEvaluationRule(Configuration configuration) {
     this.allowPartialDate = configuration.allowPartialDate;
 
     if (configuration.allowMissingLeadingZeros) {

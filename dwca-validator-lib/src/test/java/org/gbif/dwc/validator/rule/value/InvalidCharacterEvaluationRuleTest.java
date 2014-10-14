@@ -1,5 +1,7 @@
 package org.gbif.dwc.validator.rule.value;
 
+import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule.InvalidCharacterEvaluationRuleBuilder;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
@@ -26,7 +28,7 @@ public class InvalidCharacterEvaluationRuleTest {
   @Test
   public void evaluateFormattingWhiteSpaceAllowed() {
     InvalidCharacterEvaluationRule rule =
-      InvalidCharacterEvaluationRule.createRule().allowFormattingWhiteSpace().build();
+      InvalidCharacterEvaluationRuleBuilder.create().allowFormattingWhiteSpace().build();
 
     testAlwaysValidString(rule);
     testNeverValidString(rule);
@@ -37,7 +39,7 @@ public class InvalidCharacterEvaluationRuleTest {
 
   @Test
   public void evaluateNoFormattingWhiteSpaceAllowed() {
-    InvalidCharacterEvaluationRule rule = InvalidCharacterEvaluationRule.createRule().build();
+    InvalidCharacterEvaluationRule rule = InvalidCharacterEvaluationRuleBuilder.create().build();
 
     testAlwaysValidString(rule);
     testNeverValidString(rule);
@@ -49,7 +51,8 @@ public class InvalidCharacterEvaluationRuleTest {
 
   @Test
   public void evaluateNoReplacementCharAllowed() {
-    InvalidCharacterEvaluationRule rule = InvalidCharacterEvaluationRule.createRule().rejectReplacementChar().build();
+    InvalidCharacterEvaluationRule rule =
+      InvalidCharacterEvaluationRuleBuilder.create().rejectReplacementChar().build();
 
     testAlwaysValidString(rule);
     testNeverValidString(rule);

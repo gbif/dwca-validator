@@ -11,7 +11,7 @@ import org.gbif.dwc.validator.evaluator.impl.ValueEvaluator;
 import org.gbif.dwc.validator.evaluator.impl.ValueEvaluator.ValueEvaluatorBuilder;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
-import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule;
+import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule.InvalidCharacterEvaluationRuleBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class ValueEvaluatorTest {
     // register an InvalidCharacterEvaluationRule for scientificName
     ValueEvaluator valueEvaluator =
       ValueEvaluatorBuilder.create()
-        .addRule(DwcTerm.scientificName, InvalidCharacterEvaluationRule.createRule().build()).build();
+        .addRule(DwcTerm.scientificName, InvalidCharacterEvaluationRuleBuilder.create().build()).build();
 
     valueEvaluator.handleEval(buildMockRecord("1"), resultAccumulator);
 

@@ -7,7 +7,7 @@ import org.gbif.dwc.validator.evaluator.impl.UniquenessEvaluator;
 import org.gbif.dwc.validator.evaluator.impl.ValueEvaluator;
 import org.gbif.dwc.validator.evaluator.impl.ValueEvaluator.ValueEvaluatorBuilder;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule;
+import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule.InvalidCharacterEvaluationRuleBuilder;
 import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRule;
 
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class DefaultEvaluationChainProvider implements EvaluationChainProviderIF
 
     NumericalValueEvaluationRule numericalValueEvaluationRule = NumericalValueEvaluationRule.createRule().build();
 
-    rulesBuilder.addRule(DwcTerm.scientificName, InvalidCharacterEvaluationRule.createRule().build());
+    rulesBuilder.addRule(DwcTerm.scientificName, InvalidCharacterEvaluationRuleBuilder.create().build());
     rulesBuilder.addRule(DwcTerm.decimalLatitude, numericalValueEvaluationRule);
     rulesBuilder.addRule(DwcTerm.decimalLongitude, numericalValueEvaluationRule);
 
