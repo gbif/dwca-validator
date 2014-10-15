@@ -26,33 +26,71 @@ import java.util.List;
 public class RecordCompletionEvaluator implements RecordEvaluatorIF {
 
   /**
+   * Container object holding RecordCompletionEvaluator configurations.
+   * 
+   * @author cgendreau
+   */
+  public static class Configuration {
+
+    private EvaluationContext evaluatorContext;
+    private BlankValueEvaluationRule blankValueEvaluationRule;
+    private List<ConceptTerm> terms;
+
+    /**
+     * Create Configuration with default values:
+     * ValidationContext.CORE and default BlankValueEvaluationRule.
+     */
+    public Configuration() {
+      evaluatorContext = EvaluationContext.CORE;
+      blankValueEvaluationRule = BlankValueEvaluationRuleBuilder.create().build();
+    }
+
+    public void addTerm(ConceptTerm term) {
+      if (terms == null) {
+        terms = new ArrayList<ConceptTerm>();
+      }
+      terms.add(term);
+    }
+
+    public BlankValueEvaluationRule getBlankValueEvaluationRule() {
+      return blankValueEvaluationRule;
+    }
+
+    public EvaluationContext getEvaluatorContext() {
+      return evaluatorContext;
+    }
+
+    public List<ConceptTerm> getTerms() {
+      return terms;
+    }
+
+    public void setBlankValueEvaluationRule(BlankValueEvaluationRule blankValueEvaluationRule) {
+      this.blankValueEvaluationRule = blankValueEvaluationRule;
+    }
+
+    public void setEvaluatorContext(EvaluationContext evaluatorContext) {
+      this.evaluatorContext = evaluatorContext;
+    }
+
+    public void setTerms(List<ConceptTerm> terms) {
+      this.terms = terms;
+    }
+  }
+
+  /**
    * Builder of RecordCompletionEvaluator object.
    * 
    * @author cgendreau
    */
   public static class RecordCompletionEvaluatorBuilder {
 
-    private final String key = RecordCompletionEvaluator.class.getAnnotation(RecordEvaluator.class).key();
+    private final Configuration configuration = new Configuration();
 
-    private final EvaluationContext evaluatorContext;
-    private BlankValueEvaluationRule blankValueEvaluationRule;
-    private List<ConceptTerm> terms;
-
-    private RecordCompletionEvaluatorBuilder(EvaluationContext evaluatorContext,
-      BlankValueEvaluationRule blankValueEvaluationRule) {
-      this.evaluatorContext = evaluatorContext;
-      this.blankValueEvaluationRule = blankValueEvaluationRule;
+    private RecordCompletionEvaluatorBuilder() {
     }
 
-    /**
-     * Create with default values:
-     * ValidationContext.CORE and default BlankValueEvaluationRule.
-     * 
-     * @return
-     */
     public static RecordCompletionEvaluatorBuilder create() {
-      return new RecordCompletionEvaluatorBuilder(EvaluationContext.CORE, BlankValueEvaluationRuleBuilder.create()
-        .build());
+      return new RecordCompletionEvaluatorBuilder();
     }
 
     /**
@@ -62,19 +100,20 @@ public class RecordCompletionEvaluator implements RecordEvaluatorIF {
      * @throws IllegalStateException
      */
     public RecordCompletionEvaluator build() throws IllegalStateException {
-      if (evaluatorContext == null) {
+      if (configuration.getEvaluatorContext() == null) {
         throw new IllegalStateException("The evaluatorContext must be set");
       }
 
       // both must be null or both must be provided
-      if (blankValueEvaluationRule != null || terms != null) {
-        if (blankValueEvaluationRule == null || terms == null || terms.isEmpty()) {
+      if (configuration.getBlankValueEvaluationRule() != null || configuration.getTerms() != null) {
+        if (configuration.getBlankValueEvaluationRule() == null || configuration.getTerms() == null
+          || configuration.getTerms().isEmpty()) {
           throw new IllegalStateException(
             "blankValueEvaluationRule and term(s) must both be set if one of them is provided.");
         }
       }
 
-      return new RecordCompletionEvaluator(key, evaluatorContext, blankValueEvaluationRule, terms);
+      return new RecordCompletionEvaluator(configuration);
     }
 
     /**
@@ -85,10 +124,7 @@ public class RecordCompletionEvaluator implements RecordEvaluatorIF {
      * @return
      */
     public RecordCompletionEvaluatorBuilder checkTerm(ConceptTerm term) {
-      if (terms == null) {
-        terms = new ArrayList<ConceptTerm>();
-      }
-      terms.add(term);
+      configuration.addTerm(term);
       return this;
     }
 
@@ -100,22 +136,20 @@ public class RecordCompletionEvaluator implements RecordEvaluatorIF {
      */
     public RecordCompletionEvaluatorBuilder setBlankValueEvaluationRule(
       BlankValueEvaluationRule blankValueEvaluationRule) {
-      this.blankValueEvaluationRule = blankValueEvaluationRule;
+      configuration.setBlankValueEvaluationRule(blankValueEvaluationRule);
       return this;
     }
   }
 
-  private final String key;
+  private final String key = RecordCompletionEvaluator.class.getAnnotation(RecordEvaluator.class).key();
   private final EvaluationContext evaluatorContext;
   private final BlankValueEvaluationRule blankValueEvaluationRule;
   private final List<ConceptTerm> terms;
 
-  public RecordCompletionEvaluator(String key, EvaluationContext evaluatorContext,
-    BlankValueEvaluationRule blankValueEvaluationRule, List<ConceptTerm> terms) {
-    this.key = key;
-    this.evaluatorContext = evaluatorContext;
-    this.blankValueEvaluationRule = blankValueEvaluationRule;
-    this.terms = Collections.unmodifiableList(new ArrayList<ConceptTerm>(terms));
+  public RecordCompletionEvaluator(Configuration configuration) {
+    this.evaluatorContext = configuration.getEvaluatorContext();
+    this.blankValueEvaluationRule = configuration.getBlankValueEvaluationRule();
+    this.terms = Collections.unmodifiableList(new ArrayList<ConceptTerm>(configuration.getTerms()));
   }
 
   @Override

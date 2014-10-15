@@ -16,5 +16,8 @@ evaluators:
      rulesPerTerm:
        !!org.gbif.dwc.terms.DwcTerm 'eventDate' : [*isoDateVER]
        !!org.gbif.dwc.terms.DwcTerm 'scientificName' : [*invalidCharacterVER]
-
+ - !!org.gbif.dwc.validator.evaluator.impl.RecordCompletionEvaluator
+   - !!org.gbif.dwc.validator.evaluator.impl.RecordCompletionEvaluator$Configuration
+     terms:
+       - !!org.gbif.dwc.terms.DwcTerm 'country'
   

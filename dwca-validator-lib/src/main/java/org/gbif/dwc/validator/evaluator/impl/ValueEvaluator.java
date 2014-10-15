@@ -38,6 +38,13 @@ public class ValueEvaluator implements RecordEvaluatorIF {
     private EvaluationContext evaluatorContext;
     private Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm;
 
+    /**
+     * Default value EvaluationContext.CORE
+     */
+    public Configuration() {
+      evaluatorContext = EvaluationContext.CORE;
+    }
+
     public EvaluationContext getEvaluatorContext() {
       return evaluatorContext;
     }
@@ -64,17 +71,13 @@ public class ValueEvaluator implements RecordEvaluatorIF {
 
     private final Configuration configuration = new Configuration();
 
-    private ValueEvaluatorBuilder(EvaluationContext evaluatorContext) {
-      configuration.setEvaluatorContext(evaluatorContext);
-    }
-
     /**
-     * Create with default value. Using coreId, ValidationContext.CORE
+     * Create with default value.
      * 
      * @return
      */
     public static ValueEvaluatorBuilder create() {
-      return new ValueEvaluatorBuilder(EvaluationContext.CORE);
+      return new ValueEvaluatorBuilder();
     }
 
 

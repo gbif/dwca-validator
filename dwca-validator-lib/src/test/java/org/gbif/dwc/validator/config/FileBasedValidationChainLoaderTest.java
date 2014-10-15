@@ -55,6 +55,9 @@ public class FileBasedValidationChainLoaderTest {
       assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getEvaluationResultList(), "2",
         ArchiveValidatorConfig.getLocalizedString("rule.date.non_ISO", "10-07-2014")));
 
+      assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getEvaluationResultList(), "2",
+        ArchiveValidatorConfig.getLocalizedString("rule.blank_value")));
+
     } catch (URISyntaxException e) {
       e.printStackTrace();
       fail();
