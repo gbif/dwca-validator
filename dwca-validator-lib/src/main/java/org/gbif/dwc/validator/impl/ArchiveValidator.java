@@ -45,13 +45,20 @@ public class ArchiveValidator implements ArchiveValidatorIF {
 
   @Override
   public void validateArchive(File dwcaFile, ResultAccumulatorIF resultAccumulator) {
-    File tmpFolder = new File(new File(workingFolder), UUID.randomUUID().toString());
+    File dwcFolder = new File(new File(workingFolder), UUID.randomUUID().toString());
 
     try {
-      Archive dwc = ArchiveFactory.openArchive(dwcaFile, tmpFolder);
+      Archive dwc = null;
+      if (dwcaFile.isFile()) {
+        dwc = ArchiveFactory.openArchive(dwcaFile, dwcFolder);
+      } else {
+        dwc = ArchiveFactory.openArchive(dwcaFile);
+        dwcFolder = dwcaFile;
+      }
+
       structureHandler.inspectArchiveContent(dwc, resultAccumulator);
 
-      File metaFile = new File(tmpFolder, META_XML_FILE);
+      File metaFile = new File(dwcFolder, META_XML_FILE);
       if (metaFile.exists()) {
         structureHandler.inspectMetaXML(metaFile, resultAccumulator);
       }

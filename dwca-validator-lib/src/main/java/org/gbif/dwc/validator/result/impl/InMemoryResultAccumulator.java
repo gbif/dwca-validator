@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class InMemoryResultAccumulator implements ResultAccumulatorIF {
 
-  private static final int MAX_RESULT = 100;
+  public static final int MAX_RESULT = 100;
   private final List<EvaluationResultIF<? extends EvaluationResultElementIF>> evaluationResultList;
 
   public InMemoryResultAccumulator() {

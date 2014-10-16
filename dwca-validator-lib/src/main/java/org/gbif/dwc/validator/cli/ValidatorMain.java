@@ -55,6 +55,7 @@ public class ValidatorMain {
         downloadFile(new URL(sourceFileLocation), dFile);
         // sourceFileLocation is now the downloaded file
         sourceFileLocation = dFile.getAbsolutePath();
+        System.out.println("Download completed");
       } catch (MalformedURLException e) {
         LOGGER.error("Issue source file URL: " + sourceFileLocation, e);
       }
@@ -74,6 +75,7 @@ public class ValidatorMain {
     archiveValidator.setContentHandler(new ArchiveContentHandler(new DefaultEvaluationChainProvider()));
 
     long startTime = System.currentTimeMillis();
+    System.out.println("Starting validation ... ");
     // run validation
     archiveValidator.validateArchive(new File(sourceFileLocation), resultAccumulator);
 

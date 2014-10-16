@@ -40,6 +40,7 @@ public class EMLEvaluator {
   protected void handleEval(File eml, ResultAccumulatorIF result) {
     String identifier = eml.getName();
     try {
+      // TODO cache Validator because it's expensive to create
       ValidatorFactory.getGbifValidator().validate(getEmlSource(eml));
     } catch (MalformedURLException e) {
       result.accumulate(new ValidationResult(identifier, key, EvaluationContext.STRUCTURE, new ValidationResultElement(

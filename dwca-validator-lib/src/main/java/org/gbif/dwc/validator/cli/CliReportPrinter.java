@@ -32,6 +32,9 @@ public class CliReportPrinter {
             + validationElement.getExplanation());
         }
       }
+      if (resultAccumulator.getEvaluationResultList().size() == InMemoryResultAccumulator.MAX_RESULT) {
+        System.out.println("Maximum of " + InMemoryResultAccumulator.MAX_RESULT + " results recorded.");
+      }
     } else {
       System.out.println("The Dwc-A file looks valid according to current default validation chain.");
     }
