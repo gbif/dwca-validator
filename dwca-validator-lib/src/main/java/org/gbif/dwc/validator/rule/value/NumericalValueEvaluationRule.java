@@ -4,6 +4,7 @@ import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
+import org.gbif.dwc.validator.result.type.UndefinedValidationType;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 
 import org.apache.commons.lang3.StringUtils;
@@ -102,20 +103,36 @@ public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
       ArchiveValidatorConfig.getLocalizedString("rule.numerical_out_of_bounds", value, lowerBound, upperBound));
   }
 
+  /**
+   * The returned ValidationTypeIF will be UNDEFINED.
+   * The idea is to avoid returning multiple ValidationResultElement on success.
+   * This should be interpreted as all included ValidationTypeIF passed.
+   * 
+   * @param value
+   * @return
+   */
+  private ValidationResultElement createSuccessValidationResultElement(Double value) {
+    return new ValidationResultElement(UndefinedValidationType.UNDEFINED, Result.PASSED, "", value);
+  }
+
   @Override
   public ValidationResultElement evaluate(String str) {
-    if (StringUtils.isNotBlank(str)) {
-      try {
-        Double value = Double.parseDouble(str);
-        if (lowerBound != null && upperBound != null) {
-          if (value.doubleValue() < lowerBound.doubleValue() || value.doubleValue() > upperBound.doubleValue()) {
-            return createNumericalOutOfBoundsValidationResultElement(str);
-          }
-        }
-      } catch (NumberFormatException nfEx) {
-        return createNonNumericalValidationResultElement(str);
-      }
+
+    if (StringUtils.isBlank(str)) {
+      return ValidationResultElement.SKIPPED;
     }
-    return null;
+
+    Double value = null;
+    try {
+      value = Double.parseDouble(str);
+      if (lowerBound != null && upperBound != null) {
+        if (value.doubleValue() < lowerBound.doubleValue() || value.doubleValue() > upperBound.doubleValue()) {
+          return createNumericalOutOfBoundsValidationResultElement(str);
+        }
+      }
+    } catch (NumberFormatException nfEx) {
+      return createNonNumericalValidationResultElement(str);
+    }
+    return createSuccessValidationResultElement(value);
   }
 }

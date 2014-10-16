@@ -113,18 +113,18 @@ public class DecimalLatLngEvaluator implements RecordEvaluatorIF {
     ValidationResultElement latResultElement = latNumericalValueEvaluationRule.evaluate(lat);
     ValidationResultElement lngResultElement = lngNumericalValueEvaluationRule.evaluate(lng);
 
-    if (latResultElement != null || lngResultElement != null) {
+    if (latResultElement.resultIsNot(Result.PASSED) || lngResultElement.resultIsNot(Result.PASSED)) {
       List<ValidationResultElement> evaluationResultElementList = new ArrayList<ValidationResultElement>();
-      if (latResultElement != null) {
+      if (latResultElement.resultIsNot(Result.PASSED)) {
         evaluationResultElementList.add(latResultElement);
       }
-      if (lngResultElement != null) {
+      if (lngResultElement.resultIsNot(Result.PASSED)) {
         evaluationResultElementList.add(lngResultElement);
       }
 
       // try to swap lat and lng and re-evaluate
-      if (latNumericalValueEvaluationRule.evaluate(lng) == null
-        && lngNumericalValueEvaluationRule.evaluate(lat) == null) {
+      if (latNumericalValueEvaluationRule.evaluate(lng).resultIs(Result.PASSED)
+        && lngNumericalValueEvaluationRule.evaluate(lat).resultIs(Result.PASSED)) {
         evaluationResultElementList.add(new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE,
           Result.WARNING, ArchiveValidatorConfig.getLocalizedString("evaluator.decimal_lat_lng.inverted", lat, lng)));
       }

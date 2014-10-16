@@ -11,11 +11,13 @@ import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 public interface EvaluationRuleIF<T> {
 
   /**
-   * Be aware, this method returns null if we have no results. Maybe a final static ValidationResultElement instance for
-   * 'valid' state would be better?
+   * Return a ValidationResultElement object, never null.
+   * For now, we can only return one ValidationResultElement which may require more thinking in the future.
+   * e.g. NumericalValueEvaluationRule could(should?) produce one ValidationResultElement for
+   * numerical value check and another one for bounds check.
    * 
    * @param obj
-   * @return null if no ValidationResultElement is needed, ValidationResultElement instance otherwise.
+   * @return ValidationResultElement instance.
    */
   ValidationResultElement evaluate(T obj);
 

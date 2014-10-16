@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * Immutable object holding validation result for a single validation.
+ * Immutable object holding validation result for a single ValidationTypeIF.
  * 
  * @author cgendreau
  */
@@ -82,12 +82,12 @@ public class ValidationResultElement implements EvaluationResultElementIF {
   }
 
   /**
-   * Check if the Result.
+   * Check if the Result is the provided Result value.
    * 
    * @param result
    * @return
    */
-  public boolean is(Result result) {
+  public boolean resultIs(Result result) {
     if (result == null) {
       return false;
     }
@@ -95,12 +95,12 @@ public class ValidationResultElement implements EvaluationResultElementIF {
   }
 
   /**
-   * Check if the Result.
+   * Check if the Result is not the provided Result value.
    * 
    * @param result
    * @return
    */
-  public boolean isNot(Result result) {
+  public boolean resultIsNot(Result result) {
     if (result == null) {
       return false;
     }
@@ -108,12 +108,41 @@ public class ValidationResultElement implements EvaluationResultElementIF {
   }
 
   /**
-   * Check if the result of this ValidationResultElement is Result.SKIPPED or Result.PASSED
+   * Check if the Result is not one of the provided Result values.
    * 
+   * @param result
    * @return
    */
-  public boolean isSkippedOrPassed() {
-    return (result == Result.SKIPPED || result == Result.PASSED);
+  public boolean resultIsNotOneOf(Result... results) {
+    if (results == null) {
+      return false;
+    }
+
+    for (Result currResult : results) {
+      if (currResult.equals(result)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Check if the Result is one of the provided Result values.
+   * 
+   * @param result
+   * @return
+   */
+  public boolean resultIsOneOf(Result... results) {
+    if (results == null) {
+      return false;
+    }
+
+    for (Result currResult : results) {
+      if (currResult.equals(result)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override

@@ -55,7 +55,7 @@ public class BlankValueEvaluationRule implements EvaluationRuleIF<String> {
       return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.ERROR,
         ArchiveValidatorConfig.getLocalizedString("rule.blank_value"));
     }
-    return null;
+    return ValidationResultElement.PASSED;
   }
 
 }

@@ -5,6 +5,7 @@ import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
 import org.gbif.dwc.validator.result.EvaluationContext;
+import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.impl.validation.ValidationResult;
 import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
@@ -144,7 +145,6 @@ public class ValueEvaluator implements RecordEvaluatorIF {
       if (configuration.getRulesPerTerm() == null || configuration.getRulesPerTerm().size() == 0) {
         throw new IllegalStateException("The rulesPerTerm must contains at least one element");
       }
-
       return new ValueEvaluator(configuration);
     }
   }
@@ -175,7 +175,7 @@ public class ValueEvaluator implements RecordEvaluatorIF {
     for (ConceptTerm currTerm : rulesPerTerm.keySet()) {
       for (EvaluationRuleIF<String> currRule : rulesPerTerm.get(currTerm)) {
         validationResultElement = currRule.evaluate(record.value(currTerm));
-        if (validationResultElement != null) {
+        if (validationResultElement.resultIsNotOneOf(Result.SKIPPED, Result.PASSED)) {
           // lazy create the list assuming, in normal case, we should have more valid record
           if (elementList == null) {
             elementList = new ArrayList<ValidationResultElement>();

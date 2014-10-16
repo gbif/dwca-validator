@@ -1,9 +1,11 @@
 package org.gbif.dwc.validator.rule.value;
 
+import org.gbif.dwc.validator.result.Result;
+
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Ensure NumericalValueEvaluationRule object obtained by the builder works as expected.
@@ -25,13 +27,13 @@ public class NumericalValueEvaluationRuleTest {
   }
 
   private void testAlwaysValidNumerical(NumericalValueEvaluationRule rule) {
-    assertNull(rule.evaluate("1"));
-    assertNull(rule.evaluate("1.2"));
-    assertNull(rule.evaluate("0.3"));
-    assertNull(rule.evaluate("-8.3"));
+    assertEquals(Result.PASSED, rule.evaluate("1").getResult());
+    assertEquals(Result.PASSED, rule.evaluate("1.2").getResult());
+    assertEquals(Result.PASSED, rule.evaluate("0.3").getResult());
+    assertEquals(Result.PASSED, rule.evaluate("-8.3").getResult());
 
     // empty string is ignored
-    assertNull(rule.evaluate(""));
+    assertEquals(Result.SKIPPED, rule.evaluate("").getResult());
   }
 
   /**
@@ -58,10 +60,10 @@ public class NumericalValueEvaluationRuleTest {
 
   private void testNumericalBounds(NumericalValueEvaluationRule rule, Double lowerBound, Double upperBound) {
     // should be valid
-    assertNull(rule.evaluate(lowerBound.toString()));
-    assertNull(rule.evaluate(upperBound.toString()));
-    assertNull(rule.evaluate(Double.toString(lowerBound + 0.001)));
-    assertNull(rule.evaluate(Double.toString(upperBound - 0.001)));
+    assertEquals(Result.PASSED, rule.evaluate(lowerBound.toString()).getResult());
+    assertEquals(Result.PASSED, rule.evaluate(upperBound.toString()).getResult());
+    assertEquals(Result.PASSED, rule.evaluate(Double.toString(lowerBound + 0.001)).getResult());
+    assertEquals(Result.PASSED, rule.evaluate(Double.toString(upperBound - 0.001)).getResult());
 
     // should be invalid
     assertNotNull(rule.evaluate(Double.toString(lowerBound - 0.001)));

@@ -5,6 +5,7 @@ import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
 import org.gbif.dwc.validator.result.EvaluationContext;
+import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.impl.validation.ValidationResult;
 import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
@@ -170,7 +171,7 @@ public class RecordCompletionEvaluator implements RecordEvaluatorIF {
     if (terms != null) {
       for (ConceptTerm currTerm : terms) {
         validationResultElement = blankValueEvaluationRule.evaluate(record.value(currTerm));
-        if (validationResultElement != null) {
+        if (validationResultElement.resultIsNot(Result.PASSED)) {
           // lazy create the list assuming, in normal case, we should have more valid record
           if (elementList == null) {
             elementList = new ArrayList<ValidationResultElement>();

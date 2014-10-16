@@ -22,10 +22,6 @@ import static org.junit.Assert.assertTrue;
 
 public class DecimalLatLngEvaluatorTest {
 
-  public static void main(String[] args) {
-    System.out.println(System.currentTimeMillis());
-  }
-
   private Record buildMockRecord(String id, String lat, String lng) {
     // create a mock Record
     ArchiveField idField = new ArchiveField(0, DwcTerm.occurrenceID, null, DataType.string);

@@ -1,11 +1,12 @@
 package org.gbif.dwc.validator.rule.value;
 
+import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.rule.value.BlankValueEvaluationRule.BlankValueEvaluationRuleBuilder;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Ensure BlankValueEvaluationRule object obtained by the builder works as expected.
@@ -25,12 +26,10 @@ public class BlankValueEvaluationRuleTest {
     assertNotNull(rule.evaluate("\t"));
 
     // should be valid
-    assertNull(rule.evaluate("a"));
-    assertNull(rule.evaluate(" a"));
+    assertEquals(Result.PASSED, rule.evaluate("a").getResult());
+    assertEquals(Result.PASSED, rule.evaluate(" a").getResult());
 
     // simply demonstrate that this would be considered valid. Maybe the rule should accommodate that.
-    assertNull(rule.evaluate("\"\""));
+    assertEquals(Result.PASSED, rule.evaluate("\"\"").getResult());
   }
-
-
 }

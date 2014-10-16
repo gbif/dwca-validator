@@ -1,11 +1,12 @@
 package org.gbif.dwc.validator.rule.value;
 
+import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule.InvalidCharacterEvaluationRuleBuilder;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Ensure InvalidCharacterEvaluationRule object obtained by the builder works as expected.
@@ -33,8 +34,8 @@ public class InvalidCharacterEvaluationRuleTest {
     testAlwaysValidString(rule);
     testNeverValidString(rule);
 
-    assertNull(rule.evaluate("test" + VERTICAL_TAB_CHAR));
-    assertNull(rule.evaluate("test" + REPLACEMENT_CHAR));
+    assertEquals(Result.PASSED, rule.evaluate("test" + VERTICAL_TAB_CHAR).getResult());
+    assertEquals(Result.PASSED, rule.evaluate("test" + REPLACEMENT_CHAR).getResult());
   }
 
   @Test
@@ -46,7 +47,7 @@ public class InvalidCharacterEvaluationRuleTest {
 
     assertNotNull(rule.evaluate("test\t2"));
     assertNotNull(rule.evaluate("test" + ENDLINE));
-    assertNull(rule.evaluate("test" + REPLACEMENT_CHAR));
+    assertEquals(Result.PASSED, rule.evaluate("test" + REPLACEMENT_CHAR).getResult());
   }
 
   @Test
@@ -61,9 +62,14 @@ public class InvalidCharacterEvaluationRuleTest {
   }
 
   private void testAlwaysValidString(InvalidCharacterEvaluationRule rule) {
-    assertNull(rule.evaluate("test"));
-    assertNull(rule.evaluate("test 2"));
-    assertNull(rule.evaluate("éä@%&*"));
+    assertEquals(Result.PASSED, rule.evaluate("test").getResult());
+    assertEquals(Result.PASSED, rule.evaluate("test 2").getResult());
+    assertEquals(Result.PASSED, rule.evaluate("éä@%&*").getResult());
+
+    // empty string passed
+    assertEquals(Result.PASSED, rule.evaluate("").getResult());
+    // null should be skipped
+    assertEquals(Result.SKIPPED, rule.evaluate(null).getResult());
   }
 
   private void testNeverValidString(InvalidCharacterEvaluationRule rule) {

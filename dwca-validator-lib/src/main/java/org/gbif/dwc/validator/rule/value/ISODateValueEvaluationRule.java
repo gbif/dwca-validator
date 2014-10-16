@@ -4,6 +4,7 @@ import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
+import org.gbif.dwc.validator.result.type.UndefinedValidationType;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,7 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.Year;
 import org.threeten.bp.YearMonth;
 import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.temporal.TemporalAccessor;
 
 /**
  * Rule used to ensure a String represents a date according to the ISO 8601 standard.
@@ -123,45 +125,31 @@ public class ISODateValueEvaluationRule implements EvaluationRuleIF<String> {
     }
   }
 
-  /**
-   * Can we parse the provided String with at least on DateTimeFormatter.
-   * As soon as one DateTimeFormatter can parse the String, the method returns.
-   * 
-   * @param str
-   * @param dtFormatters
-   * @return
-   */
-  private boolean canParse(String str, DateTimeFormatter... dtFormatters) {
-    for (DateTimeFormatter dtf : dtFormatters) {
-      try {
-        dtf.parse(str);
-        return true;
-      } catch (DateTimeException dtEx) {
-      }
-    }
-    return false;
-  }
-
   private ValidationResultElement createNonISOValidationResultElement(String value) {
     return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.WARNING,
       ArchiveValidatorConfig.getLocalizedString("rule.date.non_ISO", value));
+  }
+
+  private ValidationResultElement createSuccessValidationResultElement(TemporalAccessor ta) {
+    return new ValidationResultElement(UndefinedValidationType.UNDEFINED, Result.PASSED, "", ta);
   }
 
   @Override
   public ValidationResultElement evaluate(String str) {
 
     if (StringUtils.isBlank(str)) {
-      return null;
+      return ValidationResultElement.SKIPPED;
     }
 
     // if we can parse it as complete ISO date, it's fine
-    if (canParse(str, ISO8601_BASIC_ISO_DATE, activeCompleteDateFormatter)) {
-      return null;
+    TemporalAccessor ta = tryParse(str, ISO8601_BASIC_ISO_DATE, activeCompleteDateFormatter);
+    if (ta != null) {
+      return createSuccessValidationResultElement(ta);
     }
 
     if (allowPartialDate) {
       try {
-        activePartialDateFormatter.parseBest(str, LocalDate.FROM, YearMonth.FROM, Year.FROM);
+        ta = activePartialDateFormatter.parseBest(str, LocalDate.FROM, YearMonth.FROM, Year.FROM);
       } catch (DateTimeException dtEx) {
         return createNonISOValidationResultElement(str);
       }
@@ -169,6 +157,26 @@ public class ISODateValueEvaluationRule implements EvaluationRuleIF<String> {
       return createNonISOValidationResultElement(str);
     }
 
+    return createSuccessValidationResultElement(ta);
+  }
+
+  /**
+   * Can we parse the provided String with at least on DateTimeFormatter.
+   * As soon as one DateTimeFormatter can parse the String, the method returns.
+   * 
+   * @param str
+   * @param dtFormatters
+   * @return null if can't parse str with provided DateTimeFormatter
+   */
+  private TemporalAccessor tryParse(String str, DateTimeFormatter... dtFormatters) {
+    TemporalAccessor ta = null;
+    for (DateTimeFormatter dtf : dtFormatters) {
+      try {
+        ta = dtf.parse(str);
+        return ta;
+      } catch (DateTimeException dtEx) {
+      }
+    }
     return null;
   }
 }

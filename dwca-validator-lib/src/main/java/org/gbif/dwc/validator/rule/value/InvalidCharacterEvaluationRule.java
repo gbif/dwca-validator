@@ -133,7 +133,7 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
   public ValidationResultElement evaluate(String str) {
 
     if (str == null) {
-      return null;
+      return ValidationResultElement.SKIPPED;
     }
 
     int indexIn = charMatcher.indexIn(str);
@@ -142,6 +142,6 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
       return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.WARNING,
         ArchiveValidatorConfig.getLocalizedString("rule.invalid_character", charMatcher.removeFrom(str), indexIn));
     }
-    return null;
+    return ValidationResultElement.PASSED;
   }
 }
