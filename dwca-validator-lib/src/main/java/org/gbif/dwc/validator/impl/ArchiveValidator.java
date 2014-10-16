@@ -4,9 +4,15 @@ import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.dwc.validator.ArchiveValidatorIF;
+import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.handler.ArchiveContentHandler;
 import org.gbif.dwc.validator.handler.ArchiveStructureHandler;
+import org.gbif.dwc.validator.result.EvaluationContext;
+import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
+import org.gbif.dwc.validator.result.impl.validation.ValidationResult;
+import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
+import org.gbif.dwc.validator.result.type.StructureValidationType;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +36,19 @@ public class ArchiveValidator implements ArchiveValidatorIF {
 
   private ArchiveStructureHandler structureHandler;
   private ArchiveContentHandler contentHandler;
+
+  /**
+   * TODO this should be handled/recorded by the StructureHandler
+   * 
+   * @param file
+   * @param message
+   * @return
+   */
+  private ValidationResult createArchiveStructureValidationResult(File file, String message) {
+    return new ValidationResult(file.getName(), "ArchiveStructure", EvaluationContext.STRUCTURE,
+      new ValidationResultElement(StructureValidationType.ARCHIVE_STRUCTURE, Result.ERROR,
+        ArchiveValidatorConfig.getLocalizedString("evaluator.structure.archive.open", file.getAbsolutePath(), message)));
+  }
 
   public void setContentHandler(ArchiveContentHandler contentHandler) {
     this.contentHandler = contentHandler;
@@ -73,8 +92,10 @@ public class ArchiveValidator implements ArchiveValidatorIF {
 
     } catch (UnsupportedArchiveException e) {
       LOGGER.error("Can't open archive", e);
+      resultAccumulator.accumulate(createArchiveStructureValidationResult(dwcaFile, e.getMessage()));
     } catch (IOException e) {
       LOGGER.error("Can't open archive", e);
+      resultAccumulator.accumulate(createArchiveStructureValidationResult(dwcaFile, e.getMessage()));
     }
   }
 }
