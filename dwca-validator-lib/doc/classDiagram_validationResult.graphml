@@ -87,10 +87,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="82.0" width="167.33333333333326" x="941.4447389237239" y="352.8742038216561"/>
+          <y:Geometry height="87.43160507901877" width="218.53939688715946" x="941.4447389237239" y="352.8742038216561"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="45.970703125" x="60.68131510416663" y="26.1328125">Result<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="45.970703125" x="86.28434688107973" y="26.1328125">Result<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -98,7 +98,7 @@
             </y:ModelParameter>
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="enum" use3DEffect="true">
-            <y:AttributeLabel>PASSED,WARNING,ERROR</y:AttributeLabel>
+            <y:AttributeLabel>SKIPPED,PASSED,WARNING,ERROR</y:AttributeLabel>
             <y:MethodLabel/>
           </y:UML>
         </y:UMLClassNode>
@@ -200,7 +200,7 @@ getDescriptionKey():String</y:MethodLabel>
           <y:Geometry height="28.0" width="100.0" x="467.7324840764331" y="412.3058089006749"/>
           <y:Fill color="#FFFF00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.1328125" modelName="custom" textColor="#000000" visible="true" width="27.478515625" x="36.2607421875" y="4.93359375">TBD<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.1328125" modelName="custom" textColor="#000000" visible="true" width="27.478515625" x="36.26074218750006" y="4.93359375">TBD<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -275,7 +275,6 @@ getDescriptionKey():String</y:MethodLabel>
     </node>
     <node id="n12">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="114.37685774946922" width="402.2230486918302" x="580.0775976996536" y="34.59561781787231"/>
@@ -299,7 +298,6 @@ getResults():List&lt;T&gt; </y:MethodLabel>
     </node>
     <node id="n13">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:UMLClassNode>
           <y:Geometry height="95.10934182590233" width="242.74215697208604" x="655.0270543156785" y="201.74469214437372"/>
@@ -420,7 +418,6 @@ getResults():List&lt;T&gt; </y:MethodLabel>
       </data>
     </edge>
     <edge id="e10" source="n1" target="n12">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -431,7 +428,6 @@ getResults():List&lt;T&gt; </y:MethodLabel>
       </data>
     </edge>
     <edge id="e11" source="n7" target="n13">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -442,7 +438,6 @@ getResults():List&lt;T&gt; </y:MethodLabel>
       </data>
     </edge>
     <edge id="e12" source="n12" target="n13">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -453,7 +448,6 @@ getResults():List&lt;T&gt; </y:MethodLabel>
       </data>
     </edge>
     <edge id="e13" source="n12" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>

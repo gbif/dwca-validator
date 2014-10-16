@@ -6,5 +6,5 @@ package org.gbif.dwc.validator.result;
  * @author cgendreau
  */
 public enum Result {
-  PASSED, WARNING, ERROR;
+  SKIPPED, PASSED, WARNING, ERROR;
 }
