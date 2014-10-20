@@ -13,6 +13,9 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.Year;
 import org.threeten.bp.YearMonth;
 import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.format.DateTimeFormatterBuilder;
+import org.threeten.bp.format.ResolverStyle;
+import org.threeten.bp.temporal.ChronoField;
 import org.threeten.bp.temporal.TemporalAccessor;
 
 /**
@@ -102,12 +105,23 @@ public class ISODateValueEvaluationRule implements EvaluationRuleIF<String> {
   private static final DateTimeFormatter ISO8601_BASIC_ISO_DATE = DateTimeFormatter.BASIC_ISO_DATE;
 
   private static final DateTimeFormatter ISO8601_ISO_DATE = DateTimeFormatter.ISO_DATE;
-  private static final DateTimeFormatter ISO8601_ISO_DATE_ALLOW_NO_LZ = DateTimeFormatter.ofPattern("yyyy-M-d");
 
-  // version that allows non leading zeros
-  private static final DateTimeFormatter ISO8601_PARTIAL_DATE_ALLOW_NO_LZ = DateTimeFormatter.ofPattern("yyyy[-M[-d]]");
+  // ISO8601 Date with no leading zeros e.g. 2014-8-7
+  private static final DateTimeFormatter ISO8601_ISO_DATE_ALLOW_NO_LZ = new DateTimeFormatterBuilder()
+    .appendValue(ChronoField.YEAR, 4).appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR).appendLiteral("-")
+    .appendValue(ChronoField.DAY_OF_MONTH).toFormatter().withResolverStyle(ResolverStyle.STRICT);
 
-  private static final DateTimeFormatter ISO8601_PARTIAL_DATE = DateTimeFormatter.ofPattern("yyyy[-MM[-dd]]");
+  // ISO8601 Partial Date with no leading zeros e.g. 2014-8
+  public static final DateTimeFormatter ISO8601_PARTIAL_DATE_ALLOW_NO_LZ = new DateTimeFormatterBuilder()
+    .appendValue(ChronoField.YEAR, 4).optionalStart().appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR)
+    .optionalStart().appendLiteral("-").appendValue(ChronoField.DAY_OF_MONTH, 2).optionalEnd().optionalEnd()
+    .toFormatter().withResolverStyle(ResolverStyle.STRICT);
+
+  // ISO8601 Partial Date e.g. 2014 or 2014-08
+  public static final DateTimeFormatter ISO8601_PARTIAL_DATE = new DateTimeFormatterBuilder()
+    .appendValue(ChronoField.YEAR, 4).optionalStart().appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR, 2)
+    .optionalStart().appendLiteral("-").appendValue(ChronoField.DAY_OF_MONTH, 2).optionalEnd().optionalEnd()
+    .toFormatter().withResolverStyle(ResolverStyle.STRICT);
 
   private final boolean allowPartialDate;
   private final DateTimeFormatter activeCompleteDateFormatter;
@@ -142,7 +156,7 @@ public class ISODateValueEvaluationRule implements EvaluationRuleIF<String> {
     }
 
     // if we can parse it as complete ISO date, it's fine
-    TemporalAccessor ta = tryParse(str, ISO8601_BASIC_ISO_DATE, activeCompleteDateFormatter);
+    TemporalAccessor ta = tryParseLocalDate(str, ISO8601_BASIC_ISO_DATE, activeCompleteDateFormatter);
     if (ta != null) {
       return createSuccessValidationResultElement(ta);
     }
@@ -161,18 +175,18 @@ public class ISODateValueEvaluationRule implements EvaluationRuleIF<String> {
   }
 
   /**
-   * Can we parse the provided String with at least on DateTimeFormatter.
+   * Can we parse the provided String in LocalDate with at least on DateTimeFormatter.
    * As soon as one DateTimeFormatter can parse the String, the method returns.
    * 
    * @param str
    * @param dtFormatters
    * @return null if can't parse str with provided DateTimeFormatter
    */
-  private TemporalAccessor tryParse(String str, DateTimeFormatter... dtFormatters) {
+  private TemporalAccessor tryParseLocalDate(String str, DateTimeFormatter... dtFormatters) {
     TemporalAccessor ta = null;
     for (DateTimeFormatter dtf : dtFormatters) {
       try {
-        ta = dtf.parse(str);
+        ta = dtf.parse(str, LocalDate.FROM);
         return ta;
       } catch (DateTimeException dtEx) {
       }
