@@ -1,6 +1,7 @@
-package org.gbif.dwc.validator.evaluator.chain;
+package org.gbif.dwc.validator.evaluator.chain.builder;
 
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
+import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
 
 import java.util.ArrayList;
 import java.util.List;

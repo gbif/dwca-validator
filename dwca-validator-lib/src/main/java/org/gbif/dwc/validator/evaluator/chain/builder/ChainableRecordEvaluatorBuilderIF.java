@@ -1,6 +1,7 @@
-package org.gbif.dwc.validator.evaluator.chain;
+package org.gbif.dwc.validator.evaluator.chain.builder;
 
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
+import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
 
 /**
  * The builder lets you link all the RecordEvaluatorIF and then build the ChainableRecordEvaluator chain.

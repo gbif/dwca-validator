@@ -2,6 +2,8 @@ package org.gbif.dwc.validator.evaluator.chain;
 
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveFile;
+import org.gbif.dwc.validator.evaluator.chain.builder.ChainableRecordEvaluatorBuilderIF;
+import org.gbif.dwc.validator.evaluator.chain.builder.DefaultChainableRecordEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.impl.ReferentialIntegrityEvaluator;
 import org.gbif.dwc.validator.evaluator.impl.UniquenessEvaluator;
 import org.gbif.dwc.validator.evaluator.impl.ValueEvaluator;

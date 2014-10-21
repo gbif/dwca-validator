@@ -2,8 +2,8 @@ package org.gbif.dwc.validator.config;
 
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
 import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
-import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluatorBuilderIF;
-import org.gbif.dwc.validator.evaluator.chain.DefaultChainableRecordEvaluatorBuilder;
+import org.gbif.dwc.validator.evaluator.chain.builder.ChainableRecordEvaluatorBuilderIF;
+import org.gbif.dwc.validator.evaluator.chain.builder.DefaultChainableRecordEvaluatorBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;

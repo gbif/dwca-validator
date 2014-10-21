@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.rule.value;
 
 import org.gbif.dwc.validator.result.Result;
+import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRule.NumericalValueEvaluationRuleBuilder;
 
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ public class NumericalValueEvaluationRuleTest {
 
   @Test
   public void evaluate() {
-    NumericalValueEvaluationRule rule = NumericalValueEvaluationRule.createRule().build();
+    NumericalValueEvaluationRule rule = NumericalValueEvaluationRuleBuilder.create().build();
 
     testAlwaysValidNumerical(rule);
     testNeverValidNumerical(rule);

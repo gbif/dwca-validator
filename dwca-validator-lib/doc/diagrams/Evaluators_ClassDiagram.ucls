@@ -77,9 +77,10 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="8" language="java" name="org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluatorBuilderIF" 
-    project="dwca-validator-lib" 
-    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/chain/ChainableRecordEvaluatorBuilderIF.java" 
+  <interface id="8" language="java" 
+    name="org.gbif.dwc.validator.evaluator.chain.builder.ChainableRecordEvaluatorBuilderIF" project="dwca-validator-lib" 
+    
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/chain/builder/ChainableRecordEvaluatorBuilderIF.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="977" y="-182"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -88,9 +89,10 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="9" language="java" name="org.gbif.dwc.validator.evaluator.chain.DefaultChainableRecordEvaluatorBuilder" 
+  <class id="9" language="java" 
+    name="org.gbif.dwc.validator.evaluator.chain.builder.DefaultChainableRecordEvaluatorBuilder" 
     project="dwca-validator-lib" 
-    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/chain/DefaultChainableRecordEvaluatorBuilder.java" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/chain/builder/DefaultChainableRecordEvaluatorBuilder.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="983" y="-23"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
