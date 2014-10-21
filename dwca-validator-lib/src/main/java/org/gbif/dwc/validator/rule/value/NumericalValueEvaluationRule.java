@@ -19,6 +19,33 @@ import org.apache.commons.lang3.StringUtils;
 public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
 
   /**
+   * Container object holding NumericalValueEvaluationRule configurations.
+   * 
+   * @author cgendreau
+   */
+  public static class Configuration {
+
+    private Number lowerBound;
+    private Number upperBound;
+
+    public Number getLowerBound() {
+      return lowerBound;
+    }
+
+    public Number getUpperBound() {
+      return upperBound;
+    }
+
+    public void setLowerBound(Number lowerBound) {
+      this.lowerBound = lowerBound;
+    }
+
+    public void setUpperBound(Number upperBound) {
+      this.upperBound = upperBound;
+    }
+  }
+
+  /**
    * Builder used to customized, if needed, the NumericalValueEvaluationRule.
    * Also ensure usage of immutable object.
    * 
@@ -26,10 +53,10 @@ public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
    */
   public static class NumericalValueEvaluationRuleBuilder {
 
-    private Number lowerBound;
-    private Number upperBound;
+    private final Configuration configuration;
 
     private NumericalValueEvaluationRuleBuilder() {
+      configuration = new Configuration();
     }
 
     /**
@@ -53,8 +80,8 @@ public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
         throw new IllegalArgumentException();
       }
 
-      this.lowerBound = lowerBound;
-      this.upperBound = upperBound;
+      configuration.setLowerBound(lowerBound);
+      configuration.setUpperBound(upperBound);
       return this;
     }
 
@@ -64,7 +91,7 @@ public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
      * @return immutable NumericalValueEvaluationRule
      */
     public NumericalValueEvaluationRule build() {
-      return new NumericalValueEvaluationRule(lowerBound, upperBound);
+      return new NumericalValueEvaluationRule(configuration);
     }
   }
 
@@ -77,9 +104,9 @@ public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
    * @param minBound lower bound or null
    * @param maxBound upper bound or null
    */
-  private NumericalValueEvaluationRule(Number lowerBound, Number upperBound) {
-    this.lowerBound = lowerBound;
-    this.upperBound = upperBound;
+  private NumericalValueEvaluationRule(Configuration configuration) {
+    this.lowerBound = configuration.getLowerBound();
+    this.upperBound = configuration.getUpperBound();
   }
 
   /**
