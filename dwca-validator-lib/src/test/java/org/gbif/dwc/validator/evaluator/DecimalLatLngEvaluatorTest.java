@@ -19,7 +19,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-
+/**
+ * Test DecimalLatLngEvaluator implementation.
+ * 
+ * @author cgendreau
+ */
 public class DecimalLatLngEvaluatorTest {
 
   private Record buildMockRecord(String id, String lat, String lng) {

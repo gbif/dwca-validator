@@ -20,4 +20,5 @@ evaluators:
    - !!org.gbif.dwc.validator.evaluator.impl.RecordCompletionEvaluator$Configuration
      terms:
        - !!org.gbif.dwc.terms.DwcTerm 'country'
-  
+ - !!org.gbif.dwc.validator.evaluator.impl.DecimalLatLngEvaluator
+   - !!org.gbif.dwc.validator.evaluator.impl.DecimalLatLngEvaluator$Configuration {}

@@ -31,12 +31,16 @@ public class FileBasedValidationChainLoaderTest {
     ArchiveField idField = new ArchiveField(0, DwcTerm.occurrenceID, null, DataType.string);
     ArchiveField scientificNameField = new ArchiveField(1, DwcTerm.scientificName, null, DataType.string);
     ArchiveField eventDateField = new ArchiveField(2, DwcTerm.eventDate, null, DataType.string);
+    ArchiveField decimalLatitudeField = new ArchiveField(3, DwcTerm.decimalLatitude, null, DataType.string);
+    ArchiveField decimalLongitudeField = new ArchiveField(4, DwcTerm.decimalLongitude, null, DataType.string);
 
     List<ArchiveField> fieldList = new ArrayList<ArchiveField>();
     fieldList.add(scientificNameField);
     fieldList.add(eventDateField);
+    fieldList.add(decimalLatitudeField);
+    fieldList.add(decimalLongitudeField);
     RecordImpl testRecord = new RecordImpl(idField, fieldList, "rowType", false);
-    testRecord.setRow(new String[] {id, "gulo\tgulo", "10-07-2014"});
+    testRecord.setRow(new String[] {id, "gulo\tgulo", "10-07-2014", "2.3", "a"});
     return testRecord;
   }
 
@@ -57,6 +61,9 @@ public class FileBasedValidationChainLoaderTest {
 
       assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getEvaluationResultList(), "2",
         ArchiveValidatorConfig.getLocalizedString("rule.blank_value")));
+
+      assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getEvaluationResultList(), "2",
+        ArchiveValidatorConfig.getLocalizedString("rule.non_numerical", "a")));
 
     } catch (URISyntaxException e) {
       e.printStackTrace();

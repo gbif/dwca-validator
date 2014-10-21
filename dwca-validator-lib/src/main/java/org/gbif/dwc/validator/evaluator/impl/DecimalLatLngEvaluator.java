@@ -26,18 +26,47 @@ import org.apache.commons.lang3.StringUtils;
 @RecordEvaluator(key = "decimalLatLngEvaluator")
 public class DecimalLatLngEvaluator implements RecordEvaluatorIF {
 
-  public static class DecimalLatLngEvaluatorBuilder {
+  /**
+   * Container object holding DecimalLatLngEvaluator configurations.
+   * 
+   * @author cgendreau
+   */
+  public static class Configuration {
 
-    private final String key = DecimalLatLngEvaluator.class.getAnnotation(RecordEvaluator.class).key();
     private NumericalValueEvaluationRule latNumericalValueEvaluationRule;
     private NumericalValueEvaluationRule lngNumericalValueEvaluationRule;
 
-    private DecimalLatLngEvaluatorBuilder() {
-      // build lat/long default NumericalValueEvaluationRule
+    public Configuration() {
+      // set default lat/long NumericalValueEvaluationRule
       latNumericalValueEvaluationRule =
         NumericalValueEvaluationRule.createRule().boundedBy(MIN_LATITUDE, MAX_LATITUDE).build();
       lngNumericalValueEvaluationRule =
         NumericalValueEvaluationRule.createRule().boundedBy(MIN_LONGITUDE, MAX_LONGITUDE).build();
+    }
+
+    public NumericalValueEvaluationRule getLatNumericalValueEvaluationRule() {
+      return latNumericalValueEvaluationRule;
+    }
+
+    public NumericalValueEvaluationRule getLngNumericalValueEvaluationRule() {
+      return lngNumericalValueEvaluationRule;
+    }
+
+    public void setLatNumericalValueEvaluationRule(NumericalValueEvaluationRule latNumericalValueEvaluationRule) {
+      this.latNumericalValueEvaluationRule = latNumericalValueEvaluationRule;
+    }
+
+    public void setLngNumericalValueEvaluationRule(NumericalValueEvaluationRule lngNumericalValueEvaluationRule) {
+      this.lngNumericalValueEvaluationRule = lngNumericalValueEvaluationRule;
+    }
+  }
+
+  public static class DecimalLatLngEvaluatorBuilder {
+
+    private final Configuration configuration;
+
+    private DecimalLatLngEvaluatorBuilder() {
+      configuration = new Configuration();
     }
 
     /**
@@ -55,7 +84,7 @@ public class DecimalLatLngEvaluator implements RecordEvaluatorIF {
      * @return immutable DecimalLatLngEvaluator object
      */
     public DecimalLatLngEvaluator build() {
-      return new DecimalLatLngEvaluator(key, latNumericalValueEvaluationRule, lngNumericalValueEvaluationRule);
+      return new DecimalLatLngEvaluator(configuration);
     }
 
     /**
@@ -67,13 +96,12 @@ public class DecimalLatLngEvaluator implements RecordEvaluatorIF {
      */
     public void using(NumericalValueEvaluationRule latNumericalValueEvaluationRule,
       NumericalValueEvaluationRule lngNumericalValueEvaluationRule) {
-      this.latNumericalValueEvaluationRule = latNumericalValueEvaluationRule;
-      this.lngNumericalValueEvaluationRule = lngNumericalValueEvaluationRule;
+      configuration.setLatNumericalValueEvaluationRule(latNumericalValueEvaluationRule);
+      configuration.setLngNumericalValueEvaluationRule(lngNumericalValueEvaluationRule);
     }
-
   }
 
-  private final String key;
+  private final String key = DecimalLatLngEvaluator.class.getAnnotation(RecordEvaluator.class).key();
 
   // decimalLatitude : Legal values lie between -90 and 90, inclusive.
   public static final double MIN_LATITUDE = -90d;
@@ -86,11 +114,9 @@ public class DecimalLatLngEvaluator implements RecordEvaluatorIF {
   private final NumericalValueEvaluationRule latNumericalValueEvaluationRule;
   private final NumericalValueEvaluationRule lngNumericalValueEvaluationRule;
 
-  public DecimalLatLngEvaluator(String key, NumericalValueEvaluationRule latNumericalValueEvaluationRule,
-    NumericalValueEvaluationRule lngNumericalValueEvaluationRule) {
-    this.key = key;
-    this.latNumericalValueEvaluationRule = latNumericalValueEvaluationRule;
-    this.lngNumericalValueEvaluationRule = lngNumericalValueEvaluationRule;
+  public DecimalLatLngEvaluator(Configuration configuration) {
+    this.latNumericalValueEvaluationRule = configuration.getLatNumericalValueEvaluationRule();
+    this.lngNumericalValueEvaluationRule = configuration.getLngNumericalValueEvaluationRule();
   }
 
   @Override

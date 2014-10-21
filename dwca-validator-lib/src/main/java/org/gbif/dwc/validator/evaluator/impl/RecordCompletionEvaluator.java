@@ -85,9 +85,10 @@ public class RecordCompletionEvaluator implements RecordEvaluatorIF {
    */
   public static class RecordCompletionEvaluatorBuilder {
 
-    private final Configuration configuration = new Configuration();
+    private final Configuration configuration;
 
     private RecordCompletionEvaluatorBuilder() {
+      configuration = new Configuration();
     }
 
     public static RecordCompletionEvaluatorBuilder create() {
