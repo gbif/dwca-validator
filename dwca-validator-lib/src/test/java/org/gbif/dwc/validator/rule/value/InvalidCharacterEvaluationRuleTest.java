@@ -6,7 +6,7 @@ import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule.InvalidC
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Ensure InvalidCharacterEvaluationRule object obtained by the builder works as expected.
@@ -36,6 +36,7 @@ public class InvalidCharacterEvaluationRuleTest {
 
     assertEquals(Result.PASSED, rule.evaluate("test" + VERTICAL_TAB_CHAR).getResult());
     assertEquals(Result.PASSED, rule.evaluate("test" + REPLACEMENT_CHAR).getResult());
+    assertEquals(Result.PASSED, rule.evaluate("test" + ENDLINE).getResult());
   }
 
   @Test
@@ -45,8 +46,8 @@ public class InvalidCharacterEvaluationRuleTest {
     testAlwaysValidString(rule);
     testNeverValidString(rule);
 
-    assertNotNull(rule.evaluate("test\t2"));
-    assertNotNull(rule.evaluate("test" + ENDLINE));
+    assertTrue(rule.evaluate("test\t2").resultIsOneOf(Result.WARNING, Result.ERROR));
+    assertTrue(rule.evaluate("test" + ENDLINE).resultIsOneOf(Result.WARNING, Result.ERROR));
     assertEquals(Result.PASSED, rule.evaluate("test" + REPLACEMENT_CHAR).getResult());
   }
 
@@ -58,7 +59,7 @@ public class InvalidCharacterEvaluationRuleTest {
     testAlwaysValidString(rule);
     testNeverValidString(rule);
 
-    assertNotNull(rule.evaluate("test" + REPLACEMENT_CHAR));
+    assertTrue(rule.evaluate("test" + REPLACEMENT_CHAR).resultIsOneOf(Result.ERROR, Result.WARNING));
   }
 
   private void testAlwaysValidString(InvalidCharacterEvaluationRule rule) {
@@ -73,7 +74,7 @@ public class InvalidCharacterEvaluationRuleTest {
   }
 
   private void testNeverValidString(InvalidCharacterEvaluationRule rule) {
-    assertNotNull(rule.evaluate("test" + NULL_CHAR));
-    assertNotNull(rule.evaluate("test" + ESCAPE_CHAR));
+    assertTrue(rule.evaluate("test" + NULL_CHAR).resultIsOneOf(Result.ERROR, Result.WARNING));
+    assertTrue(rule.evaluate("test" + ESCAPE_CHAR).resultIsOneOf(Result.ERROR, Result.WARNING));
   }
 }
