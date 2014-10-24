@@ -2,8 +2,10 @@ package org.gbif.dwc.validator.evaluator.impl;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilderIF;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
@@ -31,6 +33,7 @@ public class RecordCompletionEvaluator implements RecordEvaluatorIF {
    * 
    * @author cgendreau
    */
+  @RecordEvaluatorConfiguration
   public static class Configuration {
 
     private EvaluationContext evaluatorContext;
@@ -83,12 +86,16 @@ public class RecordCompletionEvaluator implements RecordEvaluatorIF {
    * 
    * @author cgendreau
    */
-  public static class RecordCompletionEvaluatorBuilder {
+  public static class RecordCompletionEvaluatorBuilder implements RecordEvaluatorBuilderIF {
 
     private final Configuration configuration;
 
     private RecordCompletionEvaluatorBuilder() {
       configuration = new Configuration();
+    }
+
+    public RecordCompletionEvaluatorBuilder(Configuration configuration) {
+      this.configuration = configuration;
     }
 
     public static RecordCompletionEvaluatorBuilder create() {
@@ -101,6 +108,7 @@ public class RecordCompletionEvaluator implements RecordEvaluatorIF {
      * @return immutable RecordCompletionEvaluator object
      * @throws IllegalStateException
      */
+    @Override
     public RecordCompletionEvaluator build() throws IllegalStateException {
       if (configuration.getEvaluatorContext() == null) {
         throw new IllegalStateException("The evaluatorContext must be set");
@@ -148,7 +156,12 @@ public class RecordCompletionEvaluator implements RecordEvaluatorIF {
   private final BlankValueEvaluationRule blankValueEvaluationRule;
   private final List<ConceptTerm> terms;
 
-  public RecordCompletionEvaluator(Configuration configuration) {
+  /**
+   * Use builder to get instance.
+   * 
+   * @param configuration
+   */
+  private RecordCompletionEvaluator(Configuration configuration) {
     this.evaluatorContext = configuration.getEvaluatorContext();
     this.blankValueEvaluationRule = configuration.getBlankValueEvaluationRule();
     this.terms = Collections.unmodifiableList(new ArrayList<ConceptTerm>(configuration.getTerms()));

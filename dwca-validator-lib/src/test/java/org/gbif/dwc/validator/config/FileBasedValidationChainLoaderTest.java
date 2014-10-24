@@ -50,8 +50,9 @@ public class FileBasedValidationChainLoaderTest {
 
     try {
       File testFile = new File(this.getClass().getResource("/evaluator/fileBasedValidationChain.yaml").toURI());
+      FileBasedValidationChainLoader fbValidationChainLoader = new FileBasedValidationChainLoader();
       ChainableRecordEvaluator chainHead =
-        FileBasedValidationChainLoader.buildValidationChainFromYamlFile(testFile.getAbsolutePath());
+        fbValidationChainLoader.buildValidationChainFromYamlFile(testFile.getAbsolutePath());
 
       Record testRecord = buildMockRecord("2");
       chainHead.doEval(testRecord, resultAccumulator);

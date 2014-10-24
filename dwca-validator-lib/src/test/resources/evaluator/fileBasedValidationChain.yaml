@@ -14,11 +14,13 @@ evaluators:
  - !!org.gbif.dwc.validator.evaluator.impl.ValueEvaluator
    - !!org.gbif.dwc.validator.evaluator.impl.ValueEvaluator$Configuration
      rulesPerTerm:
-       !!org.gbif.dwc.terms.DwcTerm 'eventDate' : [*isoDateVER]
-       !!org.gbif.dwc.terms.DwcTerm 'scientificName' : [*invalidCharacterVER]
- - !!org.gbif.dwc.validator.evaluator.impl.RecordCompletionEvaluator
-   - !!org.gbif.dwc.validator.evaluator.impl.RecordCompletionEvaluator$Configuration
-     terms:
-       - !!org.gbif.dwc.terms.DwcTerm 'country'
+       !dwcTerm 'eventDate' : [*isoDateVER]
+       !dwcTerm 'scientificName' : [*invalidCharacterVER]
  - !!org.gbif.dwc.validator.evaluator.impl.DecimalLatLngEvaluator
    - !!org.gbif.dwc.validator.evaluator.impl.DecimalLatLngEvaluator$Configuration {}
+
+evaluatorBuilders:
+ - !recordCompletionEvaluator
+   - !recordCompletionEvaluator_configuration
+     terms:
+       - !dwcTerm 'country'
