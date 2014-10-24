@@ -1,14 +1,19 @@
 package org.gbif.dwc.validator.rule.vocabulary;
 
 import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.dwc.validator.result.Result;
+import org.gbif.dwc.validator.rule.vocabulary.ControlledVocabularyEvaluationRule.ControlledVocabularyEvaluationRuleBuilder;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Ensure ControlledVocabularyEvaluationRule object obtained by the builder work as expected.
@@ -18,21 +23,45 @@ import static org.junit.Assert.assertNull;
 public class ControlledVocabularyEvaluationRuleTest {
 
   @Test
-  public void evaluateControlledVocabulary() {
+  public void evaluateControlledVocabularyFromFile() {
+
+    File testFile = null;
+    try {
+      testFile = new File(this.getClass().getResource("/dictionary/european_union_country.txt").toURI());
+    } catch (URISyntaxException e) {
+      e.printStackTrace();
+      fail();
+    }
+
+    ControlledVocabularyEvaluationRule rule =
+      ControlledVocabularyEvaluationRuleBuilder.create().onTerm(DwcTerm.country)
+        .useDictionaryAt(testFile.getAbsolutePath()).build();
+
+    assertEquals(Result.PASSED, rule.evaluate("Spain").getResult());
+
+    // should not passed
+    assertTrue(rule.evaluate("xyz").resultIsOneOf(Result.WARNING, Result.ERROR));
+  }
+
+// @Test(expected = IllegalStateException.class)
+// public void testBuilderBehavior() {
+// ControlledVocabularyEvaluationRule.createRule(DwcTerm.basisOfRecord, null).build();
+// }
+
+  @Test
+  public void evaluateControlledVocabularyFromSet() {
 
     Set<String> vocabulary = new HashSet<String>();
     vocabulary.add("PreservedSpecimen");
 
     ControlledVocabularyEvaluationRule rule =
-      ControlledVocabularyEvaluationRule.createRule(DwcTerm.basisOfRecord, vocabulary).build();
+      ControlledVocabularyEvaluationRuleBuilder.create().onTerm(DwcTerm.basisOfRecord).useVocabularySet(vocabulary)
+        .build();
 
-    assertNull(rule.evaluate("PreservedSpecimen"));
-    assertNotNull(rule.evaluate("Gulo Gulo"));
-  }
+    assertEquals(Result.PASSED, rule.evaluate("PreservedSpecimen").getResult());
 
-  @Test(expected = IllegalStateException.class)
-  public void testBuilderBehavior() {
-    ControlledVocabularyEvaluationRule.createRule(DwcTerm.basisOfRecord, null).build();
+    // should not passed
+    assertTrue(rule.evaluate("Gulo Gulo").resultIsOneOf(Result.WARNING, Result.ERROR));
   }
 
 }

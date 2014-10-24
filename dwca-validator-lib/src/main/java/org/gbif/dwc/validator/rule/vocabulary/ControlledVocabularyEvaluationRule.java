@@ -7,8 +7,17 @@ import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import com.google.common.base.Charsets;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Rule use to ensure a String is matching against a controlled vocabulary.
@@ -21,6 +30,42 @@ import java.util.Set;
 public class ControlledVocabularyEvaluationRule implements EvaluationRuleIF<String> {
 
   /**
+   * Container object holding ControlledVocabularyEvaluationRule configurations.
+   * 
+   * @author cgendreau
+   */
+  public static class Configuration {
+
+    private ConceptTerm term;
+    private String dictionaryPath;
+    private Set<String> vocabularySet;
+
+    public String getDictionaryPath() {
+      return dictionaryPath;
+    }
+
+    public ConceptTerm getTerm() {
+      return term;
+    }
+
+    public Set<String> getVocabularySet() {
+      return vocabularySet;
+    }
+
+    public void setDictionaryPath(String dictionaryPath) {
+      this.dictionaryPath = dictionaryPath;
+    }
+
+    public void setTerm(ConceptTerm term) {
+      this.term = term;
+    }
+
+    public void setVocabularySet(Set<String> vocabularySet) {
+      this.vocabularySet = vocabularySet;
+    }
+  }
+
+  /**
    * Builder used to customized, if needed, the ControlledVocabularyEvaluation.
    * Also ensure usage of immutable object.
    * 
@@ -28,27 +73,35 @@ public class ControlledVocabularyEvaluationRule implements EvaluationRuleIF<Stri
    */
   public static class ControlledVocabularyEvaluationRuleBuilder {
 
-    private final ConceptTerm term;
-    private final Set<String> vocabularySet;
+    private final Configuration configuration;
 
     /**
      * Private constructor, use create() method.
      */
-    private ControlledVocabularyEvaluationRuleBuilder(ConceptTerm term, Set<String> vocabularySet) {
-      this.term = term;
-      this.vocabularySet = vocabularySet;
+    private ControlledVocabularyEvaluationRuleBuilder() {
+      configuration = new Configuration();
     }
 
     /**
      * Creates a ControlledVocabularyEvaluationRuleBuilder.
-     * Use build to get the ControlledVocabularyEvaluationRule instance.
      * 
-     * @param term
-     * @param vocabularySet
      * @return
      */
-    public static ControlledVocabularyEvaluationRuleBuilder create(ConceptTerm term, Set<String> vocabularySet) {
-      return new ControlledVocabularyEvaluationRuleBuilder(term, vocabularySet);
+    public static ControlledVocabularyEvaluationRuleBuilder create() {
+      return new ControlledVocabularyEvaluationRuleBuilder();
+    }
+
+    protected static Set<String> toVocabularySet(String dictionaryPath) {
+      if (FilenameUtils.isExtension(dictionaryPath, "txt")) {
+        File dictionaryFile = new File(dictionaryPath);
+        try {
+          List<String> dictionaryList = FileUtils.readLines(dictionaryFile, Charsets.UTF_8);
+          return new HashSet<String>(dictionaryList);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      return null;
     }
 
     /**
@@ -58,46 +111,75 @@ public class ControlledVocabularyEvaluationRule implements EvaluationRuleIF<Stri
      * @throws IllegalStateException
      */
     public ControlledVocabularyEvaluationRule build() throws IllegalStateException {
-      if (term == null || vocabularySet == null || vocabularySet.size() < 1) {
-        throw new IllegalStateException(
-          "ControlledVocabularyEvaluationRule must be built on a ConceptTerm and at least one vocabulary entry.");
+      if (configuration.getTerm() == null) {
+        throw new IllegalStateException("ControlledVocabularyEvaluationRule must be built on a ConceptTerm.");
       }
-      return new ControlledVocabularyEvaluationRule(term, vocabularySet);
+      boolean vocabularySetProvided =
+        (configuration.getVocabularySet() != null && !configuration.getVocabularySet().isEmpty());
+      boolean dictionaryPathProvided = StringUtils.isNotBlank(configuration.getDictionaryPath());
+
+      if (vocabularySetProvided == dictionaryPathProvided) {
+        throw new IllegalStateException(
+          "ControlledVocabularyEvaluationRule must be built on at least one vocabulary entry or a dictionnary file.");
+      }
+      return new ControlledVocabularyEvaluationRule(configuration);
     }
 
+    public ControlledVocabularyEvaluationRuleBuilder onTerm(ConceptTerm term) {
+      configuration.setTerm(term);
+      return this;
+    }
+
+    /**
+     * Load the controlled vocabulary from a file (currently text file only).
+     * 
+     * @param dictonaryPath
+     * @return
+     */
+    public ControlledVocabularyEvaluationRuleBuilder useDictionaryAt(String dictonaryPath) {
+      configuration.setDictionaryPath(dictonaryPath);
+      return this;
+    }
+
+    /**
+     * Used controlled vocabulary represented by the Set.
+     * 
+     * @param vocabularySet
+     * @return
+     */
+    public ControlledVocabularyEvaluationRuleBuilder useVocabularySet(Set<String> vocabularySet) {
+      configuration.setVocabularySet(vocabularySet);
+      return this;
+    }
   }
 
   private final ConceptTerm term;
   private final Set<String> vocabularySet;
 
-  private ControlledVocabularyEvaluationRule(ConceptTerm term, Set<String> vocabularySet) {
-    this.term = term;
-    this.vocabularySet = Collections.unmodifiableSet(vocabularySet);
-  }
-
-  /**
-   * Simple alias of ControlledVocabularyEvaluationRuleBuilder.create() for code readability so we can use
-   * ControlledVocabularyEvaluationRuleBuilder.createRule() instead of
-   * ControlledVocabularyEvaluationRule.ControlledVocabularyEvaluationRuleBuilder.create()
-   * 
-   * @param term
-   * @param vocabularySet
-   * @return default InvalidCharacterEvaluationRuleBuilder
-   */
-  public static ControlledVocabularyEvaluationRuleBuilder createRule(ConceptTerm term, Set<String> vocabularySet) {
-    return ControlledVocabularyEvaluationRuleBuilder.create(term, vocabularySet);
+  private ControlledVocabularyEvaluationRule(Configuration configuration) {
+    this.term = configuration.getTerm();
+    if (configuration.getVocabularySet() != null) {
+      this.vocabularySet = Collections.unmodifiableSet(configuration.vocabularySet);
+    } else {
+      if (StringUtils.isNotBlank(configuration.getDictionaryPath())) {
+        this.vocabularySet =
+          ControlledVocabularyEvaluationRuleBuilder.toVocabularySet(configuration.getDictionaryPath());
+      } else {
+        this.vocabularySet = null;
+      }
+    }
   }
 
   @Override
   public ValidationResultElement evaluate(String str) {
     if (str == null) {
-      return null;
+      return ValidationResultElement.SKIPPED;
     }
 
     if (!vocabularySet.contains(str)) {
       return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.ERROR,
         ArchiveValidatorConfig.getLocalizedString("rule.controlled_vocabulary", str, term.simpleName()));
     }
-    return null;
+    return ValidationResultElement.PASSED;
   }
 }
