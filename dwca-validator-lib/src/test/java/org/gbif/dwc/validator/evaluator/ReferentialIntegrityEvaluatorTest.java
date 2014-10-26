@@ -73,7 +73,7 @@ public class ReferentialIntegrityEvaluatorTest {
       valueEvaluator.handleEval(buildMockRecord("2", ""), resultAccumulator);
 
       valueEvaluator.handlePostIterate(resultAccumulator);
-      valueEvaluator.cleanup();
+      valueEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -95,7 +95,7 @@ public class ReferentialIntegrityEvaluatorTest {
       valueEvaluator.handleEval(buildMockRecord("2", "z"), resultAccumulator);
 
       valueEvaluator.handlePostIterate(resultAccumulator);
-      valueEvaluator.cleanup();
+      valueEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -115,7 +115,7 @@ public class ReferentialIntegrityEvaluatorTest {
           .referTo(EvaluationContext.CORE, DwcTerm.taxonID, referenceFile).supportMultipleValues("|").build();
       valueEvaluator.handleEval(buildMockRecord("1", "3|4"), resultAccumulator);
       valueEvaluator.handlePostIterate(resultAccumulator);
-      valueEvaluator.cleanup();
+      valueEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -136,7 +136,7 @@ public class ReferentialIntegrityEvaluatorTest {
       valueEvaluator.handleEval(buildMockRecord("1", "3|z"), resultAccumulator);
       valueEvaluator.handleEval(buildMockRecord("2", "z|3"), resultAccumulator);
       valueEvaluator.handlePostIterate(resultAccumulator);
-      valueEvaluator.cleanup();
+      valueEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
     }

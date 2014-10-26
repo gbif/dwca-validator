@@ -13,6 +13,7 @@ import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -36,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * @author cgendreau
  */
 @RecordEvaluator(key = "uniquenessEvaluator")
-public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
+public class UniquenessEvaluator implements StatefulRecordEvaluatorIF, Closeable {
 
   /**
    * Builder of UniquenessEvaluator object.
@@ -152,15 +153,6 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
     return UniquenessEvaluatorBuilder.create();
   }
 
-  /**
-   * Delete generated files.
-   */
-  @Override
-  public void cleanup() {
-    idRecordingFile.delete();
-    sortedIdFile.delete();
-  }
-
   private void flushCurrentIdList() {
     try {
       for (String curr : idList) {
@@ -251,5 +243,14 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
         LOGGER.error("Can't close BufferedReader", ioEx);
       }
     }
+  }
+
+  /**
+   * Delete generated files.
+   */
+  @Override
+  public void close() throws IOException {
+    idRecordingFile.delete();
+    sortedIdFile.delete();
   }
 }

@@ -52,7 +52,7 @@ public class UniquenessEvaluatorTest {
       valueEvaluator.handleEval(buildMockRecord("1", "2"), resultAccumulator);
 
       valueEvaluator.handlePostIterate(resultAccumulator);
-      valueEvaluator.cleanup();
+      valueEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
       fail();
@@ -74,7 +74,7 @@ public class UniquenessEvaluatorTest {
       valueEvaluator.handleEval(buildMockRecord("2", "1"), resultAccumulator);
 
       valueEvaluator.handlePostIterate(resultAccumulator);
-      valueEvaluator.cleanup();
+      valueEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
       fail();
@@ -95,7 +95,7 @@ public class UniquenessEvaluatorTest {
       valueEvaluator.handleEval(buildMockRecord("2", "1"), resultAccumulator);
 
       valueEvaluator.handlePostIterate(resultAccumulator);
-      valueEvaluator.cleanup();
+      valueEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
       fail();

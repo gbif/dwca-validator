@@ -5,6 +5,11 @@ import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluatorIF;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 
+import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Wrapper class to allow RecordEvaluatorIF to be chainable.
  * The class is immutable but the RecordEvaluatorIF immutability can not be enforced.
@@ -13,6 +18,8 @@ import org.gbif.dwc.validator.result.ResultAccumulatorIF;
  * @author cgendreau
  */
 public class ChainableRecordEvaluator {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(ChainableRecordEvaluator.class);
 
   private final RecordEvaluatorIF recordEvaluator;
   private final ChainableRecordEvaluator nextElement;
@@ -27,7 +34,11 @@ public class ChainableRecordEvaluator {
    */
   public void cleanup() {
     if (recordEvaluator instanceof StatefulRecordEvaluatorIF) {
-      ((StatefulRecordEvaluatorIF) recordEvaluator).cleanup();
+      try {
+        ((StatefulRecordEvaluatorIF) recordEvaluator).close();
+      } catch (IOException e) {
+        LOGGER.error("Can't close recordEvaluator properly", e);
+      }
     }
     if (nextElement != null) {
       nextElement.cleanup();

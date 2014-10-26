@@ -180,16 +180,6 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
     return new ReferentialIntegrityEvaluatorBuilder(evaluatorContext, term);
   }
 
-  /**
-   * Clean generated files
-   */
-  @Override
-  public void cleanup() {
-    idRecordingFile.delete();
-    sortedIdFile.delete();
-    diffFile.delete();
-  }
-
   private void flushCurrentIdList() {
     try {
       for (String curr : idList) {
@@ -279,4 +269,13 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
     }
   }
 
+  /**
+   * Clean generated files
+   */
+  @Override
+  public void close() throws IOException {
+    idRecordingFile.delete();
+    sortedIdFile.delete();
+    diffFile.delete();
+  }
 }
