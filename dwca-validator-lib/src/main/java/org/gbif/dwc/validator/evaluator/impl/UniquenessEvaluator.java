@@ -5,9 +5,9 @@ import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluatorIF;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
+import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.impl.validation.ValidationResult;
 import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +46,7 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
    */
   public static class UniquenessEvaluatorBuilder {
 
-    private final String key = UniquenessEvaluator.class.getAnnotation(RecordEvaluator.class).key();
+
     private EvaluationContext evaluatorContext;
     private ConceptTerm term;
     private File workingFolder;
@@ -63,20 +64,25 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
       return new UniquenessEvaluatorBuilder(EvaluationContext.CORE);
     }
 
-    public UniquenessEvaluator build() throws IOException, IllegalStateException {
-      if (evaluatorContext == null) {
-        throw new IllegalStateException("The evaluatorContext must be set");
-      }
+    /**
+     * Build UniquenessEvaluator object.
+     * 
+     * @return
+     * @throws NullPointerException
+     * @throws IllegalStateException
+     * @throws IOException
+     */
+    public UniquenessEvaluator build() throws NullPointerException, IllegalStateException, IOException {
+      Preconditions.checkNotNull(evaluatorContext);
 
       if (workingFolder != null) {
-        if (!workingFolder.exists() || !workingFolder.isDirectory()) {
-          throw new IllegalStateException("workingFolder must exist as a directory");
-        }
+        Preconditions.checkState(workingFolder.exists() && workingFolder.isDirectory(),
+          "workingFolder must exist as a directory");
       } else {
         workingFolder = new File(".");
       }
 
-      return new UniquenessEvaluator(key, term, evaluatorContext, workingFolder);
+      return new UniquenessEvaluator(term, evaluatorContext, workingFolder);
     }
 
     /**
@@ -105,7 +111,7 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
     }
   }
 
-  private final String key;
+  private final String key = UniquenessEvaluator.class.getAnnotation(RecordEvaluator.class).key();
   private final EvaluationContext evaluatorContext;
   private final ConceptTerm term;
   private final String conceptTermString;
@@ -126,9 +132,8 @@ public class UniquenessEvaluator implements StatefulRecordEvaluatorIF {
    * @param workingFolder place to save temporary files
    * @throws IOException
    */
-  private UniquenessEvaluator(String key, ConceptTerm term, EvaluationContext evaluatorContext, File workingFolder)
+  private UniquenessEvaluator(ConceptTerm term, EvaluationContext evaluatorContext, File workingFolder)
     throws IOException {
-    this.key = key;
     this.evaluatorContext = evaluatorContext;
     this.term = term;
     this.conceptTermString = term != null ? term.simpleName() : "coreId";

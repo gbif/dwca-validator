@@ -135,11 +135,11 @@ public class ValueEvaluator implements RecordEvaluatorIF {
     }
 
     /**
-     * Build ValueEvaluator.
+     * Build ValueEvaluator object.
      * 
      * @return immutable ValueEvaluator object
      * @throws NullPointerException if evaluatorContext or rulesPerTerm is null
-     *         IllegalStateException if rulesPerTerm is empty
+     * @throws IllegalStateException if rulesPerTerm is empty
      */
     public ValueEvaluator build() throws NullPointerException, IllegalStateException {
       Preconditions.checkNotNull(configuration.getEvaluatorContext());

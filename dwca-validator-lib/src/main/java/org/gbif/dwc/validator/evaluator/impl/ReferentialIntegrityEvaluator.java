@@ -5,9 +5,9 @@ import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluatorIF;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
+import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.impl.validation.ValidationResult;
 import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,15 +67,22 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
       return new ReferentialIntegrityEvaluatorBuilder(evaluatorContext, term);
     }
 
-    public ReferentialIntegrityEvaluator build() throws IOException, IllegalStateException {
-      if (evaluatorContext == null || referredTerm == null || referenceFile == null) {
-        throw new IllegalStateException("The reference data must be set");
-      }
+    /**
+     * Build UniquenessEvaluator object.
+     * 
+     * @return
+     * @throws NullPointerException
+     * @throws IOException
+     * @throws IllegalStateException
+     */
+    public ReferentialIntegrityEvaluator build() throws NullPointerException, IOException, IllegalStateException {
+      Preconditions.checkNotNull(evaluatorContext);
+      Preconditions.checkNotNull(referredTerm);
+      Preconditions.checkNotNull(referenceFile);
 
       if (workingFolder != null) {
-        if (!workingFolder.exists() || !workingFolder.isDirectory()) {
-          throw new IllegalStateException("workingFolder must exist as a directory");
-        }
+        Preconditions.checkState(workingFolder.exists() && workingFolder.isDirectory(),
+          "workingFolder must exist as a directory");
       } else {
         workingFolder = new File(".");
       }

@@ -43,11 +43,6 @@ public class ControlledVocabularyEvaluationRuleTest {
     assertTrue(rule.evaluate("xyz").resultIsOneOf(Result.WARNING, Result.ERROR));
   }
 
-// @Test(expected = IllegalStateException.class)
-// public void testBuilderBehavior() {
-// ControlledVocabularyEvaluationRule.createRule(DwcTerm.basisOfRecord, null).build();
-// }
-
   @Test
   public void evaluateControlledVocabularyFromSet() {
 
@@ -62,6 +57,11 @@ public class ControlledVocabularyEvaluationRuleTest {
 
     // should not passed
     assertTrue(rule.evaluate("Gulo Gulo").resultIsOneOf(Result.WARNING, Result.ERROR));
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void testBuilderBehavior() {
+    ControlledVocabularyEvaluationRuleBuilder.create().onTerm(DwcTerm.basisOfRecord).build();
   }
 
 }

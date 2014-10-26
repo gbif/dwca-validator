@@ -105,11 +105,11 @@ public class RecordCompletionEvaluator implements RecordEvaluatorIF {
     }
 
     /**
-     * Build RecordCompletionEvaluator.
+     * Build RecordCompletionEvaluator object.
      * 
      * @return immutable RecordCompletionEvaluator object
      * @throws NullPointerException evaluatorContext, terms or blankValueEvaluationRule is null
-     *         IllegalStateException if no terms were specified
+     * @throws IllegalStateException if no terms were specified
      */
     @Override
     public RecordCompletionEvaluator build() throws NullPointerException, IllegalStateException {
