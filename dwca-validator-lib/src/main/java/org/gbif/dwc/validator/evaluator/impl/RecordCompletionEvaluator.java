@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Preconditions;
+
 /**
  * RecordEvaluatorIF implementation to check the completion of a record.
  * The definition of 'completion' is defined by BlankValueEvaluationRule and will be used for all specified terms.
@@ -106,22 +108,16 @@ public class RecordCompletionEvaluator implements RecordEvaluatorIF {
      * Build RecordCompletionEvaluator.
      * 
      * @return immutable RecordCompletionEvaluator object
-     * @throws IllegalStateException
+     * @throws NullPointerException evaluatorContext, terms or blankValueEvaluationRule is null
+     *         IllegalStateException if no terms were specified
      */
     @Override
-    public RecordCompletionEvaluator build() throws IllegalStateException {
-      if (configuration.getEvaluatorContext() == null) {
-        throw new IllegalStateException("The evaluatorContext must be set");
-      }
+    public RecordCompletionEvaluator build() throws NullPointerException, IllegalStateException {
+      Preconditions.checkNotNull(configuration.getEvaluatorContext());
+      Preconditions.checkNotNull(configuration.getTerms());
+      Preconditions.checkNotNull(configuration.getBlankValueEvaluationRule());
 
-      // both must be null or both must be provided
-      if (configuration.getBlankValueEvaluationRule() != null || configuration.getTerms() != null) {
-        if (configuration.getBlankValueEvaluationRule() == null || configuration.getTerms() == null
-          || configuration.getTerms().isEmpty()) {
-          throw new IllegalStateException(
-            "blankValueEvaluationRule and term(s) must both be set if one of them is provided.");
-        }
-      }
+      Preconditions.checkState(configuration.getTerms().size() > 0, "At least one term must be set");
 
       return new RecordCompletionEvaluator(configuration);
     }

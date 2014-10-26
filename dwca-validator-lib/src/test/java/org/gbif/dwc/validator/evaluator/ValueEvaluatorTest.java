@@ -56,4 +56,9 @@ public class ValueEvaluatorTest {
       ContentValidationType.RECORD_CONTENT_VALUE));
   }
 
+  @Test(expected = IllegalStateException.class)
+  public void testValueEvaluatorIncompleteConfiguration() {
+    ValueEvaluatorBuilder.create().build();
+  }
+
 }

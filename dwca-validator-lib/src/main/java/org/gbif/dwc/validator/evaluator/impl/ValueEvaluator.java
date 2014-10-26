@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Preconditions;
+
 /**
  * General RecordEvaluatorIF implementation to check the values inside a record.
  * If an evaluation requires more than one field or relies on a specific order of the EvaluationRuleIF to be
@@ -40,10 +42,11 @@ public class ValueEvaluator implements RecordEvaluatorIF {
     private Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm;
 
     /**
-     * Default value EvaluationContext.CORE
+     * Default value EvaluationContext.CORE, empty rulesPerTerm
      */
     public Configuration() {
       evaluatorContext = EvaluationContext.CORE;
+      rulesPerTerm = new HashMap<ConceptTerm, List<EvaluationRuleIF<String>>>();
     }
 
     public EvaluationContext getEvaluatorContext() {
@@ -135,16 +138,15 @@ public class ValueEvaluator implements RecordEvaluatorIF {
      * Build ValueEvaluator.
      * 
      * @return immutable ValueEvaluator object
-     * @throws IllegalStateException
+     * @throws NullPointerException if evaluatorContext or rulesPerTerm is null
+     *         IllegalStateException if rulesPerTerm is empty
      */
-    public ValueEvaluator build() throws IllegalStateException {
-      if (configuration.getEvaluatorContext() == null) {
-        throw new IllegalStateException("The evaluatorContext must be set");
-      }
+    public ValueEvaluator build() throws NullPointerException, IllegalStateException {
+      Preconditions.checkNotNull(configuration.getEvaluatorContext());
+      Preconditions.checkNotNull(configuration.getRulesPerTerm());
+      Preconditions.checkState(configuration.getRulesPerTerm().size() > 0,
+        "The rulesPerTerm must contains at least one element");
 
-      if (configuration.getRulesPerTerm() == null || configuration.getRulesPerTerm().size() == 0) {
-        throw new IllegalStateException("The rulesPerTerm must contains at least one element");
-      }
       return new ValueEvaluator(configuration);
     }
   }

@@ -57,4 +57,12 @@ public class RecordCompletionEvaluatorTest {
       ContentValidationType.RECORD_CONTENT_VALUE));
   }
 
+  @Test(expected = NullPointerException.class)
+  public void testRecordCompletionEvaluatorIncompleteConfiguration() {
+    RecordCompletionEvaluatorBuilder.create().build();
+  }
+
+  RecordCompletionEvaluator recordCompletionEvaluator = RecordCompletionEvaluatorBuilder.create()
+    .checkTerm(DwcTerm.scientificName).build();
+
 }
