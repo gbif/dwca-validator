@@ -40,7 +40,7 @@ public class NumericalValueEvaluationRuleTest {
   /**
    * Ensure an exception is thrown if we invert lower and upper bound.
    */
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = IllegalStateException.class)
   public void testBoundedByCallInverted() {
     NumericalValueEvaluationRule.createRule().boundedBy(23, 20).build();
   }
@@ -48,9 +48,17 @@ public class NumericalValueEvaluationRuleTest {
   /**
    * Ensure an exception is thrown if we user null lower and upper bound.
    */
-  @Test(expected = IllegalArgumentException.class)
-  public void testBoundedByCallWithNulls() {
-    NumericalValueEvaluationRule.createRule().boundedBy(null, null).build();
+  @Test(expected = NullPointerException.class)
+  public void testBoundedByCallWithNull() {
+    NumericalValueEvaluationRule.createRule().boundedBy(null, 8).build();
+  }
+
+  /**
+   * Ensure an exception is thrown if we user null lower and upper bound.
+   */
+  @Test(expected = IllegalStateException.class)
+  public void testBoundedByCallWithInvertedBounds() {
+    NumericalValueEvaluationRule.createRule().boundedBy(3, 1).build();
   }
 
   private void testNeverValidNumerical(NumericalValueEvaluationRule rule) {
