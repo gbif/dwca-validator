@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.evaluator.chain;
 
 import org.gbif.dwc.record.Record;
-import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
+import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluatorIF;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 
@@ -21,10 +21,10 @@ public class ChainableRecordEvaluator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ChainableRecordEvaluator.class);
 
-  private final RecordEvaluatorIF recordEvaluator;
+  private final RecordEvaluator recordEvaluator;
   private final ChainableRecordEvaluator nextElement;
 
-  public ChainableRecordEvaluator(RecordEvaluatorIF recordEvaluator, ChainableRecordEvaluator nextElement) {
+  public ChainableRecordEvaluator(RecordEvaluator recordEvaluator, ChainableRecordEvaluator nextElement) {
     this.recordEvaluator = recordEvaluator;
     this.nextElement = nextElement;
   }

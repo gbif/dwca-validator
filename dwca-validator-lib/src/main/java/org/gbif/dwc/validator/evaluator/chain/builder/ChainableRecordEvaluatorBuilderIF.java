@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.evaluator.chain.builder;
 
-import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
+import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
 
 /**
@@ -17,6 +17,6 @@ public interface ChainableRecordEvaluatorBuilderIF {
    */
   public ChainableRecordEvaluator build();
 
-  public ChainableRecordEvaluatorBuilderIF linkTo(RecordEvaluatorIF recordEvaluator);
+  public ChainableRecordEvaluatorBuilderIF linkTo(RecordEvaluator recordEvaluator);
 
 }

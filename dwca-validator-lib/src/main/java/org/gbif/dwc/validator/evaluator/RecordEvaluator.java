@@ -8,7 +8,7 @@ import org.gbif.dwc.validator.result.ResultAccumulatorIF;
  * 
  * @author cgendreau
  */
-public interface RecordEvaluatorIF {
+public interface RecordEvaluator {
 
   /**
    * Returns the key to use to uniquely identify the Evaluator implementation.

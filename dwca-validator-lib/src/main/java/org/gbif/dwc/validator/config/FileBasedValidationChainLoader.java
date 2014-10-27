@@ -2,10 +2,10 @@ package org.gbif.dwc.validator.config;
 
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.annotation.AnnotationLoader;
+import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilderIF;
-import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
-import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfiguration;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
 import org.gbif.dwc.validator.evaluator.chain.builder.ChainableRecordEvaluatorBuilderIF;
 import org.gbif.dwc.validator.evaluator.chain.builder.DefaultChainableRecordEvaluatorBuilder;
@@ -58,10 +58,10 @@ public class FileBasedValidationChainLoader {
       // configuration file is organized as sections
       Map<String, Object> conf = (Map<String, Object>) yaml.load(ios);
 
-      List<RecordEvaluatorIF> recordEvaluatorList = (List<RecordEvaluatorIF>) conf.get(EVALUATORS_SECTION);
+      List<RecordEvaluator> recordEvaluatorList = (List<RecordEvaluator>) conf.get(EVALUATORS_SECTION);
       // Build chain using DefaultChainableRecordEvaluatorBuilder
       ChainableRecordEvaluatorBuilderIF chainBuilder = null;
-      for (RecordEvaluatorIF currRecordEvaluator : recordEvaluatorList) {
+      for (RecordEvaluator currRecordEvaluator : recordEvaluatorList) {
         if (chainBuilder == null) {
           chainBuilder = DefaultChainableRecordEvaluatorBuilder.create(currRecordEvaluator);
         } else {
@@ -101,7 +101,8 @@ public class FileBasedValidationChainLoader {
     Constructor yamlConstructor = new Constructor();
     yamlConstructor.addTypeDescription(new TypeDescription(DwcTerm.class, "!dwcTerm"));
 
-    Map<Class<?>, RecordEvaluator> evaluatorClasses = AnnotationLoader.getClassAnnotation("", RecordEvaluator.class);
+    Map<Class<?>, RecordEvaluatorKey> evaluatorClasses =
+      AnnotationLoader.getClassAnnotation("", RecordEvaluatorKey.class);
 
     for (Class<?> currEvaluatorClass : evaluatorClasses.keySet()) {
       registerAliases(currEvaluatorClass, evaluatorClasses.get(currEvaluatorClass).key(), yamlConstructor);

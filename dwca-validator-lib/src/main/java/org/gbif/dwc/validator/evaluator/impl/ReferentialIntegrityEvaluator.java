@@ -4,7 +4,7 @@ import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluatorIF;
-import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author cgendreau
  */
-@RecordEvaluator(key = "referentialIntegrityEvaluator")
+@RecordEvaluatorKey(key = "referentialIntegrityEvaluator")
 public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF {
 
   /**
@@ -46,7 +46,7 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluatorIF 
    */
   public static class ReferentialIntegrityEvaluatorBuilder {
 
-    private final String key = ReferentialIntegrityEvaluator.class.getAnnotation(RecordEvaluator.class).key();
+    private final String key = ReferentialIntegrityEvaluator.class.getAnnotation(RecordEvaluatorKey.class).key();
     private final EvaluationContext evaluatorContext;
     private final ConceptTerm term;
 

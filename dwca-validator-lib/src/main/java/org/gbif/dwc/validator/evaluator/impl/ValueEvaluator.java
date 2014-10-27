@@ -2,8 +2,8 @@ package org.gbif.dwc.validator.evaluator.impl;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.ConceptTerm;
-import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
-import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
+import org.gbif.dwc.validator.evaluator.RecordEvaluator;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
@@ -28,8 +28,8 @@ import com.google.common.base.Preconditions;
  * 
  * @author cgendreau
  */
-@RecordEvaluator(key = "valueEvaluator")
-public class ValueEvaluator implements RecordEvaluatorIF {
+@RecordEvaluatorKey(key = "valueEvaluator")
+public class ValueEvaluator implements RecordEvaluator {
 
   /**
    * Container object holding ValueEvaluator configurations.
@@ -151,7 +151,7 @@ public class ValueEvaluator implements RecordEvaluatorIF {
     }
   }
 
-  private final String key = ValueEvaluator.class.getAnnotation(RecordEvaluator.class).key();
+  private final String key = ValueEvaluator.class.getAnnotation(RecordEvaluatorKey.class).key();
   // hold all evaluation rules per ConceptTerm
   private final Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm;
   private final EvaluationContext evaluatorContext;

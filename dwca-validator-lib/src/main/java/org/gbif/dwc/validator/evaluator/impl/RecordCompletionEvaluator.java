@@ -2,10 +2,10 @@ package org.gbif.dwc.validator.evaluator.impl;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilderIF;
-import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
-import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfiguration;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
@@ -27,8 +27,8 @@ import com.google.common.base.Preconditions;
  * 
  * @author cgendreau
  */
-@RecordEvaluator(key = "recordCompletionEvaluator")
-public class RecordCompletionEvaluator implements RecordEvaluatorIF {
+@RecordEvaluatorKey(key = "recordCompletionEvaluator")
+public class RecordCompletionEvaluator implements RecordEvaluator {
 
   /**
    * Container object holding RecordCompletionEvaluator configurations.
@@ -147,7 +147,7 @@ public class RecordCompletionEvaluator implements RecordEvaluatorIF {
     }
   }
 
-  private final String key = RecordCompletionEvaluator.class.getAnnotation(RecordEvaluator.class).key();
+  private final String key = RecordCompletionEvaluator.class.getAnnotation(RecordEvaluatorKey.class).key();
   private final EvaluationContext evaluatorContext;
   private final BlankValueEvaluationRule blankValueEvaluationRule;
   private final List<ConceptTerm> terms;

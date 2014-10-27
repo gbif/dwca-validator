@@ -101,9 +101,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="10" language="java" name="org.gbif.dwc.validator.evaluator.RecordEvaluatorIF" 
+  <interface id="10" language="java" name="org.gbif.dwc.validator.evaluator.RecordEvaluator" 
     project="dwca-validator-lib" 
-    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/RecordEvaluatorIF.java" binary="false" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/RecordEvaluator.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="209" y="74"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 

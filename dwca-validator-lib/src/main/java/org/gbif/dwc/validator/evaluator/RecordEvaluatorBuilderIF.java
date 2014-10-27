@@ -14,5 +14,5 @@ public interface RecordEvaluatorBuilderIF {
    * 
    * @return
    */
-  RecordEvaluatorIF build();
+  RecordEvaluator build();
 }

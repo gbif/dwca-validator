@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.evaluator.chain.builder;
 
-import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
+import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
 
 import java.util.ArrayList;
@@ -13,11 +13,11 @@ import java.util.List;
  */
 public class DefaultChainableRecordEvaluatorBuilder implements ChainableRecordEvaluatorBuilderIF {
 
-  private final List<RecordEvaluatorIF> recordEvaluatorList;
+  private final List<RecordEvaluator> recordEvaluatorList;
 
-  private DefaultChainableRecordEvaluatorBuilder(RecordEvaluatorIF recordEvaluator,
-    List<RecordEvaluatorIF> recordEvaluatorList) {
-    this.recordEvaluatorList = new ArrayList<RecordEvaluatorIF>(recordEvaluatorList);
+  private DefaultChainableRecordEvaluatorBuilder(RecordEvaluator recordEvaluator,
+    List<RecordEvaluator> recordEvaluatorList) {
+    this.recordEvaluatorList = new ArrayList<RecordEvaluator>(recordEvaluatorList);
     this.recordEvaluatorList.add(recordEvaluator);
   }
 
@@ -27,8 +27,8 @@ public class DefaultChainableRecordEvaluatorBuilder implements ChainableRecordEv
    * @param head
    * @return
    */
-  public static DefaultChainableRecordEvaluatorBuilder create(RecordEvaluatorIF head) {
-    return new DefaultChainableRecordEvaluatorBuilder(head, new ArrayList<RecordEvaluatorIF>());
+  public static DefaultChainableRecordEvaluatorBuilder create(RecordEvaluator head) {
+    return new DefaultChainableRecordEvaluatorBuilder(head, new ArrayList<RecordEvaluator>());
   }
 
   @Override
@@ -42,7 +42,7 @@ public class DefaultChainableRecordEvaluatorBuilder implements ChainableRecordEv
   }
 
   @Override
-  public ChainableRecordEvaluatorBuilderIF linkTo(RecordEvaluatorIF recordEvaluator) {
+  public ChainableRecordEvaluatorBuilderIF linkTo(RecordEvaluator recordEvaluator) {
     return new DefaultChainableRecordEvaluatorBuilder(recordEvaluator, this.recordEvaluatorList);
   }
 }

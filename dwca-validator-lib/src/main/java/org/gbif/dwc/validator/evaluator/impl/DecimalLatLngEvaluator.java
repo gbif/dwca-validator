@@ -3,8 +3,8 @@ package org.gbif.dwc.validator.evaluator.impl;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
-import org.gbif.dwc.validator.evaluator.RecordEvaluatorIF;
-import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluator;
+import org.gbif.dwc.validator.evaluator.RecordEvaluator;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
@@ -23,8 +23,8 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author cgendreau
  */
-@RecordEvaluator(key = "decimalLatLngEvaluator")
-public class DecimalLatLngEvaluator implements RecordEvaluatorIF {
+@RecordEvaluatorKey(key = "decimalLatLngEvaluator")
+public class DecimalLatLngEvaluator implements RecordEvaluator {
 
   /**
    * Container object holding DecimalLatLngEvaluator configurations.
@@ -101,7 +101,7 @@ public class DecimalLatLngEvaluator implements RecordEvaluatorIF {
     }
   }
 
-  private final String key = DecimalLatLngEvaluator.class.getAnnotation(RecordEvaluator.class).key();
+  private final String key = DecimalLatLngEvaluator.class.getAnnotation(RecordEvaluatorKey.class).key();
 
   // decimalLatitude : Legal values lie between -90 and 90, inclusive.
   public static final double MIN_LATITUDE = -90d;
@@ -169,7 +169,6 @@ public class DecimalLatLngEvaluator implements RecordEvaluatorIF {
     }
 
     // TODO validate precision, number of digits
-
 
   }
 
