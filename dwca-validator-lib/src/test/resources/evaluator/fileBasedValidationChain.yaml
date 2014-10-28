@@ -11,8 +11,8 @@ rules:
      rejectReplacementChar		: true
 
 evaluators:
- - !!org.gbif.dwc.validator.evaluator.impl.ValueEvaluator
-   - !!org.gbif.dwc.validator.evaluator.impl.ValueEvaluator$Configuration
+ - !!org.gbif.dwc.validator.evaluator.ValueEvaluator
+   - !!org.gbif.dwc.validator.evaluator.ValueEvaluator$Configuration
      rulesPerTerm:
        !dwcTerm 'eventDate' : [*isoDateVER]
        !dwcTerm 'scientificName' : [*invalidCharacterVER]
