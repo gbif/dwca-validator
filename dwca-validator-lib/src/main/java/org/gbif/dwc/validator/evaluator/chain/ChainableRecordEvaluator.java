@@ -2,7 +2,7 @@ package org.gbif.dwc.validator.evaluator.chain;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.evaluator.RecordEvaluator;
-import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluatorIF;
+import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 
 import java.io.IOException;
@@ -33,9 +33,9 @@ public class ChainableRecordEvaluator {
    * Cleanup every StatefulRecordEvaluatorIF in the chain.
    */
   public void cleanup() {
-    if (recordEvaluator instanceof StatefulRecordEvaluatorIF) {
+    if (recordEvaluator instanceof StatefulRecordEvaluator) {
       try {
-        ((StatefulRecordEvaluatorIF) recordEvaluator).close();
+        ((StatefulRecordEvaluator) recordEvaluator).close();
       } catch (IOException e) {
         LOGGER.error("Can't close recordEvaluator properly", e);
       }

@@ -7,6 +7,6 @@ import java.io.Closeable;
  * 
  * @author cgendreau
  */
-public interface StatefulRecordEvaluatorIF extends RecordEvaluator, Closeable {
+public interface StatefulRecordEvaluator extends RecordEvaluator, Closeable {
 
 }

@@ -117,7 +117,7 @@
             </y:ModelParameter>
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
-            <y:AttributeLabel>-recordEvaluator:RecordEvaluatorIF
+            <y:AttributeLabel>-recordEvaluator:RecordEvaluator
 -nextElement:ChainableRecordEvaluator</y:AttributeLabel>
             <y:MethodLabel>+doEval(Record)
 +postIterate(ResultAccumulatorIF)
@@ -524,7 +524,7 @@
           <y:Geometry height="110.37834394904456" width="269.9108280254777" x="609.127351626456" y="318.25"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="125.15771484375" x="72.37655659086386" y="26.1328125">RecordEvaluatorIF<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="113.3828125" x="78.26400776273886" y="26.1328125">RecordEvaluator<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -597,8 +597,8 @@
             </y:ModelParameter>
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
-            <y:AttributeLabel>-recordEvaluatorList:List&lt;RecordEvaluatorIF&gt;</y:AttributeLabel>
-            <y:MethodLabel>+&lt;static&gt; create(RecordEvaluatorIF head):DefaultChainableRecordEvaluatorBuilder</y:MethodLabel>
+            <y:AttributeLabel>-recordEvaluatorList:List&lt;RecordEvaluator&gt;</y:AttributeLabel>
+            <y:MethodLabel>+&lt;static&gt; create(head:RecordEvaluator):DefaultChainableRecordEvaluatorBuilder</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -620,7 +620,7 @@
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="interface" use3DEffect="true">
             <y:AttributeLabel/>
             <y:MethodLabel>+build():ChainableRecordEvaluator build
-+linkTo(RecordEvaluatorIF):ChainableRecordEvaluatorBuilderIF</y:MethodLabel>
++linkTo(RecordEvaluator):ChainableRecordEvaluatorBuilderIF</y:MethodLabel>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -632,7 +632,7 @@
           <y:Geometry height="84.2025321982369" width="269.9108280254777" x="510.9154140127389" y="476.3921500326321"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="176.53564453125" x="46.687591747113856" y="26.1328125">StatefulRecordEvaluatorIF<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="164.7607421875" x="52.575042918988856" y="26.1328125">StatefulRecordEvaluator<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -641,7 +641,29 @@
           </y:NodeLabel>
           <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="interface" use3DEffect="true">
             <y:AttributeLabel/>
-            <y:MethodLabel>+cleanup()</y:MethodLabel>
+            <y:MethodLabel/>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
+    <node id="n30">
+      <data key="d4"/>
+      <data key="d5"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="47.92769130998721" width="201.25" x="313.95537451361866" y="380.70065263905735"/>
+          <y:Fill color="#FF6600" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="custom" textColor="#000000" visible="true" width="114.34765625" x="43.451171875" y="3.0">jaca.oi.Closeable<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="-0.03703090122767855" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
+            <y:AttributeLabel/>
+            <y:MethodLabel/>
           </y:UML>
         </y:UMLClassNode>
       </data>
@@ -939,6 +961,17 @@
       </data>
     </edge>
     <edge id="e29" source="n29" target="n24">
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="white_delta"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e30" source="n29" target="n30">
+      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
