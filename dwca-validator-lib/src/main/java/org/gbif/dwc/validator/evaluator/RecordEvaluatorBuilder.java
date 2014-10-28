@@ -7,7 +7,7 @@ package org.gbif.dwc.validator.evaluator;
  * 
  * @author cgendreau
  */
-public interface RecordEvaluatorBuilderIF {
+public interface RecordEvaluatorBuilder {
 
   /**
    * Build a concrete instance of RecordEvaluatorIF.

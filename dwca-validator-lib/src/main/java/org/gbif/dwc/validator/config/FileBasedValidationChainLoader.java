@@ -3,7 +3,7 @@ package org.gbif.dwc.validator.config;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.annotation.AnnotationLoader;
 import org.gbif.dwc.validator.evaluator.RecordEvaluator;
-import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilderIF;
+import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfiguration;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
@@ -69,9 +69,9 @@ public class FileBasedValidationChainLoader {
         }
       }
 
-      List<RecordEvaluatorBuilderIF> recordEvaluatorBuilderList =
-        (List<RecordEvaluatorBuilderIF>) conf.get(EVALUATOR_BUILDERS_SECTION);
-      for (RecordEvaluatorBuilderIF currRecordEvaluatorBuilder : recordEvaluatorBuilderList) {
+      List<RecordEvaluatorBuilder> recordEvaluatorBuilderList =
+        (List<RecordEvaluatorBuilder>) conf.get(EVALUATOR_BUILDERS_SECTION);
+      for (RecordEvaluatorBuilder currRecordEvaluatorBuilder : recordEvaluatorBuilderList) {
         chainBuilder = chainBuilder.linkTo(currRecordEvaluatorBuilder.build());
       }
 
@@ -123,7 +123,7 @@ public class FileBasedValidationChainLoader {
 
       // Build aliases for Evaluator builder using the Evaluator key
       for (Class<?> currIf : currEvaluatorClassInnerClass.getInterfaces()) {
-        if (RecordEvaluatorBuilderIF.class.equals(currIf)) {
+        if (RecordEvaluatorBuilder.class.equals(currIf)) {
           yamlConstructor.addTypeDescription(new TypeDescription(currEvaluatorClassInnerClass, "!" + evaluatorKey));
         }
       }

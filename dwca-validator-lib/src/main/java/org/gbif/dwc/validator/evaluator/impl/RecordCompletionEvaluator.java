@@ -3,7 +3,7 @@ package org.gbif.dwc.validator.evaluator.impl;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.evaluator.RecordEvaluator;
-import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilderIF;
+import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfiguration;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.result.EvaluationContext;
@@ -88,7 +88,7 @@ public class RecordCompletionEvaluator implements RecordEvaluator {
    * 
    * @author cgendreau
    */
-  public static class RecordCompletionEvaluatorBuilder implements RecordEvaluatorBuilderIF {
+  public static class RecordCompletionEvaluatorBuilder implements RecordEvaluatorBuilder {
 
     private final Configuration configuration;
 
