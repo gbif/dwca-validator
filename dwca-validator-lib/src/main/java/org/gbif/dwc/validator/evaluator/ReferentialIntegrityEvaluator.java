@@ -1,9 +1,8 @@
-package org.gbif.dwc.validator.evaluator.impl;
+package org.gbif.dwc.validator.evaluator;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
-import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;

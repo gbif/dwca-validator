@@ -7,8 +7,7 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
-import org.gbif.dwc.validator.evaluator.impl.ValueEvaluator;
-import org.gbif.dwc.validator.evaluator.impl.ValueEvaluator.ValueEvaluatorBuilder;
+import org.gbif.dwc.validator.evaluator.ValueEvaluator.ValueEvaluatorBuilder;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule.InvalidCharacterEvaluationRuleBuilder;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-
 import static org.junit.Assert.assertTrue;
 
 /**

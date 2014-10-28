@@ -17,6 +17,7 @@ public class BlankValueEvaluationRuleTest {
 
   @Test
   public void evaluate() {
+
     BlankValueEvaluationRule rule = BlankValueEvaluationRuleBuilder.create().build();
 
     // should send result (error)

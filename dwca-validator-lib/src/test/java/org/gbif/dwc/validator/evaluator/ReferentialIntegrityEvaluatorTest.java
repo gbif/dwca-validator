@@ -5,7 +5,6 @@ import org.gbif.dwc.record.RecordImpl;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
-import org.gbif.dwc.validator.evaluator.impl.ReferentialIntegrityEvaluator;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

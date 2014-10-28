@@ -12,8 +12,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="org.gbif.dwc.validator.evaluator.impl.ValueEvaluator" project="dwca-validator-lib" 
-    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/impl/ValueEvaluator.java" binary="false" 
+  <class id="2" language="java" name="org.gbif.dwc.validator.evaluator.ValueEvaluator" project="dwca-validator-lib" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/ValueEvaluator.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="180" width="572" x="-73" y="223"/>    
     <display autosize="false" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 

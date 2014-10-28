@@ -6,7 +6,6 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
-import org.gbif.dwc.validator.evaluator.impl.UniquenessEvaluator;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
