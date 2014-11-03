@@ -1,6 +1,5 @@
 package org.gbif.dwc.validator.result.validation;
 
-import org.gbif.dwc.validator.result.EvaluationResultElementIF;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.UndefinedValidationType;
 import org.gbif.dwc.validator.result.type.ValidationTypeIF;
@@ -14,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * 
  * @author cgendreau
  */
-public class ValidationResultElement implements EvaluationResultElementIF {
+public class ValidationResultElement {
 
   // Generic constant ValidationResultElement instances
   public static final ValidationResultElement SKIPPED = new ValidationResultElement(UndefinedValidationType.UNDEFINED,

@@ -1,5 +1,7 @@
 package org.gbif.dwc.validator.result;
 
+import org.gbif.dwc.validator.result.validation.ValidationResult;
+
 /**
  * Accumulate results from various validations.
  * Implementations must the thread-safe after initialization.
@@ -11,12 +13,20 @@ package org.gbif.dwc.validator.result;
 public interface ResultAccumulatorIF {
 
   /**
-   * Append result to current results.
+   * Append ValidationResult to current results.
+   * 
+   * @param result
+   * @return
+   */
+  boolean accumulate(ValidationResult result);
+
+  /**
+   * Fallback method, append result to current results.
    * 
    * @param result
    * @return result were successfully appended
    */
-  boolean accumulate(EvaluationResultIF<? extends EvaluationResultElementIF> result);
+// boolean accumulate(EvaluationResultIF<?> result);
 
   /**
    * Close the accumulator and its underlying structure.

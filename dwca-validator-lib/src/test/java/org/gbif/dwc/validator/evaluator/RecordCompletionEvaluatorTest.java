@@ -9,6 +9,7 @@ import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -42,16 +43,16 @@ public class RecordCompletionEvaluatorTest {
     recordCompletionEvaluator.handleEval(buildMockRecord("3", "3"), resultAccumulator);
     recordCompletionEvaluator.handleEval(buildMockRecord("4", "4", "a name"), resultAccumulator);
 
-    assertTrue(resultAccumulator.getEvaluationResultList().size() > 0);
+    assertTrue(resultAccumulator.getValidationResultList().size() > 0);
 
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "1",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
       ContentValidationType.RECORD_CONTENT_VALUE));
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "2",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "2",
       ContentValidationType.RECORD_CONTENT_VALUE));
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "3",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "3",
       ContentValidationType.RECORD_CONTENT_VALUE));
 
-    assertFalse(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "4",
+    assertFalse(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "4",
       ContentValidationType.RECORD_CONTENT_VALUE));
   }
 

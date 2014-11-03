@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -48,9 +49,9 @@ public class ValueEvaluatorTest {
 
     valueEvaluator.handleEval(buildMockRecord("1"), resultAccumulator);
 
-    assertTrue(resultAccumulator.getEvaluationResultList().size() > 0);
+    assertTrue(resultAccumulator.getValidationResultList().size() > 0);
 
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "1",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
       ContentValidationType.RECORD_CONTENT_VALUE));
   }
 

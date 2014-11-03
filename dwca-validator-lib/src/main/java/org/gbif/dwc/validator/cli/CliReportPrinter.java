@@ -1,8 +1,7 @@
 package org.gbif.dwc.validator.cli;
 
-import org.gbif.dwc.validator.result.EvaluationResultElementIF;
-import org.gbif.dwc.validator.result.EvaluationResultIF;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
+import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
 /**
@@ -23,16 +22,13 @@ public class CliReportPrinter {
     if (resultAccumulator.getCount() > 0) {
       System.out.println("The Dwc-A file looks invalid according to current default validation chain:");
       System.out.println("Validation chain output(s):");
-      ValidationResultElement validationElement;
-      for (EvaluationResultIF<? extends EvaluationResultElementIF> vr : resultAccumulator.getEvaluationResultList()) {
+      for (ValidationResult vr : resultAccumulator.getValidationResultList()) {
         System.out.println(vr.getContext() + " : " + vr.getId());
-        for (EvaluationResultElementIF el : vr.getResults()) {
-          validationElement = (ValidationResultElement) el;
-          System.out.println("->" + validationElement.getResult() + "," + validationElement.getType() + ":"
-            + validationElement.getExplanation());
+        for (ValidationResultElement vre : vr.getResults()) {
+          System.out.println("->" + vre.getResult() + "," + vre.getType() + ":" + vre.getExplanation());
         }
       }
-      if (resultAccumulator.getEvaluationResultList().size() == InMemoryResultAccumulator.MAX_RESULT) {
+      if (resultAccumulator.getValidationResultList().size() == InMemoryResultAccumulator.MAX_RESULT) {
         System.out.println("Maximum of " + InMemoryResultAccumulator.MAX_RESULT + " results recorded.");
       }
     } else {

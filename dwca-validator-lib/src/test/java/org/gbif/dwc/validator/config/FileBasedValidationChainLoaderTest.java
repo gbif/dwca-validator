@@ -57,13 +57,13 @@ public class FileBasedValidationChainLoaderTest {
       Record testRecord = buildMockRecord("2");
       chainHead.doEval(testRecord, resultAccumulator);
 
-      assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getEvaluationResultList(), "2",
+      assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getValidationResultList(), "2",
         ArchiveValidatorConfig.getLocalizedString("rule.date.non_ISO", "10-07-2014")));
 
-      assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getEvaluationResultList(), "2",
+      assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getValidationResultList(), "2",
         ArchiveValidatorConfig.getLocalizedString("rule.blank_value")));
 
-      assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getEvaluationResultList(), "2",
+      assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getValidationResultList(), "2",
         ArchiveValidatorConfig.getLocalizedString("rule.non_numerical", "a")));
 
     } catch (URISyntaxException e) {

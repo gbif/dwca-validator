@@ -8,7 +8,7 @@ import java.util.List;
  * @author cgendreau
  * @param <T>
  */
-public interface EvaluationResultIF<T extends EvaluationResultElementIF> {
+public interface EvaluationResultIF<T> {
 
   EvaluationContext getContext();
 

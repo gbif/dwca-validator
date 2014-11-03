@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -75,7 +76,7 @@ public class ReferentialIntegrityEvaluatorTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    assertTrue(resultAccumulator.getEvaluationResultList().isEmpty());
+    assertTrue(resultAccumulator.getValidationResultList().isEmpty());
   }
 
   @Test
@@ -97,7 +98,7 @@ public class ReferentialIntegrityEvaluatorTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    assertEquals(1, resultAccumulator.getEvaluationResultList().size());
+    assertEquals(1, resultAccumulator.getValidationResultList().size());
   }
 
   @Test
@@ -117,7 +118,7 @@ public class ReferentialIntegrityEvaluatorTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    assertTrue(resultAccumulator.getEvaluationResultList().isEmpty());
+    assertTrue(resultAccumulator.getValidationResultList().isEmpty());
   }
 
   @Test
@@ -138,6 +139,6 @@ public class ReferentialIntegrityEvaluatorTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    assertEquals(2, resultAccumulator.getEvaluationResultList().size());
+    assertEquals(2, resultAccumulator.getValidationResultList().size());
   }
 }

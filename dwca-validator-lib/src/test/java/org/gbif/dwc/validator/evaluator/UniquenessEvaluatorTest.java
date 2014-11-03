@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -56,7 +57,7 @@ public class UniquenessEvaluatorTest {
       fail();
     }
 
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "1",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
       ContentValidationType.FIELD_UNIQUENESS));
   }
 
@@ -78,7 +79,7 @@ public class UniquenessEvaluatorTest {
       fail();
     }
     // remember that the id in UniquenessEvaluator will be catalogNumber
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getEvaluationResultList(), "1",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
       ContentValidationType.FIELD_UNIQUENESS));
   }
 
@@ -98,7 +99,7 @@ public class UniquenessEvaluatorTest {
       e.printStackTrace();
       fail();
     }
-    assertTrue(resultAccumulator.getEvaluationResultList().isEmpty());
+    assertTrue(resultAccumulator.getValidationResultList().isEmpty());
   }
 
 }
