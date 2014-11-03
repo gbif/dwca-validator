@@ -1,4 +1,4 @@
-package org.gbif.dwc.validator.result.impl.validation;
+package org.gbif.dwc.validator.result.validation;
 
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.EvaluationResultIF;
@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * Main object holding evaluation results for a specific id within a context.
+ * Main object holding validation results for a specific id within a context.
  * This object is immutable.
  * 
  * @author cgendreau

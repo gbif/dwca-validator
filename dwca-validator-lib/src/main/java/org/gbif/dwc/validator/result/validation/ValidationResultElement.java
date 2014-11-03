@@ -1,4 +1,4 @@
-package org.gbif.dwc.validator.result.impl.validation;
+package org.gbif.dwc.validator.result.validation;
 
 import org.gbif.dwc.validator.result.EvaluationResultElementIF;
 import org.gbif.dwc.validator.result.Result;

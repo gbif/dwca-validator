@@ -4,9 +4,9 @@ import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.dwc.validator.result.impl.validation.ValidationResult;
-import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.StructureValidationType;
+import org.gbif.dwc.validator.result.validation.ValidationResult;
+import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 import org.gbif.metadata.eml.ValidatorFactory;
 
 import java.io.File;

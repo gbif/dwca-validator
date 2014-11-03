@@ -3,7 +3,7 @@ package org.gbif.dwc.validator.cli;
 import org.gbif.dwc.validator.result.EvaluationResultElementIF;
 import org.gbif.dwc.validator.result.EvaluationResultIF;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
-import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
+import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
 /**
  * Validation results report printer for command line usage.

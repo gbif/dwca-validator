@@ -2,8 +2,8 @@ package org.gbif.dwc.validator.rule.value;
 
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
+import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 
 import com.google.common.base.CharMatcher;

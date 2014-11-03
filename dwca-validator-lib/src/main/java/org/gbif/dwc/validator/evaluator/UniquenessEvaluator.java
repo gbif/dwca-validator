@@ -7,9 +7,9 @@ import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.dwc.validator.result.impl.validation.ValidationResult;
-import org.gbif.dwc.validator.result.impl.validation.ValidationResultElement;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
+import org.gbif.dwc.validator.result.validation.ValidationResult;
+import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
