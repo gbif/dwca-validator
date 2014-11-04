@@ -47,8 +47,8 @@ public class UniquenessEvaluatorTest {
 
     try {
       UniquenessEvaluator valueEvaluator = UniquenessEvaluator.create().build();
-      valueEvaluator.handleEval(buildMockRecord("1", "1"), resultAccumulator);
-      valueEvaluator.handleEval(buildMockRecord("1", "2"), resultAccumulator);
+      valueEvaluator.handleEval(buildMockRecord("1", "1"));
+      valueEvaluator.handleEval(buildMockRecord("1", "2"));
 
       valueEvaluator.handlePostIterate(resultAccumulator);
       valueEvaluator.close();
@@ -69,8 +69,8 @@ public class UniquenessEvaluatorTest {
     try {
       UniquenessEvaluator valueEvaluator =
         UniquenessEvaluator.create().on(DwcTerm.catalogNumber, EvaluationContext.CORE).build();
-      valueEvaluator.handleEval(buildMockRecord("1", "1"), resultAccumulator);
-      valueEvaluator.handleEval(buildMockRecord("2", "1"), resultAccumulator);
+      valueEvaluator.handleEval(buildMockRecord("1", "1"));
+      valueEvaluator.handleEval(buildMockRecord("2", "1"));
 
       valueEvaluator.handlePostIterate(resultAccumulator);
       valueEvaluator.close();
@@ -90,8 +90,8 @@ public class UniquenessEvaluatorTest {
 
     try {
       UniquenessEvaluator valueEvaluator = UniquenessEvaluator.create().build();
-      valueEvaluator.handleEval(buildMockRecord("1", "1"), resultAccumulator);
-      valueEvaluator.handleEval(buildMockRecord("2", "1"), resultAccumulator);
+      valueEvaluator.handleEval(buildMockRecord("1", "1"));
+      valueEvaluator.handleEval(buildMockRecord("2", "1"));
 
       valueEvaluator.handlePostIterate(resultAccumulator);
       valueEvaluator.close();

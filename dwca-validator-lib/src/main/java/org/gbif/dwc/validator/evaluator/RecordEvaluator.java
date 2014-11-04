@@ -2,6 +2,9 @@ package org.gbif.dwc.validator.evaluator;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
+import org.gbif.dwc.validator.result.validation.ValidationResult;
+
+import com.google.common.base.Optional;
 
 /**
  * Interface defining a RecordEvaluator.
@@ -15,7 +18,13 @@ public interface RecordEvaluator {
    */
   String getKey();
 
-  void handleEval(Record record, ResultAccumulatorIF resultAccumulator);
+  /**
+   * Handle evaluation of a specific Record
+   * 
+   * @param record
+   * @return
+   */
+  Optional<ValidationResult> handleEval(Record record);
 
   /**
    * Called after rows iteration.

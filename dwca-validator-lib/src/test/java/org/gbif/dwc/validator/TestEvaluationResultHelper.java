@@ -52,4 +52,22 @@ public class TestEvaluationResultHelper {
     return false;
   }
 
+  public static boolean containsValidationType(ValidationResult validationResult, ValidationTypeIF validationType) {
+    for (ValidationResultElement currValidationElement : validationResult.getResults()) {
+      if (validationType.equals(currValidationElement.getType())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static boolean containsResultMessage(ValidationResult validationResult, String message) {
+    for (ValidationResultElement currValidationElement : validationResult.getResults()) {
+      if (message.equals(currValidationElement.getExplanation())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }

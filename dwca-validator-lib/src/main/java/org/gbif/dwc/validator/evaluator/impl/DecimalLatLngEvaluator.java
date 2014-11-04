@@ -16,9 +16,11 @@ import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRule;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Optional;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * TODO generalize the class to InRangeEvaluator
  * Decimal latitude/longitude evaluator.
  * 
  * @author cgendreau
@@ -125,14 +127,14 @@ public class DecimalLatLngEvaluator implements RecordEvaluator {
   }
 
   @Override
-  public void handleEval(Record record, ResultAccumulatorIF resultAccumulator) {
+  public Optional<ValidationResult> handleEval(Record record) {
     String lat = record.value(DwcTerm.decimalLatitude);
     String lng = record.value(DwcTerm.decimalLongitude);
     String id = record.id();
 
     // if both are empty simply return, nothing to evaluate.
     if (StringUtils.isBlank(lat) && StringUtils.isBlank(lng)) {
-      return;
+      return Optional.absent();
     }
 
     // validate if it's a number and within the defined bounds
@@ -148,28 +150,29 @@ public class DecimalLatLngEvaluator implements RecordEvaluator {
         evaluationResultElementList.add(lngResultElement);
       }
 
+      // this is not a validation but a suggestion, should be moved
       // try to swap lat and lng and re-evaluate
-      if (latNumericalValueEvaluationRule.evaluate(lng).resultIs(Result.PASSED)
-        && lngNumericalValueEvaluationRule.evaluate(lat).resultIs(Result.PASSED)) {
-        evaluationResultElementList.add(new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE,
-          Result.WARNING, ArchiveValidatorConfig.getLocalizedString("evaluator.decimal_lat_lng.inverted", lat, lng)));
-      }
-      resultAccumulator.accumulate(new ValidationResult(id, key, EvaluationContext.CORE, evaluationResultElementList));
+      // if (latNumericalValueEvaluationRule.evaluate(lng).resultIs(Result.PASSED)
+      // && lngNumericalValueEvaluationRule.evaluate(lat).resultIs(Result.PASSED)) {
+      // evaluationResultElementList.add(new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE,
+      // Result.WARNING, ArchiveValidatorConfig.getLocalizedString("evaluator.decimal_lat_lng.inverted", lat, lng)));
+      // }
       // stop here since at least one NumericalValueEvaluation rule failed
-      return;
+      return Optional.of(new ValidationResult(id, key, EvaluationContext.CORE, evaluationResultElementList));
     }
 
     Double dLat = Double.parseDouble(lat);
     Double dLng = Double.parseDouble(lng);
 
     if (dLat.doubleValue() == 0d || dLng.doubleValue() == 0d) {
-      resultAccumulator.accumulate(new ValidationResult(id, key, EvaluationContext.CORE, new ValidationResultElement(
+      return Optional.of(new ValidationResult(id, key, EvaluationContext.CORE, new ValidationResultElement(
         ContentValidationType.RECORD_CONTENT_VALUE, Result.WARNING, ArchiveValidatorConfig.getLocalizedString(
           "evaluator.decimal_lat_lng.zero", lat, lng))));
     }
 
     // TODO validate precision, number of digits
 
+    return Optional.absent();
   }
 
   @Override

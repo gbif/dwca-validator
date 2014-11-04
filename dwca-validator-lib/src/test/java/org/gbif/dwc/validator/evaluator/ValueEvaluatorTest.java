@@ -8,13 +8,14 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.evaluator.ValueEvaluator.ValueEvaluatorBuilder;
-import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
+import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule.InvalidCharacterEvaluationRuleBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Optional;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -40,18 +41,16 @@ public class ValueEvaluatorTest {
   @Test
   public void testValueEvaluator() {
 
-    InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
-
     // register an InvalidCharacterEvaluationRule for scientificName
     ValueEvaluator valueEvaluator =
       ValueEvaluatorBuilder.create()
         .addRule(DwcTerm.scientificName, InvalidCharacterEvaluationRuleBuilder.create().build()).build();
 
-    valueEvaluator.handleEval(buildMockRecord("1"), resultAccumulator);
+    Optional<ValidationResult> result = valueEvaluator.handleEval(buildMockRecord("1"));
 
-    assertTrue(resultAccumulator.getValidationResultList().size() > 0);
+    assertTrue(result.isPresent());
 
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(result.get(),
       ContentValidationType.RECORD_CONTENT_VALUE));
   }
 

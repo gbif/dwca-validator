@@ -66,10 +66,10 @@ public class ReferentialIntegrityEvaluatorTest {
         ReferentialIntegrityEvaluator.create(EvaluationContext.CORE, DwcTerm.acceptedNameUsageID)
           .referTo(EvaluationContext.CORE, DwcTerm.taxonID, referenceFile).build();
 
-      valueEvaluator.handleEval(buildMockRecord("1", "4"), resultAccumulator);
-      valueEvaluator.handleEval(buildMockRecord("2", "3"), resultAccumulator);
+      valueEvaluator.handleEval(buildMockRecord("1", "4"));
+      valueEvaluator.handleEval(buildMockRecord("2", "3"));
       // add blank acceptedNameUsageID, should be ignored.
-      valueEvaluator.handleEval(buildMockRecord("2", ""), resultAccumulator);
+      valueEvaluator.handleEval(buildMockRecord("2", ""));
 
       valueEvaluator.handlePostIterate(resultAccumulator);
       valueEvaluator.close();
@@ -90,8 +90,8 @@ public class ReferentialIntegrityEvaluatorTest {
       ReferentialIntegrityEvaluator valueEvaluator =
         ReferentialIntegrityEvaluator.create(EvaluationContext.CORE, DwcTerm.acceptedNameUsageID)
           .referTo(EvaluationContext.CORE, DwcTerm.taxonID, referenceFile).build();
-      valueEvaluator.handleEval(buildMockRecord("1", "4"), resultAccumulator);
-      valueEvaluator.handleEval(buildMockRecord("2", "z"), resultAccumulator);
+      valueEvaluator.handleEval(buildMockRecord("1", "4"));
+      valueEvaluator.handleEval(buildMockRecord("2", "z"));
 
       valueEvaluator.handlePostIterate(resultAccumulator);
       valueEvaluator.close();
@@ -112,7 +112,7 @@ public class ReferentialIntegrityEvaluatorTest {
       ReferentialIntegrityEvaluator valueEvaluator =
         ReferentialIntegrityEvaluator.create(EvaluationContext.CORE, DwcTerm.acceptedNameUsageID)
           .referTo(EvaluationContext.CORE, DwcTerm.taxonID, referenceFile).supportMultipleValues("|").build();
-      valueEvaluator.handleEval(buildMockRecord("1", "3|4"), resultAccumulator);
+      valueEvaluator.handleEval(buildMockRecord("1", "3|4"));
       valueEvaluator.handlePostIterate(resultAccumulator);
       valueEvaluator.close();
     } catch (IOException e) {
@@ -132,8 +132,9 @@ public class ReferentialIntegrityEvaluatorTest {
       ReferentialIntegrityEvaluator valueEvaluator =
         ReferentialIntegrityEvaluator.create(EvaluationContext.CORE, DwcTerm.acceptedNameUsageID)
           .referTo(EvaluationContext.CORE, DwcTerm.taxonID, referenceFile).supportMultipleValues("|").build();
-      valueEvaluator.handleEval(buildMockRecord("1", "3|z"), resultAccumulator);
-      valueEvaluator.handleEval(buildMockRecord("2", "z|3"), resultAccumulator);
+      valueEvaluator.handleEval(buildMockRecord("1", "3|z"));
+      valueEvaluator.handleEval(buildMockRecord("2", "z|3"));
+
       valueEvaluator.handlePostIterate(resultAccumulator);
       valueEvaluator.close();
     } catch (IOException e) {

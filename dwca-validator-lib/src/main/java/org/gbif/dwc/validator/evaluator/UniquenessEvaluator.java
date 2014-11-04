@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -183,7 +184,7 @@ public class UniquenessEvaluator implements StatefulRecordEvaluator, Closeable {
    * Record each fields that shall be unique.
    */
   @Override
-  public void handleEval(Record record, ResultAccumulatorIF resultAccumulator) {
+  public Optional<ValidationResult> handleEval(Record record) {
 
     if (term == null) {
       idList.add(record.id());
@@ -194,6 +195,8 @@ public class UniquenessEvaluator implements StatefulRecordEvaluator, Closeable {
     if (idList.size() >= BUFFER_THRESHOLD) {
       flushCurrentIdList();
     }
+
+    return Optional.absent();
   }
 
   @Override

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 /**
@@ -170,8 +171,8 @@ public class RecordCompletionEvaluator implements RecordEvaluator {
    * Some lines are candidate for abstraction. see ValueEvaluator
    */
   @Override
-  public void handleEval(Record record, ResultAccumulatorIF resultAccumulator) {
-
+  public Optional<ValidationResult> handleEval(Record record) {
+    ValidationResult validationResult = null;
     // record.terms().size());
 
     List<ValidationResultElement> elementList = null;
@@ -190,8 +191,10 @@ public class RecordCompletionEvaluator implements RecordEvaluator {
     }
 
     if (elementList != null && elementList.size() > 0) {
-      resultAccumulator.accumulate(new ValidationResult(record.id(), key, evaluatorContext, elementList));
+      validationResult = new ValidationResult(record.id(), key, evaluatorContext, elementList);
     }
+
+    return Optional.fromNullable(validationResult);
 
   }
 

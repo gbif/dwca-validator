@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -197,7 +198,7 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluator {
   }
 
   @Override
-  public void handleEval(Record record, ResultAccumulatorIF resultAccumulator) {
+  public Optional<ValidationResult> handleEval(Record record) {
     String value = record.value(term);
 
     // only record non-blank value
@@ -213,6 +214,7 @@ public class ReferentialIntegrityEvaluator implements StatefulRecordEvaluator {
         flushCurrentIdList();
       }
     }
+    return Optional.absent();
   }
 
   @Override

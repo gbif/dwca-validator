@@ -4,9 +4,11 @@ import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
+import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 import java.io.IOException;
 
+import com.google.common.base.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +54,10 @@ public class ChainableRecordEvaluator {
    * @param resultAccumulator
    */
   public void doEval(Record record, ResultAccumulatorIF resultAccumulator) {
-    recordEvaluator.handleEval(record, resultAccumulator);
+    Optional<ValidationResult> result = recordEvaluator.handleEval(record);
+    if (result.isPresent()) {
+      resultAccumulator.accumulate(result.get());
+    }
     if (nextElement != null) {
       nextElement.doEval(record, resultAccumulator);
     }

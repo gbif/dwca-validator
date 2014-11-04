@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 /**
@@ -168,7 +169,8 @@ public class ValueEvaluator implements RecordEvaluator {
   }
 
   @Override
-  public void handleEval(Record record, ResultAccumulatorIF resultAccumulator) {
+  public Optional<ValidationResult> handleEval(Record record) {
+    ValidationResult validationResult = null;
     List<ValidationResultElement> elementList = null;
     ValidationResultElement validationResultElement;
 
@@ -187,8 +189,10 @@ public class ValueEvaluator implements RecordEvaluator {
     }
 
     if (elementList != null && elementList.size() > 0) {
-      resultAccumulator.accumulate(new ValidationResult(record.id(), key, evaluatorContext, elementList));
+      validationResult = new ValidationResult(record.id(), key, evaluatorContext, elementList);
     }
+
+    return Optional.fromNullable(validationResult);
   }
 
   @Override

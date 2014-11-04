@@ -9,14 +9,16 @@ import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.evaluator.impl.DecimalLatLngEvaluator;
 import org.gbif.dwc.validator.evaluator.impl.DecimalLatLngEvaluator.DecimalLatLngEvaluatorBuilder;
-import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
+import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Optional;
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -41,65 +43,53 @@ public class DecimalLatLngEvaluatorTest {
 
   @Test
   public void testInvalidCoordinates() {
-    InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
     DecimalLatLngEvaluator decimalLatLngEvaluator = DecimalLatLngEvaluatorBuilder.create().build();
 
-    decimalLatLngEvaluator.handleEval(buildMockRecord("1", "a", "40"), resultAccumulator);
-    decimalLatLngEvaluator.handleEval(buildMockRecord("2", "70", "b"), resultAccumulator);
+    Optional<ValidationResult> result1 = decimalLatLngEvaluator.handleEval(buildMockRecord("1", "a", "40"));
+    Optional<ValidationResult> result2 = decimalLatLngEvaluator.handleEval(buildMockRecord("2", "70", "b"));
 
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(result1.get(),
       ContentValidationType.RECORD_CONTENT_VALUE));
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "2",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(result2.get(),
       ContentValidationType.RECORD_CONTENT_VALUE));
   }
 
   @Test
   public void testOutOfBoundsCoordinates() {
-
-    InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
     DecimalLatLngEvaluator decimalLatLngEvaluator = DecimalLatLngEvaluatorBuilder.create().build();
 
-    decimalLatLngEvaluator.handleEval(buildMockRecord("1", "91", "120"), resultAccumulator);
-    decimalLatLngEvaluator.handleEval(buildMockRecord("2", "91", "40"), resultAccumulator);
-    decimalLatLngEvaluator.handleEval(buildMockRecord("3", "70", "181"), resultAccumulator);
+    Optional<ValidationResult> result1 = decimalLatLngEvaluator.handleEval(buildMockRecord("1", "91", "120"));
+    Optional<ValidationResult> result2 = decimalLatLngEvaluator.handleEval(buildMockRecord("2", "91", "40"));
+    Optional<ValidationResult> result3 = decimalLatLngEvaluator.handleEval(buildMockRecord("3", "70", "181"));
 
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(result1.get(),
       ContentValidationType.RECORD_CONTENT_BOUNDS));
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "2",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(result2.get(),
       ContentValidationType.RECORD_CONTENT_BOUNDS));
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "3",
+    assertTrue(TestEvaluationResultHelper.containsValidationType(result3.get(),
       ContentValidationType.RECORD_CONTENT_BOUNDS));
   }
 
   @Test
   public void testPossiblyInvalidCoordinates() {
-    InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     DecimalLatLngEvaluator decimalLatLngEvaluator = DecimalLatLngEvaluatorBuilder.create().build();
 
-    decimalLatLngEvaluator.handleEval(buildMockRecord("1", "-120", "40"), resultAccumulator);
-    decimalLatLngEvaluator.handleEval(buildMockRecord("2", "0", "0"), resultAccumulator);
+    Optional<ValidationResult> result1 = decimalLatLngEvaluator.handleEval(buildMockRecord("1", "0", "0"));
 
-    assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getValidationResultList(), "1",
-      ArchiveValidatorConfig.getLocalizedString("evaluator.decimal_lat_lng.inverted", "-120", "40")));
-    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
-      ContentValidationType.RECORD_CONTENT_VALUE));
-
-    assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getValidationResultList(), "2",
+    assertTrue(TestEvaluationResultHelper.containsResultMessage(result1.get(),
       ArchiveValidatorConfig.getLocalizedString("evaluator.decimal_lat_lng.zero", "0", "0")));
-    resultAccumulator.close();
   }
 
   @Test
   public void testValidCoordinates() {
-
-    InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
     DecimalLatLngEvaluator decimalLatLngEvaluator = DecimalLatLngEvaluatorBuilder.create().build();
 
-    decimalLatLngEvaluator.handleEval(buildMockRecord("1", "30.001", "40.001"), resultAccumulator);
-    decimalLatLngEvaluator.handleEval(buildMockRecord("2", "30", "120"), resultAccumulator);
+    Optional<ValidationResult> result1 = decimalLatLngEvaluator.handleEval(buildMockRecord("1", "30.001", "40.001"));
+    Optional<ValidationResult> result2 = decimalLatLngEvaluator.handleEval(buildMockRecord("2", "30", "120"));
 
-    assertTrue(resultAccumulator.getValidationResultList().isEmpty());
+    assertFalse(result1.isPresent());
+    assertFalse(result2.isPresent());
   }
 
 }
