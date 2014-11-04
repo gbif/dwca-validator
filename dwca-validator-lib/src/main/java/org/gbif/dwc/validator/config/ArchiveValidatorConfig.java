@@ -12,6 +12,9 @@ import java.util.ResourceBundle;
  */
 public class ArchiveValidatorConfig {
 
+  // TODO load from config file
+  public static final String META_XML_SCHEMA = "http://darwincore.googlecode.com/svn/trunk/text/tdwg_dwc_text.xsd";
+
   public static final String ENDLINE = System.getProperty("line.separator");
   public static final String TEXT_FILE_EXT = ".txt";
 

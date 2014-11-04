@@ -26,6 +26,14 @@ public class DefaultEvaluationChainProvider implements EvaluationChainProviderIF
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEvaluationChainProvider.class);
 
+  // decimalLatitude : Legal values lie between -90 and 90, inclusive.
+  public static final double MIN_LATITUDE = -90d;
+  public static final double MAX_LATITUDE = 90d;
+
+  // decimalLongitude : Legal values lie between -180 and 180, inclusive.
+  public static final double MIN_LONGITUDE = -180d;
+  public static final double MAX_LONGITUDE = 180d;
+
   /**
    * Build a default ValueEvaluator.
    * 
@@ -35,11 +43,14 @@ public class DefaultEvaluationChainProvider implements EvaluationChainProviderIF
 
     ValueEvaluatorBuilder rulesBuilder = ValueEvaluatorBuilder.create();
 
-    NumericalValueEvaluationRule numericalValueEvaluationRule = NumericalValueEvaluationRule.createRule().build();
+    NumericalValueEvaluationRule latNumericalValueEvaluationRule =
+      NumericalValueEvaluationRule.createRule().boundedBy(MIN_LATITUDE, MAX_LATITUDE).build();
+    NumericalValueEvaluationRule lngNumericalValueEvaluationRule =
+      NumericalValueEvaluationRule.createRule().boundedBy(MIN_LONGITUDE, MAX_LONGITUDE).build();
 
     rulesBuilder.addRule(DwcTerm.scientificName, InvalidCharacterEvaluationRuleBuilder.create().build());
-    rulesBuilder.addRule(DwcTerm.decimalLatitude, numericalValueEvaluationRule);
-    rulesBuilder.addRule(DwcTerm.decimalLongitude, numericalValueEvaluationRule);
+    rulesBuilder.addRule(DwcTerm.decimalLatitude, latNumericalValueEvaluationRule);
+    rulesBuilder.addRule(DwcTerm.decimalLongitude, lngNumericalValueEvaluationRule);
 
     return rulesBuilder.build();
   }

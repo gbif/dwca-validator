@@ -20,11 +20,13 @@ public class CliManager {
   private static final Options cmdLineOptions;
 
   static final String CLI_SOURCE = "s";
+  static final String CLI_OUT = "o";
 
 
   static {
     cmdLineOptions = new Options();
     cmdLineOptions.addOption(CLI_SOURCE, true, "Path or URL pointing to the DarwinCore Archive file");
+    cmdLineOptions.addOption(CLI_OUT, true, "Output folder (optional)");
   }
 
   /**
@@ -44,6 +46,7 @@ public class CliManager {
       return null;
     }
     cmdValues.put(CLI_SOURCE, cmdLine.getOptionValue(CLI_SOURCE));
+    cmdValues.put(CLI_OUT, cmdLine.getOptionValue(CLI_OUT));
     return cmdValues;
   }
 

@@ -4,7 +4,7 @@ import org.gbif.dwc.validator.evaluator.chain.DefaultEvaluationChainProvider;
 import org.gbif.dwc.validator.handler.ArchiveContentHandler;
 import org.gbif.dwc.validator.handler.ArchiveStructureHandler;
 import org.gbif.dwc.validator.impl.ArchiveValidator;
-import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
+import org.gbif.dwc.validator.result.accumulator.CSVValidationResultAccumulator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,12 +37,26 @@ public class ValidatorMain {
 
     Map<String, String> cliArgs = CliManager.parseCommandLine(args);
     String sourceFileLocation = cliArgs.get(CliManager.CLI_SOURCE);
+    String resultFolderLocation = cliArgs.get(CliManager.CLI_OUT);
 
     // ensure source file was provided
     if (StringUtils.isBlank(sourceFileLocation)) {
       CliManager.printHelp();
       return;
     }
+
+    // handle output folder/file location
+    File outputFolder = new File("");
+    if (StringUtils.isNotBlank(resultFolderLocation)) {
+      File resultFolder = new File(resultFolderLocation);
+      if (resultFolder.exists() && !resultFolder.isDirectory()) {
+        CliManager.printHelp();
+        return;
+      }
+      outputFolder = resultFolder;
+    }
+    File outputFile = new File(outputFolder.getAbsoluteFile(), System.currentTimeMillis() + ".txt");
+    System.out.println("Saving result in " + outputFile.getAbsolutePath());
 
     String sourceIdentifier = Long.toString(System.currentTimeMillis());
     File workingFolder = new File("validator-dwca-" + sourceIdentifier);
@@ -68,7 +82,13 @@ public class ValidatorMain {
     }
 
     ArchiveValidator archiveValidator = new ArchiveValidator();
-    InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
+    CSVValidationResultAccumulator resultAccumulator = null;
+    try {
+      resultAccumulator = new CSVValidationResultAccumulator(outputFile.getAbsolutePath());
+    } catch (IOException ioEx) {
+      System.out.println(ioEx.getMessage());
+      LOGGER.error("Can't create CSV result accumulator", ioEx);
+    }
 
     archiveValidator.setWorkingFolder(workingFolder.getAbsolutePath());
     archiveValidator.setStructureHandler(new ArchiveStructureHandler());
@@ -81,8 +101,7 @@ public class ValidatorMain {
 
     System.out.println("Validation took: " + (System.currentTimeMillis() - startTime) + " ms");
 
-    // Print results
-    CliReportPrinter.printReport(resultAccumulator);
+    resultAccumulator.close();
 
     // cleanup
     FileUtils.deleteQuietly(workingFolder);

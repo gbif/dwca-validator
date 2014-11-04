@@ -21,7 +21,10 @@ import javax.xml.transform.stream.StreamSource;
 import org.xml.sax.SAXException;
 
 /**
+ * Evaluator responsible to validate the EML file against its schema.
+ * 
  * @author melecoq
+ * @author cgendreau
  */
 public class EMLEvaluator {
 
@@ -38,6 +41,13 @@ public class EMLEvaluator {
   }
 
   protected void handleEval(File eml, ResultAccumulatorIF result) {
+
+    if (eml == null || !eml.exists()) {
+      result.accumulate(new ValidationResult("EML", key, EvaluationContext.STRUCTURE, new ValidationResultElement(
+        StructureValidationType.EML_SCHEMA, Result.ERROR, ArchiveValidatorConfig
+          .getLocalizedString("evaluator.file_not_found"))));
+    }
+
     String identifier = eml.getName();
     try {
       // TODO cache Validator because it's expensive to create

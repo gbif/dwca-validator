@@ -19,10 +19,10 @@ public interface RecordEvaluator {
   String getKey();
 
   /**
-   * Handle evaluation of a specific Record
+   * Handle evaluation of a specific Record.
    * 
    * @param record
-   * @return
+   * @return ValidationResult if one is produced otherwise Optional.absent()
    */
   Optional<ValidationResult> handleEval(Record record);
 
