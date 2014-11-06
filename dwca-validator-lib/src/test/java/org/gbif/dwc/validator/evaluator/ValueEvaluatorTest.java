@@ -7,7 +7,7 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
-import org.gbif.dwc.validator.evaluator.ValueEvaluator.ValueEvaluatorBuilder;
+import org.gbif.dwc.validator.evaluator.term.ValueEvaluatorBuilder;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule.InvalidCharacterEvaluationRuleBuilder;
@@ -42,8 +42,8 @@ public class ValueEvaluatorTest {
   public void testValueEvaluator() {
 
     // register an InvalidCharacterEvaluationRule for scientificName
-    ValueEvaluator valueEvaluator =
-      ValueEvaluatorBuilder.create()
+    RecordEvaluator valueEvaluator =
+      ValueEvaluatorBuilder.builder()
         .addRule(DwcTerm.scientificName, InvalidCharacterEvaluationRuleBuilder.create().build()).build();
 
     Optional<ValidationResult> result = valueEvaluator.handleEval(buildMockRecord("1"));
@@ -56,7 +56,7 @@ public class ValueEvaluatorTest {
 
   @Test(expected = IllegalStateException.class)
   public void testValueEvaluatorIncompleteConfiguration() {
-    ValueEvaluatorBuilder.create().build();
+    ValueEvaluatorBuilder.builder().build();
   }
 
 }

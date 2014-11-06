@@ -63,9 +63,6 @@ public class FileBasedValidationChainLoaderTest {
       assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getValidationResultList(), "2",
         ArchiveValidatorConfig.getLocalizedString("rule.blank_value")));
 
-      assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getValidationResultList(), "2",
-        ArchiveValidatorConfig.getLocalizedString("rule.non_numerical", "a")));
-
     } catch (URISyntaxException e) {
       e.printStackTrace();
       fail();

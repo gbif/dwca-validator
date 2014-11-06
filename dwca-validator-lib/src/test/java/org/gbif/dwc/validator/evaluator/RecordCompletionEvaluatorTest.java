@@ -3,7 +3,7 @@ package org.gbif.dwc.validator.evaluator;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
-import org.gbif.dwc.validator.evaluator.RecordCompletionEvaluator.RecordCompletionEvaluatorBuilder;
+import org.gbif.dwc.validator.evaluator.term.RecordCompletionEvaluatorBuilder;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
@@ -34,8 +34,8 @@ public class RecordCompletionEvaluatorTest {
   @Test
   public void testRecordCompletionEvaluator() {
 
-    RecordCompletionEvaluator recordCompletionEvaluator =
-      RecordCompletionEvaluatorBuilder.create().checkTerm(DwcTerm.scientificName).build();
+    RecordEvaluator recordCompletionEvaluator =
+      RecordCompletionEvaluatorBuilder.builder().checkTerm(DwcTerm.scientificName).build();
 
     Optional<ValidationResult> result1 = recordCompletionEvaluator.handleEval(buildMockRecord("1", "1", null));
     Optional<ValidationResult> result2 = recordCompletionEvaluator.handleEval(buildMockRecord("2", "2", ""));
@@ -58,10 +58,7 @@ public class RecordCompletionEvaluatorTest {
 
   @Test(expected = NullPointerException.class)
   public void testRecordCompletionEvaluatorIncompleteConfiguration() {
-    RecordCompletionEvaluatorBuilder.create().build();
+    RecordCompletionEvaluatorBuilder.builder().build();
   }
-
-  RecordCompletionEvaluator recordCompletionEvaluator = RecordCompletionEvaluatorBuilder.create()
-    .checkTerm(DwcTerm.scientificName).build();
 
 }

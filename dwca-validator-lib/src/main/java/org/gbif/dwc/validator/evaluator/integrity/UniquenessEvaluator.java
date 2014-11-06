@@ -1,9 +1,11 @@
-package org.gbif.dwc.validator.evaluator;
+package org.gbif.dwc.validator.evaluator.integrity;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
+import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
+import org.gbif.dwc.validator.evaluator.configuration.UniquenessEvaluatorConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
@@ -23,7 +25,6 @@ import java.util.UUID;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,80 +38,7 @@ import org.slf4j.LoggerFactory;
  * @author cgendreau
  */
 @RecordEvaluatorKey(key = "uniquenessEvaluator")
-public class UniquenessEvaluator implements StatefulRecordEvaluator, Closeable {
-
-  /**
-   * Builder of UniquenessEvaluator object.
-   * Return UniquenessEvaluator is NOT totally immutable due to file access.
-   * 
-   * @author cgendreau
-   */
-  public static class UniquenessEvaluatorBuilder {
-
-
-    private EvaluationContext evaluatorContext;
-    private ConceptTerm term;
-    private File workingFolder;
-
-    private UniquenessEvaluatorBuilder(EvaluationContext evaluatorContext) {
-      this.evaluatorContext = evaluatorContext;
-    }
-
-    /**
-     * Create with default value. Using coreId, ValidationContext.CORE
-     * 
-     * @return
-     */
-    public static UniquenessEvaluatorBuilder create() {
-      return new UniquenessEvaluatorBuilder(EvaluationContext.CORE);
-    }
-
-    /**
-     * Build UniquenessEvaluator object.
-     * 
-     * @return
-     * @throws NullPointerException
-     * @throws IllegalStateException
-     * @throws IOException
-     */
-    public UniquenessEvaluator build() throws NullPointerException, IllegalStateException, IOException {
-      Preconditions.checkNotNull(evaluatorContext);
-
-      if (workingFolder != null) {
-        Preconditions.checkState(workingFolder.exists() && workingFolder.isDirectory(),
-          "workingFolder must exist as a directory");
-      } else {
-        workingFolder = new File(".");
-      }
-
-      return new UniquenessEvaluator(term, evaluatorContext, workingFolder);
-    }
-
-    /**
-     * Set on which ConceptTerm the evaluation should be made.
-     * Override default values.
-     * 
-     * @param term
-     * @param evaluatorContext context of the provided term
-     * @return
-     */
-    public UniquenessEvaluatorBuilder on(ConceptTerm term, EvaluationContext evaluatorContext) {
-      this.evaluatorContext = evaluatorContext;
-      this.term = term;
-      return this;
-    }
-
-    /**
-     * Set working folder to save temporary files.
-     * 
-     * @param workingFolder
-     * @return
-     */
-    public UniquenessEvaluatorBuilder workingFolder(File workingFolder) {
-      this.workingFolder = workingFolder;
-      return this;
-    }
-  }
+class UniquenessEvaluator implements StatefulRecordEvaluator, Closeable {
 
   private final String key = UniquenessEvaluator.class.getAnnotation(RecordEvaluatorKey.class).key();
   private final EvaluationContext evaluatorContext;
@@ -133,10 +61,9 @@ public class UniquenessEvaluator implements StatefulRecordEvaluator, Closeable {
    * @param workingFolder place to save temporary files
    * @throws IOException
    */
-  private UniquenessEvaluator(ConceptTerm term, EvaluationContext evaluatorContext, File workingFolder)
-    throws IOException {
-    this.evaluatorContext = evaluatorContext;
-    this.term = term;
+  UniquenessEvaluator(UniquenessEvaluatorConfiguration configuration) throws IOException {
+    this.evaluatorContext = configuration.getEvaluatorContext();
+    this.term = configuration.getTerm();
     this.conceptTermString = term != null ? term.simpleName() : "coreId";
 
     idList = new ArrayList<String>(BUFFER_THRESHOLD);
@@ -144,13 +71,9 @@ public class UniquenessEvaluator implements StatefulRecordEvaluator, Closeable {
     String fileName = randomUUID + ArchiveValidatorConfig.TEXT_FILE_EXT;
     String sortedFileName = randomUUID + "_sorted" + ArchiveValidatorConfig.TEXT_FILE_EXT;
 
-    idRecordingFile = new File(workingFolder, fileName);
-    sortedIdFile = new File(workingFolder, sortedFileName);
+    idRecordingFile = new File(configuration.getWorkingFolder(), fileName);
+    sortedIdFile = new File(configuration.getWorkingFolder(), sortedFileName);
     fw = new FileWriter(idRecordingFile);
-  }
-
-  public static UniquenessEvaluatorBuilder create() {
-    return UniquenessEvaluatorBuilder.create();
   }
 
   private void flushCurrentIdList() {

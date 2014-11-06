@@ -3,23 +3,18 @@ package org.gbif.dwc.validator.evaluator.chain;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
-import org.gbif.dwc.validator.evaluator.UniquenessEvaluator;
-import org.gbif.dwc.validator.evaluator.ValueEvaluator;
-import org.gbif.dwc.validator.evaluator.ValueEvaluator.ValueEvaluatorBuilder;
-import org.gbif.dwc.validator.evaluator.chain.builder.ChainableRecordEvaluatorBuilderIF;
-import org.gbif.dwc.validator.evaluator.chain.builder.DefaultChainableRecordEvaluatorBuilder;
+import org.gbif.dwc.validator.Evaluators;
+import org.gbif.dwc.validator.evaluator.IntegrityEvaluators;
+import org.gbif.dwc.validator.evaluator.TermsValidators;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRule;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * Test the ChainableRecordEvaluator wrapper.
@@ -36,31 +31,15 @@ public class ChainableRecordEvaluatorTest {
 
   @Test
   public void testChain() {
-    UniquenessEvaluator uniquenessEvaluator = null;
-    try {
-      uniquenessEvaluator = UniquenessEvaluator.create().build();
-    } catch (NullPointerException e) {
-      e.printStackTrace();
-      fail();
-    } catch (IllegalStateException e) {
-      e.printStackTrace();
-      fail();
-    } catch (IOException e) {
-      e.printStackTrace();
-      fail();
-    }
 
-    ValueEvaluatorBuilder rulesBuilder = ValueEvaluatorBuilder.create();
-    NumericalValueEvaluationRule numericalValueEvaluationRule = NumericalValueEvaluationRule.createRule().build();
-    rulesBuilder.addRule(DwcTerm.decimalLatitude, numericalValueEvaluationRule);
-    rulesBuilder.addRule(DwcTerm.decimalLongitude, numericalValueEvaluationRule);
+    ChainableRecordEvaluator chain =
+      Evaluators
+        .builder()
+        .with(IntegrityEvaluators.uniqueness())
+        .with(
+          TermsValidators.rule(NumericalValueEvaluationRule.createRule().build(), DwcTerm.decimalLatitude,
+            DwcTerm.decimalLongitude)).buildChain();
 
-    ValueEvaluator valueEvaluator = rulesBuilder.build();
-
-    ChainableRecordEvaluatorBuilderIF chainBuilder =
-      DefaultChainableRecordEvaluatorBuilder.create(valueEvaluator).linkTo(uniquenessEvaluator);
-
-    ChainableRecordEvaluator chain = chainBuilder.build();
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     Record rec1 = buildMockRecord("1", "30", "60");
@@ -77,6 +56,8 @@ public class ChainableRecordEvaluatorTest {
     // Fist record should be valid
     assertFalse(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
       ContentValidationType.RECORD_CONTENT_VALUE));
+
+    // Next records should not be valid
     assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "2",
       ContentValidationType.RECORD_CONTENT_VALUE));
     assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "3",

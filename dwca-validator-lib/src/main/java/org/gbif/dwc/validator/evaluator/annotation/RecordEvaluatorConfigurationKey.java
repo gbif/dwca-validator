@@ -6,12 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation used to identify RecordEvalutor configuration class normally implemented as RecordEvalutor inner class.
+ * Annotation used to identify RecordEvalutor configuration class.
  * 
  * @author cgendreau
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface RecordEvaluatorConfiguration {
+public @interface RecordEvaluatorConfigurationKey {
 
 }

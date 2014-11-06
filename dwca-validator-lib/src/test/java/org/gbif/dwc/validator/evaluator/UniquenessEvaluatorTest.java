@@ -6,6 +6,7 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
+import org.gbif.dwc.validator.evaluator.integrity.UniquenessEvaluatorBuilder;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
@@ -46,7 +47,7 @@ public class UniquenessEvaluatorTest {
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
-      UniquenessEvaluator valueEvaluator = UniquenessEvaluator.create().build();
+      StatefulRecordEvaluator valueEvaluator = UniquenessEvaluatorBuilder.builder().build();
       valueEvaluator.handleEval(buildMockRecord("1", "1"));
       valueEvaluator.handleEval(buildMockRecord("1", "2"));
 
@@ -67,8 +68,8 @@ public class UniquenessEvaluatorTest {
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
-      UniquenessEvaluator valueEvaluator =
-        UniquenessEvaluator.create().on(DwcTerm.catalogNumber, EvaluationContext.CORE).build();
+      StatefulRecordEvaluator valueEvaluator =
+        UniquenessEvaluatorBuilder.builder().on(DwcTerm.catalogNumber, EvaluationContext.CORE).build();
       valueEvaluator.handleEval(buildMockRecord("1", "1"));
       valueEvaluator.handleEval(buildMockRecord("2", "1"));
 
@@ -89,7 +90,7 @@ public class UniquenessEvaluatorTest {
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
-      UniquenessEvaluator valueEvaluator = UniquenessEvaluator.create().build();
+      StatefulRecordEvaluator valueEvaluator = UniquenessEvaluatorBuilder.builder().build();
       valueEvaluator.handleEval(buildMockRecord("1", "1"));
       valueEvaluator.handleEval(buildMockRecord("2", "1"));
 

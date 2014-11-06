@@ -1,4 +1,4 @@
-package org.gbif.dwc.validator.structure.evaluator;
+package org.gbif.dwc.validator.evaluator.structure;
 
 import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
 import org.gbif.dwc.validator.result.EvaluationContext;

@@ -1,5 +1,7 @@
 package org.gbif.dwc.validator.evaluator;
 
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
+
 
 /**
  * Interface defining a RecordEvaluator builder.
@@ -7,12 +9,15 @@ package org.gbif.dwc.validator.evaluator;
  * 
  * @author cgendreau
  */
+@RecordEvaluatorBuilderKey
 public interface RecordEvaluatorBuilder {
 
+
   /**
-   * Build a concrete instance of RecordEvaluatorIF.
+   * Build a concrete instance of RecordEvaluator.
    * 
    * @return
+   * @throws IllegalStateException
    */
-  RecordEvaluator build();
+  RecordEvaluator build() throws IllegalStateException;
 }

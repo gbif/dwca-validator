@@ -1,9 +1,7 @@
 package org.gbif.dwc.validator.cli;
 
-import org.gbif.dwc.validator.evaluator.chain.DefaultEvaluationChainProvider;
-import org.gbif.dwc.validator.handler.ArchiveContentHandler;
-import org.gbif.dwc.validator.handler.ArchiveStructureHandler;
-import org.gbif.dwc.validator.impl.ArchiveValidator;
+import org.gbif.dwc.validator.Evaluators;
+import org.gbif.dwc.validator.FileEvaluator;
 import org.gbif.dwc.validator.result.accumulator.CSVValidationResultAccumulator;
 
 import java.io.File;
@@ -81,7 +79,6 @@ public class ValidatorMain {
       return;
     }
 
-    ArchiveValidator archiveValidator = new ArchiveValidator();
     CSVValidationResultAccumulator resultAccumulator = null;
     try {
       resultAccumulator = new CSVValidationResultAccumulator(outputFile.getAbsolutePath());
@@ -90,14 +87,12 @@ public class ValidatorMain {
       LOGGER.error("Can't create CSV result accumulator", ioEx);
     }
 
-    archiveValidator.setWorkingFolder(workingFolder.getAbsolutePath());
-    archiveValidator.setStructureHandler(new ArchiveStructureHandler());
-    archiveValidator.setContentHandler(new ArchiveContentHandler(new DefaultEvaluationChainProvider()));
+    FileEvaluator archiveValidator = Evaluators.defaultChain(workingFolder).build();
 
     long startTime = System.currentTimeMillis();
     System.out.println("Starting validation ... ");
     // run validation
-    archiveValidator.validateArchive(new File(sourceFileLocation), resultAccumulator);
+    archiveValidator.evaluateFile(new File(sourceFileLocation), resultAccumulator);
 
     System.out.println("Validation took: " + (System.currentTimeMillis() - startTime) + " ms");
 

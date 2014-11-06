@@ -1,24 +1,24 @@
 package org.gbif.dwc.validator.config;
 
 import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.annotation.AnnotationLoader;
-import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
-import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfiguration;
-import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfigurationKey;
 import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
-import org.gbif.dwc.validator.evaluator.chain.builder.ChainableRecordEvaluatorBuilderIF;
-import org.gbif.dwc.validator.evaluator.chain.builder.DefaultChainableRecordEvaluatorBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.TypeDescription;
@@ -34,10 +34,7 @@ public class FileBasedValidationChainLoader {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FileBasedValidationChainLoader.class);
 
-  private static final String EVALUATORS_SECTION = "evaluators";
   private static final String EVALUATOR_BUILDERS_SECTION = "evaluatorBuilders";
-
-  private static final String YAML_ALIAS_EVALUTOR_CONFIGURATION_SUFFIX = "_configuration";
 
   /**
    * Only works for RecordEvaluator for now.
@@ -58,28 +55,18 @@ public class FileBasedValidationChainLoader {
       // configuration file is organized as sections
       Map<String, Object> conf = (Map<String, Object>) yaml.load(ios);
 
-      List<RecordEvaluator> recordEvaluatorList = (List<RecordEvaluator>) conf.get(EVALUATORS_SECTION);
-      // Build chain using DefaultChainableRecordEvaluatorBuilder
-      ChainableRecordEvaluatorBuilderIF chainBuilder = null;
-      for (RecordEvaluator currRecordEvaluator : recordEvaluatorList) {
-        if (chainBuilder == null) {
-          chainBuilder = DefaultChainableRecordEvaluatorBuilder.create(currRecordEvaluator);
-        } else {
-          chainBuilder = chainBuilder.linkTo(currRecordEvaluator);
-        }
-      }
+      Evaluators validator = Evaluators.builder();
 
       List<RecordEvaluatorBuilder> recordEvaluatorBuilderList =
         (List<RecordEvaluatorBuilder>) conf.get(EVALUATOR_BUILDERS_SECTION);
       for (RecordEvaluatorBuilder currRecordEvaluatorBuilder : recordEvaluatorBuilderList) {
-        chainBuilder = chainBuilder.linkTo(currRecordEvaluatorBuilder.build());
+        validator.with(currRecordEvaluatorBuilder);
       }
 
       ios.close();
 
-      if (chainBuilder != null) {
-        chainHead = chainBuilder.build();
-      }
+      chainHead = validator.buildChain();
+
     } catch (FileNotFoundException e) {
       LOGGER.error("Cant load file " + configFilePath, e);
     } catch (IOException e) {
@@ -101,38 +88,27 @@ public class FileBasedValidationChainLoader {
     Constructor yamlConstructor = new Constructor();
     yamlConstructor.addTypeDescription(new TypeDescription(DwcTerm.class, "!dwcTerm"));
 
-    Map<Class<?>, RecordEvaluatorKey> evaluatorClasses =
-      AnnotationLoader.getClassAnnotation("", RecordEvaluatorKey.class);
+    Map<Class<?>, RecordEvaluatorConfigurationKey> evaluatorConfigurationClasses =
+      AnnotationLoader.getClassAnnotation("", RecordEvaluatorConfigurationKey.class);
+    registerAliases(evaluatorConfigurationClasses.keySet(), yamlConstructor);
 
-    for (Class<?> currEvaluatorClass : evaluatorClasses.keySet()) {
-      registerAliases(currEvaluatorClass, evaluatorClasses.get(currEvaluatorClass).key(), yamlConstructor);
-    }
+    Map<Class<?>, RecordEvaluatorBuilderKey> evaluatorBuilderClasses =
+      AnnotationLoader.getClassAnnotation("", RecordEvaluatorBuilderKey.class);
+    registerAliases(evaluatorBuilderClasses.keySet(), yamlConstructor);
+
     return yamlConstructor;
   }
 
   /**
-   * Register aliases based on RecordEvaluator class annotations.
+   * Register aliases based on Class name.
    * 
-   * @param evaluatorClass
-   * @param evaluatorKey
+   * @param class list
    * @param yamlConstructor
    */
-  private void registerAliases(Class<?> evaluatorClass, String evaluatorKey, Constructor yamlConstructor) {
-
-    for (Class<?> currEvaluatorClassInnerClass : evaluatorClass.getDeclaredClasses()) {
-
-      // Build aliases for Evaluator builder using the Evaluator key
-      for (Class<?> currIf : currEvaluatorClassInnerClass.getInterfaces()) {
-        if (RecordEvaluatorBuilder.class.equals(currIf)) {
-          yamlConstructor.addTypeDescription(new TypeDescription(currEvaluatorClassInnerClass, "!" + evaluatorKey));
-        }
-      }
-
-      // Build aliases for Evaluator configuration
-      if (currEvaluatorClassInnerClass.getAnnotation(RecordEvaluatorConfiguration.class) != null) {
-        yamlConstructor.addTypeDescription(new TypeDescription(currEvaluatorClassInnerClass, "!" + evaluatorKey
-          + YAML_ALIAS_EVALUTOR_CONFIGURATION_SUFFIX));
-      }
+  private void registerAliases(Collection<Class<?>> classList, Constructor yamlConstructor) {
+    for (Class<?> currClass : classList) {
+      yamlConstructor.addTypeDescription(new TypeDescription(currClass, "!"
+        + StringUtils.uncapitalize(currClass.getSimpleName())));
     }
   }
 

@@ -10,17 +10,13 @@ rules:
      allowFormattingWhiteSpace	: false
      rejectReplacementChar		: true
 
-evaluators:
- - !!org.gbif.dwc.validator.evaluator.ValueEvaluator
-   - !!org.gbif.dwc.validator.evaluator.ValueEvaluator$Configuration
+evaluatorBuilders:
+ - !recordCompletionEvaluatorBuilder
+   - !recordCompletionEvaluatorConfiguration
+     terms:
+       - !dwcTerm 'country'
+ - !valueEvaluatorBuilder
+   - !valueEvaluatorConfiguration
      rulesPerTerm:
        !dwcTerm 'eventDate' : [*isoDateVER]
        !dwcTerm 'scientificName' : [*invalidCharacterVER]
- - !!org.gbif.dwc.validator.evaluator.impl.DecimalLatLngEvaluator
-   - !!org.gbif.dwc.validator.evaluator.impl.DecimalLatLngEvaluator$Configuration {}
-
-evaluatorBuilders:
- - !recordCompletionEvaluator
-   - !recordCompletionEvaluator_configuration
-     terms:
-       - !dwcTerm 'country'
