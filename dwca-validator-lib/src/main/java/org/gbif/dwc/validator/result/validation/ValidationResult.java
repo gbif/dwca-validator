@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.result.validation;
 
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.EvaluationResultIF;
+import org.gbif.dwc.validator.result.EvaluationResult;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +15,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * 
  * @author cgendreau
  */
-public class ValidationResult implements EvaluationResultIF<ValidationResultElement> {
+public class ValidationResult implements EvaluationResult<ValidationResultElement> {
 
   private final String id;
   private final String evaluatorKey;
