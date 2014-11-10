@@ -6,7 +6,7 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
-import org.gbif.dwc.validator.evaluator.integrity.ReferenceEvaluatorBuilder;
+import org.gbif.dwc.validator.evaluator.integrity.ReferenceUniqueEvaluatorBuilder;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
@@ -47,7 +47,7 @@ public class ReferenceUniqueEvaluatorTest {
     try {
 
       StatefulRecordEvaluator referenceEvaluator =
-        ReferenceEvaluatorBuilder
+        ReferenceUniqueEvaluatorBuilder
           .builder()
           .termRefersToUnique(DwcTerm.acceptedNameUsageID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName(),
             DwcTerm.taxonID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName()).build();
@@ -72,7 +72,7 @@ public class ReferenceUniqueEvaluatorTest {
 
     try {
       StatefulRecordEvaluator referenceEvaluator =
-        ReferenceEvaluatorBuilder
+        ReferenceUniqueEvaluatorBuilder
           .builder()
           .termRefersToUnique(DwcTerm.acceptedNameUsageID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName(),
             DwcTerm.taxonID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName()).build();
@@ -95,7 +95,7 @@ public class ReferenceUniqueEvaluatorTest {
 
     try {
       StatefulRecordEvaluator referenceEvaluator =
-        ReferenceEvaluatorBuilder
+        ReferenceUniqueEvaluatorBuilder
           .builder()
           .termRefersToUnique(DwcTerm.acceptedNameUsageID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName(),
             DwcTerm.taxonID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName()).supportMultipleValues("|").build();
@@ -117,7 +117,7 @@ public class ReferenceUniqueEvaluatorTest {
 
     try {
       StatefulRecordEvaluator referenceEvaluator =
-        ReferenceEvaluatorBuilder
+        ReferenceUniqueEvaluatorBuilder
           .builder()
           .termRefersToUnique(DwcTerm.acceptedNameUsageID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName(),
             DwcTerm.taxonID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName()).supportMultipleValues("|").build();

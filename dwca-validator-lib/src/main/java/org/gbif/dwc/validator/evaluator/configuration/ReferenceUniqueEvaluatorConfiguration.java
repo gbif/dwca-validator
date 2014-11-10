@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.evaluator.configuration;
 
 import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfigurationKey;
 import org.gbif.dwc.validator.result.EvaluationContext;
 
 import java.io.File;
@@ -10,6 +11,7 @@ import java.io.File;
  * 
  * @author cgendreau
  */
+@RecordEvaluatorConfigurationKey
 public class ReferenceUniqueEvaluatorConfiguration {
 
   private EvaluationContext evaluationContextRestriction;

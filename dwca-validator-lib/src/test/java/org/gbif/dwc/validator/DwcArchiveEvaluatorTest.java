@@ -36,7 +36,8 @@ public class DwcArchiveEvaluatorTest {
       validator.evaluateFile(testDwca, resultAccumulator);
 
       // simply ensure we have no results
-      assertTrue(resultAccumulator.getValidationResultList().isEmpty());
+      assertTrue("The test archive /dwca/vascan_dwca.zip should pass the default validation chain.", resultAccumulator
+        .getValidationResultList().isEmpty());
     } catch (URISyntaxException e) {
       e.printStackTrace();
       fail();

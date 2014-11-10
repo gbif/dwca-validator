@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Builder of ReferentialIntegrityEvaluator object.
@@ -17,14 +18,20 @@ import com.google.common.base.Preconditions;
  * 
  * @author cgendreau
  */
-public class ReferenceEvaluatorBuilder implements RecordEvaluatorBuilder {
+public class ReferenceUniqueEvaluatorBuilder implements RecordEvaluatorBuilder {
 
   private final ReferenceUniqueEvaluatorConfiguration configuration;
   private final UniquenessEvaluatorConfiguration uniquenessEvaluatorConfiguration;
 
-  private ReferenceEvaluatorBuilder() {
+  private ReferenceUniqueEvaluatorBuilder() {
     this.configuration = new ReferenceUniqueEvaluatorConfiguration();
     this.uniquenessEvaluatorConfiguration = new UniquenessEvaluatorConfiguration();
+  }
+
+  public ReferenceUniqueEvaluatorBuilder(ReferenceUniqueEvaluatorConfiguration configuration,
+    UniquenessEvaluatorConfiguration uniquenessEvaluatorConfiguration) {
+    this.configuration = configuration;
+    this.uniquenessEvaluatorConfiguration = uniquenessEvaluatorConfiguration;
   }
 
   /**
@@ -32,36 +39,51 @@ public class ReferenceEvaluatorBuilder implements RecordEvaluatorBuilder {
    * 
    * @return
    */
-  public static ReferenceEvaluatorBuilder builder() {
-    return new ReferenceEvaluatorBuilder();
+  public static ReferenceUniqueEvaluatorBuilder builder() {
+    return new ReferenceUniqueEvaluatorBuilder();
   }
 
   /**
    * Build UniquenessEvaluator object.
    * 
    * @return
-   * @throws NullPointerException
-   * @throws IOException
    * @throws IllegalStateException
    */
   @Override
   public ReferenceUniqueEvaluator build() throws IllegalStateException {
-    Preconditions.checkNotNull(configuration.getTerm());
-    Preconditions.checkNotNull(configuration.getEvaluationContextRestriction());
-    Preconditions.checkNotNull(configuration.getRowTypeRestriction());
-    Preconditions.checkNotNull(uniquenessEvaluatorConfiguration);
+
+    // if no 'term' is set the id will be used to test as 'star' records
+    if (configuration.getTerm() != null) {
+      Preconditions.checkState(StringUtils.isNotBlank(configuration.getRowTypeRestriction()),
+        "rowTypeRestriction must be provided if a specific term is specified.");
+      Preconditions.checkState(uniquenessEvaluatorConfiguration != null,
+        "uniquenessEvaluatorConfiguration must be provided if a specific term is specified.");
+    }
+
+    // use EXT context as default value
+    if (configuration.getEvaluationContextRestriction() == null) {
+      this.configuration.setEvaluationContextRestriction(EvaluationContext.EXT);
+    }
 
     if (configuration.getWorkingFolder() != null) {
       Preconditions.checkState(configuration.getWorkingFolder().exists()
         && configuration.getWorkingFolder().isDirectory(), "workingFolder must exist as a directory");
     } else {
       configuration.setWorkingFolder(new File("."));
-      uniquenessEvaluatorConfiguration.setWorkingFolder(new File("."));
     }
 
     // UniquenessEvaluatorBuilder will validate UniquenessEvaluator pre conditions
-    UniquenessEvaluator uniquenessEvaluator =
-      UniquenessEvaluatorBuilder.builder(uniquenessEvaluatorConfiguration).build();
+    UniquenessEvaluator uniquenessEvaluator;
+    if (uniquenessEvaluatorConfiguration == null) {
+      // Build uniquenessEvaluator on coreId
+      uniquenessEvaluator =
+        UniquenessEvaluatorBuilder.builder().workingFolder(configuration.getWorkingFolder()).build();
+    } else {
+      if (uniquenessEvaluatorConfiguration.getWorkingFolder() == null) {
+        uniquenessEvaluatorConfiguration.setWorkingFolder(configuration.getWorkingFolder());
+      }
+      uniquenessEvaluator = UniquenessEvaluatorBuilder.builder(uniquenessEvaluatorConfiguration).build();
+    }
 
     try {
       return new ReferenceUniqueEvaluator(configuration, uniquenessEvaluator);
@@ -71,7 +93,7 @@ public class ReferenceEvaluatorBuilder implements RecordEvaluatorBuilder {
     }
   }
 
-  public ReferenceEvaluatorBuilder termRefersToUnique(ConceptTerm term, EvaluationContext evaluationContextRestriction,
+  public ReferenceUniqueEvaluatorBuilder termRefersToUnique(ConceptTerm term, EvaluationContext evaluationContextRestriction,
     String rowTypeRestriction, ConceptTerm referedTerm, EvaluationContext referedEvaluationContextRestriction,
     String referedRowTypeRestriction) {
     this.configuration.setTerm(term);
@@ -92,7 +114,7 @@ public class ReferenceEvaluatorBuilder implements RecordEvaluatorBuilder {
    * @param separator
    * @return
    */
-  public ReferenceEvaluatorBuilder supportMultipleValues(String multipleValuesSeparator) {
+  public ReferenceUniqueEvaluatorBuilder supportMultipleValues(String multipleValuesSeparator) {
     this.configuration.setMultipleValuesSeparator(multipleValuesSeparator);
     return this;
   }
@@ -103,7 +125,7 @@ public class ReferenceEvaluatorBuilder implements RecordEvaluatorBuilder {
    * @param workingFolder
    * @return
    */
-  public ReferenceEvaluatorBuilder workingFolder(File workingFolder) {
+  public ReferenceUniqueEvaluatorBuilder workingFolder(File workingFolder) {
     this.configuration.setWorkingFolder(workingFolder);
     this.uniquenessEvaluatorConfiguration.setWorkingFolder(workingFolder);
     return this;

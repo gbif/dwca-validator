@@ -38,13 +38,16 @@ import org.slf4j.LoggerFactory;
  * @author cgendreau
  */
 @RecordEvaluatorKey(key = "referentialIntegrityEvaluator")
-public class ReferenceUniqueEvaluator implements StatefulRecordEvaluator {
+class ReferenceUniqueEvaluator implements StatefulRecordEvaluator {
 
   private final String key = ReferenceUniqueEvaluator.class.getAnnotation(RecordEvaluatorKey.class).key();
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ReferenceUniqueEvaluator.class);
   org.gbif.utils.file.FileUtils GBIF_FILE_UTILS = new org.gbif.utils.file.FileUtils();
   private static final int BUFFER_THRESHOLD = 1000;
+
+  private static final String SORTED_FILE_SUFFIX = "_sorted" + ValidatorConfig.TEXT_FILE_EXT;
+  private static final String DIFF_FILE_SUFFIX = "_diff" + ValidatorConfig.TEXT_FILE_EXT;
 
   private final EvaluationContext evaluationContextRestriction;
   private final String rowTypeRestriction;
@@ -82,8 +85,8 @@ public class ReferenceUniqueEvaluator implements StatefulRecordEvaluator {
 
     String randomUUID = UUID.randomUUID().toString();
     String fileName = randomUUID + ValidatorConfig.TEXT_FILE_EXT;
-    String sortedFileName = randomUUID + "_sorted" + ValidatorConfig.TEXT_FILE_EXT;
-    String diffFileName = randomUUID + "_diff" + ValidatorConfig.TEXT_FILE_EXT;
+    String sortedFileName = randomUUID + SORTED_FILE_SUFFIX;
+    String diffFileName = randomUUID + DIFF_FILE_SUFFIX;
 
     valueRecordingFile = new File(configuration.getWorkingFolder(), fileName);
     sortedValueFile = new File(configuration.getWorkingFolder(), sortedFileName);
@@ -124,7 +127,12 @@ public class ReferenceUniqueEvaluator implements StatefulRecordEvaluator {
       return Optional.absent();
     }
 
-    String value = record.value(term);
+    String value;
+    if (term == null) {
+      value = record.id();
+    } else {
+      value = record.value(term);
+    }
 
     // only record non-blank value
     if (StringUtils.isNotBlank(value)) {

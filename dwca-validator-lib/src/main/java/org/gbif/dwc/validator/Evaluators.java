@@ -32,13 +32,23 @@ public class Evaluators {
     return new Evaluators();
   }
 
+  /**
+   * Current chain
+   * -scientificName does NOT contains whitespace other than space
+   * -decimalLatitude and decimalLongitude are number within valid bounds
+   * -coreId is unique
+   * -extension records points to a valid coreID
+   * 
+   * @param tempFolder
+   * @return
+   */
   public static Evaluators defaultChain(File tempFolder) {
     Evaluators val =
       builder()
         .with(TermsValidators.rule(InvalidCharacterEvaluationRuleBuilder.create().build(), DwcTerm.scientificName))
         .with(TermsValidators.withinRange(DwcTerm.decimalLatitude, MIN_LATITUDE, MAX_LATITUDE))
         .with(TermsValidators.withinRange(DwcTerm.decimalLongitude, MIN_LONGITUDE, MAX_LONGITUDE))
-        .with(IntegrityEvaluators.coreIdUniqueness(tempFolder));
+        .with(IntegrityEvaluators.archiveIdIntegrity(tempFolder));
     return val;
   }
 

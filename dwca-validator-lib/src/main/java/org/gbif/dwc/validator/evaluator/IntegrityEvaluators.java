@@ -1,5 +1,6 @@
 package org.gbif.dwc.validator.evaluator;
 
+import org.gbif.dwc.validator.evaluator.integrity.ReferenceUniqueEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.integrity.UniquenessEvaluatorBuilder;
 
 import java.io.File;
@@ -19,5 +20,15 @@ public class IntegrityEvaluators {
    */
   public static UniquenessEvaluatorBuilder coreIdUniqueness(File tempFolder) {
     return UniquenessEvaluatorBuilder.builder().workingFolder(tempFolder);
+  }
+
+  /**
+   * Check uniqueness of the coreId and that all extension(s) records point to a valid core id.
+   * 
+   * @param tempFolder
+   * @return
+   */
+  public static ReferenceUniqueEvaluatorBuilder archiveIdIntegrity(File tempFolder) {
+    return ReferenceUniqueEvaluatorBuilder.builder().workingFolder(tempFolder);
   }
 }

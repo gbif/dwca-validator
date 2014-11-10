@@ -61,9 +61,7 @@ public class UniquenessEvaluatorBuilder implements RecordEvaluatorBuilder {
     // use CORE context as default value
     if (configuration.getEvaluationContextRestriction() == null) {
       this.configuration.setEvaluationContextRestriction(EvaluationContext.CORE);
-    }
-
-    if (configuration.getEvaluationContextRestriction() == EvaluationContext.EXT) {
+    } else if (configuration.getEvaluationContextRestriction() == EvaluationContext.EXT) {
       Preconditions.checkState(StringUtils.isNotBlank(configuration.getRowTypeRestriction()),
         "RowTypeRestriction must be provided for extension");
       Preconditions.checkState(configuration.getTerm() != null, "A Term must be provided for extension");
