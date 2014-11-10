@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Optional;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * General RecordEvaluatorIF implementation to check the values inside a record.
@@ -35,10 +36,10 @@ class ValueEvaluator implements RecordEvaluator {
   private final String key = ValueEvaluator.class.getAnnotation(RecordEvaluatorKey.class).key();
   // hold all evaluation rules per ConceptTerm
   private final Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm;
-  private final EvaluationContext evaluatorContext;
+  private final String rowTypeRestriction;
 
   ValueEvaluator(ValueEvaluatorConfiguration configuration) {
-    this.evaluatorContext = configuration.getEvaluatorContext();
+    this.rowTypeRestriction = configuration.getRowTypeRestriction();
     this.rulesPerTerm =
       Collections.unmodifiableMap(new HashMap<ConceptTerm, List<EvaluationRuleIF<String>>>(configuration
         .getRulesPerTerm()));
@@ -50,10 +51,15 @@ class ValueEvaluator implements RecordEvaluator {
   }
 
   @Override
-  public Optional<ValidationResult> handleEval(Record record) {
+  public Optional<ValidationResult> handleEval(Record record, EvaluationContext evaluationContext) {
     ValidationResult validationResult = null;
     List<ValidationResultElement> elementList = null;
     ValidationResultElement validationResultElement;
+
+    // if we specified a rowType restriction, check that the record is also of this rowType
+    if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
+      Optional.absent();
+    }
 
     // only iterate over terms we have a rule for
     for (ConceptTerm currTerm : rulesPerTerm.keySet()) {
@@ -70,7 +76,7 @@ class ValueEvaluator implements RecordEvaluator {
     }
 
     if (elementList != null && elementList.size() > 0) {
-      validationResult = new ValidationResult(record.id(), key, evaluatorContext, elementList);
+      validationResult = new ValidationResult(record.id(), key, evaluationContext, record.rowType(), elementList);
     }
 
     return Optional.fromNullable(validationResult);

@@ -27,32 +27,25 @@ public class Evaluators {
   public static final double MAX_LONGITUDE = 180d;
 
   private final List<RecordEvaluatorBuilder> buildersList;
-  private final File workingFolder;
 
   public static Evaluators builder() {
-    return new Evaluators(null);
+    return new Evaluators();
   }
 
-  public static Evaluators builder(File workingFolder) {
-    return new Evaluators(workingFolder);
-  }
-
-  public static Evaluators defaultChain(File workingFolder) {
-
+  public static Evaluators defaultChain(File tempFolder) {
     Evaluators val =
       builder()
         .with(TermsValidators.rule(InvalidCharacterEvaluationRuleBuilder.create().build(), DwcTerm.scientificName))
         .with(TermsValidators.withinRange(DwcTerm.decimalLatitude, MIN_LATITUDE, MAX_LATITUDE))
         .with(TermsValidators.withinRange(DwcTerm.decimalLongitude, MIN_LONGITUDE, MAX_LONGITUDE))
-        .with(IntegrityEvaluators.uniqueness().workingFolder(workingFolder));
+        .with(IntegrityEvaluators.coreIdUniqueness(tempFolder));
     return val;
   }
 
   /**
    * Private constructor, use Validator.builder()
    */
-  private Evaluators(File workingFolder) {
-    this.workingFolder = workingFolder;
+  private Evaluators() {
     this.buildersList = new ArrayList<RecordEvaluatorBuilder>();
   }
 
@@ -72,7 +65,7 @@ public class Evaluators {
    * 
    * @return
    */
-  public FileEvaluator build() {
+  public FileEvaluator build() throws IllegalStateException {
     return new DwcArchiveEvaluator(buildChain());
   }
 
@@ -81,7 +74,8 @@ public class Evaluators {
    * 
    * @return head of the chain
    */
-  public ChainableRecordEvaluator buildChain() {
+  public ChainableRecordEvaluator buildChain() throws IllegalStateException {
+
     ChainableRecordEvaluator current = null;
     // iterate from last element to the first to be able to provide the next ChainableRecordEvaluator
     for (int i = buildersList.size() - 1; i >= 0; i--) {

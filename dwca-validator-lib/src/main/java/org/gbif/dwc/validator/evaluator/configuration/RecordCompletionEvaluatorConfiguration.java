@@ -2,7 +2,6 @@ package org.gbif.dwc.validator.evaluator.configuration;
 
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfigurationKey;
-import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.rule.value.BlankValueEvaluationRule;
 import org.gbif.dwc.validator.rule.value.BlankValueEvaluationRule.BlankValueEvaluationRuleBuilder;
 
@@ -18,7 +17,7 @@ import java.util.List;
 @RecordEvaluatorConfigurationKey
 public class RecordCompletionEvaluatorConfiguration {
 
-  private EvaluationContext evaluatorContext;
+  private String rowTypeRestriction;
   private BlankValueEvaluationRule blankValueEvaluationRule;
   private List<ConceptTerm> terms;
 
@@ -27,7 +26,6 @@ public class RecordCompletionEvaluatorConfiguration {
    * ValidationContext.CORE and default BlankValueEvaluationRule.
    */
   public RecordCompletionEvaluatorConfiguration() {
-    evaluatorContext = EvaluationContext.CORE;
     blankValueEvaluationRule = BlankValueEvaluationRuleBuilder.create().build();
   }
 
@@ -42,8 +40,12 @@ public class RecordCompletionEvaluatorConfiguration {
     return blankValueEvaluationRule;
   }
 
-  public EvaluationContext getEvaluatorContext() {
-    return evaluatorContext;
+  public String getRowTypeRestriction() {
+    return rowTypeRestriction;
+  }
+
+  public void setRowTypeRestriction(String rowTypeRestriction) {
+    this.rowTypeRestriction = rowTypeRestriction;
   }
 
   public List<ConceptTerm> getTerms() {
@@ -52,10 +54,6 @@ public class RecordCompletionEvaluatorConfiguration {
 
   public void setBlankValueEvaluationRule(BlankValueEvaluationRule blankValueEvaluationRule) {
     this.blankValueEvaluationRule = blankValueEvaluationRule;
-  }
-
-  public void setEvaluatorContext(EvaluationContext evaluatorContext) {
-    this.evaluatorContext = evaluatorContext;
   }
 
   public void setTerms(List<ConceptTerm> terms) {

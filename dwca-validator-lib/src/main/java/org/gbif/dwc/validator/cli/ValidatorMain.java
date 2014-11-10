@@ -2,6 +2,7 @@ package org.gbif.dwc.validator.cli;
 
 import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.FileEvaluator;
+import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.accumulator.CSVValidationResultAccumulator;
 
 import java.io.File;
@@ -37,6 +38,9 @@ public class ValidatorMain {
     String sourceFileLocation = cliArgs.get(CliManager.CLI_SOURCE);
     String resultFolderLocation = cliArgs.get(CliManager.CLI_OUT);
 
+    // TODO probably load from configuration file
+    ValidatorConfig validatorConfig = ValidatorConfig.getInstance();
+
     // ensure source file was provided
     if (StringUtils.isBlank(sourceFileLocation)) {
       CliManager.printHelp();
@@ -57,12 +61,20 @@ public class ValidatorMain {
     System.out.println("Saving result in " + outputFile.getAbsolutePath());
 
     String sourceIdentifier = Long.toString(System.currentTimeMillis());
-    File workingFolder = new File("validator-dwca-" + sourceIdentifier);
-    workingFolder.mkdir();
+
+    // ensure working folder exists
+    if (!validatorConfig.getWorkingFolder().exists() && !validatorConfig.getWorkingFolder().mkdirs()) {
+      System.out.println("Error, can not create temporary folder in "
+        + validatorConfig.getWorkingFolder().getAbsolutePath());
+      return;
+    }
+
+    File tmpFolder = new File(validatorConfig.getWorkingFolder(), "validator-dwca-" + sourceIdentifier);
+    tmpFolder.mkdir();
 
     if (isURL(sourceFileLocation)) {
       System.out.println("Downloading file from: " + sourceFileLocation);
-      File dFile = new File(workingFolder, workingFolder + ".zip");
+      File dFile = new File(tmpFolder, tmpFolder.getName() + ".zip");
       try {
         downloadFile(new URL(sourceFileLocation), dFile);
         // sourceFileLocation is now the downloaded file
@@ -87,7 +99,7 @@ public class ValidatorMain {
       LOGGER.error("Can't create CSV result accumulator", ioEx);
     }
 
-    FileEvaluator archiveValidator = Evaluators.defaultChain(workingFolder).build();
+    FileEvaluator archiveValidator = Evaluators.defaultChain(tmpFolder).build();
 
     long startTime = System.currentTimeMillis();
     System.out.println("Starting validation ... ");
@@ -99,7 +111,7 @@ public class ValidatorMain {
     resultAccumulator.close();
 
     // cleanup
-    FileUtils.deleteQuietly(workingFolder);
+    FileUtils.deleteQuietly(tmpFolder);
   }
 
   public static void main(String[] args) {

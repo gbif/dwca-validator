@@ -7,6 +7,7 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
+import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 
 import java.io.File;
@@ -55,13 +56,13 @@ public class FileBasedValidationChainLoaderTest {
         fbValidationChainLoader.buildValidationChainFromYamlFile(testFile.getAbsolutePath());
 
       Record testRecord = buildMockRecord("2");
-      chainHead.doEval(testRecord, resultAccumulator);
+      chainHead.doEval(testRecord, EvaluationContext.CORE, resultAccumulator);
 
       assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getValidationResultList(), "2",
-        ArchiveValidatorConfig.getLocalizedString("rule.date.non_ISO", "10-07-2014")));
+        ValidatorConfig.getLocalizedString("rule.date.non_ISO", "10-07-2014")));
 
       assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getValidationResultList(), "2",
-        ArchiveValidatorConfig.getLocalizedString("rule.blank_value")));
+        ValidatorConfig.getLocalizedString("rule.blank_value")));
 
     } catch (URISyntaxException e) {
       e.printStackTrace();

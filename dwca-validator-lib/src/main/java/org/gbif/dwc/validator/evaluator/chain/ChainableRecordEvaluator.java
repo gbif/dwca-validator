@@ -3,6 +3,7 @@ package org.gbif.dwc.validator.evaluator.chain;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator;
+import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
@@ -53,13 +54,13 @@ public class ChainableRecordEvaluator {
    * @param record
    * @param resultAccumulator
    */
-  public void doEval(Record record, ResultAccumulatorIF resultAccumulator) {
-    Optional<ValidationResult> result = recordEvaluator.handleEval(record);
+  public void doEval(Record record, EvaluationContext evaluationContext, ResultAccumulatorIF resultAccumulator) {
+    Optional<ValidationResult> result = recordEvaluator.handleEval(record, evaluationContext);
     if (result.isPresent()) {
       resultAccumulator.accumulate(result.get());
     }
     if (nextElement != null) {
-      nextElement.doEval(record, resultAccumulator);
+      nextElement.doEval(record, evaluationContext, resultAccumulator);
     }
   }
 

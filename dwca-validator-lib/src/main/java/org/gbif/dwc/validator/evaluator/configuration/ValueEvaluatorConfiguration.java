@@ -2,7 +2,6 @@ package org.gbif.dwc.validator.evaluator.configuration;
 
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfigurationKey;
-import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 
 import java.util.HashMap;
@@ -17,27 +16,23 @@ import java.util.Map;
 @RecordEvaluatorConfigurationKey
 public class ValueEvaluatorConfiguration {
 
-  private EvaluationContext evaluatorContext;
+  private String rowTypeRestriction;
   private Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm;
 
-  /**
-   * Default value EvaluationContext.CORE, empty rulesPerTerm
-   */
   public ValueEvaluatorConfiguration() {
-    evaluatorContext = EvaluationContext.CORE;
     rulesPerTerm = new HashMap<ConceptTerm, List<EvaluationRuleIF<String>>>();
   }
 
-  public EvaluationContext getEvaluatorContext() {
-    return evaluatorContext;
+  public String getRowTypeRestriction() {
+    return rowTypeRestriction;
+  }
+
+  public void setRowTypeRestriction(String rowTypeRestriction) {
+    this.rowTypeRestriction = rowTypeRestriction;
   }
 
   public Map<ConceptTerm, List<EvaluationRuleIF<String>>> getRulesPerTerm() {
     return rulesPerTerm;
-  }
-
-  public void setEvaluatorContext(EvaluationContext evaluatorContext) {
-    this.evaluatorContext = evaluatorContext;
   }
 
   public void setRulesPerTerm(Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm) {

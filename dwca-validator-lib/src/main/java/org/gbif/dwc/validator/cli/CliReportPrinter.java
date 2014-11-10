@@ -23,7 +23,7 @@ public class CliReportPrinter {
       System.out.println("The Dwc-A file looks invalid according to current default validation chain:");
       System.out.println("Validation chain output(s):");
       for (ValidationResult vr : resultAccumulator.getValidationResultList()) {
-        System.out.println(vr.getContext() + " : " + vr.getId());
+        System.out.println(vr.getEvaluationContext() + " : " + vr.getId());
         for (ValidationResultElement vre : vr.getResults()) {
           System.out.println("->" + vre.getResult() + "," + vre.getType() + ":" + vre.getExplanation());
         }

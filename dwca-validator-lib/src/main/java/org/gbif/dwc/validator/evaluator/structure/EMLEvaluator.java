@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.evaluator.structure;
 
-import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
+import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
@@ -44,7 +44,7 @@ public class EMLEvaluator {
 
     if (eml == null || !eml.exists()) {
       result.accumulate(new ValidationResult("EML", key, EvaluationContext.STRUCTURE, new ValidationResultElement(
-        StructureValidationType.EML_SCHEMA, Result.ERROR, ArchiveValidatorConfig
+        StructureValidationType.ARCHIVE_STRUCTURE, Result.ERROR, ValidatorConfig
           .getLocalizedString("evaluator.file_not_found"))));
     }
 
@@ -54,19 +54,19 @@ public class EMLEvaluator {
       ValidatorFactory.getGbifValidator().validate(getEmlSource(eml));
     } catch (MalformedURLException e) {
       result.accumulate(new ValidationResult(identifier, key, EvaluationContext.STRUCTURE, new ValidationResultElement(
-        StructureValidationType.EML_SCHEMA, Result.ERROR, ArchiveValidatorConfig.getLocalizedString(
+        StructureValidationType.EML_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", e.getMessage()))));
     } catch (FileNotFoundException e) {
       result.accumulate(new ValidationResult(identifier, key, EvaluationContext.STRUCTURE, new ValidationResultElement(
-        StructureValidationType.EML_SCHEMA, Result.ERROR, ArchiveValidatorConfig
+        StructureValidationType.EML_SCHEMA, Result.ERROR, ValidatorConfig
           .getLocalizedString("evaluator.file_not_found"))));
     } catch (SAXException e) {
       result.accumulate(new ValidationResult(identifier, key, EvaluationContext.STRUCTURE, new ValidationResultElement(
-        StructureValidationType.EML_SCHEMA, Result.ERROR, ArchiveValidatorConfig.getLocalizedString(
+        StructureValidationType.EML_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", e.getMessage()))));
     } catch (IOException e) {
       result.accumulate(new ValidationResult(identifier, key, EvaluationContext.STRUCTURE, new ValidationResultElement(
-        StructureValidationType.EML_SCHEMA, Result.ERROR, ArchiveValidatorConfig.getLocalizedString(
+        StructureValidationType.EML_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", e.getMessage()))));
     }
   }

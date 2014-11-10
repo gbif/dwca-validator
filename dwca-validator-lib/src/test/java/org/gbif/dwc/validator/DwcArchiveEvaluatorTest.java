@@ -44,7 +44,7 @@ public class DwcArchiveEvaluatorTest {
 
     // delete test folder
     try {
-      FileUtils.deleteDirectory(testDwcFolder);
+      FileUtils.forceDelete(testDwcFolder);
     } catch (IOException e) {
       e.printStackTrace();
     }

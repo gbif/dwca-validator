@@ -2,14 +2,17 @@ package org.gbif.dwc.validator.evaluator.chain;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.Evaluators;
+import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.evaluator.IntegrityEvaluators;
 import org.gbif.dwc.validator.evaluator.TermsValidators;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
+import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRule;
+
+import java.io.File;
 
 import org.junit.Test;
 
@@ -32,10 +35,13 @@ public class ChainableRecordEvaluatorTest {
   @Test
   public void testChain() {
 
+    File testFolder = new File(".", "ChainableRecordEvaluatorTest");
+    testFolder.mkdir();
+
     ChainableRecordEvaluator chain =
       Evaluators
         .builder()
-        .with(IntegrityEvaluators.uniqueness())
+        .with(IntegrityEvaluators.coreIdUniqueness(testFolder))
         .with(
           TermsValidators.rule(NumericalValueEvaluationRule.createRule().build(), DwcTerm.decimalLatitude,
             DwcTerm.decimalLongitude)).buildChain();
@@ -47,10 +53,10 @@ public class ChainableRecordEvaluatorTest {
     Record rec3 = buildMockRecord("3", "30", "40");
     Record rec4 = buildMockRecord("3", "30", "40");
 
-    chain.doEval(rec1, resultAccumulator);
-    chain.doEval(rec2, resultAccumulator);
-    chain.doEval(rec3, resultAccumulator);
-    chain.doEval(rec4, resultAccumulator);
+    chain.doEval(rec1, EvaluationContext.CORE, resultAccumulator);
+    chain.doEval(rec2, EvaluationContext.CORE, resultAccumulator);
+    chain.doEval(rec3, EvaluationContext.CORE, resultAccumulator);
+    chain.doEval(rec4, EvaluationContext.CORE, resultAccumulator);
     chain.postIterate(resultAccumulator);
 
     // Fist record should be valid
@@ -64,6 +70,7 @@ public class ChainableRecordEvaluatorTest {
       ContentValidationType.FIELD_UNIQUENESS));
 
     chain.cleanup();
+    testFolder.delete();
   }
 
 }

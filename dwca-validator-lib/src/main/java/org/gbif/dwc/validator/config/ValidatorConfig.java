@@ -1,5 +1,7 @@
 package org.gbif.dwc.validator.config;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -10,17 +12,44 @@ import java.util.ResourceBundle;
  * 
  * @author cgendreau
  */
-public class ArchiveValidatorConfig {
+public class ValidatorConfig {
+
+  private static final ValidatorConfig _instance = new ValidatorConfig();
 
   // TODO load from config file
-  public static final String META_XML_SCHEMA = "http://darwincore.googlecode.com/svn/trunk/text/tdwg_dwc_text.xsd";
+  public static final String META_XML_SCHEMA = "http://rs.tdwg.org/dwc/text/tdwg_dwc_text.xsd";
 
   public static final String ENDLINE = System.getProperty("line.separator");
   public static final String TEXT_FILE_EXT = ".txt";
 
+  public final File workingFolder;
+
   private static final String BUNDLE_NAME = "language_resources";
 
   private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, Locale.ENGLISH);
+
+  public static ValidatorConfig getInstance() {
+    return _instance;
+  }
+
+  private ValidatorConfig() {
+    File _workingFolder = new File(".");
+    try {
+      _workingFolder = new File(new File(".").getCanonicalFile(), "temp");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    workingFolder = _workingFolder;
+  }
+
+  /**
+   * Get the folder to used to save temporary files.
+   * 
+   * @return
+   */
+  public File getWorkingFolder() {
+    return workingFolder;
+  }
 
   /**
    * Get a localized string represented by the provided key.

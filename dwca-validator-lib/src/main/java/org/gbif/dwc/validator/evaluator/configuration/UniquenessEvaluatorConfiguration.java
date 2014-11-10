@@ -14,17 +14,11 @@ import java.io.File;
 @RecordEvaluatorConfigurationKey
 public class UniquenessEvaluatorConfiguration {
 
-  private EvaluationContext evaluatorContext;
+  private EvaluationContext evaluationContextRestriction;
+  private String rowTypeRestriction;
+
   private ConceptTerm term;
   private File workingFolder;
-
-  public EvaluationContext getEvaluatorContext() {
-    return evaluatorContext;
-  }
-
-  public void setEvaluatorContext(EvaluationContext evaluatorContext) {
-    this.evaluatorContext = evaluatorContext;
-  }
 
   public ConceptTerm getTerm() {
     return term;
@@ -40,6 +34,22 @@ public class UniquenessEvaluatorConfiguration {
 
   public void setWorkingFolder(File workingFolder) {
     this.workingFolder = workingFolder;
+  }
+
+  public String getRowTypeRestriction() {
+    return rowTypeRestriction;
+  }
+
+  public void setRowTypeRestriction(String rowTypeRestriction) {
+    this.rowTypeRestriction = rowTypeRestriction;
+  }
+
+  public EvaluationContext getEvaluationContextRestriction() {
+    return evaluationContextRestriction;
+  }
+
+  public void setEvaluationContextRestriction(EvaluationContext evaluationContextRestriction) {
+    this.evaluationContextRestriction = evaluationContextRestriction;
   }
 
 }

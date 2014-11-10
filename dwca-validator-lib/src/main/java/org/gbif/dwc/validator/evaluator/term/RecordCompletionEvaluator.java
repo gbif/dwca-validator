@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.google.common.base.Optional;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * RecordEvaluatorIF implementation to check the completion of a record.
@@ -29,7 +30,7 @@ import com.google.common.base.Optional;
 class RecordCompletionEvaluator implements RecordEvaluator {
 
   private final String key = RecordCompletionEvaluator.class.getAnnotation(RecordEvaluatorKey.class).key();
-  private final EvaluationContext evaluatorContext;
+  private final String rowTypeRestriction;
   private final BlankValueEvaluationRule blankValueEvaluationRule;
   private final List<ConceptTerm> terms;
 
@@ -39,7 +40,7 @@ class RecordCompletionEvaluator implements RecordEvaluator {
    * @param configuration
    */
   RecordCompletionEvaluator(RecordCompletionEvaluatorConfiguration configuration) {
-    this.evaluatorContext = configuration.getEvaluatorContext();
+    this.rowTypeRestriction = configuration.getRowTypeRestriction();
     this.blankValueEvaluationRule = configuration.getBlankValueEvaluationRule();
     this.terms = Collections.unmodifiableList(new ArrayList<ConceptTerm>(configuration.getTerms()));
   }
@@ -53,9 +54,14 @@ class RecordCompletionEvaluator implements RecordEvaluator {
    * Some lines are candidate for abstraction. see ValueEvaluator
    */
   @Override
-  public Optional<ValidationResult> handleEval(Record record) {
+  public Optional<ValidationResult> handleEval(Record record, EvaluationContext evaluationContext) {
     ValidationResult validationResult = null;
     // record.terms().size());
+
+    // if we specified a rowType restriction, check that the record is also of this rowType
+    if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
+      Optional.absent();
+    }
 
     List<ValidationResultElement> elementList = null;
     ValidationResultElement validationResultElement;
@@ -73,11 +79,10 @@ class RecordCompletionEvaluator implements RecordEvaluator {
     }
 
     if (elementList != null && elementList.size() > 0) {
-      validationResult = new ValidationResult(record.id(), key, evaluatorContext, elementList);
+      validationResult = new ValidationResult(record.id(), key, evaluationContext, record.rowType(), elementList);
     }
 
     return Optional.fromNullable(validationResult);
-
   }
 
   @Override

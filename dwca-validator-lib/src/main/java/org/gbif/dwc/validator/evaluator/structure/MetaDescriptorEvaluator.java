@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.evaluator.structure;
 
-import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
+import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
@@ -43,7 +43,7 @@ public class MetaDescriptorEvaluator {
 
     try {
       SchemaFactory factory = SchemaFactory.newInstance(schemaLang);
-      Schema schema = factory.newSchema(new URL(ArchiveValidatorConfig.META_XML_SCHEMA));
+      Schema schema = factory.newSchema(new URL(ValidatorConfig.META_XML_SCHEMA));
       metaValidator = schema.newValidator();
     } catch (MalformedURLException e) {
       e.printStackTrace();
@@ -61,7 +61,7 @@ public class MetaDescriptorEvaluator {
 
     if (metaXML == null || !metaXML.exists()) {
       result.accumulate(new ValidationResult("meta XML", key, EvaluationContext.STRUCTURE, new ValidationResultElement(
-        StructureValidationType.METADATA_SCHEMA, Result.ERROR, ArchiveValidatorConfig
+        StructureValidationType.ARCHIVE_STRUCTURE, Result.ERROR, ValidatorConfig
           .getLocalizedString("evaluator.file_not_found"))));
     }
 
@@ -71,11 +71,11 @@ public class MetaDescriptorEvaluator {
       metaValidator.validate(new StreamSource(metaXML));
     } catch (SAXException saxEx) {
       result.accumulate(new ValidationResult(identifier, key, EvaluationContext.STRUCTURE, new ValidationResultElement(
-        StructureValidationType.METADATA_SCHEMA, Result.ERROR, ArchiveValidatorConfig.getLocalizedString(
+        StructureValidationType.METADATA_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", saxEx.getMessage()))));
     } catch (IOException ioEx) {
       result.accumulate(new ValidationResult(identifier, key, EvaluationContext.STRUCTURE, new ValidationResultElement(
-        StructureValidationType.METADATA_SCHEMA, Result.ERROR, ArchiveValidatorConfig.getLocalizedString(
+        StructureValidationType.METADATA_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", ioEx.getMessage()))));
     }
   }

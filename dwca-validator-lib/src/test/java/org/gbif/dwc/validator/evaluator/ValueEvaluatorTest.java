@@ -8,6 +8,7 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.evaluator.term.ValueEvaluatorBuilder;
+import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule.InvalidCharacterEvaluationRuleBuilder;
@@ -46,7 +47,7 @@ public class ValueEvaluatorTest {
       ValueEvaluatorBuilder.builder()
         .addRule(DwcTerm.scientificName, InvalidCharacterEvaluationRuleBuilder.create().build()).build();
 
-    Optional<ValidationResult> result = valueEvaluator.handleEval(buildMockRecord("1"));
+    Optional<ValidationResult> result = valueEvaluator.handleEval(buildMockRecord("1"), EvaluationContext.CORE);
 
     assertTrue(result.isPresent());
 

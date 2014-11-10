@@ -5,7 +5,7 @@ import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
-import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
+import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
 import org.gbif.dwc.validator.evaluator.structure.EMLEvaluator;
 import org.gbif.dwc.validator.evaluator.structure.MetaDescriptorEvaluator;
@@ -18,8 +18,10 @@ import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +53,7 @@ public class DwcArchiveEvaluator implements FileEvaluator {
   private ValidationResult createCantOpenArchiveValidationResult(File file, String message) {
     return new ValidationResult(file.getName(), "ArchiveStructure", EvaluationContext.STRUCTURE,
       new ValidationResultElement(StructureValidationType.ARCHIVE_STRUCTURE, Result.ERROR,
-        ArchiveValidatorConfig.getLocalizedString("evaluator.structure.archive.open", file.getAbsolutePath(), message)));
+        ValidatorConfig.getLocalizedString("evaluator.structure.archive.open", file.getAbsolutePath(), message)));
   }
 
   public void setWorkingFolder(String workingFolder) {
@@ -73,25 +75,38 @@ public class DwcArchiveEvaluator implements FileEvaluator {
 
       File metaFile = new File(dwcFolder, META_XML_FILE);
       if (metaFile.exists()) {
-        inspectMetaXML(metaFile, resultAccumulator);
+        // inspectMetaXML(metaFile, resultAccumulator);
+        System.out.println("meta.xml validation temporary suspended");
       }
 
       // Inspect the eml, if declared
       if (dwc.getMetadataLocation() != null) {
-        inspectEML(dwc.getMetadataLocationFile(), resultAccumulator);
+        // inspectEML(dwc.getMetadataLocationFile(), resultAccumulator);
+        System.out.println("eml.xml validation temporary suspended");
       }
 
-      // Inspect the core
-      inspectDwcComponent(dwc.getCore(), evaluationChainHead, resultAccumulator);
+      // inspect core
+      inspectDwcComponent(dwc.getCore(), EvaluationContext.CORE, evaluationChainHead, resultAccumulator);
 
-      // TODO extensions
+      // inspect extensions
+      Set<ArchiveFile> extensions = dwc.getExtensions();
+      for (ArchiveFile currExt : extensions) {
+        inspectDwcComponent(currExt, EvaluationContext.EXT, evaluationChainHead, resultAccumulator);
+      }
 
+      evaluationChainHead.cleanup();
     } catch (UnsupportedArchiveException e) {
       LOGGER.error("Can't open archive", e);
       resultAccumulator.accumulate(createCantOpenArchiveValidationResult(dwcaFile, e.getMessage()));
     } catch (IOException e) {
       LOGGER.error("Can't open archive", e);
       resultAccumulator.accumulate(createCantOpenArchiveValidationResult(dwcaFile, e.getMessage()));
+    }
+
+    try {
+      FileUtils.forceDelete(dwcFolder);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
     resultAccumulator.close();
@@ -101,18 +116,17 @@ public class DwcArchiveEvaluator implements FileEvaluator {
    * Inspect DarwinCore component record loop function.
    * 
    * @param dwcaComponent
+   * @param evaluationContext
    * @param evaluatorChain head of the evaluators chain
    * @param resultAccumulator
    */
-  private void inspectDwcComponent(ArchiveFile dwcaComponent, ChainableRecordEvaluator evaluatorChain,
-    ResultAccumulatorIF resultAccumulator) {
+  private void inspectDwcComponent(ArchiveFile dwcaComponent, EvaluationContext evaluationContext,
+    ChainableRecordEvaluator evaluatorChain, ResultAccumulatorIF resultAccumulator) {
     RecordIterator recordIt = RecordIterator.build(dwcaComponent, false);
     while (recordIt.hasNext()) {
-      evaluatorChain.doEval(recordIt.next(), resultAccumulator);
+      evaluatorChain.doEval(recordIt.next(), evaluationContext, resultAccumulator);
     }
     evaluatorChain.postIterate(resultAccumulator);
-
-    evaluatorChain.cleanup();
   }
 
   public void inspectEML(File eml, ResultAccumulatorIF resultAccumulator) {

@@ -18,21 +18,24 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class ValidationResult implements EvaluationResult<ValidationResultElement> {
 
   private final String id;
+  private final EvaluationContext evaluationContext;
+  private final String evaluationContextDetails;
+
   private final String evaluatorKey;
-  private final EvaluationContext context;
   private final List<ValidationResultElement> results;
 
   /**
    * @param id The identifier is relative to the context.
    * @param evaluatorKey key of the validator who generated this entry
-   * @param context
+   * @param evaluationContext
    * @param results
    */
-  public ValidationResult(String id, String evaluatorKey, EvaluationContext context,
-    List<ValidationResultElement> results) {
+  public ValidationResult(String id, String evaluatorKey, EvaluationContext evaluationContext,
+    String evaluationContextDetails, List<ValidationResultElement> results) {
     this.id = id;
     this.evaluatorKey = evaluatorKey;
-    this.context = context;
+    this.evaluationContext = evaluationContext;
+    this.evaluationContextDetails = evaluationContextDetails;
 
     // shouldn't we throw an exception or maybe create an empty list?
     if (results == null) {
@@ -47,16 +50,26 @@ public class ValidationResult implements EvaluationResult<ValidationResultElemen
    * 
    * @param id
    * @param evaluatorKey key of the validator who generated this entry
-   * @param context
+   * @param evaluationContext
    * @param result
    */
-  public ValidationResult(String id, String evaluatorKey, EvaluationContext context, ValidationResultElement result) {
-    this(id, evaluatorKey, context, Arrays.asList(result));
+  public ValidationResult(String id, String evaluatorKey, EvaluationContext evaluationContext,
+    ValidationResultElement result) {
+    this(id, evaluatorKey, evaluationContext, "", Arrays.asList(result));
+  }
+
+  public ValidationResult(String id, String evaluatorKey, EvaluationContext evaluationContext,
+    String evaluationContextDetails, ValidationResultElement result) {
+    this(id, evaluatorKey, evaluationContext, evaluationContextDetails, Arrays.asList(result));
   }
 
   @Override
-  public EvaluationContext getContext() {
-    return context;
+  public EvaluationContext getEvaluationContext() {
+    return evaluationContext;
+  }
+
+  public String getEvaluationContextDetails() {
+    return evaluationContextDetails;
   }
 
   @Override
@@ -71,7 +84,8 @@ public class ValidationResult implements EvaluationResult<ValidationResultElemen
 
   @Override
   public String toString() {
-    return new ToStringBuilder(this).append("id", id).append("evaluatorKey", evaluatorKey).append("context", context)
+    return new ToStringBuilder(this).append("id", id).append("evaluatorKey", evaluatorKey)
+      .append("evaluationContext", evaluationContext).append("evaluationContextDetails", evaluationContextDetails)
       .append("results", results).toString();
   }
 }

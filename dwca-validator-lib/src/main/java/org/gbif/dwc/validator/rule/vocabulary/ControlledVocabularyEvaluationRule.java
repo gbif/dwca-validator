@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.rule.vocabulary;
 
 import org.gbif.dwc.terms.ConceptTerm;
-import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
+import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
@@ -178,7 +178,7 @@ public class ControlledVocabularyEvaluationRule implements EvaluationRuleIF<Stri
 
     if (!vocabularySet.contains(str)) {
       return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.ERROR,
-        ArchiveValidatorConfig.getLocalizedString("rule.controlled_vocabulary", str, term.simpleName()));
+        ValidatorConfig.getLocalizedString("rule.controlled_vocabulary", str, term.simpleName()));
     }
     return ValidationResultElement.PASSED;
   }

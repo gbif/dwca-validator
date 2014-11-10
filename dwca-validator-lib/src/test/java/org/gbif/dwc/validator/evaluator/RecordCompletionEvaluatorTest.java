@@ -5,6 +5,7 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.evaluator.term.RecordCompletionEvaluatorBuilder;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
+import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
@@ -37,10 +38,14 @@ public class RecordCompletionEvaluatorTest {
     RecordEvaluator recordCompletionEvaluator =
       RecordCompletionEvaluatorBuilder.builder().checkTerm(DwcTerm.scientificName).build();
 
-    Optional<ValidationResult> result1 = recordCompletionEvaluator.handleEval(buildMockRecord("1", "1", null));
-    Optional<ValidationResult> result2 = recordCompletionEvaluator.handleEval(buildMockRecord("2", "2", ""));
-    Optional<ValidationResult> result3 = recordCompletionEvaluator.handleEval(buildMockRecord("3", "3"));
-    Optional<ValidationResult> result4 = recordCompletionEvaluator.handleEval(buildMockRecord("4", "4", "a name"));
+    Optional<ValidationResult> result1 =
+      recordCompletionEvaluator.handleEval(buildMockRecord("1", "1", null), EvaluationContext.CORE);
+    Optional<ValidationResult> result2 =
+      recordCompletionEvaluator.handleEval(buildMockRecord("2", "2", ""), EvaluationContext.CORE);
+    Optional<ValidationResult> result3 =
+      recordCompletionEvaluator.handleEval(buildMockRecord("3", "3"), EvaluationContext.CORE);
+    Optional<ValidationResult> result4 =
+      recordCompletionEvaluator.handleEval(buildMockRecord("4", "4", "a name"), EvaluationContext.CORE);
 
     assertTrue(result1.isPresent());
     assertTrue(result2.isPresent());

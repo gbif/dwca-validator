@@ -36,7 +36,7 @@ public class UniquenessEvaluatorTest {
     fieldList.add(scientificNameField);
     fieldList.add(catalogNumberField);
 
-    RecordImpl testRecord = new RecordImpl(idField, fieldList, "rowType", false);
+    RecordImpl testRecord = new RecordImpl(idField, fieldList, DwcTerm.Occurrence.qualifiedName(), false);
     testRecord.setRow(new String[] {id, "gulo\tgulo", catalogNumber});
     return testRecord;
   }
@@ -48,8 +48,8 @@ public class UniquenessEvaluatorTest {
 
     try {
       StatefulRecordEvaluator valueEvaluator = UniquenessEvaluatorBuilder.builder().build();
-      valueEvaluator.handleEval(buildMockRecord("1", "1"));
-      valueEvaluator.handleEval(buildMockRecord("1", "2"));
+      valueEvaluator.handleEval(buildMockRecord("1", "1"), EvaluationContext.CORE);
+      valueEvaluator.handleEval(buildMockRecord("1", "2"), EvaluationContext.CORE);
 
       valueEvaluator.handlePostIterate(resultAccumulator);
       valueEvaluator.close();
@@ -69,9 +69,10 @@ public class UniquenessEvaluatorTest {
 
     try {
       StatefulRecordEvaluator valueEvaluator =
-        UniquenessEvaluatorBuilder.builder().on(DwcTerm.catalogNumber, EvaluationContext.CORE).build();
-      valueEvaluator.handleEval(buildMockRecord("1", "1"));
-      valueEvaluator.handleEval(buildMockRecord("2", "1"));
+        UniquenessEvaluatorBuilder.builder()
+          .on(DwcTerm.catalogNumber, EvaluationContext.CORE, DwcTerm.Occurrence.qualifiedName()).build();
+      valueEvaluator.handleEval(buildMockRecord("1", "1"), EvaluationContext.CORE);
+      valueEvaluator.handleEval(buildMockRecord("2", "1"), EvaluationContext.CORE);
 
       valueEvaluator.handlePostIterate(resultAccumulator);
       valueEvaluator.close();
@@ -91,8 +92,8 @@ public class UniquenessEvaluatorTest {
 
     try {
       StatefulRecordEvaluator valueEvaluator = UniquenessEvaluatorBuilder.builder().build();
-      valueEvaluator.handleEval(buildMockRecord("1", "1"));
-      valueEvaluator.handleEval(buildMockRecord("2", "1"));
+      valueEvaluator.handleEval(buildMockRecord("1", "1"), EvaluationContext.CORE);
+      valueEvaluator.handleEval(buildMockRecord("2", "1"), EvaluationContext.CORE);
 
       valueEvaluator.handlePostIterate(resultAccumulator);
       valueEvaluator.close();

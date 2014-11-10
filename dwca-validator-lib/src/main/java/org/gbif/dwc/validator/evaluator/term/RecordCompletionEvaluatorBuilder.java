@@ -39,7 +39,6 @@ public class RecordCompletionEvaluatorBuilder implements RecordEvaluatorBuilder 
    */
   @Override
   public RecordCompletionEvaluator build() throws NullPointerException, IllegalStateException {
-    Preconditions.checkNotNull(configuration.getEvaluatorContext());
     Preconditions.checkNotNull(configuration.getTerms());
     Preconditions.checkNotNull(configuration.getBlankValueEvaluationRule());
 

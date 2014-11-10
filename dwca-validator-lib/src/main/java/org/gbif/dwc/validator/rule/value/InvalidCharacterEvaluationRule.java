@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.rule.value;
 
-import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
+import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
@@ -140,7 +140,7 @@ public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> 
     if (indexIn > 0) {
       // Remove invalid character from the error message to avoid display issues (e.g. NULL char)
       return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.WARNING,
-        ArchiveValidatorConfig.getLocalizedString("rule.invalid_character", charMatcher.removeFrom(str), indexIn));
+        ValidatorConfig.getLocalizedString("rule.invalid_character", charMatcher.removeFrom(str), indexIn));
     }
     return ValidationResultElement.PASSED;
   }

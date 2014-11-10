@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Builder of UniquenessEvaluator object.
@@ -18,33 +19,56 @@ import com.google.common.base.Preconditions;
  */
 public class UniquenessEvaluatorBuilder implements RecordEvaluatorBuilder {
 
-  private final UniquenessEvaluatorConfiguration configuration = new UniquenessEvaluatorConfiguration();
+  private final UniquenessEvaluatorConfiguration configuration;
 
-  private UniquenessEvaluatorBuilder(EvaluationContext evaluatorContext) {
-    this.configuration.setEvaluatorContext(evaluatorContext);
+  private UniquenessEvaluatorBuilder() {
+    this.configuration = new UniquenessEvaluatorConfiguration();
+    this.configuration.setEvaluationContextRestriction(EvaluationContext.CORE);
+  }
+
+  public UniquenessEvaluatorBuilder(UniquenessEvaluatorConfiguration configuration) {
+    this.configuration = configuration;
   }
 
   /**
-   * Create with default value. Using coreId, ValidationContext.CORE
+   * Create with default value. Using coreId.
    * 
    * @return
    */
   public static UniquenessEvaluatorBuilder builder() {
-    return new UniquenessEvaluatorBuilder(EvaluationContext.CORE);
+    return new UniquenessEvaluatorBuilder();
+  }
+
+  /**
+   * Get a new builder instance using the provided UniquenessEvaluatorConfiguration.
+   * 
+   * @param configuration
+   * @return
+   */
+  public static UniquenessEvaluatorBuilder builder(UniquenessEvaluatorConfiguration configuration) {
+    return new UniquenessEvaluatorBuilder(configuration);
   }
 
   /**
    * Build UniquenessEvaluator object.
    * 
    * @return
-   * @throws NullPointerException
    * @throws IllegalStateException
    * @throws IOException
    */
   @Override
   public UniquenessEvaluator build() throws IllegalStateException {
-    Preconditions.checkNotNull(configuration.getEvaluatorContext());
 
+    Preconditions.checkState(configuration.getEvaluationContextRestriction() != null,
+      "EvaluationContextRestriction must be provided");
+
+    if (configuration.getEvaluationContextRestriction() == EvaluationContext.EXT) {
+      Preconditions.checkState(StringUtils.isNotBlank(configuration.getRowTypeRestriction()),
+        "RowTypeRestriction must be provided for extension");
+      Preconditions.checkState(configuration.getTerm() != null, "A Term must be provided for extension");
+    }
+
+    // maybe working folder should be mandatory?
     if (configuration.getWorkingFolder() != null) {
       Preconditions.checkState(configuration.getWorkingFolder().exists()
         && configuration.getWorkingFolder().isDirectory(), "workingFolder must exist as a directory");
@@ -61,16 +85,28 @@ public class UniquenessEvaluatorBuilder implements RecordEvaluatorBuilder {
   }
 
   /**
-   * Set on which ConceptTerm the evaluation should be made.
-   * Override default values.
+   * Set on which ConceptTerm the evaluation should be made on core file.
    * 
    * @param term
-   * @param evaluatorContext context of the provided term
    * @return
    */
-  public UniquenessEvaluatorBuilder on(ConceptTerm term, EvaluationContext evaluatorContext) {
+  public UniquenessEvaluatorBuilder on(ConceptTerm term) {
     configuration.setTerm(term);
-    configuration.setEvaluatorContext(evaluatorContext);
+    return this;
+  }
+
+  /**
+   * Set on which ConceptTerm and rowType the evaluation should be made on extension.
+   * 
+   * @param term
+   * @param evaluationContext
+   * @param rowType
+   * @return
+   */
+  public UniquenessEvaluatorBuilder on(ConceptTerm term, EvaluationContext evaluationContext, String rowType) {
+    configuration.setTerm(term);
+    configuration.setEvaluationContextRestriction(evaluationContext);
+    configuration.setRowTypeRestriction(rowType);
     return this;
   }
 

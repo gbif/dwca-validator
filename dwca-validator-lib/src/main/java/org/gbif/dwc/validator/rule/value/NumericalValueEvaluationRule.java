@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.rule.value;
 
-import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
+import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.type.UndefinedValidationType;
@@ -127,12 +127,12 @@ public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
 
   private ValidationResultElement createNonNumericalValidationResultElement(String value) {
     return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.WARNING,
-      ArchiveValidatorConfig.getLocalizedString("rule.non_numerical", value));
+      ValidatorConfig.getLocalizedString("rule.non_numerical", value));
   }
 
   private ValidationResultElement createNumericalOutOfBoundsValidationResultElement(String value) {
     return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_BOUNDS, Result.WARNING,
-      ArchiveValidatorConfig.getLocalizedString("rule.numerical_out_of_bounds", value, lowerBound, upperBound));
+      ValidatorConfig.getLocalizedString("rule.numerical_out_of_bounds", value, lowerBound, upperBound));
   }
 
   /**

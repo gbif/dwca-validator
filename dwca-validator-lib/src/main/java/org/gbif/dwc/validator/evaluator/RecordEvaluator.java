@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.evaluator;
 
 import org.gbif.dwc.record.Record;
+import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
@@ -22,9 +23,10 @@ public interface RecordEvaluator {
    * Handle evaluation of a specific Record.
    * 
    * @param record
+   * @param evaluationContext core or extension
    * @return ValidationResult if one is produced otherwise Optional.absent()
    */
-  Optional<ValidationResult> handleEval(Record record);
+  Optional<ValidationResult> handleEval(Record record, EvaluationContext evaluationContext);
 
   /**
    * Called after rows iteration.

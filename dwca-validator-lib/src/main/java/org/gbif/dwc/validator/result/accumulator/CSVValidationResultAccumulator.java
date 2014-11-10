@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.result.accumulator;
 
-import org.gbif.dwc.validator.config.ArchiveValidatorConfig;
+import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
@@ -44,19 +44,20 @@ public class CSVValidationResultAccumulator extends AbstractTresholdResultAccumu
    * Print headers of the CSV file
    */
   private void printHeaders() throws IOException {
-    csvPrinter.printRecord(ArchiveValidatorConfig.getLocalizedString("result.header.id"),
-      ArchiveValidatorConfig.getLocalizedString("result.header.context"),
-      ArchiveValidatorConfig.getLocalizedString("result.header.type"),
-      ArchiveValidatorConfig.getLocalizedString("result.header.result"),
-      ArchiveValidatorConfig.getLocalizedString("result.header.explanation"));
+    csvPrinter.printRecord(ValidatorConfig.getLocalizedString("result.header.id"),
+      ValidatorConfig.getLocalizedString("result.header.context"),
+      ValidatorConfig.getLocalizedString("result.header.context_details"),
+      ValidatorConfig.getLocalizedString("result.header.type"),
+      ValidatorConfig.getLocalizedString("result.header.result"),
+      ValidatorConfig.getLocalizedString("result.header.explanation"));
   }
 
   @Override
   protected void write(ValidationResult currentResult) throws IOException {
     for (ValidationResultElement vre : currentResult.getResults()) {
-      csvPrinter.printRecord(currentResult.getId(), currentResult.getContext(),
-        ArchiveValidatorConfig.getLocalizedString(vre.getType().getDescriptionKey()), vre.getResult(),
-        vre.getExplanation());
+      csvPrinter.printRecord(currentResult.getId(), currentResult.getEvaluationContext(),
+        currentResult.getEvaluationContextDetails(),
+        ValidatorConfig.getLocalizedString(vre.getType().getDescriptionKey()), vre.getResult(), vre.getExplanation());
     }
   }
 

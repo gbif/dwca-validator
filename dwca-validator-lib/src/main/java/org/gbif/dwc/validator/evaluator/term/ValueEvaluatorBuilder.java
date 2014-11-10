@@ -39,7 +39,6 @@ public class ValueEvaluatorBuilder implements RecordEvaluatorBuilder {
     return new ValueEvaluatorBuilder();
   }
 
-
   /**
    * Add a rule for a ConceptTerm value.
    * 
@@ -98,7 +97,6 @@ public class ValueEvaluatorBuilder implements RecordEvaluatorBuilder {
    */
   @Override
   public ValueEvaluator build() throws NullPointerException, IllegalStateException {
-    Preconditions.checkNotNull(configuration.getEvaluatorContext());
     Preconditions.checkNotNull(configuration.getRulesPerTerm());
     Preconditions.checkState(configuration.getRulesPerTerm().size() > 0,
       "The rulesPerTerm must contains at least one element");
