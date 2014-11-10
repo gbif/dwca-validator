@@ -60,7 +60,7 @@ class RecordCompletionEvaluator implements RecordEvaluator {
 
     // if we specified a rowType restriction, check that the record is also of this rowType
     if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
-      Optional.absent();
+      return Optional.absent();
     }
 
     List<ValidationResultElement> elementList = null;

@@ -116,12 +116,12 @@ public class ReferenceUniqueEvaluator implements StatefulRecordEvaluator {
 
     // check that the record is in the right evaluation context
     if (evaluationContext != evaluationContextRestriction) {
-      Optional.absent();
+      return Optional.absent();
     }
 
     // if we specified a rowType restriction, check that the record is also of this rowType
     if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
-      Optional.absent();
+      return Optional.absent();
     }
 
     String value = record.value(term);

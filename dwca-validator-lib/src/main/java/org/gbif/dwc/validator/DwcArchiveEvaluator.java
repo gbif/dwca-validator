@@ -93,6 +93,8 @@ public class DwcArchiveEvaluator implements FileEvaluator {
       for (ArchiveFile currExt : extensions) {
         inspectDwcComponent(currExt, EvaluationContext.EXT, evaluationChainHead, resultAccumulator);
       }
+      // we only call postIterate one, at the end
+      evaluationChainHead.postIterate(resultAccumulator);
 
       evaluationChainHead.cleanup();
     } catch (UnsupportedArchiveException e) {
@@ -126,7 +128,6 @@ public class DwcArchiveEvaluator implements FileEvaluator {
     while (recordIt.hasNext()) {
       evaluatorChain.doEval(recordIt.next(), evaluationContext, resultAccumulator);
     }
-    evaluatorChain.postIterate(resultAccumulator);
   }
 
   public void inspectEML(File eml, ResultAccumulatorIF resultAccumulator) {
