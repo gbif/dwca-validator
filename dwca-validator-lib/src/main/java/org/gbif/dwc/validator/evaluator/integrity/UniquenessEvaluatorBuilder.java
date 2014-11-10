@@ -23,7 +23,6 @@ public class UniquenessEvaluatorBuilder implements RecordEvaluatorBuilder {
 
   private UniquenessEvaluatorBuilder() {
     this.configuration = new UniquenessEvaluatorConfiguration();
-    this.configuration.setEvaluationContextRestriction(EvaluationContext.CORE);
   }
 
   public UniquenessEvaluatorBuilder(UniquenessEvaluatorConfiguration configuration) {
@@ -59,8 +58,10 @@ public class UniquenessEvaluatorBuilder implements RecordEvaluatorBuilder {
   @Override
   public UniquenessEvaluator build() throws IllegalStateException {
 
-    Preconditions.checkState(configuration.getEvaluationContextRestriction() != null,
-      "EvaluationContextRestriction must be provided");
+    // use CORE context as default value
+    if (configuration.getEvaluationContextRestriction() == null) {
+      this.configuration.setEvaluationContextRestriction(EvaluationContext.CORE);
+    }
 
     if (configuration.getEvaluationContextRestriction() == EvaluationContext.EXT) {
       Preconditions.checkState(StringUtils.isNotBlank(configuration.getRowTypeRestriction()),
