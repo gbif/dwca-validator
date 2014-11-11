@@ -6,7 +6,6 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
-import org.gbif.dwc.validator.evaluator.integrity.ReferenceUniqueEvaluatorBuilder;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
@@ -43,14 +42,10 @@ public class ReferenceUniqueEvaluatorTest {
   public void referentialIntegrityEvaluatorCorrectId() {
 
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
-
     try {
-
       StatefulRecordEvaluator referenceEvaluator =
-        ReferenceUniqueEvaluatorBuilder
-          .builder()
-          .termRefersToUnique(DwcTerm.acceptedNameUsageID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName(),
-            DwcTerm.taxonID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName()).build();
+        IntegrityEvaluators.termReferentialIntegrityInCore(null, DwcTerm.acceptedNameUsageID, DwcTerm.taxonID,
+          DwcTerm.Taxon.qualifiedName()).build();
 
       referenceEvaluator.handleEval(buildMockRecord("1", "2b"), EvaluationContext.CORE);
       referenceEvaluator.handleEval(buildMockRecord("2a", "1"), EvaluationContext.CORE);
@@ -69,13 +64,10 @@ public class ReferenceUniqueEvaluatorTest {
   public void referentialIntegrityEvaluatorIncorrectId() {
 
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
-
     try {
       StatefulRecordEvaluator referenceEvaluator =
-        ReferenceUniqueEvaluatorBuilder
-          .builder()
-          .termRefersToUnique(DwcTerm.acceptedNameUsageID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName(),
-            DwcTerm.taxonID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName()).build();
+        IntegrityEvaluators.termReferentialIntegrityInCore(null, DwcTerm.acceptedNameUsageID, DwcTerm.taxonID,
+          DwcTerm.Taxon.qualifiedName()).build();
 
       referenceEvaluator.handleEval(buildMockRecord("1", "4"), EvaluationContext.CORE);
       referenceEvaluator.handleEval(buildMockRecord("2", "1"), EvaluationContext.CORE);
@@ -91,14 +83,13 @@ public class ReferenceUniqueEvaluatorTest {
 
   @Test
   public void referentialIntegrityEvaluatorMultipleCorrectId() {
-    InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
+    InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
     try {
       StatefulRecordEvaluator referenceEvaluator =
-        ReferenceUniqueEvaluatorBuilder
-          .builder()
-          .termRefersToUnique(DwcTerm.acceptedNameUsageID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName(),
-            DwcTerm.taxonID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName()).supportMultipleValues("|").build();
+        IntegrityEvaluators
+          .termReferentialIntegrityInCore(null, DwcTerm.acceptedNameUsageID, DwcTerm.taxonID,
+            DwcTerm.Taxon.qualifiedName()).supportMultipleValues("|").build();
 
       referenceEvaluator.handleEval(buildMockRecord("1", "3|4"), EvaluationContext.CORE);
       referenceEvaluator.handleEval(buildMockRecord("3", ""), EvaluationContext.CORE);
@@ -113,14 +104,13 @@ public class ReferenceUniqueEvaluatorTest {
 
   @Test
   public void referentialIntegrityEvaluatorMultipleIncorrectId() {
-    InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
+    InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
     try {
       StatefulRecordEvaluator referenceEvaluator =
-        ReferenceUniqueEvaluatorBuilder
-          .builder()
-          .termRefersToUnique(DwcTerm.acceptedNameUsageID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName(),
-            DwcTerm.taxonID, EvaluationContext.CORE, DwcTerm.Taxon.qualifiedName()).supportMultipleValues("|").build();
+        IntegrityEvaluators
+          .termReferentialIntegrityInCore(null, DwcTerm.acceptedNameUsageID, DwcTerm.taxonID,
+            DwcTerm.Taxon.qualifiedName()).supportMultipleValues("|").build();
       referenceEvaluator.handleEval(buildMockRecord("1", "3|5"), EvaluationContext.CORE);
       referenceEvaluator.handleEval(buildMockRecord("3", ""), EvaluationContext.CORE);
       referenceEvaluator.handleEval(buildMockRecord("4", ""), EvaluationContext.CORE);

@@ -71,7 +71,8 @@ public class ReferenceUniqueEvaluatorBuilder implements RecordEvaluatorBuilder {
       configuration.setWorkingFolder(new File("."));
     }
 
-    // UniquenessEvaluatorBuilder will validate UniquenessEvaluator pre conditions
+    // UniquenessEvaluatorBuilder will validate UniquenessEvaluator pre conditions.
+    // Always build our own instance to ensure it will not be reused.
     UniquenessEvaluator uniquenessEvaluator;
     if (uniquenessEvaluatorConfiguration == null) {
       // Build uniquenessEvaluator on coreId

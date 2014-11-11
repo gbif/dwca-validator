@@ -235,7 +235,6 @@ class ReferenceUniqueEvaluator implements StatefulRecordEvaluator {
     // use the UniquenessEvaluator sorted values file as reference file
     // this file could contains duplicates and the UniquenessEvaluator is responsible to flag them.
     File referenceFile = uniquenessEvaluator.getSortedValueFile();
-    // ConceptTerm referredTerm = uniquenessEvaluator.getTerm();
 
     try {
       // flush and close all resources
