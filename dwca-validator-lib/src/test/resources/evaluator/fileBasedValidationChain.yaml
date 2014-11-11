@@ -15,10 +15,16 @@ evaluatorBuilders:
    - !recordCompletionEvaluatorConfiguration
      terms:
        - !dwcTerm 'country'
+       
  - !valueEvaluatorBuilder
    - !valueEvaluatorConfiguration
      rulesPerTerm:
        !dwcTerm 'eventDate' : [*isoDateVER]
        !dwcTerm 'scientificName' : [*invalidCharacterVER]
+       
  - !uniquenessEvaluatorBuilder
+   - !uniquenessEvaluatorConfiguration {}
+   
+ - !referenceUniqueEvaluatorBuilder
+   - !referenceUniqueEvaluatorConfiguration {}
    - !uniquenessEvaluatorConfiguration {}

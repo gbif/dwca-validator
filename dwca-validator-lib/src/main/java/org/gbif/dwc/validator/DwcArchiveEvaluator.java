@@ -128,6 +128,11 @@ public class DwcArchiveEvaluator implements FileEvaluator {
    */
   private void inspectDwcComponent(ArchiveFile dwcaComponent, EvaluationContext evaluationContext,
     ChainableRecordEvaluator evaluatorChain, ResultAccumulatorIF resultAccumulator) {
+
+    // In theory, we could optimize the validation if we realize the coreId is a term used in the chain
+    // but it could also be very error prone.
+    // ConceptTerm idTerm = dwcaComponent.getId().getTerm();
+
     RecordIterator recordIt = RecordIterator.build(dwcaComponent, false);
     while (recordIt.hasNext()) {
       evaluatorChain.doEval(recordIt.next(), evaluationContext, resultAccumulator);
