@@ -7,7 +7,6 @@ import org.gbif.dwc.validator.evaluator.configuration.UniquenessEvaluatorConfigu
 import org.gbif.dwc.validator.result.EvaluationContext;
 
 import java.io.File;
-import java.io.IOException;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
@@ -85,17 +84,13 @@ public class ReferenceUniqueEvaluatorBuilder implements RecordEvaluatorBuilder {
       uniquenessEvaluator = UniquenessEvaluatorBuilder.builder(uniquenessEvaluatorConfiguration).build();
     }
 
-    try {
-      return new ReferenceUniqueEvaluator(configuration, uniquenessEvaluator);
-    } catch (IOException e) {
-      // Not sure it's the best solution
-      throw new IllegalStateException(e);
-    }
+    return new ReferenceUniqueEvaluator(configuration, uniquenessEvaluator);
+
   }
 
-  public ReferenceUniqueEvaluatorBuilder termRefersToUnique(ConceptTerm term, EvaluationContext evaluationContextRestriction,
-    String rowTypeRestriction, ConceptTerm referedTerm, EvaluationContext referedEvaluationContextRestriction,
-    String referedRowTypeRestriction) {
+  public ReferenceUniqueEvaluatorBuilder termRefersToUnique(ConceptTerm term,
+    EvaluationContext evaluationContextRestriction, String rowTypeRestriction, ConceptTerm referedTerm,
+    EvaluationContext referedEvaluationContextRestriction, String referedRowTypeRestriction) {
     this.configuration.setTerm(term);
     this.configuration.setEvaluationContextRestriction(evaluationContextRestriction);
     this.configuration.setRowTypeRestriction(rowTypeRestriction);

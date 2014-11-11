@@ -63,13 +63,15 @@ public class DwcArchiveEvaluator implements FileEvaluator {
   @Override
   public void evaluateFile(File dwcaFile, ResultAccumulatorIF resultAccumulator) {
     File dwcFolder = new File(new File(workingFolder), UUID.randomUUID().toString());
-
+    boolean isGeneratedFolder = true;
     try {
       Archive dwc = null;
       if (dwcaFile.isFile()) {
         dwc = ArchiveFactory.openArchive(dwcaFile, dwcFolder);
       } else {
         dwc = ArchiveFactory.openArchive(dwcaFile);
+        // use the already extracted folder, do not delete it.
+        isGeneratedFolder = false;
         dwcFolder = dwcaFile;
       }
 
@@ -105,10 +107,12 @@ public class DwcArchiveEvaluator implements FileEvaluator {
       resultAccumulator.accumulate(createCantOpenArchiveValidationResult(dwcaFile, e.getMessage()));
     }
 
-    try {
-      FileUtils.forceDelete(dwcFolder);
-    } catch (IOException e) {
-      e.printStackTrace();
+    if (isGeneratedFolder) {
+      try {
+        FileUtils.forceDelete(dwcFolder);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
 
     resultAccumulator.close();
