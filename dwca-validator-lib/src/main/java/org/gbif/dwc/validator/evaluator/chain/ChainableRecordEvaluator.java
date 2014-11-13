@@ -15,8 +15,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Wrapper class to allow RecordEvaluatorIF to be chainable.
- * The class is immutable but the RecordEvaluatorIF immutability can not be enforced.
- * Some are, some are not and some are almost immutable.
+ * The class is immutable but the RecordEvaluator immutability can not be enforced.
  * 
  * @author cgendreau
  */
@@ -70,7 +69,9 @@ public class ChainableRecordEvaluator {
    * @param resultAccumulator
    */
   public void postIterate(ResultAccumulatorIF resultAccumulator) {
-    recordEvaluator.handlePostIterate(resultAccumulator);
+    if (recordEvaluator instanceof StatefulRecordEvaluator) {
+      ((StatefulRecordEvaluator) recordEvaluator).handlePostIterate(resultAccumulator);
+    }
     if (nextElement != null) {
       nextElement.postIterate(resultAccumulator);
     }

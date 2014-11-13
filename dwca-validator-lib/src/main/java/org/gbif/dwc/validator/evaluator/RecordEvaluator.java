@@ -2,7 +2,6 @@ package org.gbif.dwc.validator.evaluator;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 import com.google.common.base.Optional;
@@ -28,10 +27,4 @@ public interface RecordEvaluator {
    */
   Optional<ValidationResult> handleEval(Record record, EvaluationContext evaluationContext);
 
-  /**
-   * Called after rows iteration.
-   * 
-   * @param resultAccumulator
-   */
-  void handlePostIterate(ResultAccumulatorIF resultAccumulator);
 }
