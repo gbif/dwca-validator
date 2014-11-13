@@ -7,7 +7,6 @@ import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.evaluator.configuration.RecordCompletionEvaluatorConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 import org.gbif.dwc.validator.rule.value.BlankValueEvaluationRule;
@@ -83,10 +82,5 @@ class RecordCompletionEvaluator implements RecordEvaluator {
     }
 
     return Optional.fromNullable(validationResult);
-  }
-
-  @Override
-  public void handlePostIterate(ResultAccumulatorIF resultAccumulator) {
-    // noop
   }
 }
