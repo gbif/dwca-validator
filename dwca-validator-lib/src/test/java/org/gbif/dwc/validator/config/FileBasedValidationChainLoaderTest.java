@@ -12,6 +12,7 @@ import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +54,13 @@ public class FileBasedValidationChainLoaderTest {
     try {
       File testFile = new File(this.getClass().getResource("/evaluator/fileBasedValidationChain.yaml").toURI());
       FileBasedValidationChainLoader fbValidationChainLoader = new FileBasedValidationChainLoader();
-      ChainableRecordEvaluator chainHead =
-        fbValidationChainLoader.buildValidationChainFromYamlFile(testFile.getAbsolutePath());
+      ChainableRecordEvaluator chainHead = null;
+      try {
+        chainHead = fbValidationChainLoader.buildValidationChainFromYamlFile(testFile);
+      } catch (IOException e) {
+        e.printStackTrace();
+        fail();
+      }
 
       Record testRecord = buildMockRecord("2");
       Record testRecordDeplicate = buildMockRecord("2");
@@ -67,8 +73,11 @@ public class FileBasedValidationChainLoaderTest {
       assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getValidationResultList(), "2",
         ValidatorConfig.getLocalizedString("rule.date.non_ISO", "10-07-2014")));
 
-      assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getValidationResultList(), "2",
-        ValidatorConfig.getLocalizedString("rule.blank_value")));
+      assertTrue(TestEvaluationResultHelper.containsResultMessage(
+        resultAccumulator.getValidationResultList(),
+        "2",
+        ValidatorConfig.getLocalizedString("evaluator.record_completion", DwcTerm.country,
+          ValidatorConfig.getLocalizedString("rule.blank_value"))));
 
       assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "2",
         ContentValidationType.FIELD_UNIQUENESS));

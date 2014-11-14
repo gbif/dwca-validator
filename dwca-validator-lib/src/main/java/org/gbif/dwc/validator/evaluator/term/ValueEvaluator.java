@@ -63,6 +63,7 @@ class ValueEvaluator implements RecordEvaluator {
     // only iterate over terms we have a rule for
     for (ConceptTerm currTerm : rulesPerTerm.keySet()) {
       for (EvaluationRule<String> currRule : rulesPerTerm.get(currTerm)) {
+        // term is not recorded in the error message
         validationResultElement = currRule.evaluate(record.value(currTerm));
         if (validationResultElement.resultIsNotOneOf(Result.SKIPPED, Result.PASSED)) {
           // lazy create the list assuming, in normal case, we should have more valid record

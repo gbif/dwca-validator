@@ -14,7 +14,6 @@ import org.gbif.dwc.validator.rule.annotation.EvaluationRuleConfigurationKey;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -39,6 +38,7 @@ public class FileBasedValidationChainLoader {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FileBasedValidationChainLoader.class);
 
+  private static final String BASE_PACKAGE_TO_SCAN = "org.gbif.dwc.validator";
   private static final String EVALUATOR_BUILDERS_SECTION = "evaluators";
 
   /**
@@ -46,14 +46,15 @@ public class FileBasedValidationChainLoader {
    * 
    * @param configFilePath
    * @return head of the validation chain or null if the chain can not be created
+   * @throws IOException
    */
   @SuppressWarnings("unchecked")
-  public ChainableRecordEvaluator buildValidationChainFromYamlFile(String configFilePath) {
+  public ChainableRecordEvaluator buildValidationChainFromYamlFile(File configFile) throws IOException {
     InputStream ios = null;
     ChainableRecordEvaluator chainHead = null;
 
     try {
-      ios = new FileInputStream(new File(configFilePath));
+      ios = new FileInputStream(configFile);
 
       Yaml yaml = new Yaml(buildYamlContructor());
 
@@ -66,10 +67,8 @@ public class FileBasedValidationChainLoader {
 
       chainHead = Evaluators.buildFromEvaluatorList(recordEvaluatorList);
 
-    } catch (FileNotFoundException e) {
-      LOGGER.error("Cant load file " + configFilePath, e);
-    } catch (IOException e) {
-      LOGGER.error("Cant load file " + configFilePath, e);
+    } catch (IOException ioEx) {
+      throw ioEx;
     } finally {
       IOUtils.closeQuietly(ios);
     }
@@ -86,11 +85,13 @@ public class FileBasedValidationChainLoader {
   private Constructor buildYamlContructor() {
     // Get all annotated EvaluationRuleBuilder implementations
     Set<Class<EvaluationRuleBuilder>> evaluationRuleBuilderClasses =
-      AnnotationLoader.getAnnotatedClasses("", EvaluationRuleBuilderKey.class, EvaluationRuleBuilder.class);
+      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, EvaluationRuleBuilderKey.class,
+        EvaluationRuleBuilder.class);
 
     // Get all annotated EvaluationRuleBuilder implementations
     Set<Class<RecordEvaluatorBuilder>> evaluatorBuilderClasses =
-      AnnotationLoader.getAnnotatedClasses("", RecordEvaluatorBuilderKey.class, RecordEvaluatorBuilder.class);
+      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, RecordEvaluatorBuilderKey.class,
+        RecordEvaluatorBuilder.class);
 
     Constructor yamlConstructor = new ValidatorYamlContructor(evaluationRuleBuilderClasses, evaluatorBuilderClasses);
 
@@ -99,12 +100,12 @@ public class FileBasedValidationChainLoader {
 
     // Register aliases on class name for @EvaluationRuleConfigurationKey
     Set<Class<?>> evaluationRuleConfigurationClasses =
-      AnnotationLoader.getAnnotatedClasses("", EvaluationRuleConfigurationKey.class);
+      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, EvaluationRuleConfigurationKey.class);
     registerAliases(evaluationRuleConfigurationClasses, yamlConstructor);
 
     // Register aliases on class name for RecordEvaluatorConfigurationKey
     Set<Class<?>> evaluatorConfigurationClasses =
-      AnnotationLoader.getAnnotatedClasses("", RecordEvaluatorConfigurationKey.class);
+      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, RecordEvaluatorConfigurationKey.class);
     registerAliases(evaluatorConfigurationClasses, yamlConstructor);
 
     return yamlConstructor;

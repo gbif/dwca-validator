@@ -34,7 +34,6 @@ public class ValidatorYamlContructor extends Constructor {
 
     String tagName;
     for (Class<EvaluationRuleBuilder> currClass : ruleBuilderClassList) {
-
       if (currClass.getAnnotation(EvaluationRuleBuilderKey.class) != null) {
         tagName = "!" + currClass.getAnnotation(EvaluationRuleBuilderKey.class).value();
 

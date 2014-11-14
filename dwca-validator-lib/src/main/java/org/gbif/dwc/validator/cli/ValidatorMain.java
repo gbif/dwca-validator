@@ -2,7 +2,9 @@ package org.gbif.dwc.validator.cli;
 
 import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.FileEvaluator;
+import org.gbif.dwc.validator.config.FileBasedValidationChainLoader;
 import org.gbif.dwc.validator.config.ValidatorConfig;
+import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
 import org.gbif.dwc.validator.result.accumulator.CSVValidationResultAccumulator;
 
 import java.io.File;
@@ -37,6 +39,9 @@ public class ValidatorMain {
     Map<String, String> cliArgs = CliManager.parseCommandLine(args);
     String sourceFileLocation = cliArgs.get(CliManager.CLI_SOURCE);
     String resultFolderLocation = cliArgs.get(CliManager.CLI_OUT);
+    String configurationFile = cliArgs.get(CliManager.CLI_CONFIG);
+
+    String sourceIdentifier = Long.toString(System.currentTimeMillis());
 
     // TODO probably load from configuration file
     ValidatorConfig validatorConfig = ValidatorConfig.getInstance();
@@ -60,8 +65,6 @@ public class ValidatorMain {
     File outputFile = new File(outputFolder.getAbsoluteFile(), System.currentTimeMillis() + ".txt");
     System.out.println("Saving result in " + outputFile.getAbsolutePath());
 
-    String sourceIdentifier = Long.toString(System.currentTimeMillis());
-
     // ensure working folder exists
     if (!validatorConfig.getWorkingFolder().exists() && !validatorConfig.getWorkingFolder().mkdirs()) {
       System.out.println("Error, can not create temporary folder in "
@@ -69,8 +72,19 @@ public class ValidatorMain {
       return;
     }
 
+    // build validation chain
     File tmpFolder = new File(validatorConfig.getWorkingFolder(), "validator-dwca-" + sourceIdentifier);
     tmpFolder.mkdir();
+    FileEvaluator archiveValidator;
+    if (StringUtils.isNotBlank(configurationFile)) {
+      archiveValidator =
+        Evaluators.buildFromValidationChain(tmpFolder, handleConfigurationFile(new File(configurationFile)));
+      if (archiveValidator == null) {
+        return;
+      }
+    } else {
+      archiveValidator = Evaluators.defaultChain(tmpFolder).build();
+    }
 
     if (isURL(sourceFileLocation)) {
       System.out.println("Downloading file from: " + sourceFileLocation);
@@ -98,8 +112,6 @@ public class ValidatorMain {
       System.out.println(ioEx.getMessage());
       LOGGER.error("Can't create CSV result accumulator", ioEx);
     }
-
-    FileEvaluator archiveValidator = Evaluators.defaultChain(tmpFolder).build();
 
     long startTime = System.currentTimeMillis();
     System.out.println("Starting validation ... ");
@@ -157,5 +169,20 @@ public class ValidatorMain {
   private boolean isURL(String source) {
     UrlValidator urlValidator = new UrlValidator(UrlValidator.ALLOW_LOCAL_URLS);
     return urlValidator.isValid(source);
+  }
+
+  private ChainableRecordEvaluator handleConfigurationFile(File configurationFile) {
+    if (!configurationFile.exists()) {
+      LOGGER.error("Can not find the configuration file from " + configurationFile.getAbsolutePath());
+      return null;
+    }
+
+    FileBasedValidationChainLoader fbValidationChainLoader = new FileBasedValidationChainLoader();
+    try {
+      return fbValidationChainLoader.buildValidationChainFromYamlFile(configurationFile);
+    } catch (IOException ioEx) {
+      LOGGER.error("Issue while loading validation chain from configuration file.", ioEx);
+    }
+    return null;
   }
 }

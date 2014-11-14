@@ -114,8 +114,6 @@ public class DwcArchiveEvaluator implements FileEvaluator {
         e.printStackTrace();
       }
     }
-
-    resultAccumulator.close();
   }
 
   /**

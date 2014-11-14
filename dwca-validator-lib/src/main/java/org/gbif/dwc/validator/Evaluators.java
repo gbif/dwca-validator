@@ -59,6 +59,17 @@ public class Evaluators {
   }
 
   /**
+   * Build a FileEvaluator from an existing validation chain.
+   * 
+   * @param tempFolder
+   * @param head
+   * @return
+   */
+  public static FileEvaluator buildFromValidationChain(File tempFolder, ChainableRecordEvaluator head) {
+    return new DwcArchiveEvaluator(head);
+  }
+
+  /**
    * Build a validation chain from a list of RecordEvaluator.
    * 
    * @param evaluatorList
@@ -72,6 +83,7 @@ public class Evaluators {
     }
     return current;
   }
+
 
   /**
    * Private constructor, use Validator.builder()
