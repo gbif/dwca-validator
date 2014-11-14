@@ -14,7 +14,7 @@ import com.google.common.base.Preconditions;
  * 
  * @author cgendreau
  */
-@RecordEvaluatorBuilderKey
+@RecordEvaluatorBuilderKey("recordCompletionEvaluator")
 public class RecordCompletionEvaluatorBuilder implements RecordEvaluatorBuilder {
 
   private final RecordCompletionEvaluatorConfiguration configuration;

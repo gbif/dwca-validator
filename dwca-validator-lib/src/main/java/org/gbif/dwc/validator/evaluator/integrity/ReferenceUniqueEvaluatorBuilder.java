@@ -2,6 +2,8 @@ package org.gbif.dwc.validator.evaluator.integrity;
 
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
+import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
 import org.gbif.dwc.validator.evaluator.configuration.ReferenceUniqueEvaluatorConfiguration;
 import org.gbif.dwc.validator.evaluator.configuration.UniquenessEvaluatorConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
@@ -12,11 +14,12 @@ import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Builder of ReferentialIntegrityEvaluator object.
- * Return ReferentialIntegrityEvaluator is NOT immutable due to file access.
+ * Builder of ReferenceUniqueEvaluator object.
+ * Returned ReferenceUniqueEvaluator is NOT immutable due to file access.
  * 
  * @author cgendreau
  */
+@RecordEvaluatorBuilderKey("referenceUniqueEvaluator")
 public class ReferenceUniqueEvaluatorBuilder implements RecordEvaluatorBuilder {
 
   private final ReferenceUniqueEvaluatorConfiguration configuration;
@@ -49,7 +52,7 @@ public class ReferenceUniqueEvaluatorBuilder implements RecordEvaluatorBuilder {
    * @throws IllegalStateException
    */
   @Override
-  public ReferenceUniqueEvaluator build() throws IllegalStateException {
+  public StatefulRecordEvaluator build() throws IllegalStateException {
 
     // if no 'term' is set the id will be used to test as 'star' records
     if (configuration.getTerm() != null) {
@@ -77,12 +80,12 @@ public class ReferenceUniqueEvaluatorBuilder implements RecordEvaluatorBuilder {
     if (uniquenessEvaluatorConfiguration == null) {
       // Build uniquenessEvaluator on coreId
       uniquenessEvaluator =
-        UniquenessEvaluatorBuilder.builder().workingFolder(configuration.getWorkingFolder()).build();
+        UniquenessEvaluatorBuilder.builder().workingFolder(configuration.getWorkingFolder()).innerBuild();
     } else {
       if (uniquenessEvaluatorConfiguration.getWorkingFolder() == null) {
         uniquenessEvaluatorConfiguration.setWorkingFolder(configuration.getWorkingFolder());
       }
-      uniquenessEvaluator = UniquenessEvaluatorBuilder.builder(uniquenessEvaluatorConfiguration).build();
+      uniquenessEvaluator = UniquenessEvaluatorBuilder.builder(uniquenessEvaluatorConfiguration).innerBuild();
     }
 
     return new ReferenceUniqueEvaluator(configuration, uniquenessEvaluator);

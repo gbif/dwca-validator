@@ -3,6 +3,7 @@ package org.gbif.dwc.validator.evaluator.term;
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
 import org.gbif.dwc.validator.evaluator.configuration.ValueEvaluatorConfiguration;
 import org.gbif.dwc.validator.rule.EvaluationRule;
 
@@ -18,6 +19,7 @@ import com.google.common.base.Preconditions;
  * 
  * @author cgendreau
  */
+@RecordEvaluatorBuilderKey("valueEvaluator")
 public class ValueEvaluatorBuilder implements RecordEvaluatorBuilder {
 
   private final ValueEvaluatorConfiguration configuration;

@@ -2,6 +2,7 @@ package org.gbif.dwc.validator;
 
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.evaluator.IntegrityEvaluators;
+import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.TermsValidators;
 import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
@@ -28,6 +29,11 @@ public class Evaluators {
 
   private final List<RecordEvaluatorBuilder> buildersList;
 
+  /**
+   * Get a new Evaluators instance
+   * 
+   * @return
+   */
   public static Evaluators builder() {
     return new Evaluators();
   }
@@ -50,6 +56,21 @@ public class Evaluators {
         .with(TermsValidators.withinRange(DwcTerm.decimalLongitude, MIN_LONGITUDE, MAX_LONGITUDE))
         .with(IntegrityEvaluators.archiveIdIntegrity(tempFolder));
     return val;
+  }
+
+  /**
+   * Build a validation chain from a list of RecordEvaluator.
+   * 
+   * @param evaluatorList
+   * @return chain head
+   */
+  public static ChainableRecordEvaluator buildFromEvaluatorList(List<RecordEvaluator> evaluatorList) {
+    ChainableRecordEvaluator current = null;
+    // iterate from last element to the first to be able to provide the next ChainableRecordEvaluator
+    for (int i = evaluatorList.size() - 1; i >= 0; i--) {
+      current = new ChainableRecordEvaluator(evaluatorList.get(i), current);
+    }
+    return current;
   }
 
   /**

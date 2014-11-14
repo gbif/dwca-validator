@@ -3,6 +3,7 @@ package org.gbif.dwc.validator.config;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.annotation.AnnotationLoader;
+import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfigurationKey;
@@ -19,6 +20,7 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -37,7 +39,7 @@ public class FileBasedValidationChainLoader {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FileBasedValidationChainLoader.class);
 
-  private static final String EVALUATOR_BUILDERS_SECTION = "evaluatorBuilders";
+  private static final String EVALUATOR_BUILDERS_SECTION = "evaluators";
 
   /**
    * Only works for RecordEvaluator for now.
@@ -58,17 +60,11 @@ public class FileBasedValidationChainLoader {
       // configuration file is organized as sections
       Map<String, Object> conf = (Map<String, Object>) yaml.load(ios);
 
-      Evaluators validator = Evaluators.builder();
-
-      List<RecordEvaluatorBuilder> recordEvaluatorBuilderList =
-        (List<RecordEvaluatorBuilder>) conf.get(EVALUATOR_BUILDERS_SECTION);
-      for (RecordEvaluatorBuilder currRecordEvaluatorBuilder : recordEvaluatorBuilderList) {
-        validator.with(currRecordEvaluatorBuilder);
-      }
+      List<RecordEvaluator> recordEvaluatorList = (List<RecordEvaluator>) conf.get(EVALUATOR_BUILDERS_SECTION);
 
       ios.close();
 
-      chainHead = validator.buildChain();
+      chainHead = Evaluators.buildFromEvaluatorList(recordEvaluatorList);
 
     } catch (FileNotFoundException e) {
       LOGGER.error("Cant load file " + configFilePath, e);
@@ -88,27 +84,28 @@ public class FileBasedValidationChainLoader {
    * @return
    */
   private Constructor buildYamlContructor() {
-    // Get all EvaluationRuleBuilder implementations
-    Map<Class<EvaluationRuleBuilder>, EvaluationRuleBuilderKey> evaluationRuleBuilderClasses =
-      AnnotationLoader.getClassAnnotation("", EvaluationRuleBuilderKey.class, EvaluationRuleBuilder.class);
+    // Get all annotated EvaluationRuleBuilder implementations
+    Set<Class<EvaluationRuleBuilder>> evaluationRuleBuilderClasses =
+      AnnotationLoader.getAnnotatedClasses("", EvaluationRuleBuilderKey.class, EvaluationRuleBuilder.class);
 
-    Constructor yamlConstructor = new ValidatorYamlContructor(evaluationRuleBuilderClasses);
+    // Get all annotated EvaluationRuleBuilder implementations
+    Set<Class<RecordEvaluatorBuilder>> evaluatorBuilderClasses =
+      AnnotationLoader.getAnnotatedClasses("", RecordEvaluatorBuilderKey.class, RecordEvaluatorBuilder.class);
+
+    Constructor yamlConstructor = new ValidatorYamlContructor(evaluationRuleBuilderClasses, evaluatorBuilderClasses);
+
+    // Register an alias for DwcTerm class
     yamlConstructor.addTypeDescription(new TypeDescription(DwcTerm.class, "!dwcTerm"));
 
     // Register aliases on class name for @EvaluationRuleConfigurationKey
-    Map<Class<?>, EvaluationRuleConfigurationKey> evaluationRuleConfigurationClasses =
-      AnnotationLoader.getClassAnnotation("", EvaluationRuleConfigurationKey.class);
-    registerAliases(evaluationRuleConfigurationClasses.keySet(), yamlConstructor);
+    Set<Class<?>> evaluationRuleConfigurationClasses =
+      AnnotationLoader.getAnnotatedClasses("", EvaluationRuleConfigurationKey.class);
+    registerAliases(evaluationRuleConfigurationClasses, yamlConstructor);
 
     // Register aliases on class name for RecordEvaluatorConfigurationKey
-    Map<Class<?>, RecordEvaluatorConfigurationKey> evaluatorConfigurationClasses =
-      AnnotationLoader.getClassAnnotation("", RecordEvaluatorConfigurationKey.class);
-    registerAliases(evaluatorConfigurationClasses.keySet(), yamlConstructor);
-
-    // Register aliases on class name for RecordEvaluatorBuilderKey
-    Map<Class<?>, RecordEvaluatorBuilderKey> evaluatorBuilderClasses =
-      AnnotationLoader.getClassAnnotation("", RecordEvaluatorBuilderKey.class);
-    registerAliases(evaluatorBuilderClasses.keySet(), yamlConstructor);
+    Set<Class<?>> evaluatorConfigurationClasses =
+      AnnotationLoader.getAnnotatedClasses("", RecordEvaluatorConfigurationKey.class);
+    registerAliases(evaluatorConfigurationClasses, yamlConstructor);
 
     return yamlConstructor;
   }

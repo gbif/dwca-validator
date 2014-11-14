@@ -2,6 +2,8 @@ package org.gbif.dwc.validator.evaluator.integrity;
 
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
+import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator;
+import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
 import org.gbif.dwc.validator.evaluator.configuration.UniquenessEvaluatorConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 
@@ -13,10 +15,11 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Builder of UniquenessEvaluator object.
- * Return UniquenessEvaluator is NOT totally immutable due to file access.
+ * Returned UniquenessEvaluator is NOT totally immutable due to file access.
  * 
  * @author cgendreau
  */
+@RecordEvaluatorBuilderKey("uniquenessEvaluator")
 public class UniquenessEvaluatorBuilder implements RecordEvaluatorBuilder {
 
   private final UniquenessEvaluatorConfiguration configuration;
@@ -56,7 +59,15 @@ public class UniquenessEvaluatorBuilder implements RecordEvaluatorBuilder {
    * @throws IOException
    */
   @Override
-  public UniquenessEvaluator build() throws IllegalStateException {
+  public StatefulRecordEvaluator build() throws IllegalStateException {
+    return innerBuild();
+  }
+
+  /**
+   * innerBuild allows same package builders to get the StatefulRecordEvaluator as concrete class.
+   * Mainly used for evaluator composition.
+   */
+  UniquenessEvaluator innerBuild() throws IllegalStateException {
 
     // use CORE context as default value
     if (configuration.getEvaluationContextRestriction() == null) {
