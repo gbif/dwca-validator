@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.rule.value;
 
 import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.EvaluationRule;
 
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class NumericalValueEvaluationRuleTest {
 
-  private void testAlwaysValidNumerical(EvaluationRuleIF<String> rule) {
+  private void testAlwaysValidNumerical(EvaluationRule<String> rule) {
     assertEquals(Result.PASSED, rule.evaluate("1").getResult());
     assertEquals(Result.PASSED, rule.evaluate("1.2").getResult());
     assertEquals(Result.PASSED, rule.evaluate("0.3").getResult());
@@ -25,13 +25,13 @@ public class NumericalValueEvaluationRuleTest {
     assertEquals(Result.SKIPPED, rule.evaluate("").getResult());
   }
 
-  private void testNeverValidNumerical(EvaluationRuleIF<String> rule) {
+  private void testNeverValidNumerical(EvaluationRule<String> rule) {
     assertNotNull(rule.evaluate("1.1.1"));
     assertNotNull(rule.evaluate("0.-9"));
     assertNotNull(rule.evaluate("w"));
   }
 
-  private void testNumericalBounds(EvaluationRuleIF<String> rule, Double lowerBound, Double upperBound) {
+  private void testNumericalBounds(EvaluationRule<String> rule, Double lowerBound, Double upperBound) {
     // should be valid
     assertEquals(Result.PASSED, rule.evaluate(lowerBound.toString()).getResult());
     assertEquals(Result.PASSED, rule.evaluate(upperBound.toString()).getResult());
@@ -45,7 +45,7 @@ public class NumericalValueEvaluationRuleTest {
 
   @Test
   public void evaluate() {
-    EvaluationRuleIF<String> rule = NumericalValueEvaluationRuleBuilder.builder().build();
+    EvaluationRule<String> rule = NumericalValueEvaluationRuleBuilder.builder().build();
 
     testAlwaysValidNumerical(rule);
     testNeverValidNumerical(rule);

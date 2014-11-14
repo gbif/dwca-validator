@@ -3,7 +3,7 @@ package org.gbif.dwc.validator.evaluator;
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.evaluator.term.RecordCompletionEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.term.ValueEvaluatorBuilder;
-import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.EvaluationRule;
 import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRuleBuilder;
 
 import java.util.Arrays;
@@ -23,7 +23,7 @@ public class TermsValidators {
     return bldr;
   }
 
-  public static ValueEvaluatorBuilder rule(EvaluationRuleIF<String> rule, ConceptTerm... terms) {
+  public static ValueEvaluatorBuilder rule(EvaluationRule<String> rule, ConceptTerm... terms) {
     return ValueEvaluatorBuilder.builder().addRule(Arrays.asList(terms), rule);
   }
 

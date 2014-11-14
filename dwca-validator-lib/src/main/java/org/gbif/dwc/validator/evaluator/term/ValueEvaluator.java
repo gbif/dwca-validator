@@ -9,7 +9,7 @@ import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
-import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.EvaluationRule;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,13 +34,13 @@ class ValueEvaluator implements RecordEvaluator {
 
   private final String key = ValueEvaluator.class.getAnnotation(RecordEvaluatorKey.class).key();
   // hold all evaluation rules per ConceptTerm
-  private final Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm;
+  private final Map<ConceptTerm, List<EvaluationRule<String>>> rulesPerTerm;
   private final String rowTypeRestriction;
 
   ValueEvaluator(ValueEvaluatorConfiguration configuration) {
     this.rowTypeRestriction = configuration.getRowTypeRestriction();
     this.rulesPerTerm =
-      Collections.unmodifiableMap(new HashMap<ConceptTerm, List<EvaluationRuleIF<String>>>(configuration
+      Collections.unmodifiableMap(new HashMap<ConceptTerm, List<EvaluationRule<String>>>(configuration
         .getRulesPerTerm()));
   }
 
@@ -62,7 +62,7 @@ class ValueEvaluator implements RecordEvaluator {
 
     // only iterate over terms we have a rule for
     for (ConceptTerm currTerm : rulesPerTerm.keySet()) {
-      for (EvaluationRuleIF<String> currRule : rulesPerTerm.get(currTerm)) {
+      for (EvaluationRule<String> currRule : rulesPerTerm.get(currTerm)) {
         validationResultElement = currRule.evaluate(record.value(currTerm));
         if (validationResultElement.resultIsNotOneOf(Result.SKIPPED, Result.PASSED)) {
           // lazy create the list assuming, in normal case, we should have more valid record

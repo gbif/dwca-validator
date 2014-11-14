@@ -12,6 +12,6 @@ public interface EvaluationRuleBuilder {
    * 
    * @return
    */
-  EvaluationRuleIF<String> build();
+  EvaluationRule<String> build();
 
 }

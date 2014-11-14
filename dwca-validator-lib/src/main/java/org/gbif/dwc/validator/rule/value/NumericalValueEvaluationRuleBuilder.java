@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.rule.value;
 
-import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.EvaluationRule;
 import org.gbif.dwc.validator.rule.configuration.NumericalValueEvaluationRuleConfiguration;
 
 import com.google.common.base.Preconditions;
@@ -53,7 +53,7 @@ public class NumericalValueEvaluationRuleBuilder {
    * @throws NullPointerException if the rule is bounded, the lowerBound and upperBound must not be null
    *         IllegalStateException if the rule is bounded, lower bound must not be greater than upperBound.
    */
-  public EvaluationRuleIF<String> build() {
+  public EvaluationRule<String> build() {
     // Preconditions only if we set bounds
     if (configuration.getLowerBound() != null || configuration.getUpperBound() != null) {
       Preconditions.checkNotNull(configuration.getLowerBound());

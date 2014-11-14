@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.rule.value;
 
 import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.EvaluationRule;
 
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ public class ISODateValueEvaluationRuleTest {
 
   @Test
   public void evaluate() {
-    EvaluationRuleIF<String> rule = ISODateValueEvaluationRuleBuilder.builder().build();
+    EvaluationRule<String> rule = ISODateValueEvaluationRuleBuilder.builder().build();
 
     testAlwaysValidString(rule);
     testNeverValidString(rule);
@@ -28,7 +28,7 @@ public class ISODateValueEvaluationRuleTest {
    */
   @Test
   public void evaluateAllowMissingLeadingZeros() {
-    EvaluationRuleIF<String> rule = ISODateValueEvaluationRuleBuilder.builder().allowMissingLeadingZeros().build();
+    EvaluationRule<String> rule = ISODateValueEvaluationRuleBuilder.builder().allowMissingLeadingZeros().build();
 
     assertEquals(Result.PASSED, rule.evaluate("2014-8-7").getResult());
     assertEquals(Result.PASSED, rule.evaluate("2014-08-7").getResult());
@@ -46,7 +46,7 @@ public class ISODateValueEvaluationRuleTest {
    */
   @Test
   public void evaluateAllowPartialDate() {
-    EvaluationRuleIF<String> rule = ISODateValueEvaluationRuleBuilder.builder().allowPartialDate().build();
+    EvaluationRule<String> rule = ISODateValueEvaluationRuleBuilder.builder().allowPartialDate().build();
 
     assertEquals(Result.PASSED, rule.evaluate("2014").getResult());
     assertEquals(Result.PASSED, rule.evaluate("2014-08").getResult());
@@ -63,7 +63,7 @@ public class ISODateValueEvaluationRuleTest {
    */
   @Test
   public void evaluateAllowPartialDateAndMissingLeadingZeros() {
-    EvaluationRuleIF<String> rule =
+    EvaluationRule<String> rule =
       ISODateValueEvaluationRuleBuilder.builder().allowPartialDate().allowMissingLeadingZeros().build();
 
     assertEquals(Result.PASSED, rule.evaluate("2014").getResult());
@@ -80,7 +80,7 @@ public class ISODateValueEvaluationRuleTest {
    * 
    * @param rule
    */
-  private void testAlwaysValidString(EvaluationRuleIF<String> rule) {
+  private void testAlwaysValidString(EvaluationRule<String> rule) {
     // should be valid
     assertEquals(Result.PASSED, rule.evaluate("20141010").getResult());
     assertEquals(Result.PASSED, rule.evaluate("2014-10-10").getResult());
@@ -94,7 +94,7 @@ public class ISODateValueEvaluationRuleTest {
    * 
    * @param rule
    */
-  private void testNeverValidString(EvaluationRuleIF<String> rule) {
+  private void testNeverValidString(EvaluationRule<String> rule) {
     assertTrue(rule.evaluate("201411").resultIsOneOf(Result.ERROR, Result.WARNING));
     assertTrue(rule.evaluate("21-10-2014").resultIsOneOf(Result.ERROR, Result.WARNING));
 

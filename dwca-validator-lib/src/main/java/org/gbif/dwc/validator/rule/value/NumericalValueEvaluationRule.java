@@ -5,7 +5,7 @@ import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.type.UndefinedValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
-import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.EvaluationRule;
 import org.gbif.dwc.validator.rule.configuration.NumericalValueEvaluationRuleConfiguration;
 
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author cgendreau
  */
-class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
+class NumericalValueEvaluationRule implements EvaluationRule<String> {
 
   private final Number lowerBound;
   private final Number upperBound;

@@ -4,7 +4,7 @@ import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
-import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.EvaluationRule;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author cgendreau
  */
-public class BlankValueEvaluationRule implements EvaluationRuleIF<String> {
+public class BlankValueEvaluationRule implements EvaluationRule<String> {
 
   /**
    * Builder for BlankValueEvaluationRuleBuilder object.

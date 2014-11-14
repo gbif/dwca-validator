@@ -5,7 +5,7 @@ import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.type.UndefinedValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
-import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.EvaluationRule;
 import org.gbif.dwc.validator.rule.configuration.ISODateValueEvaluationRuleConfiguration;
 
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +26,7 @@ import org.threeten.bp.temporal.TemporalAccessor;
  * 
  * @author cgendreau
  */
-class ISODateValueEvaluationRule implements EvaluationRuleIF<String> {
+class ISODateValueEvaluationRule implements EvaluationRule<String> {
 
   private static final DateTimeFormatter ISO8601_BASIC_ISO_DATE = DateTimeFormatter.BASIC_ISO_DATE;
 

@@ -15,20 +15,20 @@
   <class id="2" language="java" name="org.gbif.dwc.validator.evaluator.term.ValueEvaluator" project="dwca-validator-lib" 
     file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/term/ValueEvaluator.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="180" width="572" x="-73" y="223"/>    
+    <position height="180" width="572" x="-76" y="187"/>    
     <display autosize="false" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="3" language="java" name="org.gbif.dwc.validator.rule.EvaluationRuleIF" project="dwca-validator-lib" 
-    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/rule/EvaluationRuleIF.java" binary="false" 
+  <interface id="3" language="java" name="org.gbif.dwc.validator.rule.EvaluationRule" project="dwca-validator-lib" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/rule/EvaluationRule.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="206" y="475"/>    
+    <position height="-1" width="-1" x="212" y="451"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
@@ -47,9 +47,9 @@
     file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/RecordEvaluator.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="209" y="74"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
@@ -64,19 +64,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" 
-    name="org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRule.NumericalValueEvaluationRuleBuilder" 
-    project="dwca-validator-lib" 
-    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/rule/value/NumericalValueEvaluationRule.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="841" y="852"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="8" language="java" name="org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRule" 
+  <class id="7" language="java" name="org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRule" 
     project="dwca-validator-lib" 
     file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/rule/value/NumericalValueEvaluationRule.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -87,7 +75,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="org.gbif.dwc.validator.rule.value.BlankValueEvaluationRule" 
+  <class id="8" language="java" name="org.gbif.dwc.validator.rule.value.BlankValueEvaluationRule" 
     project="dwca-validator-lib" 
     file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/rule/value/BlankValueEvaluationRule.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -98,7 +86,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" 
+  <class id="9" language="java" 
     name="org.gbif.dwc.validator.rule.value.BlankValueEvaluationRule.BlankValueEvaluationRuleBuilder" 
     project="dwca-validator-lib" 
     file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/rule/value/BlankValueEvaluationRule.java" 
@@ -110,7 +98,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="org.gbif.dwc.validator.evaluator.TermsValidators" project="dwca-validator-lib" 
+  <class id="10" language="java" name="org.gbif.dwc.validator.evaluator.TermsValidators" project="dwca-validator-lib" 
     file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/TermsValidators.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="847" y="-54"/>    
@@ -120,7 +108,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="org.gbif.dwc.validator.evaluator.term.ValueEvaluatorBuilder" 
+  <class id="11" language="java" name="org.gbif.dwc.validator.evaluator.term.ValueEvaluatorBuilder" 
     project="dwca-validator-lib" 
     file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/term/ValueEvaluatorBuilder.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -131,7 +119,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="org.gbif.dwc.validator.evaluator.configuration.ValueEvaluatorConfiguration" 
+  <class id="12" language="java" name="org.gbif.dwc.validator.evaluator.configuration.ValueEvaluatorConfiguration" 
     project="dwca-validator-lib" 
     file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/configuration/ValueEvaluatorConfiguration.java" 
     binary="false" corner="BOTTOM_RIGHT">    
@@ -142,65 +130,148 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="14">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="15" name="configuration"/>      
-      <multiplicity id="16" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <nesting id="17">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="7"/>  
-  </nesting>  
+  <interface id="13" language="java" name="org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator" 
+    project="dwca-validator-lib" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/StatefulRecordEvaluator.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-292" y="74"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="14" language="java" name="org.gbif.dwc.validator.evaluator.integrity.UniquenessEvaluator" 
+    project="dwca-validator-lib" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/integrity/UniquenessEvaluator.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-483" y="360"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRuleBuilder" 
+    project="dwca-validator-lib" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/rule/value/NumericalValueEvaluationRuleBuilder.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="837" y="910"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRuleBuilder" 
+    project="dwca-validator-lib" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/rule/value/InvalidCharacterEvaluationRuleBuilder.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="333" y="994"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="org.gbif.dwc.validator.rule.vocabulary.ControlledVocabularyEvaluationRuleBuilder" 
+    project="dwca-validator-lib" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/rule/vocabulary/ControlledVocabularyEvaluationRuleBuilder.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-216" y="1079"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
   <realization id="18">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="3"/>  
-  </realization>  
-  <realization id="19">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="3"/>  
   </realization>  
-  <realization id="20">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="3"/>  
-  </realization>  
-  <association id="21">    
+  <association id="19">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="22" name="recordEvaluator"/>      
-      <multiplicity id="23" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <nesting id="24">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="10"/>  
-  </nesting>  
-  <realization id="25">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="3"/>  
-  </realization>  
-  <realization id="26">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="5"/>  
-  </realization>  
-  <association id="27">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="28" name="nextElement"/>      
-      <multiplicity id="29" minimum="0" maximum="1"/>    
+      <attribute id="20" name="nextElement"/>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <dependency id="30">    
+  <realization id="22">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="5"/>  
+  </realization>  
+  <realization id="23">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <dependency id="24">    
     <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="12"/>  
+    <end type="TARGET" refId="3"/>  
   </dependency>  
-  <dependency id="31">    
+  <association id="25">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="26" name="configuration"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <nesting id="28">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="9"/>  
+  </nesting>  
+  <association id="29">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="30" name="recordEvaluator"/>      
+      <multiplicity id="31" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <generalization id="32">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <dependency id="33">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="34">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="35">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <realization id="36">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <realization id="37">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="13"/>  
+  </realization>  
+  <dependency id="38">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <dependency id="39">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="40">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <realization id="41">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <dependency id="42">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="6"/>  
   </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     accessors="true" visibility="true">    

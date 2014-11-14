@@ -2,7 +2,7 @@ package org.gbif.dwc.validator.rule.vocabulary;
 
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.EvaluationRule;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -33,7 +33,7 @@ public class ControlledVocabularyEvaluationRuleTest {
       fail();
     }
 
-    EvaluationRuleIF<String> rule =
+    EvaluationRule<String> rule =
       ControlledVocabularyEvaluationRuleBuilder.builder().onTerm(DwcTerm.country)
         .useDictionaryAt(testFile.getAbsolutePath()).build();
 
@@ -49,7 +49,7 @@ public class ControlledVocabularyEvaluationRuleTest {
     Set<String> vocabulary = new HashSet<String>();
     vocabulary.add("PreservedSpecimen");
 
-    EvaluationRuleIF<String> rule =
+    EvaluationRule<String> rule =
       ControlledVocabularyEvaluationRuleBuilder.builder().onTerm(DwcTerm.basisOfRecord).useVocabularySet(vocabulary)
         .build();
 

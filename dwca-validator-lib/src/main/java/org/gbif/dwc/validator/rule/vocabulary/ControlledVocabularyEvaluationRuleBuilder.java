@@ -2,7 +2,7 @@ package org.gbif.dwc.validator.rule.vocabulary;
 
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.rule.EvaluationRuleBuilder;
-import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.EvaluationRule;
 import org.gbif.dwc.validator.rule.annotation.EvaluationRuleBuilderKey;
 import org.gbif.dwc.validator.rule.configuration.ControlledVocabularyEvaluationRuleConfiguration;
 
@@ -97,7 +97,7 @@ public class ControlledVocabularyEvaluationRuleBuilder implements EvaluationRule
    * @throws IllegalStateException
    */
   @Override
-  public EvaluationRuleIF<String> build() throws IllegalStateException {
+  public EvaluationRule<String> build() throws IllegalStateException {
     if (configuration.getTerm() == null) {
       throw new IllegalStateException("ControlledVocabularyEvaluationRule must be built on a ConceptTerm.");
     }

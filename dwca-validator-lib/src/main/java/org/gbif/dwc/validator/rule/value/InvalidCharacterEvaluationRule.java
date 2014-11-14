@@ -4,7 +4,7 @@ import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
-import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.EvaluationRule;
 import org.gbif.dwc.validator.rule.configuration.InvalidCharacterEvaluationRuleConfiguration;
 
 import com.google.common.base.CharMatcher;
@@ -16,7 +16,7 @@ import com.google.common.base.CharMatcher;
  * 
  * @author cgendreau
  */
-class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> {
+class InvalidCharacterEvaluationRule implements EvaluationRule<String> {
 
   private final CharMatcher charMatcher;
 

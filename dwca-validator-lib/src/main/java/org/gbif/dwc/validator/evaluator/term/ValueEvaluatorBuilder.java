@@ -1,9 +1,10 @@
 package org.gbif.dwc.validator.evaluator.term;
 
 import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.configuration.ValueEvaluatorConfiguration;
-import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.EvaluationRule;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,14 +47,14 @@ public class ValueEvaluatorBuilder implements RecordEvaluatorBuilder {
    * @param rule
    * @return
    */
-  public ValueEvaluatorBuilder addRule(ConceptTerm term, EvaluationRuleIF<String> rule) {
+  public ValueEvaluatorBuilder addRule(ConceptTerm term, EvaluationRule<String> rule) {
     if (configuration.getRulesPerTerm() == null) {
-      configuration.setRulesPerTerm(new HashMap<ConceptTerm, List<EvaluationRuleIF<String>>>());
+      configuration.setRulesPerTerm(new HashMap<ConceptTerm, List<EvaluationRule<String>>>());
     }
 
-    Map<ConceptTerm, List<EvaluationRuleIF<String>>> rulesPerTerm = configuration.getRulesPerTerm();
+    Map<ConceptTerm, List<EvaluationRule<String>>> rulesPerTerm = configuration.getRulesPerTerm();
     if (rulesPerTerm.get(term) == null) {
-      rulesPerTerm.put(term, new ArrayList<EvaluationRuleIF<String>>());
+      rulesPerTerm.put(term, new ArrayList<EvaluationRule<String>>());
     }
     rulesPerTerm.get(term).add(rule);
 
@@ -67,7 +68,7 @@ public class ValueEvaluatorBuilder implements RecordEvaluatorBuilder {
    * @param rule
    * @return
    */
-  public ValueEvaluatorBuilder addRule(List<ConceptTerm> terms, EvaluationRuleIF<String> rule) {
+  public ValueEvaluatorBuilder addRule(List<ConceptTerm> terms, EvaluationRule<String> rule) {
     for (ConceptTerm currTerm : terms) {
       addRule(currTerm, rule);
     }
@@ -81,8 +82,8 @@ public class ValueEvaluatorBuilder implements RecordEvaluatorBuilder {
    * @param rules
    * @return
    */
-  public ValueEvaluatorBuilder addRules(ConceptTerm term, List<EvaluationRuleIF<String>> rules) {
-    for (EvaluationRuleIF<String> currRule : rules) {
+  public ValueEvaluatorBuilder addRules(ConceptTerm term, List<EvaluationRule<String>> rules) {
+    for (EvaluationRule<String> currRule : rules) {
       addRule(term, currRule);
     }
     return this;
@@ -96,7 +97,7 @@ public class ValueEvaluatorBuilder implements RecordEvaluatorBuilder {
    * @throws IllegalStateException if rulesPerTerm is empty
    */
   @Override
-  public ValueEvaluator build() throws NullPointerException, IllegalStateException {
+  public RecordEvaluator build() throws NullPointerException, IllegalStateException {
     Preconditions.checkNotNull(configuration.getRulesPerTerm());
     Preconditions.checkState(configuration.getRulesPerTerm().size() > 0,
       "The rulesPerTerm must contains at least one element");

@@ -5,7 +5,7 @@ import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
-import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.EvaluationRule;
 import org.gbif.dwc.validator.rule.configuration.ControlledVocabularyEvaluationRuleConfiguration;
 
 import java.util.Collections;
@@ -20,7 +20,7 @@ import java.util.Set;
  * 
  * @author cgendreau
  */
-class ControlledVocabularyEvaluationRule implements EvaluationRuleIF<String> {
+class ControlledVocabularyEvaluationRule implements EvaluationRule<String> {
 
   private final ConceptTerm term;
   private final Set<String> vocabularySet;

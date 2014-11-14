@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.evaluator.term;
 
 import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
 import org.gbif.dwc.validator.evaluator.configuration.RecordCompletionEvaluatorConfiguration;
@@ -38,7 +39,7 @@ public class RecordCompletionEvaluatorBuilder implements RecordEvaluatorBuilder 
    * @throws IllegalStateException if no terms were specified
    */
   @Override
-  public RecordCompletionEvaluator build() throws NullPointerException, IllegalStateException {
+  public RecordEvaluator build() throws NullPointerException, IllegalStateException {
     Preconditions.checkNotNull(configuration.getTerms());
     Preconditions.checkNotNull(configuration.getBlankValueEvaluationRule());
 
