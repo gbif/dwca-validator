@@ -5,7 +5,7 @@ import org.gbif.dwc.validator.evaluator.IntegrityEvaluators;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.TermsValidators;
 import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
-import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule.InvalidCharacterEvaluationRuleBuilder;
+import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRuleBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class Evaluators {
   public static Evaluators defaultChain(File tempFolder) {
     Evaluators val =
       builder()
-        .with(TermsValidators.rule(InvalidCharacterEvaluationRuleBuilder.create().build(), DwcTerm.scientificName))
+        .with(TermsValidators.rule(InvalidCharacterEvaluationRuleBuilder.builder().build(), DwcTerm.scientificName))
         .with(TermsValidators.withinRange(DwcTerm.decimalLatitude, MIN_LATITUDE, MAX_LATITUDE))
         .with(TermsValidators.withinRange(DwcTerm.decimalLongitude, MIN_LONGITUDE, MAX_LONGITUDE))
         .with(IntegrityEvaluators.archiveIdIntegrity(tempFolder));

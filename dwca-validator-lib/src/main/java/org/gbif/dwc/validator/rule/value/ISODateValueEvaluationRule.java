@@ -6,6 +6,7 @@ import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.type.UndefinedValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.configuration.ISODateValueEvaluationRuleConfiguration;
 
 import org.apache.commons.lang3.StringUtils;
 import org.threeten.bp.DateTimeException;
@@ -24,83 +25,7 @@ import org.threeten.bp.temporal.TemporalAccessor;
  * 
  * @author cgendreau
  */
-public class ISODateValueEvaluationRule implements EvaluationRuleIF<String> {
-
-  /**
-   * Container object holding ISODateValueEvaluationRule configurations.
-   * 
-   * @author cgendreau
-   */
-  public static class Configuration {
-
-    private boolean allowPartialDate = false;
-    private boolean allowMissingLeadingZeros = false;
-
-    public boolean isAllowMissingLeadingZeros() {
-      return allowMissingLeadingZeros;
-    }
-
-    public boolean isAllowPartialDate() {
-      return allowPartialDate;
-    }
-
-    public void setAllowMissingLeadingZeros(boolean allowMissingLeadingZeros) {
-      this.allowMissingLeadingZeros = allowMissingLeadingZeros;
-    }
-
-    public void setAllowPartialDate(boolean allowPartialDate) {
-      this.allowPartialDate = allowPartialDate;
-    }
-  }
-
-  /**
-   * Builder used to customized, if needed, the ISODateValueEvaluationRule.
-   * 
-   * @author cgendreau
-   */
-  public static class ISODateValueEvaluationRuleBuilder {
-
-    private final Configuration configuration = new Configuration();
-
-    /**
-     * Creates a default ISODateValueEvaluationRuleBuilder.
-     * 
-     * @return
-     */
-    public static ISODateValueEvaluationRuleBuilder create() {
-      return new ISODateValueEvaluationRuleBuilder();
-    }
-
-    /**
-     * Allow ISO dates with no leading zeros(e.g. 2014-9-4).
-     * 
-     * @return
-     */
-    public ISODateValueEvaluationRuleBuilder allowMissingLeadingZeros() {
-      configuration.setAllowMissingLeadingZeros(true);
-      return this;
-    }
-
-    /**
-     * Allow partial ISO dates (e.g. 2014 or 2014-08).
-     * 
-     * @return
-     */
-    public ISODateValueEvaluationRuleBuilder allowPartialDate() {
-      configuration.setAllowPartialDate(true);
-      return this;
-    }
-
-    /**
-     * Build an immutable ISODateValueEvaluationRule instance
-     * 
-     * @return immutable ISODateValueEvaluationRule
-     */
-    public ISODateValueEvaluationRule build() {
-      return new ISODateValueEvaluationRule(configuration);
-    }
-
-  }
+class ISODateValueEvaluationRule implements EvaluationRuleIF<String> {
 
   private static final DateTimeFormatter ISO8601_BASIC_ISO_DATE = DateTimeFormatter.BASIC_ISO_DATE;
 
@@ -127,10 +52,10 @@ public class ISODateValueEvaluationRule implements EvaluationRuleIF<String> {
   private final DateTimeFormatter activeCompleteDateFormatter;
   private final DateTimeFormatter activePartialDateFormatter;
 
-  public ISODateValueEvaluationRule(Configuration configuration) {
-    this.allowPartialDate = configuration.allowPartialDate;
+  ISODateValueEvaluationRule(ISODateValueEvaluationRuleConfiguration configuration) {
+    this.allowPartialDate = configuration.isAllowPartialDate();
 
-    if (configuration.allowMissingLeadingZeros) {
+    if (configuration.isAllowMissingLeadingZeros()) {
       activeCompleteDateFormatter = ISO8601_ISO_DATE_ALLOW_NO_LZ;
       activePartialDateFormatter = ISO8601_PARTIAL_DATE_ALLOW_NO_LZ;
     } else {

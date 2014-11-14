@@ -2,7 +2,6 @@ package org.gbif.dwc.validator.rule.vocabulary;
 
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.rule.vocabulary.ControlledVocabularyEvaluationRule.ControlledVocabularyEvaluationRuleBuilder;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -34,7 +33,7 @@ public class ControlledVocabularyEvaluationRuleTest {
     }
 
     ControlledVocabularyEvaluationRule rule =
-      ControlledVocabularyEvaluationRuleBuilder.create().onTerm(DwcTerm.country)
+      ControlledVocabularyEvaluationRuleBuilder.builder().onTerm(DwcTerm.country)
         .useDictionaryAt(testFile.getAbsolutePath()).build();
 
     assertEquals(Result.PASSED, rule.evaluate("Spain").getResult());
@@ -50,7 +49,7 @@ public class ControlledVocabularyEvaluationRuleTest {
     vocabulary.add("PreservedSpecimen");
 
     ControlledVocabularyEvaluationRule rule =
-      ControlledVocabularyEvaluationRuleBuilder.create().onTerm(DwcTerm.basisOfRecord).useVocabularySet(vocabulary)
+      ControlledVocabularyEvaluationRuleBuilder.builder().onTerm(DwcTerm.basisOfRecord).useVocabularySet(vocabulary)
         .build();
 
     assertEquals(Result.PASSED, rule.evaluate("PreservedSpecimen").getResult());
@@ -61,7 +60,7 @@ public class ControlledVocabularyEvaluationRuleTest {
 
   @Test(expected = IllegalStateException.class)
   public void testBuilderBehavior() {
-    ControlledVocabularyEvaluationRuleBuilder.create().onTerm(DwcTerm.basisOfRecord).build();
+    ControlledVocabularyEvaluationRuleBuilder.builder().onTerm(DwcTerm.basisOfRecord).build();
   }
 
 }

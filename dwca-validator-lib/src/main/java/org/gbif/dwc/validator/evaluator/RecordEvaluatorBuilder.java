@@ -5,7 +5,6 @@ import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
 
 /**
  * Interface defining a RecordEvaluator builder.
- * Builders are defined as inner class in RecordEvaluatorIF implementations.
  * 
  * @author cgendreau
  */

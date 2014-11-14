@@ -1,7 +1,6 @@
 package org.gbif.dwc.validator.rule.value;
 
 import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.rule.value.ISODateValueEvaluationRule.ISODateValueEvaluationRuleBuilder;
 
 import org.junit.Test;
 
@@ -17,7 +16,7 @@ public class ISODateValueEvaluationRuleTest {
 
   @Test
   public void evaluate() {
-    ISODateValueEvaluationRule rule = ISODateValueEvaluationRuleBuilder.create().build();
+    ISODateValueEvaluationRule rule = ISODateValueEvaluationRuleBuilder.builder().build();
 
     testAlwaysValidString(rule);
     testNeverValidString(rule);
@@ -28,7 +27,7 @@ public class ISODateValueEvaluationRuleTest {
    */
   @Test
   public void evaluateAllowMissingLeadingZeros() {
-    ISODateValueEvaluationRule rule = ISODateValueEvaluationRuleBuilder.create().allowMissingLeadingZeros().build();
+    ISODateValueEvaluationRule rule = ISODateValueEvaluationRuleBuilder.builder().allowMissingLeadingZeros().build();
 
     assertEquals(Result.PASSED, rule.evaluate("2014-8-7").getResult());
     assertEquals(Result.PASSED, rule.evaluate("2014-08-7").getResult());
@@ -46,7 +45,7 @@ public class ISODateValueEvaluationRuleTest {
    */
   @Test
   public void evaluateAllowPartialDate() {
-    ISODateValueEvaluationRule rule = ISODateValueEvaluationRuleBuilder.create().allowPartialDate().build();
+    ISODateValueEvaluationRule rule = ISODateValueEvaluationRuleBuilder.builder().allowPartialDate().build();
 
     assertEquals(Result.PASSED, rule.evaluate("2014").getResult());
     assertEquals(Result.PASSED, rule.evaluate("2014-08").getResult());
@@ -64,7 +63,7 @@ public class ISODateValueEvaluationRuleTest {
   @Test
   public void evaluateAllowPartialDateAndMissingLeadingZeros() {
     ISODateValueEvaluationRule rule =
-      ISODateValueEvaluationRuleBuilder.create().allowPartialDate().allowMissingLeadingZeros().build();
+      ISODateValueEvaluationRuleBuilder.builder().allowPartialDate().allowMissingLeadingZeros().build();
 
     assertEquals(Result.PASSED, rule.evaluate("2014").getResult());
     assertEquals(Result.PASSED, rule.evaluate("2014-08").getResult());

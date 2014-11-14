@@ -6,6 +6,7 @@ import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.type.UndefinedValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
+import org.gbif.dwc.validator.rule.configuration.NumericalValueEvaluationRuleConfiguration;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
@@ -20,33 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
 
   /**
-   * Container object holding NumericalValueEvaluationRule configurations.
-   * 
-   * @author cgendreau
-   */
-  public static class Configuration {
-
-    private Number lowerBound;
-    private Number upperBound;
-
-    public Number getLowerBound() {
-      return lowerBound;
-    }
-
-    public Number getUpperBound() {
-      return upperBound;
-    }
-
-    public void setLowerBound(Number lowerBound) {
-      this.lowerBound = lowerBound;
-    }
-
-    public void setUpperBound(Number upperBound) {
-      this.upperBound = upperBound;
-    }
-  }
-
-  /**
    * Builder used to customized, if needed, the NumericalValueEvaluationRule.
    * Also ensure usage of immutable object.
    * 
@@ -54,10 +28,10 @@ public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
    */
   public static class NumericalValueEvaluationRuleBuilder {
 
-    private final Configuration configuration;
+    private final NumericalValueEvaluationRuleConfiguration configuration;
 
     private NumericalValueEvaluationRuleBuilder() {
-      configuration = new Configuration();
+      configuration = new NumericalValueEvaluationRuleConfiguration();
     }
 
     /**
@@ -109,7 +83,7 @@ public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
    * @param minBound lower bound or null
    * @param maxBound upper bound or null
    */
-  private NumericalValueEvaluationRule(Configuration configuration) {
+  private NumericalValueEvaluationRule(NumericalValueEvaluationRuleConfiguration configuration) {
     this.lowerBound = configuration.getLowerBound();
     this.upperBound = configuration.getUpperBound();
   }

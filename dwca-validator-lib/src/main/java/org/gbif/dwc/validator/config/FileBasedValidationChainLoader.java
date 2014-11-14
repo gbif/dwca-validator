@@ -7,6 +7,9 @@ import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfigurationKey;
 import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
+import org.gbif.dwc.validator.rule.EvaluationRuleBuilder;
+import org.gbif.dwc.validator.rule.annotation.EvaluationRuleBuilderKey;
+import org.gbif.dwc.validator.rule.annotation.EvaluationRuleConfigurationKey;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -85,13 +88,24 @@ public class FileBasedValidationChainLoader {
    * @return
    */
   private Constructor buildYamlContructor() {
-    Constructor yamlConstructor = new Constructor();
+    // Get all EvaluationRuleBuilder implementations
+    Map<Class<EvaluationRuleBuilder>, EvaluationRuleBuilderKey> evaluationRuleBuilderClasses =
+      AnnotationLoader.getClassAnnotation("", EvaluationRuleBuilderKey.class, EvaluationRuleBuilder.class);
+
+    Constructor yamlConstructor = new ValidatorYamlContructor(evaluationRuleBuilderClasses);
     yamlConstructor.addTypeDescription(new TypeDescription(DwcTerm.class, "!dwcTerm"));
 
+    // Register aliases on class name for @EvaluationRuleConfigurationKey
+    Map<Class<?>, EvaluationRuleConfigurationKey> evaluationRuleConfigurationClasses =
+      AnnotationLoader.getClassAnnotation("", EvaluationRuleConfigurationKey.class);
+    registerAliases(evaluationRuleConfigurationClasses.keySet(), yamlConstructor);
+
+    // Register aliases on class name for RecordEvaluatorConfigurationKey
     Map<Class<?>, RecordEvaluatorConfigurationKey> evaluatorConfigurationClasses =
       AnnotationLoader.getClassAnnotation("", RecordEvaluatorConfigurationKey.class);
     registerAliases(evaluatorConfigurationClasses.keySet(), yamlConstructor);
 
+    // Register aliases on class name for RecordEvaluatorBuilderKey
     Map<Class<?>, RecordEvaluatorBuilderKey> evaluatorBuilderClasses =
       AnnotationLoader.getClassAnnotation("", RecordEvaluatorBuilderKey.class);
     registerAliases(evaluatorBuilderClasses.keySet(), yamlConstructor);

@@ -1,14 +1,20 @@
 # linked to FileBasedValidationChainLoaderTest test class
 --- 
 rules:
- - !!org.gbif.dwc.validator.rule.value.ISODateValueEvaluationRule  &isoDateVER
-   - !!org.gbif.dwc.validator.rule.value.ISODateValueEvaluationRule$Configuration
+ - !ISODateValueEvaluationRule  &isoDateVER
+   - !iSODateValueEvaluationRuleConfiguration
      allowPartialDate			: false
      allowMissingLeadingZeros	: false
- - !!org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule &invalidCharacterVER
-   - !!org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRule$Configuration
+     
+ - !invalidCharacterEvaluationRule &invalidCharacterVER
+   - !invalidCharacterEvaluationRuleConfiguration
      allowFormattingWhiteSpace	: false
      rejectReplacementChar		: true
+     
+ - !controlledVocabularyEvaluationRule
+   - !controlledVocabularyEvaluationRuleConfiguration
+     term						: !dwcTerm 'country'
+     dictionaryPath				: 'src/test/resources/dictionary/european_union_country.txt'
 
 evaluatorBuilders:
  - !recordCompletionEvaluatorBuilder

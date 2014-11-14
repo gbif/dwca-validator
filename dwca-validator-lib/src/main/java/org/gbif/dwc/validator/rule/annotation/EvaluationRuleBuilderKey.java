@@ -14,4 +14,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface EvaluationRuleBuilderKey {
 
+  /**
+   * @return the key to use to uniquely identify a rule evaluation builder
+   */
+  String value();
 }
