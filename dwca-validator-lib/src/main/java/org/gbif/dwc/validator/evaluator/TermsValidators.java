@@ -4,7 +4,7 @@ import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.evaluator.term.RecordCompletionEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.term.ValueEvaluatorBuilder;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
-import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRule;
+import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRuleBuilder;
 
 import java.util.Arrays;
 
@@ -27,9 +27,18 @@ public class TermsValidators {
     return ValueEvaluatorBuilder.builder().addRule(Arrays.asList(terms), rule);
   }
 
+  /**
+   * Get a ValueEvaluatorBuilder configured to build an Evaluator that ensures the value
+   * of the provided term is numerical and inside to provided bounds.
+   * 
+   * @param term
+   * @param lowerBound
+   * @param upperBound
+   * @return
+   */
   public static ValueEvaluatorBuilder withinRange(ConceptTerm term, Number lowerBound, Number upperBound) {
     return ValueEvaluatorBuilder.builder().addRule(term,
-      NumericalValueEvaluationRule.createRule().boundedBy(lowerBound, upperBound).build());
+      NumericalValueEvaluationRuleBuilder.builder().boundedBy(lowerBound, upperBound).build());
   }
 
 }

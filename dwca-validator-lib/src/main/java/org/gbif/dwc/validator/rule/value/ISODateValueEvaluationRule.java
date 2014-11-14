@@ -22,6 +22,7 @@ import org.threeten.bp.temporal.TemporalAccessor;
 /**
  * Rule used to ensure a String represents a date according to the ISO 8601 standard.
  * It is possible to configure the rule to accept slight differences in notation.
+ * ISODateValueEvaluationRule objects are immutable.
  * 
  * @author cgendreau
  */

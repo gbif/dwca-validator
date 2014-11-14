@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.rule.value;
 
 import org.gbif.dwc.validator.rule.EvaluationRuleBuilder;
+import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 import org.gbif.dwc.validator.rule.annotation.EvaluationRuleBuilderKey;
 import org.gbif.dwc.validator.rule.configuration.InvalidCharacterEvaluationRuleConfiguration;
 
@@ -31,7 +32,10 @@ public class InvalidCharacterEvaluationRuleBuilder implements EvaluationRuleBuil
     return new InvalidCharacterEvaluationRuleBuilder();
   }
 
-  public InvalidCharacterEvaluationRuleBuilder() {
+  /**
+   * Private constructor, use builder() method.
+   */
+  private InvalidCharacterEvaluationRuleBuilder() {
     this.configuration = new InvalidCharacterEvaluationRuleConfiguration();
   }
 
@@ -85,7 +89,7 @@ public class InvalidCharacterEvaluationRuleBuilder implements EvaluationRuleBuil
    * @return immutable InvalidCharacterEvaluationRule
    */
   @Override
-  public InvalidCharacterEvaluationRule build() {
+  public EvaluationRuleIF<String> build() {
     configuration.setCharMatcher(toCharMatcher());
     return new InvalidCharacterEvaluationRule(configuration);
   }

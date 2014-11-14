@@ -2,6 +2,7 @@ package org.gbif.dwc.validator.rule.vocabulary;
 
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.rule.EvaluationRuleBuilder;
+import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 import org.gbif.dwc.validator.rule.annotation.EvaluationRuleBuilderKey;
 import org.gbif.dwc.validator.rule.configuration.ControlledVocabularyEvaluationRuleConfiguration;
 
@@ -27,7 +28,7 @@ public class ControlledVocabularyEvaluationRuleBuilder implements EvaluationRule
   private final ControlledVocabularyEvaluationRuleConfiguration configuration;
 
   /**
-   * Private constructor, use create() method.
+   * Private constructor, use builder() method.
    */
   private ControlledVocabularyEvaluationRuleBuilder() {
     configuration = new ControlledVocabularyEvaluationRuleConfiguration();
@@ -62,38 +63,6 @@ public class ControlledVocabularyEvaluationRuleBuilder implements EvaluationRule
     return null;
   }
 
-  /**
-   * Build an immutable ControlledVocabularyEvaluationRule instance
-   * 
-   * @return immutable ControlledVocabularyEvaluationRule
-   * @throws IllegalStateException
-   */
-  @Override
-  public ControlledVocabularyEvaluationRule build() throws IllegalStateException {
-    if (configuration.getTerm() == null) {
-      throw new IllegalStateException("ControlledVocabularyEvaluationRule must be built on a ConceptTerm.");
-    }
-    boolean vocabularySetProvided =
-      (configuration.getVocabularySet() != null && !configuration.getVocabularySet().isEmpty());
-    boolean dictionaryPathProvided = StringUtils.isNotBlank(configuration.getDictionaryPath());
-
-    if (vocabularySetProvided == dictionaryPathProvided) {
-      throw new IllegalStateException(
-        "ControlledVocabularyEvaluationRule must be built on at least one vocabulary entry or a dictionnary file.");
-    }
-
-    // read dictionary
-    if (dictionaryPathProvided) {
-      try {
-        configuration.setVocabularySet(toVocabularySet());
-      } catch (IOException ioEx) {
-        throw new IllegalStateException("Can't read dictionary file at " + configuration.getDictionaryPath(), ioEx);
-      }
-    }
-
-    return new ControlledVocabularyEvaluationRule(configuration);
-  }
-
   public ControlledVocabularyEvaluationRuleBuilder onTerm(ConceptTerm term) {
     configuration.setTerm(term);
     return this;
@@ -119,5 +88,37 @@ public class ControlledVocabularyEvaluationRuleBuilder implements EvaluationRule
   public ControlledVocabularyEvaluationRuleBuilder useVocabularySet(Set<String> vocabularySet) {
     configuration.setVocabularySet(vocabularySet);
     return this;
+  }
+
+  /**
+   * Build an immutable ControlledVocabularyEvaluationRule instance
+   * 
+   * @return immutable ControlledVocabularyEvaluationRule
+   * @throws IllegalStateException
+   */
+  @Override
+  public EvaluationRuleIF<String> build() throws IllegalStateException {
+    if (configuration.getTerm() == null) {
+      throw new IllegalStateException("ControlledVocabularyEvaluationRule must be built on a ConceptTerm.");
+    }
+    boolean vocabularySetProvided =
+      (configuration.getVocabularySet() != null && !configuration.getVocabularySet().isEmpty());
+    boolean dictionaryPathProvided = StringUtils.isNotBlank(configuration.getDictionaryPath());
+
+    if (vocabularySetProvided == dictionaryPathProvided) {
+      throw new IllegalStateException(
+        "ControlledVocabularyEvaluationRule must be built on at least one vocabulary entry or a dictionnary file.");
+    }
+
+    // read dictionary
+    if (dictionaryPathProvided) {
+      try {
+        configuration.setVocabularySet(toVocabularySet());
+      } catch (IOException ioEx) {
+        throw new IllegalStateException("Can't read dictionary file at " + configuration.getDictionaryPath(), ioEx);
+      }
+    }
+
+    return new ControlledVocabularyEvaluationRule(configuration);
   }
 }

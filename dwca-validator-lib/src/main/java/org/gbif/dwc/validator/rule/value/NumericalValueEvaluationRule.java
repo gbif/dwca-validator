@@ -8,71 +8,17 @@ import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 import org.gbif.dwc.validator.rule.configuration.NumericalValueEvaluationRuleConfiguration;
 
-import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Simple numerical value evaluation rule.
- * Check if the provided String is a number with optional decimals and optional minus sign.
+ * Simple numerical value evaluation rule that checks if the provided String is a number.
+ * Optionally, bounds can also be checked.
  * Evaluation is using Double.parseDouble.
+ * NumericalValueEvaluationRule objects are immutable.
  * 
  * @author cgendreau
  */
-public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
-
-  /**
-   * Builder used to customized, if needed, the NumericalValueEvaluationRule.
-   * Also ensure usage of immutable object.
-   * 
-   * @author cgendreau
-   */
-  public static class NumericalValueEvaluationRuleBuilder {
-
-    private final NumericalValueEvaluationRuleConfiguration configuration;
-
-    private NumericalValueEvaluationRuleBuilder() {
-      configuration = new NumericalValueEvaluationRuleConfiguration();
-    }
-
-    /**
-     * Creates a default NumericalValueEvaluationRuleBuilder.
-     * 
-     * @return
-     */
-    public static NumericalValueEvaluationRuleBuilder create() {
-      return new NumericalValueEvaluationRuleBuilder();
-    }
-
-    /**
-     * Set a lower and upper inclusive bounds for the evaluation.
-     * 
-     * @param lowerBound lower inclusive bound
-     * @param upperBound upper inclusive bound
-     */
-    public NumericalValueEvaluationRuleBuilder boundedBy(Number lowerBound, Number upperBound) {
-      configuration.setLowerBound(lowerBound);
-      configuration.setUpperBound(upperBound);
-      return this;
-    }
-
-    /**
-     * Build an immutable NumericalValueEvaluationRule instance.
-     * 
-     * @return immutable NumericalValueEvaluationRule
-     * @throws NullPointerException if the rule is bounded, the lowerBound and upperBound must not be null
-     *         IllegalStateException if the rule is bounded, lower bound must not be greater than upperBound.
-     */
-    public NumericalValueEvaluationRule build() {
-      // Preconditions only if we set bounds
-      if (configuration.getLowerBound() != null || configuration.getUpperBound() != null) {
-        Preconditions.checkNotNull(configuration.getLowerBound());
-        Preconditions.checkNotNull(configuration.getUpperBound());
-        Preconditions.checkState((configuration.getLowerBound().doubleValue() < configuration.getUpperBound()
-          .doubleValue()), "lower and upper bounds are in wrong order");
-      }
-      return new NumericalValueEvaluationRule(configuration);
-    }
-  }
+class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
 
   private final Number lowerBound;
   private final Number upperBound;
@@ -83,20 +29,9 @@ public class NumericalValueEvaluationRule implements EvaluationRuleIF<String> {
    * @param minBound lower bound or null
    * @param maxBound upper bound or null
    */
-  private NumericalValueEvaluationRule(NumericalValueEvaluationRuleConfiguration configuration) {
+  NumericalValueEvaluationRule(NumericalValueEvaluationRuleConfiguration configuration) {
     this.lowerBound = configuration.getLowerBound();
     this.upperBound = configuration.getUpperBound();
-  }
-
-  /**
-   * Simple alias of NumericalValueEvaluationRule.create() for code readability so we can use
-   * NumericalValueEvaluationRule.createRule() instead of
-   * NumericalValueEvaluationRule.NumericalValueEvaluationRuleBuilder.create()
-   * 
-   * @return default NumericalValueEvaluationRule
-   */
-  public static NumericalValueEvaluationRuleBuilder createRule() {
-    return NumericalValueEvaluationRuleBuilder.create();
   }
 
   private ValidationResultElement createNonNumericalValidationResultElement(String value) {

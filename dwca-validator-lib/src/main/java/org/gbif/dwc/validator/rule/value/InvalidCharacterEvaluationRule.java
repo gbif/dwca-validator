@@ -12,20 +12,15 @@ import com.google.common.base.CharMatcher;
 /**
  * Rule used to ensure a String does not contain invalid characters.
  * Get instance using the builder InvalidCharacterEvaluationRuleBuilder
+ * InvalidCharacterEvaluationRule objects are immutable.
  * 
  * @author cgendreau
  */
-public class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> {
+class InvalidCharacterEvaluationRule implements EvaluationRuleIF<String> {
 
   private final CharMatcher charMatcher;
 
-  /**
-   * Build immutable InvalidCharacterEvaluationRule from Configuration.
-   * Internally, the builder will be used to convert configurations into CharMatcher.
-   * 
-   * @param configuration
-   */
-  public InvalidCharacterEvaluationRule(InvalidCharacterEvaluationRuleConfiguration configuration) {
+  InvalidCharacterEvaluationRule(InvalidCharacterEvaluationRuleConfiguration configuration) {
     this.charMatcher = configuration.getCharMatcher();
   }
 

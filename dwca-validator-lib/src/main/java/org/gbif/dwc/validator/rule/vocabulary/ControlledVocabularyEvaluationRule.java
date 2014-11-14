@@ -13,18 +13,19 @@ import java.util.Set;
 
 /**
  * Rule use to ensure a String is matching against a controlled vocabulary.
+ * ControlledVocabularyEvaluationRule objects are immutable.
  * TODO: add ability to set 'preferred' and 'alternative' string
  * TODO: should we only compare lowerCase (at least by default)?
  * TODO: should we accept ascii folding setting? If yes, how it will (should) react with characters like 保存標本
  * 
  * @author cgendreau
  */
-public class ControlledVocabularyEvaluationRule implements EvaluationRuleIF<String> {
+class ControlledVocabularyEvaluationRule implements EvaluationRuleIF<String> {
 
   private final ConceptTerm term;
   private final Set<String> vocabularySet;
 
-  public ControlledVocabularyEvaluationRule(ControlledVocabularyEvaluationRuleConfiguration configuration) {
+  ControlledVocabularyEvaluationRule(ControlledVocabularyEvaluationRuleConfiguration configuration) {
     this.term = configuration.getTerm();
 
     if (configuration.getVocabularySet() != null) {

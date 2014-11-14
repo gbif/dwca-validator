@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.rule.value;
 
 import org.gbif.dwc.validator.result.Result;
+import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 
 import org.junit.Test;
 
@@ -27,8 +28,7 @@ public class InvalidCharacterEvaluationRuleTest {
 
   @Test
   public void evaluateFormattingWhiteSpaceAllowed() {
-    InvalidCharacterEvaluationRule rule =
-      InvalidCharacterEvaluationRuleBuilder.builder().allowFormattingWhiteSpace().build();
+    EvaluationRuleIF<String> rule = InvalidCharacterEvaluationRuleBuilder.builder().allowFormattingWhiteSpace().build();
 
     testAlwaysValidString(rule);
     testNeverValidString(rule);
@@ -40,7 +40,7 @@ public class InvalidCharacterEvaluationRuleTest {
 
   @Test
   public void evaluateNoFormattingWhiteSpaceAllowed() {
-    InvalidCharacterEvaluationRule rule = InvalidCharacterEvaluationRuleBuilder.builder().build();
+    EvaluationRuleIF<String> rule = InvalidCharacterEvaluationRuleBuilder.builder().build();
 
     testAlwaysValidString(rule);
     testNeverValidString(rule);
@@ -52,8 +52,7 @@ public class InvalidCharacterEvaluationRuleTest {
 
   @Test
   public void evaluateNoReplacementCharAllowed() {
-    InvalidCharacterEvaluationRule rule =
-      InvalidCharacterEvaluationRuleBuilder.builder().rejectReplacementChar().build();
+    EvaluationRuleIF<String> rule = InvalidCharacterEvaluationRuleBuilder.builder().rejectReplacementChar().build();
 
     testAlwaysValidString(rule);
     testNeverValidString(rule);
@@ -61,7 +60,7 @@ public class InvalidCharacterEvaluationRuleTest {
     assertTrue(rule.evaluate("test" + REPLACEMENT_CHAR).resultIsOneOf(Result.ERROR, Result.WARNING));
   }
 
-  private void testAlwaysValidString(InvalidCharacterEvaluationRule rule) {
+  private void testAlwaysValidString(EvaluationRuleIF<String> rule) {
     assertEquals(Result.PASSED, rule.evaluate("test").getResult());
     assertEquals(Result.PASSED, rule.evaluate("test 2").getResult());
     assertEquals(Result.PASSED, rule.evaluate("éä@%&*").getResult());
@@ -72,7 +71,7 @@ public class InvalidCharacterEvaluationRuleTest {
     assertEquals(Result.SKIPPED, rule.evaluate(null).getResult());
   }
 
-  private void testNeverValidString(InvalidCharacterEvaluationRule rule) {
+  private void testNeverValidString(EvaluationRuleIF<String> rule) {
     assertTrue(rule.evaluate("test" + NULL_CHAR).resultIsOneOf(Result.ERROR, Result.WARNING));
     assertTrue(rule.evaluate("test" + ESCAPE_CHAR).resultIsOneOf(Result.ERROR, Result.WARNING));
   }

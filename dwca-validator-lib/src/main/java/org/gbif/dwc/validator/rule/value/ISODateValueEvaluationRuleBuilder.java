@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.rule.value;
 
 import org.gbif.dwc.validator.rule.EvaluationRuleBuilder;
+import org.gbif.dwc.validator.rule.EvaluationRuleIF;
 import org.gbif.dwc.validator.rule.annotation.EvaluationRuleBuilderKey;
 import org.gbif.dwc.validator.rule.configuration.ISODateValueEvaluationRuleConfiguration;
 
@@ -14,6 +15,9 @@ public class ISODateValueEvaluationRuleBuilder implements EvaluationRuleBuilder 
 
   private final ISODateValueEvaluationRuleConfiguration configuration;
 
+  /**
+   * Private constructor, use builder() method.
+   */
   private ISODateValueEvaluationRuleBuilder() {
     this.configuration = new ISODateValueEvaluationRuleConfiguration();
   }
@@ -57,7 +61,7 @@ public class ISODateValueEvaluationRuleBuilder implements EvaluationRuleBuilder 
    * @return immutable ISODateValueEvaluationRule
    */
   @Override
-  public ISODateValueEvaluationRule build() {
+  public EvaluationRuleIF<String> build() {
     return new ISODateValueEvaluationRule(configuration);
   }
 }

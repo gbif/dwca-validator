@@ -10,7 +10,7 @@ import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
-import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRule;
+import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRuleBuilder;
 
 import java.io.File;
 
@@ -43,7 +43,7 @@ public class ChainableRecordEvaluatorTest {
         .builder()
         .with(IntegrityEvaluators.coreIdUniqueness(testFolder))
         .with(
-          TermsValidators.rule(NumericalValueEvaluationRule.createRule().build(), DwcTerm.decimalLatitude,
+          TermsValidators.rule(NumericalValueEvaluationRuleBuilder.builder().build(), DwcTerm.decimalLatitude,
             DwcTerm.decimalLongitude)).buildChain();
 
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
