@@ -8,7 +8,7 @@ import org.gbif.dwc.validator.result.validation.ValidationResultElement;
  * @author cgendreau
  * @param <T>
  */
-public interface EvaluationRuleIF<T> {
+public interface EvaluationRule<T> {
 
   /**
    * Return a ValidationResultElement object, never null.
