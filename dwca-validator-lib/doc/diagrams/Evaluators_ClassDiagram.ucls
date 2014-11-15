@@ -254,18 +254,14 @@
     <end type="TARGET" refId="4"/>  
   </dependency>  
   <dependency id="38">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
-  <dependency id="39">    
     <end type="SOURCE" refId="11"/>    
     <end type="TARGET" refId="2"/>  
   </dependency>  
-  <realization id="40">    
+  <realization id="39">    
     <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="3"/>  
   </realization>  
-  <dependency id="41">    
+  <dependency id="40">    
     <end type="SOURCE" refId="17"/>    
     <end type="TARGET" refId="6"/>  
   </dependency>  

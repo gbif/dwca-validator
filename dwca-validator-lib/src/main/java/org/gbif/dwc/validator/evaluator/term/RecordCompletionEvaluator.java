@@ -7,6 +7,7 @@ import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.evaluator.configuration.RecordCompletionEvaluatorConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
+import org.gbif.dwc.validator.result.EvaluationRuleResult;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
@@ -65,24 +66,24 @@ class RecordCompletionEvaluator implements RecordEvaluator {
     }
 
     List<ValidationResultElement> elementList = null;
+    EvaluationRuleResult evaluationRuleResult;
     ValidationResultElement validationResultElement;
+
     if (terms != null) {
       for (ConceptTerm currTerm : terms) {
-        validationResultElement = blankValueEvaluationRule.evaluate(record.value(currTerm));
+        evaluationRuleResult = blankValueEvaluationRule.evaluate(record.value(currTerm));
 
-        if (validationResultElement.resultIsNot(Result.PASSED)) {
+        if (evaluationRuleResult.failed()) {
           // lazy create the list assuming, in normal case, we should have more valid record
           if (elementList == null) {
             elementList = new ArrayList<ValidationResultElement>();
           }
 
-          // create a new element based on the one from the evaluation rule
           validationResultElement =
             new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.ERROR,
               ValidatorConfig.getLocalizedString("evaluator.record_completion", currTerm,
-                validationResultElement.getExplanation()));
+                evaluationRuleResult.getExplanation()));
 
-          // evaluator.record_completion
           elementList.add(validationResultElement);
         }
       }

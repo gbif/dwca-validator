@@ -1,12 +1,10 @@
 package org.gbif.dwc.validator.rule.value;
 
-import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.rule.EvaluationRule;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Ensure NumericalValueEvaluationRule object obtained by the builder works as expected.
@@ -16,31 +14,31 @@ import static org.junit.Assert.assertNotNull;
 public class NumericalValueEvaluationRuleTest {
 
   private void testAlwaysValidNumerical(EvaluationRule<String> rule) {
-    assertEquals(Result.PASSED, rule.evaluate("1").getResult());
-    assertEquals(Result.PASSED, rule.evaluate("1.2").getResult());
-    assertEquals(Result.PASSED, rule.evaluate("0.3").getResult());
-    assertEquals(Result.PASSED, rule.evaluate("-8.3").getResult());
+    assertTrue(rule.evaluate("1").passed());
+    assertTrue(rule.evaluate("1.2").passed());
+    assertTrue(rule.evaluate("0.3").passed());
+    assertTrue(rule.evaluate("-8.3").passed());
 
     // empty string is ignored
-    assertEquals(Result.SKIPPED, rule.evaluate("").getResult());
+    assertTrue(rule.evaluate("").skipped());
   }
 
   private void testNeverValidNumerical(EvaluationRule<String> rule) {
-    assertNotNull(rule.evaluate("1.1.1"));
-    assertNotNull(rule.evaluate("0.-9"));
-    assertNotNull(rule.evaluate("w"));
+    assertTrue(rule.evaluate("1.1.1").failed());
+    assertTrue(rule.evaluate("0.-9").failed());
+    assertTrue(rule.evaluate("w").failed());
   }
 
   private void testNumericalBounds(EvaluationRule<String> rule, Double lowerBound, Double upperBound) {
     // should be valid
-    assertEquals(Result.PASSED, rule.evaluate(lowerBound.toString()).getResult());
-    assertEquals(Result.PASSED, rule.evaluate(upperBound.toString()).getResult());
-    assertEquals(Result.PASSED, rule.evaluate(Double.toString(lowerBound + 0.001)).getResult());
-    assertEquals(Result.PASSED, rule.evaluate(Double.toString(upperBound - 0.001)).getResult());
+    assertTrue(rule.evaluate(lowerBound.toString()).passed());
+    assertTrue(rule.evaluate(upperBound.toString()).passed());
+    assertTrue(rule.evaluate(Double.toString(lowerBound + 0.001)).passed());
+    assertTrue(rule.evaluate(Double.toString(upperBound - 0.001)).passed());
 
     // should be invalid
-    assertNotNull(rule.evaluate(Double.toString(lowerBound - 0.001)));
-    assertNotNull(rule.evaluate(Double.toString(upperBound + 0.001)));
+    assertTrue(rule.evaluate(Double.toString(lowerBound - 0.001)).failed());
+    assertTrue(rule.evaluate(Double.toString(upperBound + 0.001)).failed());
   }
 
   @Test

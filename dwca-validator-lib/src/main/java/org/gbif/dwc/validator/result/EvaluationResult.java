@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface EvaluationResult<T> {
 
+  String getEvaluatorKey();
+
   EvaluationContext getEvaluationContext();
 
   String getId();

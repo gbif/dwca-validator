@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.rule;
 
-import org.gbif.dwc.validator.result.validation.ValidationResultElement;
+import org.gbif.dwc.validator.result.EvaluationRuleResult;
 
 /**
  * Evaluation rules are used against the value of a ConceptTerm within a record.
@@ -11,14 +11,11 @@ import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 public interface EvaluationRule<T> {
 
   /**
-   * Return a ValidationResultElement object, never null.
-   * For now, we can only return one ValidationResultElement which may require more thinking in the future.
-   * e.g. NumericalValueEvaluationRule could(should?) produce one ValidationResultElement for
-   * numerical value check and another one for bounds check.
+   * Returns a EvaluationRuleResult object, never null.
    * 
    * @param obj
-   * @return ValidationResultElement instance.
+   * @return EvaluationRuleResult instance.
    */
-  ValidationResultElement evaluate(T obj);
+  EvaluationRuleResult evaluate(T obj);
 
 }

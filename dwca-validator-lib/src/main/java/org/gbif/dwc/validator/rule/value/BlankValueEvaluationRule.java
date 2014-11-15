@@ -1,9 +1,7 @@
 package org.gbif.dwc.validator.rule.value;
 
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.result.type.ContentValidationType;
-import org.gbif.dwc.validator.result.validation.ValidationResultElement;
+import org.gbif.dwc.validator.result.EvaluationRuleResult;
 import org.gbif.dwc.validator.rule.EvaluationRule;
 
 import org.apache.commons.lang3.StringUtils;
@@ -49,13 +47,13 @@ public class BlankValueEvaluationRule implements EvaluationRule<String> {
   }
 
   @Override
-  public ValidationResultElement evaluate(String str) {
+  public EvaluationRuleResult evaluate(String str) {
 
     if (StringUtils.isBlank(str)) {
-      return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.ERROR,
+      return new EvaluationRuleResult(EvaluationRuleResult.RuleResult.FAILED,
         ValidatorConfig.getLocalizedString("rule.blank_value"));
     }
-    return ValidationResultElement.PASSED;
+    return EvaluationRuleResult.PASSED;
   }
 
 }

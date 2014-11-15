@@ -1,9 +1,7 @@
 package org.gbif.dwc.validator.rule.value;
 
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.result.type.ContentValidationType;
-import org.gbif.dwc.validator.result.validation.ValidationResultElement;
+import org.gbif.dwc.validator.result.EvaluationRuleResult;
 import org.gbif.dwc.validator.rule.EvaluationRule;
 
 import java.util.regex.Pattern;
@@ -83,16 +81,16 @@ public class RegexValueEvaluationRule implements EvaluationRule<String> {
   }
 
   @Override
-  public ValidationResultElement evaluate(String str) {
+  public EvaluationRuleResult evaluate(String str) {
     if (StringUtils.isBlank(str)) {
-      return ValidationResultElement.SKIPPED;
+      return EvaluationRuleResult.SKIPPED;
     }
 
     if (!pattern.matcher(str).matches()) {
-      return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.WARNING,
-        ValidatorConfig.getLocalizedString("rule.regex.no_match", str));
+      return new EvaluationRuleResult(EvaluationRuleResult.RuleResult.FAILED, ValidatorConfig.getLocalizedString(
+        "rule.regex.no_match", str));
     }
-    return ValidationResultElement.PASSED;
+    return EvaluationRuleResult.PASSED;
   }
 
 }

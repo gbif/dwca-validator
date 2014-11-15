@@ -2,9 +2,7 @@ package org.gbif.dwc.validator.rule.vocabulary;
 
 import org.gbif.dwc.terms.ConceptTerm;
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.result.type.ContentValidationType;
-import org.gbif.dwc.validator.result.validation.ValidationResultElement;
+import org.gbif.dwc.validator.result.EvaluationRuleResult;
 import org.gbif.dwc.validator.rule.EvaluationRule;
 import org.gbif.dwc.validator.rule.configuration.ControlledVocabularyEvaluationRuleConfiguration;
 
@@ -36,15 +34,15 @@ class ControlledVocabularyEvaluationRule implements EvaluationRule<String> {
   }
 
   @Override
-  public ValidationResultElement evaluate(String str) {
+  public EvaluationRuleResult evaluate(String str) {
     if (str == null) {
-      return ValidationResultElement.SKIPPED;
+      return EvaluationRuleResult.SKIPPED;
     }
 
     if (!vocabularySet.contains(str)) {
-      return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.ERROR,
-        ValidatorConfig.getLocalizedString("rule.controlled_vocabulary", str, term.simpleName()));
+      return new EvaluationRuleResult(EvaluationRuleResult.RuleResult.FAILED, ValidatorConfig.getLocalizedString(
+        "rule.controlled_vocabulary", str, term.simpleName()));
     }
-    return ValidationResultElement.PASSED;
+    return EvaluationRuleResult.PASSED;
   }
 }

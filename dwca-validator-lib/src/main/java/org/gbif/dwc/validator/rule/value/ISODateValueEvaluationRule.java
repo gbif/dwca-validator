@@ -1,10 +1,7 @@
 package org.gbif.dwc.validator.rule.value;
 
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.result.type.ContentValidationType;
-import org.gbif.dwc.validator.result.type.UndefinedValidationType;
-import org.gbif.dwc.validator.result.validation.ValidationResultElement;
+import org.gbif.dwc.validator.result.EvaluationRuleResult;
 import org.gbif.dwc.validator.rule.EvaluationRule;
 import org.gbif.dwc.validator.rule.configuration.ISODateValueEvaluationRuleConfiguration;
 
@@ -65,39 +62,45 @@ class ISODateValueEvaluationRule implements EvaluationRule<String> {
     }
   }
 
-  private ValidationResultElement createNonISOValidationResultElement(String value) {
-    return new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.WARNING,
-      ValidatorConfig.getLocalizedString("rule.date.non_ISO", value));
+  private EvaluationRuleResult createNonISOEvaluationRuleResult(String value) {
+    return new EvaluationRuleResult(EvaluationRuleResult.RuleResult.FAILED, ValidatorConfig.getLocalizedString(
+      "rule.date.non_ISO", value));
   }
 
-  private ValidationResultElement createSuccessValidationResultElement(TemporalAccessor ta) {
-    return new ValidationResultElement(UndefinedValidationType.UNDEFINED, Result.PASSED, "", ta);
+  /**
+   * Include the parsed object in the EvaluationRuleResult object.
+   * 
+   * @param ta
+   * @return
+   */
+  private EvaluationRuleResult createPassedEvaluationRuleResult(TemporalAccessor ta) {
+    return new EvaluationRuleResult(EvaluationRuleResult.RuleResult.PASSED, "", ta);
   }
 
   @Override
-  public ValidationResultElement evaluate(String str) {
+  public EvaluationRuleResult evaluate(String str) {
 
     if (StringUtils.isBlank(str)) {
-      return ValidationResultElement.SKIPPED;
+      return EvaluationRuleResult.SKIPPED;
     }
 
     // if we can parse it as complete ISO date, it's fine
     TemporalAccessor ta = tryParseLocalDate(str, ISO8601_BASIC_ISO_DATE, activeCompleteDateFormatter);
     if (ta != null) {
-      return createSuccessValidationResultElement(ta);
+      return createPassedEvaluationRuleResult(ta);
     }
 
     if (allowPartialDate) {
       try {
         ta = activePartialDateFormatter.parseBest(str, LocalDate.FROM, YearMonth.FROM, Year.FROM);
       } catch (DateTimeException dtEx) {
-        return createNonISOValidationResultElement(str);
+        return createNonISOEvaluationRuleResult(str);
       }
     } else {
-      return createNonISOValidationResultElement(str);
+      return createNonISOEvaluationRuleResult(str);
     }
 
-    return createSuccessValidationResultElement(ta);
+    return createPassedEvaluationRuleResult(ta);
   }
 
   /**

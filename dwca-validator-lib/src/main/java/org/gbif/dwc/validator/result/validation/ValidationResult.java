@@ -64,6 +64,11 @@ public class ValidationResult implements EvaluationResult<ValidationResultElemen
   }
 
   @Override
+  public String getEvaluatorKey() {
+    return evaluatorKey;
+  }
+
+  @Override
   public EvaluationContext getEvaluationContext() {
     return evaluationContext;
   }

@@ -2,11 +2,14 @@ package org.gbif.dwc.validator.evaluator.term;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.evaluator.configuration.ValueEvaluatorConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
+import org.gbif.dwc.validator.result.EvaluationRuleResult;
 import org.gbif.dwc.validator.result.Result;
+import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 import org.gbif.dwc.validator.rule.EvaluationRule;
@@ -53,6 +56,8 @@ class ValueEvaluator implements RecordEvaluator {
   public Optional<ValidationResult> handleEval(Record record, EvaluationContext evaluationContext) {
     ValidationResult validationResult = null;
     List<ValidationResultElement> elementList = null;
+
+    EvaluationRuleResult evaluationRuleResult;
     ValidationResultElement validationResultElement;
 
     // if we specified a rowType restriction, check that the record is also of this rowType
@@ -64,12 +69,17 @@ class ValueEvaluator implements RecordEvaluator {
     for (ConceptTerm currTerm : rulesPerTerm.keySet()) {
       for (EvaluationRule<String> currRule : rulesPerTerm.get(currTerm)) {
         // term is not recorded in the error message
-        validationResultElement = currRule.evaluate(record.value(currTerm));
-        if (validationResultElement.resultIsNotOneOf(Result.SKIPPED, Result.PASSED)) {
+        evaluationRuleResult = currRule.evaluate(record.value(currTerm));
+        if (evaluationRuleResult.failed()) {
           // lazy create the list assuming, in normal case, we should have more valid record
           if (elementList == null) {
             elementList = new ArrayList<ValidationResultElement>();
           }
+
+          validationResultElement =
+            new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.ERROR,
+              ValidatorConfig.getLocalizedString("evaluator.value_evaluator", currTerm,
+                evaluationRuleResult.getExplanation()));
           elementList.add(validationResultElement);
         }
       }

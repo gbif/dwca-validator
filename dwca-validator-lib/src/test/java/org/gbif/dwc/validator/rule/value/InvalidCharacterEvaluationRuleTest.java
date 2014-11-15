@@ -1,11 +1,9 @@
 package org.gbif.dwc.validator.rule.value;
 
-import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.rule.EvaluationRule;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -33,9 +31,9 @@ public class InvalidCharacterEvaluationRuleTest {
     testAlwaysValidString(rule);
     testNeverValidString(rule);
 
-    assertEquals(Result.PASSED, rule.evaluate("test" + VERTICAL_TAB_CHAR).getResult());
-    assertEquals(Result.PASSED, rule.evaluate("test" + REPLACEMENT_CHAR).getResult());
-    assertEquals(Result.PASSED, rule.evaluate("test" + ENDLINE).getResult());
+    assertTrue(rule.evaluate("test" + VERTICAL_TAB_CHAR).passed());
+    assertTrue(rule.evaluate("test" + REPLACEMENT_CHAR).passed());
+    assertTrue(rule.evaluate("test" + ENDLINE).passed());
   }
 
   @Test
@@ -45,9 +43,10 @@ public class InvalidCharacterEvaluationRuleTest {
     testAlwaysValidString(rule);
     testNeverValidString(rule);
 
-    assertTrue(rule.evaluate("test\t2").resultIsOneOf(Result.WARNING, Result.ERROR));
-    assertTrue(rule.evaluate("test" + ENDLINE).resultIsOneOf(Result.WARNING, Result.ERROR));
-    assertEquals(Result.PASSED, rule.evaluate("test" + REPLACEMENT_CHAR).getResult());
+    assertTrue(rule.evaluate("test\t2").failed());
+    assertTrue(rule.evaluate("test" + ENDLINE).failed());
+
+    assertTrue(rule.evaluate("test" + REPLACEMENT_CHAR).passed());
   }
 
   @Test
@@ -57,22 +56,22 @@ public class InvalidCharacterEvaluationRuleTest {
     testAlwaysValidString(rule);
     testNeverValidString(rule);
 
-    assertTrue(rule.evaluate("test" + REPLACEMENT_CHAR).resultIsOneOf(Result.ERROR, Result.WARNING));
+    assertTrue(rule.evaluate("test" + REPLACEMENT_CHAR).failed());
   }
 
   private void testAlwaysValidString(EvaluationRule<String> rule) {
-    assertEquals(Result.PASSED, rule.evaluate("test").getResult());
-    assertEquals(Result.PASSED, rule.evaluate("test 2").getResult());
-    assertEquals(Result.PASSED, rule.evaluate("éä@%&*").getResult());
+    assertTrue(rule.evaluate("test").passed());
+    assertTrue(rule.evaluate("test 2").passed());
+    assertTrue(rule.evaluate("éä@%&*").passed());
 
     // empty string passed
-    assertEquals(Result.PASSED, rule.evaluate("").getResult());
+    assertTrue(rule.evaluate("").passed());
     // null should be skipped
-    assertEquals(Result.SKIPPED, rule.evaluate(null).getResult());
+    assertTrue(rule.evaluate(null).skipped());
   }
 
   private void testNeverValidString(EvaluationRule<String> rule) {
-    assertTrue(rule.evaluate("test" + NULL_CHAR).resultIsOneOf(Result.ERROR, Result.WARNING));
-    assertTrue(rule.evaluate("test" + ESCAPE_CHAR).resultIsOneOf(Result.ERROR, Result.WARNING));
+    assertTrue(rule.evaluate("test" + NULL_CHAR).failed());
+    assertTrue(rule.evaluate("test" + ESCAPE_CHAR).failed());
   }
 }

@@ -45,6 +45,7 @@ public class CSVValidationResultAccumulator extends AbstractTresholdResultAccumu
    */
   private void printHeaders() throws IOException {
     csvPrinter.printRecord(ValidatorConfig.getLocalizedString("result.header.id"),
+      ValidatorConfig.getLocalizedString("result.header.evaluator"),
       ValidatorConfig.getLocalizedString("result.header.context"),
       ValidatorConfig.getLocalizedString("result.header.context_details"),
       ValidatorConfig.getLocalizedString("result.header.type"),
@@ -55,8 +56,8 @@ public class CSVValidationResultAccumulator extends AbstractTresholdResultAccumu
   @Override
   protected void write(ValidationResult currentResult) throws IOException {
     for (ValidationResultElement vre : currentResult.getResults()) {
-      csvPrinter.printRecord(currentResult.getId(), currentResult.getEvaluationContext(),
-        currentResult.getEvaluationContextDetails(),
+      csvPrinter.printRecord(currentResult.getId(), currentResult.getEvaluatorKey(),
+        currentResult.getEvaluationContext(), currentResult.getEvaluationContextDetails(),
         ValidatorConfig.getLocalizedString(vre.getType().getDescriptionKey()), vre.getResult(), vre.getExplanation());
     }
   }

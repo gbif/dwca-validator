@@ -1,7 +1,6 @@
 package org.gbif.dwc.validator.rule.vocabulary;
 
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.rule.EvaluationRule;
 
 import java.io.File;
@@ -11,7 +10,6 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -37,10 +35,10 @@ public class ControlledVocabularyEvaluationRuleTest {
       ControlledVocabularyEvaluationRuleBuilder.builder().onTerm(DwcTerm.country)
         .useDictionaryAt(testFile.getAbsolutePath()).build();
 
-    assertEquals(Result.PASSED, rule.evaluate("Spain").getResult());
+    assertTrue(rule.evaluate("Spain").passed());
 
     // should not passed
-    assertTrue(rule.evaluate("xyz").resultIsOneOf(Result.WARNING, Result.ERROR));
+    assertTrue(rule.evaluate("xyz").failed());
   }
 
   @Test
@@ -53,10 +51,10 @@ public class ControlledVocabularyEvaluationRuleTest {
       ControlledVocabularyEvaluationRuleBuilder.builder().onTerm(DwcTerm.basisOfRecord).useVocabularySet(vocabulary)
         .build();
 
-    assertEquals(Result.PASSED, rule.evaluate("PreservedSpecimen").getResult());
+    assertTrue(rule.evaluate("PreservedSpecimen").passed());
 
     // should not passed
-    assertTrue(rule.evaluate("Gulo Gulo").resultIsOneOf(Result.WARNING, Result.ERROR));
+    assertTrue(rule.evaluate("Gulo Gulo").failed());
   }
 
   @Test(expected = IllegalStateException.class)

@@ -1,11 +1,9 @@
 package org.gbif.dwc.validator.rule.value;
 
-import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.rule.EvaluationRule;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -30,12 +28,12 @@ public class ISODateValueEvaluationRuleTest {
   public void evaluateAllowMissingLeadingZeros() {
     EvaluationRule<String> rule = ISODateValueEvaluationRuleBuilder.builder().allowMissingLeadingZeros().build();
 
-    assertEquals(Result.PASSED, rule.evaluate("2014-8-7").getResult());
-    assertEquals(Result.PASSED, rule.evaluate("2014-08-7").getResult());
-    assertEquals(Result.PASSED, rule.evaluate("2014-8-07").getResult());
+    assertTrue(rule.evaluate("2014-8-7").passed());
+    assertTrue(rule.evaluate("2014-08-7").passed());
+    assertTrue(rule.evaluate("2014-8-07").passed());
 
     // But we don't accept partial dates
-    assertTrue(rule.evaluate("2014-8").resultIsOneOf(Result.WARNING, Result.ERROR));
+    assertTrue(rule.evaluate("2014-8").failed());
 
     testAlwaysValidString(rule);
     testNeverValidString(rule);
@@ -48,11 +46,11 @@ public class ISODateValueEvaluationRuleTest {
   public void evaluateAllowPartialDate() {
     EvaluationRule<String> rule = ISODateValueEvaluationRuleBuilder.builder().allowPartialDate().build();
 
-    assertEquals(Result.PASSED, rule.evaluate("2014").getResult());
-    assertEquals(Result.PASSED, rule.evaluate("2014-08").getResult());
+    assertTrue(rule.evaluate("2014").passed());
+    assertTrue(rule.evaluate("2014-08").passed());
 
     // But we don't accept missing leading zero
-    assertTrue(rule.evaluate("2014-8").resultIsOneOf(Result.WARNING, Result.ERROR));
+    assertTrue(rule.evaluate("2014-8").failed());
 
     testAlwaysValidString(rule);
     testNeverValidString(rule);
@@ -66,10 +64,10 @@ public class ISODateValueEvaluationRuleTest {
     EvaluationRule<String> rule =
       ISODateValueEvaluationRuleBuilder.builder().allowPartialDate().allowMissingLeadingZeros().build();
 
-    assertEquals(Result.PASSED, rule.evaluate("2014").getResult());
-    assertEquals(Result.PASSED, rule.evaluate("2014-08").getResult());
-    assertEquals(Result.PASSED, rule.evaluate("2014-8").getResult());
-    assertEquals(Result.PASSED, rule.evaluate("2014-8-7").getResult());
+    assertTrue(rule.evaluate("2014").passed());
+    assertTrue(rule.evaluate("2014-08").passed());
+    assertTrue(rule.evaluate("2014-8").passed());
+    assertTrue(rule.evaluate("2014-8-7").passed());
 
     testAlwaysValidString(rule);
     testNeverValidString(rule);
@@ -82,11 +80,11 @@ public class ISODateValueEvaluationRuleTest {
    */
   private void testAlwaysValidString(EvaluationRule<String> rule) {
     // should be valid
-    assertEquals(Result.PASSED, rule.evaluate("20141010").getResult());
-    assertEquals(Result.PASSED, rule.evaluate("2014-10-10").getResult());
+    assertTrue(rule.evaluate("20141010").passed());
+    assertTrue(rule.evaluate("2014-10-10").passed());
 
     // empty string is ignored
-    assertEquals(Result.SKIPPED, rule.evaluate("").getResult());
+    assertTrue(rule.evaluate("").skipped());
   }
 
   /**
@@ -95,14 +93,14 @@ public class ISODateValueEvaluationRuleTest {
    * @param rule
    */
   private void testNeverValidString(EvaluationRule<String> rule) {
-    assertTrue(rule.evaluate("201411").resultIsOneOf(Result.ERROR, Result.WARNING));
-    assertTrue(rule.evaluate("21-10-2014").resultIsOneOf(Result.ERROR, Result.WARNING));
+    assertTrue(rule.evaluate("201411").failed());
+    assertTrue(rule.evaluate("21-10-2014").failed());
 
     // non existing month
-    assertTrue(rule.evaluate("2014-13-08").resultIsOneOf(Result.ERROR, Result.WARNING));
+    assertTrue(rule.evaluate("2014-13-08").failed());
 
     // non existing date
-    assertTrue(rule.evaluate("2014-02-30").resultIsOneOf(Result.ERROR, Result.WARNING));
+    assertTrue(rule.evaluate("2014-02-30").failed());
   }
 
 }

@@ -70,8 +70,11 @@ public class FileBasedValidationChainLoaderTest {
       chainHead.postIterate(resultAccumulator);
       chainHead.cleanup();
 
-      assertTrue(TestEvaluationResultHelper.containsResultMessage(resultAccumulator.getValidationResultList(), "2",
-        ValidatorConfig.getLocalizedString("rule.date.non_ISO", "10-07-2014")));
+      assertTrue(TestEvaluationResultHelper.containsResultMessage(
+        resultAccumulator.getValidationResultList(),
+        "2",
+        ValidatorConfig.getLocalizedString("evaluator.value_evaluator", DwcTerm.eventDate,
+          ValidatorConfig.getLocalizedString("rule.date.non_ISO", "10-07-2014"))));
 
       assertTrue(TestEvaluationResultHelper.containsResultMessage(
         resultAccumulator.getValidationResultList(),
