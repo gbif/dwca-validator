@@ -42,7 +42,7 @@ public class FileBasedValidationChainLoaderTest {
     fieldList.add(eventDateField);
     fieldList.add(decimalLatitudeField);
     fieldList.add(decimalLongitudeField);
-    RecordImpl testRecord = new RecordImpl(idField, fieldList, "rowType", false);
+    RecordImpl testRecord = new RecordImpl(idField, fieldList, DwcTerm.Occurrence.qualifiedName(), false);
     testRecord.setRow(new String[] {id, "gulo\tgulo", "10-07-2014", "2.3", "a"});
     return testRecord;
   }

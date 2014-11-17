@@ -28,8 +28,8 @@ import static org.junit.Assert.assertTrue;
 public class ChainableRecordEvaluatorTest {
 
   private Record buildMockRecord(String id, String lat, String lng) {
-    return MockRecordFactory.buildMockRecord(DwcTerm.occurrenceID, id, new DwcTerm[] {DwcTerm.decimalLatitude,
-      DwcTerm.decimalLongitude}, new String[] {lat, lng});
+    return MockRecordFactory.buildMockOccurrenceRecord(DwcTerm.occurrenceID, id, new DwcTerm[] {
+      DwcTerm.decimalLatitude, DwcTerm.decimalLongitude}, new String[] {lat, lng});
   }
 
   @Test

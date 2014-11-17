@@ -8,6 +8,7 @@ import org.gbif.dwc.validator.evaluator.configuration.RecordCompletionEvaluatorC
 import org.gbif.dwc.validator.rule.value.BlankValueEvaluationRule;
 
 import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Builder of RecordCompletionEvaluator object.
@@ -43,6 +44,10 @@ public class RecordCompletionEvaluatorBuilder implements RecordEvaluatorBuilder 
     Preconditions.checkNotNull(configuration.getTerms());
     Preconditions.checkNotNull(configuration.getBlankValueEvaluationRule());
 
+    // we need a RowTypeRestriction otherwise all extension records could be flagged as incomplete
+    // even if the don't use the term by definition.
+    Preconditions.checkState(StringUtils.isNotBlank(configuration.getRowTypeRestriction()),
+      "A RowTypeRestriction must be provided");
     Preconditions.checkState(configuration.getTerms().size() > 0, "At least one term must be set");
 
     return new RecordCompletionEvaluator(configuration);
@@ -52,11 +57,21 @@ public class RecordCompletionEvaluatorBuilder implements RecordEvaluatorBuilder 
    * Add a term to check for completion.
    * 
    * @param term
-   * @param rule
    * @return
    */
   public RecordCompletionEvaluatorBuilder checkTerm(ConceptTerm term) {
     configuration.addTerm(term);
+    return this;
+  }
+
+  /**
+   * Set the restriction on the rowType to avoid the evaluation to run on all rowType.
+   * 
+   * @param rowTypeRestriction
+   * @return
+   */
+  public RecordCompletionEvaluatorBuilder onRowType(ConceptTerm rowTypeRestriction) {
+    configuration.setRowTypeRestriction(rowTypeRestriction.qualifiedName());
     return this;
   }
 

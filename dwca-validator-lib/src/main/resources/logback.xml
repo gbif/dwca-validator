@@ -53,12 +53,9 @@
       <pattern>${defaultPattern}</pattern>
     </encoder>
   </appender>
-
-  <logger name="org.gbif" level="DEBUG"/>
-  <logger name="org.gbif.dwc.validator" level="INFO"/>
-
-  <root level="INFO">
-    <!--appender-ref ref="CONSOLE"/-->
+  
+  <root level="ERROR">
+    <appender-ref ref="CONSOLE"/>
     <appender-ref ref="FILE"/>
     <appender-ref ref="ERROR_FILE"/>
   </root>

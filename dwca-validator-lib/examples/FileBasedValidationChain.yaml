@@ -1,20 +1,22 @@
-# linked to FileBasedValidationChainLoaderTest test class
+# Example of validation chain expressed in YAML
+# Documentation: https://github.com/gbif/dwca-validator/wiki/ConfigurationFile
 --- 
 rules:
- - !ISODateValueEvaluationRule  &isoDateVER
+ - !ISODateValueEvaluationRule  &isoDateEvalRule
    - !iSODateValueEvaluationRuleConfiguration
      allowPartialDate			: false
      allowMissingLeadingZeros	: false
      
- - !invalidCharacterEvaluationRule &invalidCharacterVER
+ - !invalidCharacterEvaluationRule &invalidCharacterEvalRule
    - !invalidCharacterEvaluationRuleConfiguration
      allowFormattingWhiteSpace	: false
      rejectReplacementChar		: true
      
- - !controlledVocabularyEvaluationRule
+# The dictionary file must exist path can be absolute or relative to the app location
+ - !controlledVocabularyEvaluationRule &basisOfRecordControlledVocEvalRule
    - !controlledVocabularyEvaluationRuleConfiguration
-     term						: !dwcTerm 'country'
-     dictionaryPath				: 'src/test/resources/dictionary/european_union_country.txt'
+     term						: !dwcTerm 'basisOfRecord'
+     dictionaryPath	: 'basis_of_record.txt'
      
  - !numericalValueEvaluationRule &latEvalRule
    - !numericalValueEvaluationRuleConfiguration
@@ -36,14 +38,18 @@ evaluators:
  - !valueEvaluator
    - !valueEvaluatorConfiguration
      rulesPerTerm:
-       !dwcTerm 'eventDate' : [*isoDateVER]
-       !dwcTerm 'scientificName' : [*invalidCharacterVER]
+       !dwcTerm 'eventDate' : [*isoDateEvalRule]
+       !dwcTerm 'scientificName' : [*invalidCharacterEvalRule]
        !dwcTerm 'decimalLatitude' : [*latEvalRule]
        !dwcTerm 'decimalLongitude' : [*longEvalRule]
+       !dwcTerm 'basisOfRecord' : [*basisOfRecordControlledVocEvalRule]
        
- - !uniquenessEvaluator
-   - !uniquenessEvaluatorConfiguration {}
-   
+# default UniquenessEvaluator on coreId
+# Note: Do not used this evaluator if the default referenceUniqueEvaluator is already in the chain, it is unnecessary.
+# - !uniquenessEvaluator
+#    - !uniquenessEvaluatorConfiguration {}
+
+# default ReferenceUniqueEvaluator will ensure coreId is unique and extension records are pointing to a valid coreId
  - !referenceUniqueEvaluator
    - !referenceUniqueEvaluatorConfiguration {}
    - !uniquenessEvaluatorConfiguration {}

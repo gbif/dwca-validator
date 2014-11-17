@@ -1,0 +1,5 @@
+PreservedSpecimen
+FossilSpecimen
+LivingSpecimen
+HumanObservation
+MachineObservation

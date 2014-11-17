@@ -26,7 +26,7 @@ public class MockRecordFactory {
    * @param values this should not include the the value idValue
    * @return
    */
-  public static Record buildMockRecord(DwcTerm idTerm, String idValue, DwcTerm[] terms, String[] values) {
+  public static Record buildMockOccurrenceRecord(DwcTerm idTerm, String idValue, DwcTerm[] terms, String[] values) {
 
     if (terms == null || values == null || (terms.length != values.length)) {
       throw new IllegalArgumentException();
@@ -43,7 +43,7 @@ public class MockRecordFactory {
       fieldList.add(new ArchiveField(idx, currTerm, null, DataType.string));
       idx++;
     }
-    RecordImpl testRecord = new RecordImpl(idField, fieldList, "Occurrence", false);
+    RecordImpl testRecord = new RecordImpl(idField, fieldList, DwcTerm.Occurrence.qualifiedName(), false);
 
     List<String> row = new ArrayList<String>(Arrays.asList(values));
     row.add(0, idValue);

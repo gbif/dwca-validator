@@ -23,12 +23,12 @@ import static org.junit.Assert.assertTrue;
 public class RecordCompletionEvaluatorTest {
 
   private Record buildMockRecord(String id, String catalogNumber) {
-    return MockRecordFactory.buildMockRecord(DwcTerm.occurrenceID, id, new DwcTerm[] {DwcTerm.catalogNumber},
+    return MockRecordFactory.buildMockOccurrenceRecord(DwcTerm.occurrenceID, id, new DwcTerm[] {DwcTerm.catalogNumber},
       new String[] {catalogNumber});
   }
 
   private Record buildMockRecord(String id, String catalogNumber, String sciName) {
-    return MockRecordFactory.buildMockRecord(DwcTerm.occurrenceID, id, new DwcTerm[] {DwcTerm.catalogNumber,
+    return MockRecordFactory.buildMockOccurrenceRecord(DwcTerm.occurrenceID, id, new DwcTerm[] {DwcTerm.catalogNumber,
       DwcTerm.scientificName}, new String[] {catalogNumber, sciName});
   }
 
@@ -36,7 +36,8 @@ public class RecordCompletionEvaluatorTest {
   public void testRecordCompletionEvaluator() {
 
     RecordEvaluator recordCompletionEvaluator =
-      RecordCompletionEvaluatorBuilder.builder().checkTerm(DwcTerm.scientificName).build();
+      RecordCompletionEvaluatorBuilder.builder().checkTerm(DwcTerm.scientificName).onRowType(DwcTerm.Occurrence)
+        .build();
 
     Optional<ValidationResult> result1 =
       recordCompletionEvaluator.handleEval(buildMockRecord("1", "1", null), EvaluationContext.CORE);
