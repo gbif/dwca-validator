@@ -23,6 +23,7 @@ public class ValidatorConfig {
 
   public static final String ENDLINE = System.getProperty("line.separator");
   public static final String TEXT_FILE_EXT = ".txt";
+  public static final String CSV_FILE_EXT = ".csv";
 
   public final File workingFolder;
 

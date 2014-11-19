@@ -15,6 +15,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -33,6 +36,8 @@ import org.slf4j.LoggerFactory;
 public class ValidatorMain {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ValidatorMain.class);
+  private static final DateFormat DF = new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss_SS");
+  private static final String RESULT_FILENAME = "ValidationResults_";
 
   public ValidatorMain(String[] args) {
 
@@ -53,16 +58,11 @@ public class ValidatorMain {
     }
 
     // handle output folder/file location
-    File outputFolder = new File("");
-    if (StringUtils.isNotBlank(resultFolderLocation)) {
-      File resultFolder = new File(resultFolderLocation);
-      if (resultFolder.exists() && !resultFolder.isDirectory()) {
-        CliManager.printHelp();
-        return;
-      }
-      outputFolder = resultFolder;
+    File outputFile = handleValidationResultFile(resultFolderLocation);
+    if (outputFile == null) {
+      CliManager.printHelp();
+      return;
     }
-    File outputFile = new File(outputFolder.getAbsoluteFile(), System.currentTimeMillis() + ".txt");
     System.out.println("Saving result in " + outputFile.getAbsolutePath());
 
     // ensure working folder exists
@@ -184,5 +184,24 @@ public class ValidatorMain {
       LOGGER.error("Issue while loading validation chain from configuration file.", ioEx);
     }
     return null;
+  }
+
+  /**
+   * Handle the name and location of validation result file.
+   * 
+   * @param resultFolderLocation if null, the current folder will be used
+   * @return
+   */
+  private File handleValidationResultFile(String resultFolderLocation) {
+    File outputFolder = new File("");
+    if (StringUtils.isNotBlank(resultFolderLocation)) {
+      File resultFolder = new File(resultFolderLocation);
+      if (resultFolder.exists() && !resultFolder.isDirectory()) {
+        return null;
+      }
+      outputFolder = resultFolder;
+    }
+    return new File(outputFolder.getAbsoluteFile(), RESULT_FILENAME + DF.format(Calendar.getInstance().getTime())
+      + ValidatorConfig.TEXT_FILE_EXT);
   }
 }
