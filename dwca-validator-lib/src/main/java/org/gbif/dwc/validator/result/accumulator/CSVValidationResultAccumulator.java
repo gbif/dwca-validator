@@ -1,7 +1,6 @@
 package org.gbif.dwc.validator.result.accumulator;
 
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.result.EvaluationResult;
 import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
@@ -111,12 +110,6 @@ public class CSVValidationResultAccumulator extends AbstractTresholdResultAccumu
 
     aggregationCsvPrinter.printRecord(currentResult.getId(), currentResult.getEvaluatorKey(),
       currentResult.getEvaluationContext(), currentResult.getResult());
-  }
-
-
-  @Override
-  protected void write(EvaluationResult evaluationResult) throws IOException {
-
   }
 
 }

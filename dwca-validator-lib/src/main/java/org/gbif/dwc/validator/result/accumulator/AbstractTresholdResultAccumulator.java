@@ -29,8 +29,8 @@ public abstract class AbstractTresholdResultAccumulator implements ResultAccumul
   private final boolean recordValidationResult;
   private final boolean recordAggregationResult;
 
-  private final ConcurrentLinkedQueue<EvaluationResult> validationQueue;
-  private final ConcurrentLinkedQueue<EvaluationResult> aggregationQueue;
+  private final ConcurrentLinkedQueue<ValidationResult> validationQueue;
+  private final ConcurrentLinkedQueue<AggregationResult<?>> aggregationQueue;
 
   private final int threshold;
   private final AtomicInteger validationCount, aggregationCount;
@@ -47,8 +47,8 @@ public abstract class AbstractTresholdResultAccumulator implements ResultAccumul
     this.recordAggregationResult = recordAggregationResult;
     this.threshold = threshold;
 
-    validationQueue = new ConcurrentLinkedQueue<EvaluationResult>();
-    aggregationQueue = new ConcurrentLinkedQueue<EvaluationResult>();
+    validationQueue = new ConcurrentLinkedQueue<ValidationResult>();
+    aggregationQueue = new ConcurrentLinkedQueue<AggregationResult<?>>();
     validationCount = new AtomicInteger(0);
     aggregationCount = new AtomicInteger(0);
   }
@@ -123,7 +123,15 @@ public abstract class AbstractTresholdResultAccumulator implements ResultAccumul
    * @param evaluationResult
    * @throws IOException
    */
-  protected abstract void write(EvaluationResult evaluationResult) throws IOException;
+  protected void write(EvaluationResult evaluationResult) throws IOException {
+    // we should think about something better than that
+    if (evaluationResult instanceof ValidationResult) {
+      write((ValidationResult) evaluationResult);
+    } else if (evaluationResult instanceof AggregationResult) {
+      write((AggregationResult<?>) evaluationResult);
+    }
+    // define fall back
+  }
 
   @Override
   public void close() {
@@ -142,9 +150,9 @@ public abstract class AbstractTresholdResultAccumulator implements ResultAccumul
    * @param howMany
    * @throws IOException
    */
-  private void flush(ConcurrentLinkedQueue<EvaluationResult> queue, int howMany) throws IOException {
+  private <T extends EvaluationResult> void flush(ConcurrentLinkedQueue<T> queue, int howMany) throws IOException {
     int numberWritten = 0;
-    EvaluationResult currentResult = queue.poll();
+    T currentResult = queue.poll();
     while (currentResult != null && (numberWritten < howMany)) {
       write(currentResult);
       numberWritten++;
@@ -156,9 +164,9 @@ public abstract class AbstractTresholdResultAccumulator implements ResultAccumul
   /**
    * Flush all remaining content of the queue to the file.
    */
-  private void flushAll(ConcurrentLinkedQueue<EvaluationResult> queue) {
-    Iterator<EvaluationResult> queueIterator = queue.iterator();
-    EvaluationResult currentResult = null;
+  private <T extends EvaluationResult> void flushAll(ConcurrentLinkedQueue<T> queue) {
+    Iterator<T> queueIterator = queue.iterator();
+    T currentResult = null;
     try {
       while (queueIterator.hasNext()) {
         currentResult = queueIterator.next();
