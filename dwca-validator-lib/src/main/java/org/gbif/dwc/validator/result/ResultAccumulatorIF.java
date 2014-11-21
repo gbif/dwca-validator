@@ -1,5 +1,6 @@
 package org.gbif.dwc.validator.result;
 
+import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 /**
@@ -15,10 +16,20 @@ public interface ResultAccumulatorIF {
   /**
    * Append ValidationResult to current results.
    * 
-   * @param result
+   * @param validation result
    * @return
+   * @throws ResultAccumulationException
    */
-  boolean accumulate(ValidationResult result);
+  boolean accumulate(ValidationResult result) throws ResultAccumulationException;
+
+  /**
+   * Append AggregationResult to current results.
+   * 
+   * @param aggregation result
+   * @return
+   * @throws ResultAccumulationException
+   */
+  boolean accumulate(AggregationResult<?> result) throws ResultAccumulationException;
 
   /**
    * Fallback method, append result to current results.
@@ -34,10 +45,17 @@ public interface ResultAccumulatorIF {
   void close();
 
   /**
-   * Get the total of result accumulated by this accumulator.
+   * Get the total of ValidationResult accumulated by this accumulator.
    * 
    * @return count
    */
-  int getCount();
+  int getValidationResultCount();
+
+  /**
+   * Get the total of AggregationResult accumulated by this accumulator.
+   * 
+   * @return count
+   */
+  int getAggregationResultCount();
 
 }

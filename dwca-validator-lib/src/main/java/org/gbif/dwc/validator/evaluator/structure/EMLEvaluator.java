@@ -3,6 +3,7 @@ package org.gbif.dwc.validator.evaluator.structure;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
+import org.gbif.dwc.validator.result.ResultAccumulationException;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.type.StructureValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
@@ -31,7 +32,7 @@ public class EMLEvaluator {
   // TODO replace with new annotation like @StructureEvaluator
   private static final String key = "EMLEvaluator";
 
-  public void doEval(File eml, ResultAccumulatorIF result) {
+  public void doEval(File eml, ResultAccumulatorIF result) throws ResultAccumulationException {
     handleEval(eml, result);
   }
 
@@ -40,7 +41,7 @@ public class EMLEvaluator {
     return src;
   }
 
-  protected void handleEval(File eml, ResultAccumulatorIF result) {
+  protected void handleEval(File eml, ResultAccumulatorIF result) throws ResultAccumulationException {
 
     if (eml == null || !eml.exists()) {
       result.accumulate(new ValidationResult("EML", key, EvaluationContext.STRUCTURE, new ValidationResultElement(

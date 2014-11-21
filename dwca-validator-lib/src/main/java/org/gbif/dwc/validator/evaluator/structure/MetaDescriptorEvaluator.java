@@ -3,6 +3,7 @@ package org.gbif.dwc.validator.evaluator.structure;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
+import org.gbif.dwc.validator.result.ResultAccumulationException;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.type.StructureValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
@@ -53,11 +54,11 @@ public class MetaDescriptorEvaluator {
     }
   }
 
-  public void doEval(File metaXML, ResultAccumulatorIF result) {
+  public void doEval(File metaXML, ResultAccumulatorIF result) throws ResultAccumulationException {
     handleEval(metaXML, result);
   }
 
-  protected void handleEval(File metaXML, ResultAccumulatorIF result) {
+  protected void handleEval(File metaXML, ResultAccumulatorIF result) throws ResultAccumulationException {
 
     if (metaXML == null || !metaXML.exists()) {
       result.accumulate(new ValidationResult("meta XML", key, EvaluationContext.STRUCTURE, new ValidationResultElement(

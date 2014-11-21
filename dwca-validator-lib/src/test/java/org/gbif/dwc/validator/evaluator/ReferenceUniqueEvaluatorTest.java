@@ -7,7 +7,8 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
+import org.gbif.dwc.validator.result.ResultAccumulationException;
+import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 
 import java.io.IOException;
@@ -56,6 +57,8 @@ public class ReferenceUniqueEvaluatorTest {
       referenceEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
+    } catch (ResultAccumulationException e) {
+      e.printStackTrace();
     }
     assertTrue(resultAccumulator.getValidationResultList().isEmpty());
   }
@@ -75,6 +78,8 @@ public class ReferenceUniqueEvaluatorTest {
       referenceEvaluator.handlePostIterate(resultAccumulator);
       referenceEvaluator.close();
     } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ResultAccumulationException e) {
       e.printStackTrace();
     }
     assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "4",
@@ -98,6 +103,8 @@ public class ReferenceUniqueEvaluatorTest {
       referenceEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
+    } catch (ResultAccumulationException e) {
+      e.printStackTrace();
     }
     assertTrue(resultAccumulator.getValidationResultList().isEmpty());
   }
@@ -118,6 +125,8 @@ public class ReferenceUniqueEvaluatorTest {
       referenceEvaluator.handlePostIterate(resultAccumulator);
       referenceEvaluator.close();
     } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ResultAccumulationException e) {
       e.printStackTrace();
     }
     assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "5",

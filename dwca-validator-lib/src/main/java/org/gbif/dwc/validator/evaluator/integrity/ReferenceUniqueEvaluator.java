@@ -9,6 +9,7 @@ import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.evaluator.configuration.ReferenceUniqueEvaluatorConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
+import org.gbif.dwc.validator.result.ResultAccumulationException;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
@@ -143,8 +144,10 @@ class ReferenceUniqueEvaluator implements StatefulRecordEvaluator {
    * @param rowType
    * @param diffFile
    * @param resultAccumulator
+   * @throws ResultAccumulationException
    */
-  private void recordBrokenLinks(String rowType, File diffFile, ResultAccumulatorIF resultAccumulator) {
+  private void recordBrokenLinks(String rowType, File diffFile, ResultAccumulatorIF resultAccumulator)
+    throws ResultAccumulationException {
 
     BufferedReader br = null;
     try {
@@ -224,7 +227,7 @@ class ReferenceUniqueEvaluator implements StatefulRecordEvaluator {
   }
 
   @Override
-  public void handlePostIterate(ResultAccumulatorIF resultAccumulator) {
+  public void handlePostIterate(ResultAccumulatorIF resultAccumulator) throws ResultAccumulationException {
     String sortedFileName, diffFileName;
     File sortedValueFile, diffFile;
     ToBeMovedFileUtils tbmFu = new ToBeMovedFileUtils();

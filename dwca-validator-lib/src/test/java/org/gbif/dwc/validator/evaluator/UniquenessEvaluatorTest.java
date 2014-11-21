@@ -9,7 +9,8 @@ import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.evaluator.integrity.UniquenessEvaluatorBuilder;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
+import org.gbif.dwc.validator.result.ResultAccumulationException;
+import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 
 import java.io.IOException;
@@ -57,6 +58,9 @@ public class UniquenessEvaluatorTest {
     } catch (IOException e) {
       e.printStackTrace();
       fail();
+    } catch (ResultAccumulationException e) {
+      e.printStackTrace();
+      fail();
     }
 
     assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
@@ -77,6 +81,9 @@ public class UniquenessEvaluatorTest {
       valueEvaluator.handlePostIterate(resultAccumulator);
       valueEvaluator.close();
     } catch (IOException e) {
+      e.printStackTrace();
+      fail();
+    } catch (ResultAccumulationException e) {
       e.printStackTrace();
       fail();
     }
@@ -103,6 +110,9 @@ public class UniquenessEvaluatorTest {
     } catch (IOException e) {
       e.printStackTrace();
       fail();
+    } catch (ResultAccumulationException e) {
+      e.printStackTrace();
+      fail();
     }
     // remember that the id in UniquenessEvaluator will be catalogNumber
     assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
@@ -122,6 +132,9 @@ public class UniquenessEvaluatorTest {
       valueEvaluator.handlePostIterate(resultAccumulator);
       valueEvaluator.close();
     } catch (IOException e) {
+      e.printStackTrace();
+      fail();
+    } catch (ResultAccumulationException e) {
       e.printStackTrace();
       fail();
     }

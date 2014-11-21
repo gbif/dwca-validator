@@ -1,7 +1,9 @@
 package org.gbif.dwc.validator.result.accumulator;
 
+import org.gbif.dwc.validator.result.EvaluationResult;
+import org.gbif.dwc.validator.result.ResultAccumulationException;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
-import org.gbif.dwc.validator.result.impl.ThresholdResultAccumulator;
+import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 import java.io.IOException;
@@ -21,22 +23,34 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractTresholdResultAccumulator implements ResultAccumulatorIF {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ThresholdResultAccumulator.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTresholdResultAccumulator.class);
   protected static final int DEFAULT_THRESHOLD = 1000;
-  private final ConcurrentLinkedQueue<ValidationResult> queue;
+
+  private final boolean recordValidationResult;
+  private final boolean recordAggregationResult;
+
+  private final ConcurrentLinkedQueue<EvaluationResult> validationQueue;
+  private final ConcurrentLinkedQueue<EvaluationResult> aggregationQueue;
 
   private final int threshold;
-  private AtomicInteger count = new AtomicInteger();
+  private final AtomicInteger validationCount, aggregationCount;
   private final AtomicBoolean flushing = new AtomicBoolean();
 
-  public AbstractTresholdResultAccumulator() {
-    this(DEFAULT_THRESHOLD);
+  protected AbstractTresholdResultAccumulator(boolean recordValidationResult, boolean recordAggregationResult) {
+    this(recordValidationResult, recordAggregationResult, DEFAULT_THRESHOLD);
   }
 
-  public AbstractTresholdResultAccumulator(int threshold) {
+  protected AbstractTresholdResultAccumulator(boolean recordValidationResult, boolean recordAggregationResult,
+    int threshold) {
+
+    this.recordValidationResult = recordValidationResult;
+    this.recordAggregationResult = recordAggregationResult;
     this.threshold = threshold;
-    queue = new ConcurrentLinkedQueue<ValidationResult>();
-    count = new AtomicInteger(0);
+
+    validationQueue = new ConcurrentLinkedQueue<EvaluationResult>();
+    aggregationQueue = new ConcurrentLinkedQueue<EvaluationResult>();
+    validationCount = new AtomicInteger(0);
+    aggregationCount = new AtomicInteger(0);
   }
 
   /**
@@ -44,23 +58,41 @@ public abstract class AbstractTresholdResultAccumulator implements ResultAccumul
    * 
    * @param result
    * @return
+   * @throws ResultAccumulationException
    */
   @Override
-  public boolean accumulate(ValidationResult result) {
-    queue.add(result);
+  public boolean accumulate(ValidationResult result) throws ResultAccumulationException {
+    if (!recordValidationResult) {
+      throw new ResultAccumulationException("This ResultAccumulator was not configured to record ValidationResult");
+    }
+    validationQueue.add(result);
 
-    if (count.incrementAndGet() == threshold && flushing.compareAndSet(false, true)) {
-      flush(threshold);
+    if (validationCount.incrementAndGet() == threshold && flushing.compareAndSet(false, true)) {
+      try {
+        flush(validationQueue, threshold);
+      } catch (IOException ioEx) {
+        throw new ResultAccumulationException(ioEx);
+      }
     }
     return true;
   }
 
-  /**
-   * Open the underlying writer used to write results.
-   * 
-   * @throws IOException
-   */
-  protected abstract void openWriter() throws IOException;
+  @Override
+  public boolean accumulate(AggregationResult<?> result) throws ResultAccumulationException {
+    if (!recordAggregationResult) {
+      throw new ResultAccumulationException("This ResultAccumulator was not configured to record AggregationResult");
+    }
+    aggregationQueue.add(result);
+
+    if (aggregationCount.incrementAndGet() == threshold && flushing.compareAndSet(false, true)) {
+      try {
+        flush(aggregationQueue, threshold);
+      } catch (IOException ioEx) {
+        throw new ResultAccumulationException(ioEx);
+      }
+    }
+    return true;
+  }
 
   /**
    * Close the underlying writer used to write results.
@@ -70,16 +102,33 @@ public abstract class AbstractTresholdResultAccumulator implements ResultAccumul
   protected abstract void closeWriter() throws IOException;
 
   /**
-   * Write a ValidationResult when the threshold is reached.
+   * Write a ValidationResult.
    * 
    * @param currentResult
    * @throws IOException
    */
   protected abstract void write(ValidationResult currentResult) throws IOException;
 
+  /**
+   * Write a ValidationResult.
+   * 
+   * @param currentResult
+   * @throws IOException
+   */
+  protected abstract void write(AggregationResult<?> currentResult) throws IOException;
+
+  /**
+   * Fallback write method
+   * 
+   * @param evaluationResult
+   * @throws IOException
+   */
+  protected abstract void write(EvaluationResult evaluationResult) throws IOException;
+
   @Override
   public void close() {
-    flushAll();
+    flushAll(validationQueue);
+    flushAll(aggregationQueue);
     try {
       closeWriter();
     } catch (IOException ioEx) {
@@ -91,18 +140,15 @@ public abstract class AbstractTresholdResultAccumulator implements ResultAccumul
    * Flush a specific number of records to the file.
    * 
    * @param howMany
+   * @throws IOException
    */
-  private void flush(int howMany) {
+  private void flush(ConcurrentLinkedQueue<EvaluationResult> queue, int howMany) throws IOException {
     int numberWritten = 0;
-    ValidationResult currentResult = queue.poll();
-    try {
-      while (currentResult != null && (numberWritten < howMany)) {
-        write(currentResult);
-        numberWritten++;
-        currentResult = queue.poll();
-      }
-    } catch (IOException ioEx) {
-      LOGGER.error("Can't flush to file using FileWriter", ioEx);
+    EvaluationResult currentResult = queue.poll();
+    while (currentResult != null && (numberWritten < howMany)) {
+      write(currentResult);
+      numberWritten++;
+      currentResult = queue.poll();
     }
     flushing.set(false);
   }
@@ -110,9 +156,9 @@ public abstract class AbstractTresholdResultAccumulator implements ResultAccumul
   /**
    * Flush all remaining content of the queue to the file.
    */
-  private void flushAll() {
-    Iterator<ValidationResult> queueIterator = queue.iterator();
-    ValidationResult currentResult = null;
+  private void flushAll(ConcurrentLinkedQueue<EvaluationResult> queue) {
+    Iterator<EvaluationResult> queueIterator = queue.iterator();
+    EvaluationResult currentResult = null;
     try {
       while (queueIterator.hasNext()) {
         currentResult = queueIterator.next();
@@ -125,8 +171,13 @@ public abstract class AbstractTresholdResultAccumulator implements ResultAccumul
   }
 
   @Override
-  public int getCount() {
-    return count.get();
+  public int getValidationResultCount() {
+    return validationCount.get();
+  }
+
+  @Override
+  public int getAggregationResultCount() {
+    return aggregationCount.get();
   }
 
 }

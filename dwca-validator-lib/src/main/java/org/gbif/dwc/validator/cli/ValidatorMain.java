@@ -106,12 +106,7 @@ public class ValidatorMain {
     }
 
     CSVValidationResultAccumulator resultAccumulator = null;
-    try {
-      resultAccumulator = new CSVValidationResultAccumulator(outputFile.getAbsolutePath());
-    } catch (IOException ioEx) {
-      System.out.println(ioEx.getMessage());
-      LOGGER.error("Can't create CSV result accumulator", ioEx);
-    }
+    resultAccumulator = new CSVValidationResultAccumulator(outputFile.getAbsolutePath());
 
     long startTime = System.currentTimeMillis();
     System.out.println("Starting validation ... ");

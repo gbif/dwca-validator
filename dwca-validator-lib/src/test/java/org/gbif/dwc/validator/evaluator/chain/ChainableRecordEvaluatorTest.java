@@ -8,7 +8,8 @@ import org.gbif.dwc.validator.evaluator.IntegrityEvaluators;
 import org.gbif.dwc.validator.evaluator.TermsValidators;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
+import org.gbif.dwc.validator.result.ResultAccumulationException;
+import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRuleBuilder;
 
@@ -18,6 +19,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Test the ChainableRecordEvaluator wrapper.
@@ -53,11 +55,16 @@ public class ChainableRecordEvaluatorTest {
     Record rec3 = buildMockRecord("3", "30", "40");
     Record rec4 = buildMockRecord("3", "30", "40");
 
-    chain.doEval(rec1, EvaluationContext.CORE, resultAccumulator);
-    chain.doEval(rec2, EvaluationContext.CORE, resultAccumulator);
-    chain.doEval(rec3, EvaluationContext.CORE, resultAccumulator);
-    chain.doEval(rec4, EvaluationContext.CORE, resultAccumulator);
-    chain.postIterate(resultAccumulator);
+    try {
+      chain.doEval(rec1, EvaluationContext.CORE, resultAccumulator);
+      chain.doEval(rec2, EvaluationContext.CORE, resultAccumulator);
+      chain.doEval(rec3, EvaluationContext.CORE, resultAccumulator);
+      chain.doEval(rec4, EvaluationContext.CORE, resultAccumulator);
+      chain.postIterate(resultAccumulator);
+    } catch (ResultAccumulationException e) {
+      e.printStackTrace();
+      fail();
+    }
 
     // Fist record should be valid
     assertFalse(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",

@@ -15,7 +15,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * 
  * @author cgendreau
  */
-public class ValidationResult implements EvaluationResult<ValidationResultElement> {
+public class ValidationResult implements EvaluationResult {
 
   private final String id;
   private final EvaluationContext evaluationContext;
@@ -82,7 +82,6 @@ public class ValidationResult implements EvaluationResult<ValidationResultElemen
     return id;
   }
 
-  @Override
   public List<ValidationResultElement> getResults() {
     return results;
   }

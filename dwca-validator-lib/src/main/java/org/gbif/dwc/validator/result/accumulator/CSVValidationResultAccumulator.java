@@ -1,6 +1,8 @@
 package org.gbif.dwc.validator.result.accumulator;
 
 import org.gbif.dwc.validator.config.ValidatorConfig;
+import org.gbif.dwc.validator.result.EvaluationResult;
+import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
@@ -9,6 +11,7 @@ import java.io.IOException;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Simple ResultAccumulator implementation to save results in CSV file.
@@ -18,33 +21,54 @@ import org.apache.commons.csv.CSVPrinter;
  */
 public class CSVValidationResultAccumulator extends AbstractTresholdResultAccumulator {
 
-  private CSVPrinter csvPrinter;
-  private final String filePath;
+  private CSVPrinter validationCsvPrinter;
+  private CSVPrinter aggregationCsvPrinter;
+  private final String validationResultFilePath;
+  private final String aggregationResultFilePath;
 
-  public CSVValidationResultAccumulator(String filePath) throws IOException {
-    super();
-    this.filePath = filePath;
-
-    openWriter();
+  /**
+   * Only Validation results will be recorded.
+   * 
+   * @param validationResultFilePath
+   */
+  public CSVValidationResultAccumulator(String validationResultFilePath) {
+    this(validationResultFilePath, null);
   }
 
-  @Override
-  protected void openWriter() throws IOException {
-    csvPrinter = new CSVPrinter(new FileWriter(filePath), CSVFormat.DEFAULT);
-    printHeaders();
+  public CSVValidationResultAccumulator(String validationResultFilePath, String aggregationResultFilePath) {
+    super(StringUtils.isNotBlank(validationResultFilePath), StringUtils.isNotBlank(aggregationResultFilePath));
+    this.validationResultFilePath = validationResultFilePath;
+    this.aggregationResultFilePath = aggregationResultFilePath;
+  }
+
+  protected void openValidationCsvPrinter() throws IOException {
+    validationCsvPrinter = new CSVPrinter(new FileWriter(validationResultFilePath), CSVFormat.DEFAULT);
+    printValidationResultHeaders();
+  }
+
+  protected void openAggregationCsvPrinter() throws IOException {
+    aggregationCsvPrinter = new CSVPrinter(new FileWriter(aggregationResultFilePath), CSVFormat.DEFAULT);
+    printAggregationResultHeaders();
   }
 
   @Override
   protected void closeWriter() throws IOException {
-    csvPrinter.flush();
-    csvPrinter.close();
+
+    if (validationCsvPrinter != null) {
+      validationCsvPrinter.flush();
+      validationCsvPrinter.close();
+    }
+    if (aggregationCsvPrinter != null) {
+      aggregationCsvPrinter.flush();
+      aggregationCsvPrinter.close();
+    }
   }
 
   /**
-   * Print headers of the CSV file
+   * Print headers of the validation result CSV file
    */
-  private void printHeaders() throws IOException {
-    csvPrinter.printRecord(ValidatorConfig.getLocalizedString("result.header.id"),
+  private void printValidationResultHeaders() throws IOException {
+    validationCsvPrinter.printRecord(ValidatorConfig.getLocalizedString("result.header.id"),
       ValidatorConfig.getLocalizedString("result.header.evaluator"),
       ValidatorConfig.getLocalizedString("result.header.context"),
       ValidatorConfig.getLocalizedString("result.header.context_details"),
@@ -53,13 +77,46 @@ public class CSVValidationResultAccumulator extends AbstractTresholdResultAccumu
       ValidatorConfig.getLocalizedString("result.header.explanation"));
   }
 
+  private void printAggregationResultHeaders() throws IOException {
+    aggregationCsvPrinter.printRecord(ValidatorConfig.getLocalizedString("result.header.id"),
+      ValidatorConfig.getLocalizedString("result.header.evaluator"),
+      ValidatorConfig.getLocalizedString("result.header.context"),
+      ValidatorConfig.getLocalizedString("result.header.result"));
+  }
+
   @Override
   protected void write(ValidationResult currentResult) throws IOException {
+
+    if (validationCsvPrinter == null) {
+      openValidationCsvPrinter();
+    }
+
     for (ValidationResultElement vre : currentResult.getResults()) {
-      csvPrinter.printRecord(currentResult.getId(), currentResult.getEvaluatorKey(),
+      validationCsvPrinter.printRecord(currentResult.getId(), currentResult.getEvaluatorKey(),
         currentResult.getEvaluationContext(), currentResult.getEvaluationContextDetails(),
         ValidatorConfig.getLocalizedString(vre.getType().getDescriptionKey()), vre.getResult(), vre.getExplanation());
     }
+  }
+
+
+  @Override
+  protected void write(AggregationResult<?> currentResult) throws IOException {
+    if (validationResultFilePath == null) {
+      return;
+    }
+
+    if (aggregationCsvPrinter == null) {
+      openAggregationCsvPrinter();
+    }
+
+    aggregationCsvPrinter.printRecord(currentResult.getId(), currentResult.getEvaluatorKey(),
+      currentResult.getEvaluationContext(), currentResult.getResult());
+  }
+
+
+  @Override
+  protected void write(EvaluationResult evaluationResult) throws IOException {
+
   }
 
 }

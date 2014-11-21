@@ -1,8 +1,8 @@
 package org.gbif.dwc.validator.result;
 
 import org.gbif.dwc.validator.mock.MockDataGenerator;
-import org.gbif.dwc.validator.result.impl.FileWriterResultAccumulator;
-import org.gbif.dwc.validator.result.impl.ThresholdResultAccumulator;
+import org.gbif.dwc.validator.result.accumulator.CSVValidationResultAccumulator;
+import org.gbif.dwc.validator.result.accumulator.FileWriterResultAccumulator;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
@@ -18,6 +18,8 @@ import java.util.concurrent.Future;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.fail;
 
 /**
  * Test FileWriterResultAccumulator in a multi-thread context.
@@ -66,9 +68,14 @@ public class ResultAccumulatorMultiThreadTest {
         public Boolean call() {
           boolean success = true;
           for (String currDummyId : dummyIdList) {
-            success =
-              (success && resultAccumulator.accumulate(new ValidationResult(currDummyId, "testResultAccumulator",
-                EvaluationContext.CORE, "", new ArrayList<ValidationResultElement>())));
+            try {
+              success =
+                (success && resultAccumulator.accumulate(new ValidationResult(currDummyId, "testResultAccumulator",
+                  EvaluationContext.CORE, "", new ArrayList<ValidationResultElement>())));
+            } catch (ResultAccumulationException e) {
+              e.printStackTrace();
+              fail();
+            }
           }
           return success;
         }
@@ -83,7 +90,7 @@ public class ResultAccumulatorMultiThreadTest {
     resultAccumulator.close();
     // Validate
     Assert.assertEquals(futures.size(), threadCount);
-    Assert.assertEquals(threadCount * NUMBER_OF_DATA, resultAccumulator.getCount());
+    Assert.assertEquals(threadCount * NUMBER_OF_DATA, resultAccumulator.getValidationResultCount());
   }
 
   @Test
@@ -91,11 +98,8 @@ public class ResultAccumulatorMultiThreadTest {
     long t = System.currentTimeMillis();
     ResultAccumulatorIF ra = null;
     String fileName = "test_ThresholdResultAccumulator16Threads.txt";
-    try {
-      ra = new ThresholdResultAccumulator(fileName, 1000);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+
+    ra = new CSVValidationResultAccumulator(fileName);
 
     testThread(ra, 16);
     System.out.println("ThresholdResultAccumulator took " + (System.currentTimeMillis() - t) + " ms");

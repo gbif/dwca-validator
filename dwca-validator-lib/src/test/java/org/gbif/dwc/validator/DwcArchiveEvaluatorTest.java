@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator;
 
-import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
+import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,6 @@ import java.net.URISyntaxException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 

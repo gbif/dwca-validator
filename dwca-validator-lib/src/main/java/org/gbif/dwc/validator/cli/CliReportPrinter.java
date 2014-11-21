@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.cli;
 
-import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
+import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
@@ -19,7 +19,7 @@ public class CliReportPrinter {
    */
   public static void printReport(InMemoryResultAccumulator resultAccumulator) {
     // Print results
-    if (resultAccumulator.getCount() > 0) {
+    if (resultAccumulator.getValidationResultCount() > 0) {
       System.out.println("The Dwc-A file looks invalid according to current default validation chain:");
       System.out.println("Validation chain output(s):");
       for (ValidationResult vr : resultAccumulator.getValidationResultList()) {

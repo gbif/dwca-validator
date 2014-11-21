@@ -11,6 +11,7 @@ import org.gbif.dwc.validator.evaluator.structure.EMLEvaluator;
 import org.gbif.dwc.validator.evaluator.structure.MetaDescriptorEvaluator;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
+import org.gbif.dwc.validator.result.ResultAccumulationException;
 import org.gbif.dwc.validator.result.ResultAccumulatorIF;
 import org.gbif.dwc.validator.result.type.StructureValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
@@ -50,10 +51,17 @@ public class DwcArchiveEvaluator implements FileEvaluator {
    * @param message
    * @return
    */
-  private ValidationResult createCantOpenArchiveValidationResult(File file, String message) {
-    return new ValidationResult(file.getName(), "ArchiveStructure", EvaluationContext.STRUCTURE,
-      new ValidationResultElement(StructureValidationType.ARCHIVE_STRUCTURE, Result.ERROR,
-        ValidatorConfig.getLocalizedString("evaluator.structure.archive.open", file.getAbsolutePath(), message)));
+  private void recordCantOpenArchiveValidationResult(ResultAccumulatorIF resultAccumulator, File file, String message) {
+    ValidationResult vr =
+      new ValidationResult(file.getName(), "ArchiveStructure", EvaluationContext.STRUCTURE,
+        new ValidationResultElement(StructureValidationType.ARCHIVE_STRUCTURE, Result.ERROR,
+          ValidatorConfig.getLocalizedString("evaluator.structure.archive.open", file.getAbsolutePath(), message)));
+
+    try {
+      resultAccumulator.accumulate(vr);
+    } catch (ResultAccumulationException e) {
+      LOGGER.error("Issue with the ResultAccumulator", e);
+    }
   }
 
   public void setWorkingFolder(String workingFolder) {
@@ -101,10 +109,12 @@ public class DwcArchiveEvaluator implements FileEvaluator {
       evaluationChainHead.cleanup();
     } catch (UnsupportedArchiveException e) {
       LOGGER.error("Can't open archive", e);
-      resultAccumulator.accumulate(createCantOpenArchiveValidationResult(dwcaFile, e.getMessage()));
+      recordCantOpenArchiveValidationResult(resultAccumulator, dwcaFile, e.getMessage());
     } catch (IOException e) {
       LOGGER.error("Can't open archive", e);
-      resultAccumulator.accumulate(createCantOpenArchiveValidationResult(dwcaFile, e.getMessage()));
+      recordCantOpenArchiveValidationResult(resultAccumulator, dwcaFile, e.getMessage());
+    } catch (ResultAccumulationException e) {
+      LOGGER.error("Error wile accumulating results", e);
     }
 
     if (isGeneratedFolder) {
@@ -123,9 +133,10 @@ public class DwcArchiveEvaluator implements FileEvaluator {
    * @param evaluationContext
    * @param evaluatorChain head of the evaluators chain
    * @param resultAccumulator
+   * @throws ResultAccumulationException
    */
   private void inspectDwcComponent(ArchiveFile dwcaComponent, EvaluationContext evaluationContext,
-    ChainableRecordEvaluator evaluatorChain, ResultAccumulatorIF resultAccumulator) {
+    ChainableRecordEvaluator evaluatorChain, ResultAccumulatorIF resultAccumulator) throws ResultAccumulationException {
 
     // In theory, we could optimize the validation if we realize the coreId is a term used in the chain
     // but it could also be very error prone.
@@ -137,12 +148,12 @@ public class DwcArchiveEvaluator implements FileEvaluator {
     }
   }
 
-  public void inspectEML(File eml, ResultAccumulatorIF resultAccumulator) {
+  public void inspectEML(File eml, ResultAccumulatorIF resultAccumulator) throws ResultAccumulationException {
     EMLEvaluator validator = new EMLEvaluator();
     validator.doEval(eml, resultAccumulator);
   }
 
-  public void inspectMetaXML(File metaXML, ResultAccumulatorIF resultAccumulator) {
+  public void inspectMetaXML(File metaXML, ResultAccumulatorIF resultAccumulator) throws ResultAccumulationException {
     MetaDescriptorEvaluator validator = new MetaDescriptorEvaluator();
     validator.doEval(metaXML, resultAccumulator);
   }

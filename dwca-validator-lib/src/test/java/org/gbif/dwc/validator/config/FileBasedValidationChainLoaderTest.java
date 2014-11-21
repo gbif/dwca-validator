@@ -8,7 +8,8 @@ import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
+import org.gbif.dwc.validator.result.ResultAccumulationException;
+import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 
 import java.io.File;
@@ -64,10 +65,16 @@ public class FileBasedValidationChainLoaderTest {
 
       Record testRecord = buildMockRecord("2");
       Record testRecordDeplicate = buildMockRecord("2");
-      chainHead.doEval(testRecord, EvaluationContext.CORE, resultAccumulator);
-      chainHead.doEval(testRecordDeplicate, EvaluationContext.CORE, resultAccumulator);
+      try {
+        chainHead.doEval(testRecord, EvaluationContext.CORE, resultAccumulator);
+        chainHead.doEval(testRecordDeplicate, EvaluationContext.CORE, resultAccumulator);
 
-      chainHead.postIterate(resultAccumulator);
+        chainHead.postIterate(resultAccumulator);
+      } catch (ResultAccumulationException e) {
+        e.printStackTrace();
+        fail();
+      }
+
       chainHead.cleanup();
 
       assertTrue(TestEvaluationResultHelper.containsResultMessage(

@@ -1,8 +1,9 @@
 package org.gbif.dwc.validator.result;
 
 import org.gbif.dwc.validator.mock.MockDataGenerator;
-import org.gbif.dwc.validator.result.impl.FileWriterResultAccumulator;
-import org.gbif.dwc.validator.result.impl.ThresholdResultAccumulator;
+import org.gbif.dwc.validator.result.accumulator.CSVValidationResultAccumulator;
+import org.gbif.dwc.validator.result.accumulator.FileWriterResultAccumulator;
+import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
@@ -11,8 +12,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Test regular usage of different ResultAccumulatorIF with a single thread.
@@ -22,6 +25,22 @@ import org.junit.Test;
 public class ResultAccumulatorTest {
 
   public static final int NUMBER_OF_RECORDS = 100000;
+
+  private void testResultAccumulator(ResultAccumulatorIF fwra, List<String> dummyIdList) {
+    for (String currDummyId : dummyIdList) {
+      try {
+        fwra.accumulate(new ValidationResult(currDummyId, "testResultAccumulator", EvaluationContext.CORE, "",
+          new ArrayList<ValidationResultElement>()));
+        // also test AggregationResult
+        fwra
+          .accumulate(new AggregationResult<String>(currDummyId, "testResultAccumulator", EvaluationContext.CORE, "8"));
+      } catch (ResultAccumulationException e) {
+        e.printStackTrace();
+        fail();
+      }
+    }
+    fwra.close();
+  }
 
   @Test
   public void testFileWriterResultAccumulator() {
@@ -37,35 +56,28 @@ public class ResultAccumulatorTest {
     testResultAccumulator(fwra, dummyIdList);
     System.out.println("Using FileWriterResultAccumulator: " + (System.currentTimeMillis() - t) + " ms");
 
-    Assert.assertEquals(NUMBER_OF_RECORDS, fwra.getCount());
+    assertEquals(NUMBER_OF_RECORDS, fwra.getValidationResultCount());
+    assertEquals(NUMBER_OF_RECORDS, fwra.getAggregationResultCount());
     // clean up
     new File(fileName).delete();
-  }
-
-  private void testResultAccumulator(ResultAccumulatorIF fwra, List<String> dummyIdList) {
-    for (String currDummyId : dummyIdList) {
-      fwra.accumulate(new ValidationResult(currDummyId, "testResultAccumulator", EvaluationContext.CORE, "",
-        new ArrayList<ValidationResultElement>()));
-    }
-    fwra.close();
   }
 
   @Test
   public void testThresholdResultAccumulator() {
     long t = System.currentTimeMillis();
-    String fileName = "test_ThresholdResultAccumulator.txt";
+    String validationResultFileName = "test_ThresholdResultAccumulator_Validation.txt";
+    String aggregationResultFileName = "test_ThresholdResultAccumulator_Aggregation.txt";
     ResultAccumulatorIF tra = null;
-    try {
-      tra = new ThresholdResultAccumulator(fileName);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+
+    tra = new CSVValidationResultAccumulator(validationResultFileName, aggregationResultFileName);
     List<String> dummyIdList = MockDataGenerator.newRandomDataList(NUMBER_OF_RECORDS, 4);
     testResultAccumulator(tra, dummyIdList);
     System.out.println("Using ThresholdResultAccumulator: " + (System.currentTimeMillis() - t) + " ms");
-    Assert.assertEquals(NUMBER_OF_RECORDS, tra.getCount());
+    assertEquals(NUMBER_OF_RECORDS, tra.getValidationResultCount());
+    assertEquals(NUMBER_OF_RECORDS, tra.getAggregationResultCount());
     // clean up
-    new File(fileName).delete();
+    new File(validationResultFileName).delete();
+    new File(aggregationResultFileName).delete();
   }
 
 }
