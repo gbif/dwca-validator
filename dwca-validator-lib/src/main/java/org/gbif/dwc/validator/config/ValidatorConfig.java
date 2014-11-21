@@ -21,6 +21,9 @@ public class ValidatorConfig {
 
   public static final String CORE_ID = "coreId";
 
+  // Used to display a message regarding the presence of an empty string
+  public static final String EMPTY_STRING_FOR_DISPLAY = "<emtpy string>";
+
   public static final String ENDLINE = System.getProperty("line.separator");
   public static final String TEXT_FILE_EXT = ".txt";
   public static final String CSV_FILE_EXT = ".csv";

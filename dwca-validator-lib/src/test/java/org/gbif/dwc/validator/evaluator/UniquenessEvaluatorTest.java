@@ -6,6 +6,7 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
+import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.evaluator.integrity.UniquenessEvaluatorBuilder;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.impl.InMemoryResultAccumulator;
@@ -61,6 +62,29 @@ public class UniquenessEvaluatorTest {
     assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
       ContentValidationType.FIELD_UNIQUENESS));
   }
+
+
+  @Test
+  public void testUniquenessEvaluatorWithEmptyString() {
+
+    InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
+
+    try {
+      StatefulRecordEvaluator valueEvaluator = UniquenessEvaluatorBuilder.builder().build();
+      valueEvaluator.handleEval(buildMockRecord("", "1"), EvaluationContext.CORE);
+      valueEvaluator.handleEval(buildMockRecord("", "2"), EvaluationContext.CORE);
+
+      valueEvaluator.handlePostIterate(resultAccumulator);
+      valueEvaluator.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+      fail();
+    }
+
+    assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(),
+      ValidatorConfig.EMPTY_STRING_FOR_DISPLAY, ContentValidationType.FIELD_UNIQUENESS));
+  }
+
 
   @Test
   public void testUniquenessEvaluatorOnAnotherTerm() {

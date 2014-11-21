@@ -163,18 +163,21 @@ class UniquenessEvaluator implements StatefulRecordEvaluator {
     // search for duplicates
     BufferedReader br = null;
     try {
-      String previousLine = "";
-      String currentLine;
+      String previousLine = null;
+      String currentLine, displayValue;
 
       br = new BufferedReader(new FileReader(sortedValueFile));
       ValidationResultElement validationResultElement = null;
       while ((currentLine = br.readLine()) != null) {
-        if (previousLine.equalsIgnoreCase(currentLine)) {
+        if (previousLine != null && previousLine.equalsIgnoreCase(currentLine)) {
+
+          displayValue = StringUtils.isBlank(currentLine) ? ValidatorConfig.EMPTY_STRING_FOR_DISPLAY : currentLine;
+
           validationResultElement =
             new ValidationResultElement(ContentValidationType.FIELD_UNIQUENESS, Result.ERROR,
-              ValidatorConfig.getLocalizedString("evaluator.uniqueness", currentLine, conceptTermString));
-          resultAccumulator.accumulate(new ValidationResult(currentLine, key, evaluationContextRestriction, StringUtils
-            .defaultString(rowTypeRestriction), validationResultElement));
+              ValidatorConfig.getLocalizedString("evaluator.uniqueness", displayValue, conceptTermString));
+          resultAccumulator.accumulate(new ValidationResult(displayValue, key, evaluationContextRestriction,
+            StringUtils.defaultString(rowTypeRestriction), validationResultElement));
         }
         previousLine = currentLine;
       }
