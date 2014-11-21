@@ -1,5 +1,6 @@
 package org.gbif.dwc.validator.result;
 
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.mock.MockDataGenerator;
 import org.gbif.dwc.validator.result.accumulator.CSVValidationResultAccumulator;
 import org.gbif.dwc.validator.result.accumulator.FileWriterResultAccumulator;
@@ -18,7 +19,6 @@ import java.util.concurrent.Future;
 
 import org.junit.Assert;
 import org.junit.Test;
-
 import static org.junit.Assert.fail;
 
 /**
@@ -33,7 +33,7 @@ public class ResultAccumulatorMultiThreadTest {
   @Test
   public void testFileWriterResultAccumulator16Threads() throws InterruptedException, ExecutionException {
     long t = System.currentTimeMillis();
-    ResultAccumulatorIF fwra = null;
+    ResultAccumulator fwra = null;
     String fileName = "test_FileWriterResultAccumulator16Threads.txt";
     try {
       fwra = new FileWriterResultAccumulator(fileName);
@@ -54,7 +54,7 @@ public class ResultAccumulatorMultiThreadTest {
    * @throws InterruptedException
    * @throws ExecutionException
    */
-  private void testThread(final ResultAccumulatorIF resultAccumulator, final int threadCount)
+  private void testThread(final ResultAccumulator resultAccumulator, final int threadCount)
     throws InterruptedException, ExecutionException {
 
     List<Callable<Boolean>> tasks = new ArrayList<Callable<Boolean>>();
@@ -96,7 +96,7 @@ public class ResultAccumulatorMultiThreadTest {
   @Test
   public void testThresholdResultAccumulator16Threads() throws InterruptedException, ExecutionException {
     long t = System.currentTimeMillis();
-    ResultAccumulatorIF ra = null;
+    ResultAccumulator ra = null;
     String fileName = "test_ThresholdResultAccumulator16Threads.txt";
 
     ra = new CSVValidationResultAccumulator(fileName);

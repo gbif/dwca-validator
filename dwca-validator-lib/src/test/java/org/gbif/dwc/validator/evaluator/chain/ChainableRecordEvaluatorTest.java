@@ -6,9 +6,10 @@ import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.evaluator.IntegrityEvaluators;
 import org.gbif.dwc.validator.evaluator.TermsValidators;
+import org.gbif.dwc.validator.exception.EvaluationException;
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.ResultAccumulationException;
 import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRuleBuilder;
@@ -62,6 +63,9 @@ public class ChainableRecordEvaluatorTest {
       chain.doEval(rec4, EvaluationContext.CORE, resultAccumulator);
       chain.postIterate(resultAccumulator);
     } catch (ResultAccumulationException e) {
+      e.printStackTrace();
+      fail();
+    } catch (EvaluationException e) {
       e.printStackTrace();
       fail();
     }

@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator;
 
-import org.gbif.dwc.validator.result.ResultAccumulatorIF;
+import org.gbif.dwc.validator.result.ResultAccumulator;
 
 import java.io.File;
 
@@ -17,5 +17,5 @@ public interface FileEvaluator {
    * @param file to validate
    * @param resultAccumulator
    */
-  void evaluateFile(File dwcaFile, ResultAccumulatorIF resultAccumulator);
+  void evaluateFile(File dwcaFile, ResultAccumulator resultAccumulator);
 }

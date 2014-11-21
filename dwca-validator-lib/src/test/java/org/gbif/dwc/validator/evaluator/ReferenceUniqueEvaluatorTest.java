@@ -6,8 +6,9 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
+import org.gbif.dwc.validator.exception.EvaluationException;
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.ResultAccumulationException;
 import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 
@@ -18,6 +19,7 @@ import java.util.List;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Test ReferentialIntegrityEvaluator with mock records.
@@ -57,8 +59,13 @@ public class ReferenceUniqueEvaluatorTest {
       referenceEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
+      fail();
     } catch (ResultAccumulationException e) {
       e.printStackTrace();
+      fail();
+    } catch (EvaluationException e) {
+      e.printStackTrace();
+      fail();
     }
     assertTrue(resultAccumulator.getValidationResultList().isEmpty());
   }
@@ -79,8 +86,13 @@ public class ReferenceUniqueEvaluatorTest {
       referenceEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
+      fail();
     } catch (ResultAccumulationException e) {
       e.printStackTrace();
+      fail();
+    } catch (EvaluationException e) {
+      e.printStackTrace();
+      fail();
     }
     assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "4",
       ContentValidationType.FIELD_REFERENTIAL_INTEGRITY));
@@ -103,8 +115,13 @@ public class ReferenceUniqueEvaluatorTest {
       referenceEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
+      fail();
     } catch (ResultAccumulationException e) {
       e.printStackTrace();
+      fail();
+    } catch (EvaluationException e) {
+      e.printStackTrace();
+      fail();
     }
     assertTrue(resultAccumulator.getValidationResultList().isEmpty());
   }
@@ -126,8 +143,13 @@ public class ReferenceUniqueEvaluatorTest {
       referenceEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
+      fail();
     } catch (ResultAccumulationException e) {
       e.printStackTrace();
+      fail();
+    } catch (EvaluationException e) {
+      e.printStackTrace();
+      fail();
     }
     assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "5",
       ContentValidationType.FIELD_REFERENTIAL_INTEGRITY));

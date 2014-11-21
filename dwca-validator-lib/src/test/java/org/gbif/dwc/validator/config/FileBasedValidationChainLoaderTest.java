@@ -7,8 +7,9 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
+import org.gbif.dwc.validator.exception.EvaluationException;
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.ResultAccumulationException;
 import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 
@@ -71,6 +72,9 @@ public class FileBasedValidationChainLoaderTest {
 
         chainHead.postIterate(resultAccumulator);
       } catch (ResultAccumulationException e) {
+        e.printStackTrace();
+        fail();
+      } catch (EvaluationException e) {
         e.printStackTrace();
         fail();
       }

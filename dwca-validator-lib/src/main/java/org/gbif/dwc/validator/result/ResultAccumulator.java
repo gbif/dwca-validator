@@ -1,5 +1,6 @@
 package org.gbif.dwc.validator.result;
 
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
@@ -11,7 +12,7 @@ import org.gbif.dwc.validator.result.validation.ValidationResult;
  * 
  * @author cgendreau
  */
-public interface ResultAccumulatorIF {
+public interface ResultAccumulator {
 
   /**
    * Append ValidationResult to current results.

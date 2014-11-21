@@ -4,7 +4,7 @@ import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.ResultAccumulatorIF;
+import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ class DistinctCountEvaluator implements StatefulRecordEvaluator {
   }
 
   @Override
-  public void handlePostIterate(ResultAccumulatorIF resultAccumulator) {
+  public void handlePostIterate(ResultAccumulator resultAccumulator) {
     // TODO add results to resultAccumulator
   }
 

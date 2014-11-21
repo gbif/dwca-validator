@@ -1,4 +1,4 @@
-package org.gbif.dwc.validator.result;
+package org.gbif.dwc.validator.exception;
 
 /**
  * Exception wrapper for ResultAccumulator.
@@ -9,11 +9,15 @@ public class ResultAccumulationException extends Exception {
 
   private static final long serialVersionUID = 517038264642063106L;
 
-  public ResultAccumulationException(Throwable ex) {
-    super(ex);
+  public ResultAccumulationException(Throwable cause) {
+    super(cause);
   }
 
   public ResultAccumulationException(String message) {
     super(message);
+  }
+
+  public ResultAccumulationException(String message, Throwable cause) {
+    super(message, cause);
   }
 }

@@ -1,5 +1,6 @@
 package org.gbif.dwc.validator.result;
 
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.mock.MockDataGenerator;
 import org.gbif.dwc.validator.result.accumulator.CSVValidationResultAccumulator;
 import org.gbif.dwc.validator.result.accumulator.FileWriterResultAccumulator;
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -26,7 +26,7 @@ public class ResultAccumulatorTest {
 
   public static final int NUMBER_OF_RECORDS = 100000;
 
-  private void testResultAccumulator(ResultAccumulatorIF fwra, List<String> dummyIdList) {
+  private void testResultAccumulator(ResultAccumulator fwra, List<String> dummyIdList) {
     for (String currDummyId : dummyIdList) {
       try {
         fwra.accumulate(new ValidationResult(currDummyId, "testResultAccumulator", EvaluationContext.CORE, "",
@@ -46,7 +46,7 @@ public class ResultAccumulatorTest {
   public void testFileWriterResultAccumulator() {
     long t = System.currentTimeMillis();
     String fileName = "test_FileWriterResultAccumulator.txt";
-    ResultAccumulatorIF fwra = null;
+    ResultAccumulator fwra = null;
     try {
       fwra = new FileWriterResultAccumulator(fileName);
     } catch (IOException e) {
@@ -67,7 +67,7 @@ public class ResultAccumulatorTest {
     long t = System.currentTimeMillis();
     String validationResultFileName = "test_ThresholdResultAccumulator_Validation.txt";
     String aggregationResultFileName = "test_ThresholdResultAccumulator_Aggregation.txt";
-    ResultAccumulatorIF tra = null;
+    ResultAccumulator tra = null;
 
     tra = new CSVValidationResultAccumulator(validationResultFileName, aggregationResultFileName);
     List<String> dummyIdList = MockDataGenerator.newRandomDataList(NUMBER_OF_RECORDS, 4);

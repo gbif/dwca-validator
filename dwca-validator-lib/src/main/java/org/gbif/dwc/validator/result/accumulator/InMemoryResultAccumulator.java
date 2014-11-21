@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.result.accumulator;
 
-import org.gbif.dwc.validator.result.ResultAccumulatorIF;
+import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * 
  * @author cgendreau
  */
-public class InMemoryResultAccumulator implements ResultAccumulatorIF {
+public class InMemoryResultAccumulator implements ResultAccumulator {
 
   public static final int MAX_RESULT = 100;
   private final List<ValidationResult> validationResultList;

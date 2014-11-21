@@ -77,9 +77,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <interface id="8" language="java" name="org.gbif.dwc.validator.result.ResultAccumulatorIF" 
-    project="dwca-validator-lib" 
-    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/result/ResultAccumulatorIF.java" binary="false" 
+  <interface id="8" language="java" name="org.gbif.dwc.validator.result.ResultAccumulator" project="dwca-validator-lib" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/result/ResultAccumulator.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-25" y="228"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 

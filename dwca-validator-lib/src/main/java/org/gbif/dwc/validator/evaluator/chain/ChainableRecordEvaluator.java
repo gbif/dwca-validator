@@ -3,9 +3,10 @@ package org.gbif.dwc.validator.evaluator.chain;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator;
+import org.gbif.dwc.validator.exception.EvaluationException;
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.ResultAccumulationException;
-import org.gbif.dwc.validator.result.ResultAccumulatorIF;
+import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 import java.io.IOException;
@@ -55,7 +56,7 @@ public class ChainableRecordEvaluator {
    * @param resultAccumulator
    * @throws ResultAccumulationException
    */
-  public void doEval(Record record, EvaluationContext evaluationContext, ResultAccumulatorIF resultAccumulator)
+  public void doEval(Record record, EvaluationContext evaluationContext, ResultAccumulator resultAccumulator)
     throws ResultAccumulationException {
     Optional<ValidationResult> result = recordEvaluator.handleEval(record, evaluationContext);
     if (result.isPresent()) {
@@ -70,9 +71,10 @@ public class ChainableRecordEvaluator {
    * Do postIterate and call next element in the chain (if there is one).
    * 
    * @param resultAccumulator
+   * @throws EvaluationException
    * @throws ResultAccumulationException
    */
-  public void postIterate(ResultAccumulatorIF resultAccumulator) throws ResultAccumulationException {
+  public void postIterate(ResultAccumulator resultAccumulator) throws EvaluationException, ResultAccumulationException {
     if (recordEvaluator instanceof StatefulRecordEvaluator) {
       ((StatefulRecordEvaluator) recordEvaluator).handlePostIterate(resultAccumulator);
     }

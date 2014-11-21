@@ -1,7 +1,8 @@
 package org.gbif.dwc.validator.evaluator;
 
-import org.gbif.dwc.validator.result.ResultAccumulationException;
-import org.gbif.dwc.validator.result.ResultAccumulatorIF;
+import org.gbif.dwc.validator.exception.EvaluationException;
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
+import org.gbif.dwc.validator.result.ResultAccumulator;
 
 import java.io.Closeable;
 
@@ -16,8 +17,9 @@ public interface StatefulRecordEvaluator extends RecordEvaluator, Closeable {
    * Called after rows iteration.
    * 
    * @param resultAccumulator
+   * @throws EvaluationException
    * @throws ResultAccumulationException
    */
-  void handlePostIterate(ResultAccumulatorIF resultAccumulator) throws ResultAccumulationException;
+  void handlePostIterate(ResultAccumulator resultAccumulator) throws EvaluationException, ResultAccumulationException;
 
 }

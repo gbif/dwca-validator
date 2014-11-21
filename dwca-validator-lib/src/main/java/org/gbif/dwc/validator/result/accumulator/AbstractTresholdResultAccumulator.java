@@ -1,8 +1,8 @@
 package org.gbif.dwc.validator.result.accumulator;
 
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationResult;
-import org.gbif.dwc.validator.result.ResultAccumulationException;
-import org.gbif.dwc.validator.result.ResultAccumulatorIF;
+import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author cgendreau
  */
-public abstract class AbstractTresholdResultAccumulator implements ResultAccumulatorIF {
+public abstract class AbstractTresholdResultAccumulator implements ResultAccumulator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTresholdResultAccumulator.class);
   protected static final int DEFAULT_THRESHOLD = 1000;

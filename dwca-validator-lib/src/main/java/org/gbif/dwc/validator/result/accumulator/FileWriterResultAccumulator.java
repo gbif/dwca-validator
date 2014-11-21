@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.result.accumulator;
 
-import org.gbif.dwc.validator.result.ResultAccumulatorIF;
+import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author cgendreau
  */
-public class FileWriterResultAccumulator implements ResultAccumulatorIF {
+public class FileWriterResultAccumulator implements ResultAccumulator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FileWriterResultAccumulator.class);
   private final FileWriter fw;

@@ -6,10 +6,10 @@ import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
 import org.gbif.dwc.validator.evaluator.configuration.UniquenessEvaluatorConfiguration;
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.result.ResultAccumulationException;
-import org.gbif.dwc.validator.result.ResultAccumulatorIF;
+import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
@@ -144,7 +144,7 @@ class UniquenessEvaluator implements StatefulRecordEvaluator {
   }
 
   @Override
-  public void handlePostIterate(ResultAccumulatorIF resultAccumulator) throws ResultAccumulationException {
+  public void handlePostIterate(ResultAccumulator resultAccumulator) throws ResultAccumulationException {
     flushCurrentIdList();
 
     try {

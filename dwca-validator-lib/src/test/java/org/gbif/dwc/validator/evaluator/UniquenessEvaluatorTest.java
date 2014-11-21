@@ -8,8 +8,9 @@ import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.evaluator.integrity.UniquenessEvaluatorBuilder;
+import org.gbif.dwc.validator.exception.EvaluationException;
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.ResultAccumulationException;
 import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 
@@ -61,6 +62,9 @@ public class UniquenessEvaluatorTest {
     } catch (ResultAccumulationException e) {
       e.printStackTrace();
       fail();
+    } catch (EvaluationException e) {
+      e.printStackTrace();
+      fail();
     }
 
     assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
@@ -84,6 +88,9 @@ public class UniquenessEvaluatorTest {
       e.printStackTrace();
       fail();
     } catch (ResultAccumulationException e) {
+      e.printStackTrace();
+      fail();
+    } catch (EvaluationException e) {
       e.printStackTrace();
       fail();
     }
@@ -113,7 +120,11 @@ public class UniquenessEvaluatorTest {
     } catch (ResultAccumulationException e) {
       e.printStackTrace();
       fail();
+    } catch (EvaluationException e) {
+      e.printStackTrace();
+      fail();
     }
+
     // remember that the id in UniquenessEvaluator will be catalogNumber
     assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
       ContentValidationType.FIELD_UNIQUENESS));
@@ -135,6 +146,9 @@ public class UniquenessEvaluatorTest {
       e.printStackTrace();
       fail();
     } catch (ResultAccumulationException e) {
+      e.printStackTrace();
+      fail();
+    } catch (EvaluationException e) {
       e.printStackTrace();
       fail();
     }
