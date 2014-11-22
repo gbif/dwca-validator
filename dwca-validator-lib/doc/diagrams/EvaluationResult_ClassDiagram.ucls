@@ -5,7 +5,7 @@
     project="dwca-validator-lib" 
     file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/result/EvaluationContext.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="134" width="207" x="553" y="47"/>    
+    <position height="-1" width="-1" x="867" y="270"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -16,7 +16,7 @@
     project="dwca-validator-lib" 
     file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/result/validation/ValidationResult.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="402" y="452"/>    
+    <position height="-1" width="-1" x="441" y="465"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -48,7 +48,7 @@
   <enumeration id="5" language="java" name="org.gbif.dwc.validator.result.Result" project="dwca-validator-lib" 
     file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/result/Result.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="573" y="662"/>    
+    <position height="-1" width="-1" x="488" y="703"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -80,63 +80,120 @@
   <interface id="8" language="java" name="org.gbif.dwc.validator.result.ResultAccumulator" project="dwca-validator-lib" 
     file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/result/ResultAccumulator.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="-25" y="228"/>    
+    <position height="-1" width="-1" x="440" y="4"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
   <interface id="9" language="java" name="org.gbif.dwc.validator.result.EvaluationResult" project="dwca-validator-lib" 
     file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/result/EvaluationResult.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="403" y="214"/>    
+    <position height="-1" width="-1" x="118" y="90"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="10" language="java" name="org.gbif.dwc.validator.result.accumulator.AbstractThresholdAccumulatorSupport" 
+    project="dwca-validator-lib" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/result/accumulator/AbstractThresholdAccumulatorSupport.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-6" y="346"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
-  </interface>  
-  <association id="10">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="11" name="results"/>      
-      <multiplicity id="12" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
+  </class>  
+  <class id="11" language="java" name="org.gbif.dwc.validator.result.accumulator.csv.CSVResultAccumulator" 
+    project="dwca-validator-lib" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/result/accumulator/csv/CSVResultAccumulator.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-335" y="4"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="org.gbif.dwc.validator.result.accumulator.csv.CSVValidationResultAccumulator" 
+    project="dwca-validator-lib" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/result/accumulator/csv/CSVValidationResultAccumulator.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-335" y="344"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
   <realization id="13">    
     <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="4"/>  
   </realization>  
   <realization id="14">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="4"/>  
-  </realization>  
-  <association id="15">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="16" name="type"/>      
-      <multiplicity id="17" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <realization id="18">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="9"/>  
   </realization>  
-  <association id="19">    
+  <association id="15">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="16" name="csvValidationResultAccumulator"/>      
+      <multiplicity id="17" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="18">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="20" name="result"/>      
-      <multiplicity id="21" minimum="0" maximum="1"/>    
+      <attribute id="19" name="result"/>      
+      <multiplicity id="20" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <dependency id="22">    
+  <dependency id="21">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="2"/>  
   </dependency>  
+  <association id="22">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="23" name="queue"/>      
+      <multiplicity id="24" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <generalization id="25">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <association id="26">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="27" name="type"/>      
+      <multiplicity id="28" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <realization id="29">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <association id="30">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="31" name="results"/>      
+      <multiplicity id="32" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <realization id="33">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="8"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

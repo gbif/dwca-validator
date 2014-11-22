@@ -43,7 +43,7 @@ public interface ResultAccumulator {
   /**
    * Close the accumulator and its underlying structure.
    */
-  void close();
+  void close() throws ResultAccumulationException;
 
   /**
    * Get the total of ValidationResult accumulated by this accumulator.

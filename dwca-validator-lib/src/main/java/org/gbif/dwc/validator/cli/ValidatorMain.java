@@ -5,7 +5,8 @@ import org.gbif.dwc.validator.FileEvaluator;
 import org.gbif.dwc.validator.config.FileBasedValidationChainLoader;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
-import org.gbif.dwc.validator.result.accumulator.CSVValidationResultAccumulator;
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
+import org.gbif.dwc.validator.result.accumulator.csv.CSVResultAccumulator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -105,8 +106,7 @@ public class ValidatorMain {
       return;
     }
 
-    CSVValidationResultAccumulator resultAccumulator = null;
-    resultAccumulator = new CSVValidationResultAccumulator(outputFile.getAbsolutePath());
+    CSVResultAccumulator resultAccumulator = new CSVResultAccumulator(outputFile.getAbsolutePath());
 
     long startTime = System.currentTimeMillis();
     System.out.println("Starting validation ... ");
@@ -115,7 +115,11 @@ public class ValidatorMain {
 
     System.out.println("Validation took: " + (System.currentTimeMillis() - startTime) + " ms");
 
-    resultAccumulator.close();
+    try {
+      resultAccumulator.close();
+    } catch (ResultAccumulationException e) {
+      LOGGER.error("Closing result accumulator", e);
+    }
 
     // cleanup
     FileUtils.deleteQuietly(tmpFolder);

@@ -2,8 +2,8 @@ package org.gbif.dwc.validator.result;
 
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.mock.MockDataGenerator;
-import org.gbif.dwc.validator.result.accumulator.CSVValidationResultAccumulator;
 import org.gbif.dwc.validator.result.accumulator.FileWriterResultAccumulator;
+import org.gbif.dwc.validator.result.accumulator.csv.CSVResultAccumulator;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
@@ -19,6 +19,7 @@ import java.util.concurrent.Future;
 
 import org.junit.Assert;
 import org.junit.Test;
+
 import static org.junit.Assert.fail;
 
 /**
@@ -87,7 +88,12 @@ public class ResultAccumulatorMultiThreadTest {
     // call all threads and wait for completion
     List<Future<Boolean>> futures = executorService.invokeAll(tasks);
 
-    resultAccumulator.close();
+    try {
+      resultAccumulator.close();
+    } catch (ResultAccumulationException e) {
+      e.printStackTrace();
+      fail();
+    }
     // Validate
     Assert.assertEquals(futures.size(), threadCount);
     Assert.assertEquals(threadCount * NUMBER_OF_DATA, resultAccumulator.getValidationResultCount());
@@ -99,7 +105,7 @@ public class ResultAccumulatorMultiThreadTest {
     ResultAccumulator ra = null;
     String fileName = "test_ThresholdResultAccumulator16Threads.txt";
 
-    ra = new CSVValidationResultAccumulator(fileName);
+    ra = new CSVResultAccumulator(fileName);
 
     testThread(ra, 16);
     System.out.println("ThresholdResultAccumulator took " + (System.currentTimeMillis() - t) + " ms");

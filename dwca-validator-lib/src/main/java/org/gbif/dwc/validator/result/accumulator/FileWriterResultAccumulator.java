@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ResultAccumulatorIF implementation using a FileWriter.
+ * ResultAccumulator implementation using a FileWriter.
  * This implementation writes directly to the file on each 'accumulate' calls.
  * TODO: This writer is incomplete!
  * 

@@ -2,8 +2,8 @@ package org.gbif.dwc.validator.result;
 
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.mock.MockDataGenerator;
-import org.gbif.dwc.validator.result.accumulator.CSVValidationResultAccumulator;
 import org.gbif.dwc.validator.result.accumulator.FileWriterResultAccumulator;
+import org.gbif.dwc.validator.result.accumulator.csv.CSVResultAccumulator;
 import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -39,7 +40,14 @@ public class ResultAccumulatorTest {
         fail();
       }
     }
-    fwra.close();
+
+    try {
+      fwra.close();
+    } catch (ResultAccumulationException e) {
+      e.printStackTrace();
+      fail();
+    }
+
   }
 
   @Test
@@ -69,7 +77,7 @@ public class ResultAccumulatorTest {
     String aggregationResultFileName = "test_ThresholdResultAccumulator_Aggregation.txt";
     ResultAccumulator tra = null;
 
-    tra = new CSVValidationResultAccumulator(validationResultFileName, aggregationResultFileName);
+    tra = new CSVResultAccumulator(validationResultFileName, aggregationResultFileName);
     List<String> dummyIdList = MockDataGenerator.newRandomDataList(NUMBER_OF_RECORDS, 4);
     testResultAccumulator(tra, dummyIdList);
     System.out.println("Using ThresholdResultAccumulator: " + (System.currentTimeMillis() - t) + " ms");
