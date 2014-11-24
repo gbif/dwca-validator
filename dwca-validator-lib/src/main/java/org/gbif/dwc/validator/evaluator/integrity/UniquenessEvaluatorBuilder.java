@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.evaluator.integrity;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
@@ -95,25 +95,25 @@ public class UniquenessEvaluatorBuilder implements RecordEvaluatorBuilder {
   }
 
   /**
-   * Set on which ConceptTerm the evaluation should be made on core file.
+   * Set on which Term the evaluation should be made on core file.
    * 
    * @param term
    * @return
    */
-  public UniquenessEvaluatorBuilder on(ConceptTerm term) {
+  public UniquenessEvaluatorBuilder on(Term term) {
     configuration.setTerm(term);
     return this;
   }
 
   /**
-   * Set on which ConceptTerm and rowType the evaluation should be made on extension.
+   * Set on which Term and rowType the evaluation should be made on extension.
    * 
    * @param term
    * @param evaluationContext
    * @param rowType
    * @return
    */
-  public UniquenessEvaluatorBuilder on(ConceptTerm term, EvaluationContext evaluationContext, String rowType) {
+  public UniquenessEvaluatorBuilder on(Term term, EvaluationContext evaluationContext, String rowType) {
     configuration.setTerm(term);
     configuration.setEvaluationContextRestriction(evaluationContext);
     configuration.setRowTypeRestriction(rowType);

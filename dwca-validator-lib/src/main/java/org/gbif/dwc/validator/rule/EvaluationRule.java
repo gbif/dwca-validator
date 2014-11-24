@@ -3,7 +3,7 @@ package org.gbif.dwc.validator.rule;
 import org.gbif.dwc.validator.result.EvaluationRuleResult;
 
 /**
- * Evaluation rules are used against the value of a ConceptTerm within a record.
+ * Evaluation rules are used against the value of a Term within a record.
  * 
  * @author cgendreau
  * @param <T>

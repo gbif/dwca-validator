@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.rule.vocabulary;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.rule.EvaluationRuleBuilder;
 import org.gbif.dwc.validator.rule.EvaluationRule;
 import org.gbif.dwc.validator.rule.annotation.EvaluationRuleBuilderKey;
@@ -63,7 +63,7 @@ public class ControlledVocabularyEvaluationRuleBuilder implements EvaluationRule
     return null;
   }
 
-  public ControlledVocabularyEvaluationRuleBuilder onTerm(ConceptTerm term) {
+  public ControlledVocabularyEvaluationRuleBuilder onTerm(Term term) {
     configuration.setTerm(term);
     return this;
   }
@@ -99,7 +99,7 @@ public class ControlledVocabularyEvaluationRuleBuilder implements EvaluationRule
   @Override
   public EvaluationRule<String> build() throws IllegalStateException {
     if (configuration.getTerm() == null) {
-      throw new IllegalStateException("ControlledVocabularyEvaluationRule must be built on a ConceptTerm.");
+      throw new IllegalStateException("ControlledVocabularyEvaluationRule must be built on a Term.");
     }
     boolean vocabularySetProvided =
       (configuration.getVocabularySet() != null && !configuration.getVocabularySet().isEmpty());

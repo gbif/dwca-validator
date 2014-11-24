@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.evaluator.configuration;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfigurationKey;
 import org.gbif.dwc.validator.result.EvaluationContext;
 
@@ -17,14 +17,14 @@ public class UniquenessEvaluatorConfiguration {
   private EvaluationContext evaluationContextRestriction;
   private String rowTypeRestriction;
 
-  private ConceptTerm term;
+  private Term term;
   private File workingFolder;
 
-  public ConceptTerm getTerm() {
+  public Term getTerm() {
     return term;
   }
 
-  public void setTerm(ConceptTerm term) {
+  public void setTerm(Term term) {
     this.term = term;
   }
 

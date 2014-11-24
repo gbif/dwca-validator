@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.evaluator;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.evaluator.integrity.ReferenceUniqueEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.integrity.UniquenessEvaluatorBuilder;
 import org.gbif.dwc.validator.result.EvaluationContext;
@@ -45,7 +45,7 @@ public class IntegrityEvaluators {
    * @return
    */
   public static ReferenceUniqueEvaluatorBuilder termReferentialIntegrityInCore(File tempFolder,
-    ConceptTerm targetedTerm, ConceptTerm referredTerm, String rowType) {
+    Term targetedTerm, Term referredTerm, String rowType) {
     return ReferenceUniqueEvaluatorBuilder.builder()
       .termRefersToUnique(targetedTerm, EvaluationContext.CORE, rowType, referredTerm, EvaluationContext.CORE, rowType)
       .workingFolder(tempFolder);

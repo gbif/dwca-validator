@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.evaluator.integrity;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
@@ -92,8 +92,8 @@ public class ReferenceUniqueEvaluatorBuilder implements RecordEvaluatorBuilder {
 
   }
 
-  public ReferenceUniqueEvaluatorBuilder termRefersToUnique(ConceptTerm term,
-    EvaluationContext evaluationContextRestriction, String rowTypeRestriction, ConceptTerm referedTerm,
+  public ReferenceUniqueEvaluatorBuilder termRefersToUnique(Term term,
+    EvaluationContext evaluationContextRestriction, String rowTypeRestriction, Term referedTerm,
     EvaluationContext referedEvaluationContextRestriction, String referedRowTypeRestriction) {
     this.configuration.setTerm(term);
     this.configuration.setEvaluationContextRestriction(evaluationContextRestriction);

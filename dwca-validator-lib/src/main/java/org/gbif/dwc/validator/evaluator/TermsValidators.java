@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.evaluator;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.evaluator.term.RecordCompletionEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.term.ValueEvaluatorBuilder;
 import org.gbif.dwc.validator.rule.EvaluationRule;
@@ -9,21 +9,21 @@ import org.gbif.dwc.validator.rule.value.NumericalValueEvaluationRuleBuilder;
 import java.util.Arrays;
 
 /**
- * Collection of builders related to validation of the value attached to a terms (ConceptTerm).
+ * Collection of builders related to validation of the value attached to a terms (Term).
  * 
  * @author cgendreau
  */
 public class TermsValidators {
 
-  public static RecordCompletionEvaluatorBuilder required(ConceptTerm... terms) {
+  public static RecordCompletionEvaluatorBuilder required(Term... terms) {
     RecordCompletionEvaluatorBuilder bldr = RecordCompletionEvaluatorBuilder.builder();
-    for (ConceptTerm currTerm : terms) {
+    for (Term currTerm : terms) {
       bldr.checkTerm(currTerm);
     }
     return bldr;
   }
 
-  public static ValueEvaluatorBuilder rule(EvaluationRule<String> rule, ConceptTerm... terms) {
+  public static ValueEvaluatorBuilder rule(EvaluationRule<String> rule, Term... terms) {
     return ValueEvaluatorBuilder.builder().addRule(Arrays.asList(terms), rule);
   }
 
@@ -36,7 +36,7 @@ public class TermsValidators {
    * @param upperBound
    * @return
    */
-  public static ValueEvaluatorBuilder withinRange(ConceptTerm term, Number lowerBound, Number upperBound) {
+  public static ValueEvaluatorBuilder withinRange(Term term, Number lowerBound, Number upperBound) {
     return ValueEvaluatorBuilder.builder().addRule(term,
       NumericalValueEvaluationRuleBuilder.builder().boundedBy(lowerBound, upperBound).build());
   }

@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.evaluator.term;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
@@ -59,7 +59,7 @@ public class RecordCompletionEvaluatorBuilder implements RecordEvaluatorBuilder 
    * @param term
    * @return
    */
-  public RecordCompletionEvaluatorBuilder checkTerm(ConceptTerm term) {
+  public RecordCompletionEvaluatorBuilder checkTerm(Term term) {
     configuration.addTerm(term);
     return this;
   }
@@ -70,7 +70,7 @@ public class RecordCompletionEvaluatorBuilder implements RecordEvaluatorBuilder 
    * @param rowTypeRestriction
    * @return
    */
-  public RecordCompletionEvaluatorBuilder onRowType(ConceptTerm rowTypeRestriction) {
+  public RecordCompletionEvaluatorBuilder onRowType(Term rowTypeRestriction) {
     configuration.setRowTypeRestriction(rowTypeRestriction.qualifiedName());
     return this;
   }
