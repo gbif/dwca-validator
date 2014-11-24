@@ -64,7 +64,6 @@ public class ValidatorMain {
       CliManager.printHelp();
       return;
     }
-    System.out.println("Saving result in " + outputFile.getAbsolutePath());
 
     // ensure working folder exists
     if (!validatorConfig.getWorkingFolder().exists() && !validatorConfig.getWorkingFolder().mkdirs()) {
@@ -119,6 +118,13 @@ public class ValidatorMain {
       resultAccumulator.close();
     } catch (ResultAccumulationException e) {
       LOGGER.error("Closing result accumulator", e);
+    }
+
+    if (resultAccumulator.getValidationResultCount() > 0) {
+      System.out.println("The Dwc-A file is not valid according to current validation chain:");
+      System.out.println("Results available in " + outputFile.getAbsolutePath());
+    } else {
+      System.out.println("The Dwc-A file looks valid according to current validation chain.");
     }
 
     // cleanup
