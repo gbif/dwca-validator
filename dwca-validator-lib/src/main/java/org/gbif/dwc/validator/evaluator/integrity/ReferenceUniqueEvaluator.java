@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.evaluator.integrity;
 
 import org.gbif.dwc.record.Record;
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator;
@@ -49,7 +49,7 @@ class ReferenceUniqueEvaluator implements StatefulRecordEvaluator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ReferenceUniqueEvaluator.class);
   org.gbif.utils.file.FileUtils GBIF_FILE_UTILS = new org.gbif.utils.file.FileUtils();
-  private final TermFactory TERM_FACTORY = new TermFactory();
+  private final TermFactory TERM_FACTORY = TermFactory.instance();
   private static final int BUFFER_THRESHOLD = 1000;
 
   private static final String SORTED_FILE_SUFFIX = "_sorted" + ValidatorConfig.TEXT_FILE_EXT;
@@ -57,7 +57,7 @@ class ReferenceUniqueEvaluator implements StatefulRecordEvaluator {
 
   private final EvaluationContext evaluationContextRestriction;
   private final String rowTypeRestriction;
-  private final ConceptTerm term;
+  private final Term term;
 
   private final UniquenessEvaluator uniquenessEvaluator;
 
@@ -128,7 +128,7 @@ class ReferenceUniqueEvaluator implements StatefulRecordEvaluator {
 
     if (fileWriterPerRowType.get(rowType) == null) {
 
-      ConceptTerm ct = TERM_FACTORY.findTerm(rowType);
+      Term ct = TERM_FACTORY.findTerm(rowType);
       String fileName = randomUUID + "_" + ct.simpleName() + ValidatorConfig.TEXT_FILE_EXT;
       File valueRecordingFile = new File(workingFolder, fileName);
       fileWriterPerRowType.put(rowType, new FileWriter(valueRecordingFile));
@@ -244,7 +244,7 @@ class ReferenceUniqueEvaluator implements StatefulRecordEvaluator {
       for (String currRowType : valuePerRowType.keySet()) {
         flushValueList(valuePerRowType.get(currRowType), fileWriterPerRowType.get(currRowType));
         fileWriterPerRowType.get(currRowType).close();
-        ConceptTerm ct = TERM_FACTORY.findTerm(currRowType);
+        Term ct = TERM_FACTORY.findTerm(currRowType);
         sortedFileName = randomUUID + "_" + ct.simpleName() + SORTED_FILE_SUFFIX;
         diffFileName = randomUUID + "_" + ct.simpleName() + DIFF_FILE_SUFFIX;
 

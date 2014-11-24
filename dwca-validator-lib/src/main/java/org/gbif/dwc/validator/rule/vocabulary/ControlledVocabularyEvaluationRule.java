@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.rule.vocabulary;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.EvaluationRuleResult;
 import org.gbif.dwc.validator.rule.EvaluationRule;
@@ -20,7 +20,7 @@ import java.util.Set;
  */
 class ControlledVocabularyEvaluationRule implements EvaluationRule<String> {
 
-  private final ConceptTerm term;
+  private final Term term;
   private final Set<String> vocabularySet;
 
   ControlledVocabularyEvaluationRule(ControlledVocabularyEvaluationRuleConfiguration configuration) {

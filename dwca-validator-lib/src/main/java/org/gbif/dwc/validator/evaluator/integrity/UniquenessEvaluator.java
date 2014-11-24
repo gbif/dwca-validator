@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.evaluator.integrity;
 
 import org.gbif.dwc.record.Record;
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.evaluator.StatefulRecordEvaluator;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
@@ -45,7 +45,7 @@ class UniquenessEvaluator implements StatefulRecordEvaluator {
   private final String key = UniquenessEvaluator.class.getAnnotation(RecordEvaluatorKey.class).key();
   private final EvaluationContext evaluationContextRestriction;
   private final String rowTypeRestriction;
-  private final ConceptTerm term;
+  private final Term term;
   private final String conceptTermString;
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UniquenessEvaluator.class);
@@ -110,7 +110,7 @@ class UniquenessEvaluator implements StatefulRecordEvaluator {
    * 
    * @return
    */
-  ConceptTerm getTerm() {
+  Term getTerm() {
     return term;
   }
 

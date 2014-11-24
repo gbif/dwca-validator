@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.rule.configuration;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.rule.annotation.EvaluationRuleConfigurationKey;
 
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
 @EvaluationRuleConfigurationKey
 public class ControlledVocabularyEvaluationRuleConfiguration {
 
-  private ConceptTerm term;
+  private Term term;
   private String dictionaryPath;
   private Set<String> vocabularySet;
 
@@ -21,7 +21,7 @@ public class ControlledVocabularyEvaluationRuleConfiguration {
     return dictionaryPath;
   }
 
-  public ConceptTerm getTerm() {
+  public Term getTerm() {
     return term;
   }
 
@@ -33,7 +33,7 @@ public class ControlledVocabularyEvaluationRuleConfiguration {
     this.dictionaryPath = dictionaryPath;
   }
 
-  public void setTerm(ConceptTerm term) {
+  public void setTerm(Term term) {
     this.term = term;
   }
 

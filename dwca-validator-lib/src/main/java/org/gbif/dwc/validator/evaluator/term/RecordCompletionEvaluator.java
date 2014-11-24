@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.evaluator.term;
 
 import org.gbif.dwc.record.Record;
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
@@ -34,7 +34,7 @@ class RecordCompletionEvaluator implements RecordEvaluator {
   private final String key = RecordCompletionEvaluator.class.getAnnotation(RecordEvaluatorKey.class).key();
   private final String rowTypeRestriction;
   private final BlankValueEvaluationRule blankValueEvaluationRule;
-  private final List<ConceptTerm> terms;
+  private final List<Term> terms;
 
   /**
    * Use builder to get instance.
@@ -44,7 +44,7 @@ class RecordCompletionEvaluator implements RecordEvaluator {
   RecordCompletionEvaluator(RecordCompletionEvaluatorConfiguration configuration) {
     this.rowTypeRestriction = configuration.getRowTypeRestriction();
     this.blankValueEvaluationRule = configuration.getBlankValueEvaluationRule();
-    this.terms = Collections.unmodifiableList(new ArrayList<ConceptTerm>(configuration.getTerms()));
+    this.terms = Collections.unmodifiableList(new ArrayList<Term>(configuration.getTerms()));
   }
 
   @Override
@@ -70,7 +70,7 @@ class RecordCompletionEvaluator implements RecordEvaluator {
     ValidationResultElement validationResultElement;
 
     if (terms != null) {
-      for (ConceptTerm currTerm : terms) {
+      for (Term currTerm : terms) {
         evaluationRuleResult = blankValueEvaluationRule.evaluate(record.value(currTerm));
 
         if (evaluationRuleResult.failed()) {

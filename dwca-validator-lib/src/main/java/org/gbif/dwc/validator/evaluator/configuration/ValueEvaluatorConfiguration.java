@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.evaluator.configuration;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfigurationKey;
 import org.gbif.dwc.validator.rule.EvaluationRule;
 
@@ -17,10 +17,10 @@ import java.util.Map;
 public class ValueEvaluatorConfiguration {
 
   private String rowTypeRestriction;
-  private Map<ConceptTerm, List<EvaluationRule<String>>> rulesPerTerm;
+  private Map<Term, List<EvaluationRule<String>>> rulesPerTerm;
 
   public ValueEvaluatorConfiguration() {
-    rulesPerTerm = new HashMap<ConceptTerm, List<EvaluationRule<String>>>();
+    rulesPerTerm = new HashMap<Term, List<EvaluationRule<String>>>();
   }
 
   public String getRowTypeRestriction() {
@@ -31,11 +31,11 @@ public class ValueEvaluatorConfiguration {
     this.rowTypeRestriction = rowTypeRestriction;
   }
 
-  public Map<ConceptTerm, List<EvaluationRule<String>>> getRulesPerTerm() {
+  public Map<Term, List<EvaluationRule<String>>> getRulesPerTerm() {
     return rulesPerTerm;
   }
 
-  public void setRulesPerTerm(Map<ConceptTerm, List<EvaluationRule<String>>> rulesPerTerm) {
+  public void setRulesPerTerm(Map<Term, List<EvaluationRule<String>>> rulesPerTerm) {
     this.rulesPerTerm = rulesPerTerm;
   }
 

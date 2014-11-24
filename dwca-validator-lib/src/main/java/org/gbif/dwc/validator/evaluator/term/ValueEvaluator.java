@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.evaluator.term;
 
 import org.gbif.dwc.record.Record;
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorKey;
@@ -28,7 +28,7 @@ import org.apache.commons.lang3.StringUtils;
  * If an evaluation requires more than one field or relies on a specific order of the EvaluationRuleIF to be
  * accomplished this implementation should NOT be used.
  * This validation is about what the value is and not what the value represents.
- * The evaluation of the values is made by ConceptTerm, using a list of EvaluationRuleIF.
+ * The evaluation of the values is made by Term, using a list of EvaluationRuleIF.
  * 
  * @author cgendreau
  */
@@ -36,14 +36,14 @@ import org.apache.commons.lang3.StringUtils;
 class ValueEvaluator implements RecordEvaluator {
 
   private final String key = ValueEvaluator.class.getAnnotation(RecordEvaluatorKey.class).key();
-  // hold all evaluation rules per ConceptTerm
-  private final Map<ConceptTerm, List<EvaluationRule<String>>> rulesPerTerm;
+  // hold all evaluation rules per Term
+  private final Map<Term, List<EvaluationRule<String>>> rulesPerTerm;
   private final String rowTypeRestriction;
 
   ValueEvaluator(ValueEvaluatorConfiguration configuration) {
     this.rowTypeRestriction = configuration.getRowTypeRestriction();
     this.rulesPerTerm =
-      Collections.unmodifiableMap(new HashMap<ConceptTerm, List<EvaluationRule<String>>>(configuration
+      Collections.unmodifiableMap(new HashMap<Term, List<EvaluationRule<String>>>(configuration
         .getRulesPerTerm()));
   }
 
@@ -66,7 +66,7 @@ class ValueEvaluator implements RecordEvaluator {
     }
 
     // only iterate over terms we have a rule for
-    for (ConceptTerm currTerm : rulesPerTerm.keySet()) {
+    for (Term currTerm : rulesPerTerm.keySet()) {
       for (EvaluationRule<String> currRule : rulesPerTerm.get(currTerm)) {
         // term is not recorded in the error message
         evaluationRuleResult = currRule.evaluate(record.value(currTerm));

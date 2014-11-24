@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.evaluator.configuration;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfigurationKey;
 import org.gbif.dwc.validator.result.EvaluationContext;
 
@@ -17,7 +17,7 @@ public class ReferenceUniqueEvaluatorConfiguration {
   private EvaluationContext evaluationContextRestriction;
   private String rowTypeRestriction;
 
-  private ConceptTerm term;
+  private Term term;
   private String multipleValuesSeparator;
   private File workingFolder;
 
@@ -39,11 +39,11 @@ public class ReferenceUniqueEvaluatorConfiguration {
     this.rowTypeRestriction = rowTypeRestriction;
   }
 
-  public ConceptTerm getTerm() {
+  public Term getTerm() {
     return term;
   }
 
-  public void setTerm(ConceptTerm term) {
+  public void setTerm(Term term) {
     this.term = term;
   }
 

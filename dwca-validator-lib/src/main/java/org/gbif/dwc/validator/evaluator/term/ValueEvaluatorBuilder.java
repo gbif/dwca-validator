@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.evaluator.term;
 
-import org.gbif.dwc.terms.ConceptTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.evaluator.RecordEvaluator;
 import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
 import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
@@ -43,18 +43,18 @@ public class ValueEvaluatorBuilder implements RecordEvaluatorBuilder {
   }
 
   /**
-   * Add a rule for a ConceptTerm value.
+   * Add a rule for a Term value.
    * 
    * @param term
    * @param rule
    * @return
    */
-  public ValueEvaluatorBuilder addRule(ConceptTerm term, EvaluationRule<String> rule) {
+  public ValueEvaluatorBuilder addRule(Term term, EvaluationRule<String> rule) {
     if (configuration.getRulesPerTerm() == null) {
-      configuration.setRulesPerTerm(new HashMap<ConceptTerm, List<EvaluationRule<String>>>());
+      configuration.setRulesPerTerm(new HashMap<Term, List<EvaluationRule<String>>>());
     }
 
-    Map<ConceptTerm, List<EvaluationRule<String>>> rulesPerTerm = configuration.getRulesPerTerm();
+    Map<Term, List<EvaluationRule<String>>> rulesPerTerm = configuration.getRulesPerTerm();
     if (rulesPerTerm.get(term) == null) {
       rulesPerTerm.put(term, new ArrayList<EvaluationRule<String>>());
     }
@@ -64,27 +64,27 @@ public class ValueEvaluatorBuilder implements RecordEvaluatorBuilder {
   }
 
   /**
-   * Add a rule to multiple ConceptTerm
+   * Add a rule to multiple Term
    * 
    * @param terms
    * @param rule
    * @return
    */
-  public ValueEvaluatorBuilder addRule(List<ConceptTerm> terms, EvaluationRule<String> rule) {
-    for (ConceptTerm currTerm : terms) {
+  public ValueEvaluatorBuilder addRule(List<Term> terms, EvaluationRule<String> rule) {
+    for (Term currTerm : terms) {
       addRule(currTerm, rule);
     }
     return this;
   }
 
   /**
-   * Add multiple rules to a ConceptTerm.
+   * Add multiple rules to a Term.
    * 
    * @param term
    * @param rules
    * @return
    */
-  public ValueEvaluatorBuilder addRules(ConceptTerm term, List<EvaluationRule<String>> rules) {
+  public ValueEvaluatorBuilder addRules(Term term, List<EvaluationRule<String>> rules) {
     for (EvaluationRule<String> currRule : rules) {
       addRule(term, currRule);
     }
