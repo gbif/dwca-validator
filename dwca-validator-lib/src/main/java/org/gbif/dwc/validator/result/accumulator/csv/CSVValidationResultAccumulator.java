@@ -3,6 +3,7 @@ package org.gbif.dwc.validator.result.accumulator.csv;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.accumulator.AbstractThresholdAccumulatorSupport;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
+import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -53,8 +54,11 @@ class CSVValidationResultAccumulator extends AbstractThresholdAccumulatorSupport
       openCsvPrinter();
     }
 
-    validationCsvPrinter.printRecord(result.getId(), result.getEvaluatorKey(), result.getEvaluationContext(),
-      result.getResults());
+    for (ValidationResultElement vre : result.getResults()) {
+      validationCsvPrinter.printRecord(result.getId(), result.getEvaluatorKey(), result.getEvaluationContext(),
+        result.getEvaluationContextDetails(), ValidatorConfig.getLocalizedString(vre.getType().getDescriptionKey()),
+        vre.getResult(), vre.getExplanation());
+    }
   }
 
   @Override
