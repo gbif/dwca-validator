@@ -1,8 +1,9 @@
-package org.gbif.dwc.validator.result;
+package org.gbif.dwc.validator.result.accumulator;
 
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.mock.MockDataGenerator;
-import org.gbif.dwc.validator.result.accumulator.FileWriterResultAccumulator;
+import org.gbif.dwc.validator.result.EvaluationContext;
+import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.accumulator.csv.CSVResultAccumulator;
 import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
@@ -40,14 +41,6 @@ public class ResultAccumulatorTest {
         fail();
       }
     }
-
-    try {
-      fwra.close();
-    } catch (ResultAccumulationException e) {
-      e.printStackTrace();
-      fail();
-    }
-
   }
 
   @Test
@@ -64,6 +57,13 @@ public class ResultAccumulatorTest {
     testResultAccumulator(fwra, dummyIdList);
     System.out.println("Using FileWriterResultAccumulator: " + (System.currentTimeMillis() - t) + " ms");
 
+    try {
+      fwra.close();
+    } catch (ResultAccumulationException e) {
+      e.printStackTrace();
+      fail();
+    }
+
     assertEquals(NUMBER_OF_RECORDS, fwra.getValidationResultCount());
     assertEquals(NUMBER_OF_RECORDS, fwra.getAggregationResultCount());
     // clean up
@@ -75,12 +75,18 @@ public class ResultAccumulatorTest {
     long t = System.currentTimeMillis();
     String validationResultFileName = "test_ThresholdResultAccumulator_Validation.txt";
     String aggregationResultFileName = "test_ThresholdResultAccumulator_Aggregation.txt";
-    ResultAccumulator tra = null;
-
-    tra = new CSVResultAccumulator(validationResultFileName, aggregationResultFileName);
+    ResultAccumulator tra = new CSVResultAccumulator(validationResultFileName, aggregationResultFileName);
     List<String> dummyIdList = MockDataGenerator.newRandomDataList(NUMBER_OF_RECORDS, 4);
     testResultAccumulator(tra, dummyIdList);
     System.out.println("Using ThresholdResultAccumulator: " + (System.currentTimeMillis() - t) + " ms");
+
+    try {
+      tra.close();
+    } catch (ResultAccumulationException e) {
+      e.printStackTrace();
+      fail();
+    }
+
     assertEquals(NUMBER_OF_RECORDS, tra.getValidationResultCount());
     assertEquals(NUMBER_OF_RECORDS, tra.getAggregationResultCount());
     // clean up
