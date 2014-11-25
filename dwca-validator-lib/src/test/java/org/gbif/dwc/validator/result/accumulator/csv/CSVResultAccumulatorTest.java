@@ -63,7 +63,6 @@ public class CSVResultAccumulatorTest {
 
     try {
       File expectedCsv = new File(getClass().getResource("/accumulator/expectedCsv.txt").toURI());
-
       try {
         assertTrue(FileUtils.contentEqualsIgnoreEOL(expectedCsv, validationResultFile, Charsets.UTF_8.name()));
       } catch (IOException e) {

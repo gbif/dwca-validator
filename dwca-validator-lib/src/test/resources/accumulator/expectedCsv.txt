@@ -1,0 +1,3 @@
+Identifier,Evaluator,Context,Context Details,Type,Result,Explanation
+8,testResultAccumulator,CORE,http://rs.tdwg.org/dwc/terms/Occurrence,uniqueness,ERROR,not unique
+8,testResultAccumulator,CORE,http://rs.tdwg.org/dwc/terms/Occurrence,value,ERROR,contains invalid characters
