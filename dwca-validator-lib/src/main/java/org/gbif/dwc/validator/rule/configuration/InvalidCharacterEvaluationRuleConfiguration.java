@@ -15,6 +15,8 @@ public class InvalidCharacterEvaluationRuleConfiguration {
   private boolean allowFormattingWhiteSpace = false;
   private boolean rejectReplacementChar = false;
 
+  private Integer maximumLength;
+
   private CharMatcher charMatcher;
 
   public boolean isAllowFormattingWhiteSpace() {
@@ -33,6 +35,14 @@ public class InvalidCharacterEvaluationRuleConfiguration {
     this.rejectReplacementChar = rejectReplacementChar;
   }
 
+  public Integer getMaximumLength() {
+    return maximumLength;
+  }
+
+  public void setMaximumLength(Integer maximumLength) {
+    this.maximumLength = maximumLength;
+  }
+
   public CharMatcher getCharMatcher() {
     return charMatcher;
   }
@@ -45,5 +55,4 @@ public class InvalidCharacterEvaluationRuleConfiguration {
   public void setCharMatcher(CharMatcher charMatcher) {
     this.charMatcher = charMatcher;
   }
-
 }

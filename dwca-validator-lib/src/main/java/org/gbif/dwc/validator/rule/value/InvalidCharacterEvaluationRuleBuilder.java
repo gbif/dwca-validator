@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.rule.value;
 
-import org.gbif.dwc.validator.rule.EvaluationRuleBuilder;
 import org.gbif.dwc.validator.rule.EvaluationRule;
+import org.gbif.dwc.validator.rule.EvaluationRuleBuilder;
 import org.gbif.dwc.validator.rule.annotation.EvaluationRuleBuilderKey;
 import org.gbif.dwc.validator.rule.configuration.InvalidCharacterEvaluationRuleConfiguration;
 
@@ -80,6 +80,15 @@ public class InvalidCharacterEvaluationRuleBuilder implements EvaluationRuleBuil
    */
   public InvalidCharacterEvaluationRuleBuilder rejectReplacementChar() {
     configuration.setRejectReplacementChar(true);
+    return this;
+  }
+
+  /**
+   * Set a maximum length (in character).
+   * The maximum is inclusive.
+   */
+  public InvalidCharacterEvaluationRuleBuilder maximumLength(int maximumLength) {
+    configuration.setMaximumLength(maximumLength);
     return this;
   }
 

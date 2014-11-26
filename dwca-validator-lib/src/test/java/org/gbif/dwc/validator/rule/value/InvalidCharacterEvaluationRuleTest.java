@@ -59,6 +59,16 @@ public class InvalidCharacterEvaluationRuleTest {
     assertTrue(rule.evaluate("test" + REPLACEMENT_CHAR).failed());
   }
 
+  @Test
+  public void evaluateMaximumLength() {
+    EvaluationRule<String> rule = InvalidCharacterEvaluationRuleBuilder.builder().maximumLength(10).build();
+    testAlwaysValidString(rule);
+    testNeverValidString(rule);
+
+    assertTrue(rule.evaluate("1234567891").passed());
+    assertTrue(rule.evaluate("12345678910").failed());
+  }
+
   private void testAlwaysValidString(EvaluationRule<String> rule) {
     assertTrue(rule.evaluate("test").passed());
     assertTrue(rule.evaluate("test 2").passed());
