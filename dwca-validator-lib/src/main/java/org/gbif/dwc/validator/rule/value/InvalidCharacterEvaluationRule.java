@@ -33,9 +33,11 @@ class InvalidCharacterEvaluationRule implements EvaluationRule<String> {
 
     int indexIn = charMatcher.indexIn(str);
     if (indexIn > 0) {
+      // TODO when moving to Java 7 use Character.getName(int codePoint)
+      int charValue = str.charAt(indexIn);
       // Remove invalid character from the error message to avoid display issues (e.g. NULL char)
       return new EvaluationRuleResult(EvaluationRuleResult.RuleResult.FAILED, ValidatorConfig.getLocalizedString(
-        "rule.invalid_character", charMatcher.removeFrom(str), indexIn));
+        "rule.invalid_character", charMatcher.removeFrom(str), indexIn, charValue));
     }
 
     if (maximumLength != null && str.length() > maximumLength.intValue()) {
