@@ -1,5 +1,6 @@
 package org.gbif.dwc.validator.config;
 
+import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.annotation.AnnotationLoader;
@@ -40,6 +41,9 @@ public class FileBasedValidationChainLoader {
 
   private static final String BASE_PACKAGE_TO_SCAN = "org.gbif.dwc.validator";
   private static final String EVALUATOR_BUILDERS_SECTION = "evaluators";
+
+  private static final String DWC_TERM_ALIAS = "!dwcTerm";
+  private static final String DC_TERM_ALIAS = "!dcTerm";
 
   /**
    * Only works for RecordEvaluator for now.
@@ -95,8 +99,9 @@ public class FileBasedValidationChainLoader {
 
     Constructor yamlConstructor = new ValidatorYamlContructor(evaluationRuleBuilderClasses, evaluatorBuilderClasses);
 
-    // Register an alias for DwcTerm class
-    yamlConstructor.addTypeDescription(new TypeDescription(DwcTerm.class, "!dwcTerm"));
+    // Register an alias for DwcTerm and DcTerm class
+    yamlConstructor.addTypeDescription(new TypeDescription(DwcTerm.class, DWC_TERM_ALIAS));
+    yamlConstructor.addTypeDescription(new TypeDescription(DcTerm.class, DC_TERM_ALIAS));
 
     // Register aliases on class name for @EvaluationRuleConfigurationKey
     Set<Class<?>> evaluationRuleConfigurationClasses =
