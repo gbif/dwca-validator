@@ -8,16 +8,18 @@ import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.type.StructureValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
-import org.gbif.metadata.eml.ValidatorFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-
+import java.net.URL;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.xml.sax.SAXException;
 
@@ -28,9 +30,36 @@ import org.xml.sax.SAXException;
  * @author cgendreau
  */
 public class EMLEvaluator {
+  // define the type of schema - we use W3C:
+  private static final String XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
+  private static final String EML_SCHEMA_URL = "http://rs.gbif.org/schema/eml-2.1.1/eml.xsd";
+  private static final String EML_GBIF_PROFILE_SCHEMA_URL = "http://rs.gbif.org/schema/eml-gbif-profile/dev/eml.xsd";
+  private static Validator validator;
 
   // TODO replace with new annotation like @StructureEvaluator
   private static final String key = "EMLEvaluator";
+
+  private static Validator getValidator(String schemaUrl) {
+    try {
+      // get validation driver:
+      SchemaFactory factory = SchemaFactory.newInstance(XML_SCHEMA);
+      // create schema by reading it from an URL:
+      Schema schema = factory.newSchema(new URL(schemaUrl));
+      return schema.newValidator();
+    } catch (SAXException e) {
+      throw new IllegalStateException("EML schema is invalid", e);
+
+    } catch (MalformedURLException e) {
+      throw new IllegalStateException("EML URL is invalid", e);
+    }
+  }
+
+  private static Validator getValidator() {
+    if (validator==null) {
+      validator = getValidator(EML_SCHEMA_URL);
+    }
+    return validator;
+  }
 
   public void doEval(File eml, ResultAccumulator result) throws ResultAccumulationException {
     handleEval(eml, result);
@@ -51,8 +80,7 @@ public class EMLEvaluator {
 
     String identifier = eml.getName();
     try {
-      // TODO cache Validator because it's expensive to create
-      ValidatorFactory.getGbifValidator().validate(getEmlSource(eml));
+      getValidator().validate(getEmlSource(eml));
     } catch (MalformedURLException e) {
       result.accumulate(new ValidationResult(identifier, key, EvaluationContext.STRUCTURE, new ValidationResultElement(
         StructureValidationType.EML_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(

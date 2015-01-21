@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.gbif</groupId>
 		<artifactId>motherpom</artifactId>
-		<version>16</version>
+		<version>19</version>
 	</parent>
 
 	<groupId>org.gbif</groupId>
@@ -31,8 +31,12 @@
     <reflections.version>0.9.9-RC2</reflections.version>
 		<commons-cli.version>1.2</commons-cli.version>
 		<commons-validator.version>1.4.0</commons-validator.version>
-		<logback.version>1.0.13</logback.version>
+		<logback.version>1.1.2</logback.version>
 		<junit.version>4.11</junit.version>
+    <guava.version>18.0</guava.version>
+    <slf4j.version>1.7.7</slf4j.version>
+    <commons-lang3.version>3.3.2</commons-lang3.version>
+    <commons-io.version>2.4</commons-io.version>
 	</properties>
 
 	<scm>
@@ -55,6 +59,26 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons-io.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons-lang3.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.gbif</groupId>
         <artifactId>dwc-api</artifactId>
