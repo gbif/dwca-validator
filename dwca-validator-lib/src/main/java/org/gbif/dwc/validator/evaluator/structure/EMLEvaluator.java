@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
@@ -30,6 +31,7 @@ import org.xml.sax.SAXException;
  * @author cgendreau
  */
 public class EMLEvaluator {
+
   // define the type of schema - we use W3C:
   private static final String XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
   private static final String EML_SCHEMA_URL = "http://rs.gbif.org/schema/eml-2.1.1/eml.xsd";
@@ -55,7 +57,7 @@ public class EMLEvaluator {
   }
 
   private static Validator getValidator() {
-    if (validator==null) {
+    if (validator == null) {
       validator = getValidator(EML_SCHEMA_URL);
     }
     return validator;
@@ -73,7 +75,7 @@ public class EMLEvaluator {
   protected void handleEval(File eml, ResultAccumulator result) throws ResultAccumulationException {
 
     if (eml == null || !eml.exists()) {
-      result.accumulate(new ValidationResult("EML", key, EvaluationContext.STRUCTURE, new ValidationResultElement(
+      result.accumulate(new ValidationResult("EML", EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.ARCHIVE_STRUCTURE, Result.ERROR, ValidatorConfig
           .getLocalizedString("evaluator.file_not_found"))));
     }
@@ -82,19 +84,19 @@ public class EMLEvaluator {
     try {
       getValidator().validate(getEmlSource(eml));
     } catch (MalformedURLException e) {
-      result.accumulate(new ValidationResult(identifier, key, EvaluationContext.STRUCTURE, new ValidationResultElement(
+      result.accumulate(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.EML_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", e.getMessage()))));
     } catch (FileNotFoundException e) {
-      result.accumulate(new ValidationResult(identifier, key, EvaluationContext.STRUCTURE, new ValidationResultElement(
+      result.accumulate(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.EML_SCHEMA, Result.ERROR, ValidatorConfig
           .getLocalizedString("evaluator.file_not_found"))));
     } catch (SAXException e) {
-      result.accumulate(new ValidationResult(identifier, key, EvaluationContext.STRUCTURE, new ValidationResultElement(
+      result.accumulate(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.EML_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", e.getMessage()))));
     } catch (IOException e) {
-      result.accumulate(new ValidationResult(identifier, key, EvaluationContext.STRUCTURE, new ValidationResultElement(
+      result.accumulate(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.EML_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", e.getMessage()))));
     }

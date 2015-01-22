@@ -5,11 +5,10 @@ import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
+import org.gbif.dwc.validator.chain.CriteriaChain;
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
 import org.gbif.dwc.validator.evaluator.structure.EMLEvaluator;
 import org.gbif.dwc.validator.evaluator.structure.MetaDescriptorEvaluator;
-import org.gbif.dwc.validator.exception.EvaluationException;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
@@ -39,10 +38,10 @@ public class DwcArchiveEvaluator implements FileEvaluator {
 
   private String workingFolder = ".";
 
-  private final ChainableRecordEvaluator evaluationChainHead;
+  private final CriteriaChain criteriaChain;
 
-  DwcArchiveEvaluator(ChainableRecordEvaluator evaluationChainHead) {
-    this.evaluationChainHead = evaluationChainHead;
+  DwcArchiveEvaluator(CriteriaChain criteriaChain) {
+    this.criteriaChain = criteriaChain;
   }
 
   /**
@@ -54,9 +53,9 @@ public class DwcArchiveEvaluator implements FileEvaluator {
    */
   private void recordCantOpenArchiveValidationResult(ResultAccumulator resultAccumulator, File file, String message) {
     ValidationResult vr =
-      new ValidationResult(file.getName(), "ArchiveStructure", EvaluationContext.STRUCTURE,
-        new ValidationResultElement(StructureValidationType.ARCHIVE_STRUCTURE, Result.ERROR,
-          ValidatorConfig.getLocalizedString("evaluator.structure.archive.open", file.getAbsolutePath(), message)));
+      new ValidationResult(file.getName(), EvaluationContext.STRUCTURE, new ValidationResultElement("ArchiveStructure",
+        StructureValidationType.ARCHIVE_STRUCTURE, Result.ERROR, ValidatorConfig.getLocalizedString(
+          "evaluator.structure.archive.open", file.getAbsolutePath(), message)));
 
     try {
       resultAccumulator.accumulate(vr);
@@ -97,17 +96,17 @@ public class DwcArchiveEvaluator implements FileEvaluator {
       }
 
       // inspect core
-      inspectDwcComponent(dwc.getCore(), EvaluationContext.CORE, evaluationChainHead, resultAccumulator);
+      inspectDwcComponent(dwc.getCore(), EvaluationContext.CORE, criteriaChain, resultAccumulator);
 
       // inspect extensions
       Set<ArchiveFile> extensions = dwc.getExtensions();
       for (ArchiveFile currExt : extensions) {
-        inspectDwcComponent(currExt, EvaluationContext.EXT, evaluationChainHead, resultAccumulator);
+        inspectDwcComponent(currExt, EvaluationContext.EXT, criteriaChain, resultAccumulator);
       }
       // we only call postIterate one, at the end
-      evaluationChainHead.postIterate(resultAccumulator);
+      criteriaChain.evaluateDataset(resultAccumulator);
 
-      evaluationChainHead.cleanup();
+      criteriaChain.cleanup();
     } catch (UnsupportedArchiveException e) {
       LOGGER.error("Can't open archive", e);
       recordCantOpenArchiveValidationResult(resultAccumulator, dwcaFile, e.getMessage());
@@ -116,8 +115,6 @@ public class DwcArchiveEvaluator implements FileEvaluator {
       recordCantOpenArchiveValidationResult(resultAccumulator, dwcaFile, e.getMessage());
     } catch (ResultAccumulationException e) {
       LOGGER.error("Error while accumulating results", e);
-    } catch (EvaluationException e) {
-      LOGGER.error("Error while evaluating records", e);
     }
 
     if (isGeneratedFolder) {
@@ -139,7 +136,7 @@ public class DwcArchiveEvaluator implements FileEvaluator {
    * @throws ResultAccumulationException
    */
   private void inspectDwcComponent(ArchiveFile dwcaComponent, EvaluationContext evaluationContext,
-    ChainableRecordEvaluator evaluatorChain, ResultAccumulator resultAccumulator) throws ResultAccumulationException {
+    CriteriaChain evaluatorChain, ResultAccumulator resultAccumulator) throws ResultAccumulationException {
 
     // In theory, we could optimize the validation if we realize the coreId is a term used in the chain
     // but it could also be very error prone.
@@ -147,7 +144,7 @@ public class DwcArchiveEvaluator implements FileEvaluator {
 
     RecordIterator recordIt = RecordIterator.build(dwcaComponent, false);
     while (recordIt.hasNext()) {
-      evaluatorChain.doEval(recordIt.next(), evaluationContext, resultAccumulator);
+      evaluatorChain.evaluateRecord(recordIt.next(), evaluationContext, resultAccumulator);
     }
   }
 

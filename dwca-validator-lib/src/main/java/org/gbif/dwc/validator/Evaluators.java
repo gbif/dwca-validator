@@ -1,12 +1,13 @@
 package org.gbif.dwc.validator;
 
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwc.validator.evaluator.IntegrityEvaluators;
-import org.gbif.dwc.validator.evaluator.RecordEvaluator;
-import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
-import org.gbif.dwc.validator.evaluator.TermsValidators;
-import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
-import org.gbif.dwc.validator.rule.value.InvalidCharacterEvaluationRuleBuilder;
+import org.gbif.dwc.validator.chain.CriteriaChain;
+import org.gbif.dwc.validator.criteria.DatasetCriterion;
+import org.gbif.dwc.validator.criteria.RecordCriteria;
+import org.gbif.dwc.validator.criteria.RecordCriteriaBuilder;
+import org.gbif.dwc.validator.criteria.RecordCriterion;
+import org.gbif.dwc.validator.criteria.dataset.DatasetCriteria;
+import org.gbif.dwc.validator.criteria.dataset.DatasetCriteriaBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,7 +28,8 @@ public class Evaluators {
   public static final double MIN_LONGITUDE = -180d;
   public static final double MAX_LONGITUDE = 180d;
 
-  private final List<RecordEvaluatorBuilder> buildersList;
+  private final List<RecordCriteriaBuilder> buildersList;
+  private final List<DatasetCriteriaBuilder> datasetCriteriaBuildersList;
 
   /**
    * Get a new Evaluators instance
@@ -50,11 +52,10 @@ public class Evaluators {
    */
   public static Evaluators defaultChain(File tempFolder) {
     Evaluators val =
-      builder()
-        .with(TermsValidators.rule(InvalidCharacterEvaluationRuleBuilder.builder().build(), DwcTerm.scientificName))
-        .with(TermsValidators.withinRange(DwcTerm.decimalLatitude, MIN_LATITUDE, MAX_LATITUDE))
-        .with(TermsValidators.withinRange(DwcTerm.decimalLongitude, MIN_LONGITUDE, MAX_LONGITUDE))
-        .with(IntegrityEvaluators.archiveIdIntegrity(tempFolder));
+      builder().with(RecordCriterion.checkForInvalidCharacter(DwcTerm.scientificName))
+        .with(RecordCriterion.withinRange(DwcTerm.decimalLatitude, MIN_LATITUDE, MAX_LATITUDE))
+        .with(RecordCriterion.withinRange(DwcTerm.decimalLongitude, MIN_LONGITUDE, MAX_LONGITUDE))
+        .with(DatasetCriterion.archiveIdIntegrity(tempFolder));
     return val;
   }
 
@@ -65,23 +66,20 @@ public class Evaluators {
    * @param head
    * @return
    */
-  public static FileEvaluator buildFromValidationChain(File tempFolder, ChainableRecordEvaluator head) {
+  public static FileEvaluator buildFromValidationChain(File tempFolder, CriteriaChain head) {
     return new DwcArchiveEvaluator(head);
   }
 
   /**
-   * Build a validation chain from a list of RecordEvaluator.
+   * Build a validation chain from a list of RecordCriteria and DatasetCriteria.
    * 
-   * @param evaluatorList
-   * @return chain head
+   * @param recordCriteriaList
+   * @param datasetCriteriaList
+   * @return new CriteriaChain
    */
-  public static ChainableRecordEvaluator buildFromEvaluatorList(List<RecordEvaluator> evaluatorList) {
-    ChainableRecordEvaluator current = null;
-    // iterate from last element to the first to be able to provide the next ChainableRecordEvaluator
-    for (int i = evaluatorList.size() - 1; i >= 0; i--) {
-      current = new ChainableRecordEvaluator(evaluatorList.get(i), current);
-    }
-    return current;
+  public static CriteriaChain buildFromEvaluatorList(List<RecordCriteria> recordCriteriaList,
+    List<DatasetCriteria> datasetCriteriaList) {
+    return new CriteriaChain(recordCriteriaList, datasetCriteriaList);
   }
 
 
@@ -89,7 +87,8 @@ public class Evaluators {
    * Private constructor, use Validator.builder()
    */
   private Evaluators() {
-    this.buildersList = new ArrayList<RecordEvaluatorBuilder>();
+    this.buildersList = new ArrayList<RecordCriteriaBuilder>();
+    this.datasetCriteriaBuildersList = new ArrayList<DatasetCriteriaBuilder>();
   }
 
   /**
@@ -98,8 +97,13 @@ public class Evaluators {
    * @param recordEvaluatorBuilder
    * @return
    */
-  public Evaluators with(RecordEvaluatorBuilder recordEvaluatorBuilder) {
+  public Evaluators with(RecordCriteriaBuilder recordEvaluatorBuilder) {
     buildersList.add(recordEvaluatorBuilder);
+    return this;
+  }
+
+  public Evaluators with(DatasetCriteriaBuilder datasetCriteriaBuilder) {
+    datasetCriteriaBuildersList.add(datasetCriteriaBuilder);
     return this;
   }
 
@@ -117,14 +121,18 @@ public class Evaluators {
    * 
    * @return head of the chain
    */
-  public ChainableRecordEvaluator buildChain() throws IllegalStateException {
-
-    ChainableRecordEvaluator current = null;
-    // iterate from last element to the first to be able to provide the next ChainableRecordEvaluator
-    for (int i = buildersList.size() - 1; i >= 0; i--) {
-      current = new ChainableRecordEvaluator(buildersList.get(i).build(), current);
+  public CriteriaChain buildChain() throws IllegalStateException {
+    List<RecordCriteria> recordCriteriaList = new ArrayList<RecordCriteria>();
+    for (RecordCriteriaBuilder currRecordCriteriaBuilder : buildersList) {
+      recordCriteriaList.add(currRecordCriteriaBuilder.build());
     }
-    return current;
+
+    List<DatasetCriteria> datasetCriteriaList = new ArrayList<DatasetCriteria>();
+    for (DatasetCriteriaBuilder currDDatasetCriteriaBuilder : datasetCriteriaBuildersList) {
+      datasetCriteriaList.add(currDDatasetCriteriaBuilder.build());
+    }
+
+    return new CriteriaChain(recordCriteriaList, datasetCriteriaList);
   }
 
 // Taxon only evaluators

@@ -14,6 +14,9 @@ import org.gbif.dwc.validator.result.validation.ValidationResult;
  */
 public interface ResultAccumulator {
 
+
+  // boolean accumulate(EvaluationResult result) throws ResultAccumulationException;
+
   /**
    * Append ValidationResult to current results.
    * 
@@ -32,13 +35,6 @@ public interface ResultAccumulator {
    */
   boolean accumulate(AggregationResult<?> result) throws ResultAccumulationException;
 
-  /**
-   * Fallback method, append result to current results.
-   * 
-   * @param result
-   * @return result were successfully appended
-   */
-// boolean accumulate(EvaluationResultIF<?> result);
 
   /**
    * Close the accumulator and its underlying structure.

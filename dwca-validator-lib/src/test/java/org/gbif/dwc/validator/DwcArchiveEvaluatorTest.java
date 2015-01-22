@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -37,6 +38,7 @@ public class DwcArchiveEvaluatorTest {
       // simply ensure we have no results
       assertTrue("The test archive /dwca/vascan_dwca.zip should pass the default validation chain.", resultAccumulator
         .getValidationResultList().isEmpty());
+
     } catch (URISyntaxException e) {
       e.printStackTrace();
       fail();

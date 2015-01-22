@@ -4,7 +4,6 @@ import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.mock.MockDataGenerator;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.ResultAccumulator;
-import org.gbif.dwc.validator.result.accumulator.FileWriterResultAccumulator;
 import org.gbif.dwc.validator.result.accumulator.csv.CSVResultAccumulator;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
@@ -21,6 +20,7 @@ import java.util.concurrent.Future;
 
 import org.junit.Assert;
 import org.junit.Test;
+
 import static org.junit.Assert.fail;
 
 /**
@@ -72,8 +72,8 @@ public class ResultAccumulatorMultiThreadTest {
           for (String currDummyId : dummyIdList) {
             try {
               success =
-                (success && resultAccumulator.accumulate(new ValidationResult(currDummyId, "testResultAccumulator",
-                  EvaluationContext.CORE, "", new ArrayList<ValidationResultElement>())));
+                (success && resultAccumulator.accumulate(new ValidationResult(currDummyId, EvaluationContext.CORE, "",
+                  new ArrayList<ValidationResultElement>())));
             } catch (ResultAccumulationException e) {
               e.printStackTrace();
               fail();

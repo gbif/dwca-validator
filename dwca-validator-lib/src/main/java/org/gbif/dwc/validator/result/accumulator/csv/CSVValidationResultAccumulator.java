@@ -40,7 +40,7 @@ class CSVValidationResultAccumulator extends AbstractThresholdAccumulatorSupport
    */
   private void printValidationResultHeaders() throws IOException {
     validationCsvPrinter.printRecord(ValidatorConfig.getLocalizedString("result.header.id"),
-      ValidatorConfig.getLocalizedString("result.header.evaluator"),
+      ValidatorConfig.getLocalizedString("result.header.criteria"),
       ValidatorConfig.getLocalizedString("result.header.context"),
       ValidatorConfig.getLocalizedString("result.header.context_details"),
       ValidatorConfig.getLocalizedString("result.header.type"),
@@ -55,7 +55,7 @@ class CSVValidationResultAccumulator extends AbstractThresholdAccumulatorSupport
     }
 
     for (ValidationResultElement vre : result.getResults()) {
-      validationCsvPrinter.printRecord(result.getId(), result.getEvaluatorKey(), result.getEvaluationContext(),
+      validationCsvPrinter.printRecord(result.getId(), vre.getEvaluatorKey(), result.getEvaluationContext(),
         result.getEvaluationContextDetails(), ValidatorConfig.getLocalizedString(vre.getType().getDescriptionKey()),
         vre.getResult(), vre.getExplanation());
     }

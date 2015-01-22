@@ -14,22 +14,26 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class ValidationResultElement {
 
+  private final String evaluatorKey;
   private final ValidationTypeIF type;
   private final Result result;
   private final String explanation;
   private final Object resultedObject;
 
-  public ValidationResultElement(ValidationTypeIF type, Result result, String explanation) {
-    this(type, result, explanation, null);
+  public ValidationResultElement(String evaluatorKey, ValidationTypeIF type, Result result, String explanation) {
+    this(evaluatorKey, type, result, explanation, null);
   }
 
   /**
+   * @param evaluatorKey key of the validator who generated this entry
    * @param type
    * @param result
    * @param explanation
    * @param resultedObject object obtained while doing the evaluation (optional)
    */
-  public ValidationResultElement(ValidationTypeIF type, Result result, String explanation, Object resultedObject) {
+  public ValidationResultElement(String evaluatorKey, ValidationTypeIF type, Result result, String explanation,
+    Object resultedObject) {
+    this.evaluatorKey = evaluatorKey;
     this.type = type;
     this.result = result;
     this.explanation = explanation;
@@ -48,8 +52,13 @@ public class ValidationResultElement {
       return false;
     }
     ValidationResultElement vre = (ValidationResultElement) obj;
-    return new EqualsBuilder().appendSuper(super.equals(obj)).append(type, vre.type).append(result, vre.result)
-      .append(explanation, vre.explanation).isEquals();
+    return new EqualsBuilder().appendSuper(super.equals(obj)).append(evaluatorKey, vre.evaluatorKey)
+      .append(type, vre.type).append(result, vre.result).append(explanation, vre.explanation)
+      .append(resultedObject, vre.resultedObject).isEquals();
+  }
+
+  public String getEvaluatorKey() {
+    return evaluatorKey;
   }
 
   public String getExplanation() {
@@ -70,7 +79,8 @@ public class ValidationResultElement {
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder(7779, 8903).append(type).append(result).append(explanation).toHashCode();
+    return new HashCodeBuilder(7779, 8903).append(evaluatorKey).append(type).append(result).append(explanation)
+      .append(resultedObject).toHashCode();
   }
 
   /**
@@ -139,7 +149,7 @@ public class ValidationResultElement {
 
   @Override
   public String toString() {
-    return new ToStringBuilder(this).append("type", type).append("result", result).append("explanation", explanation)
-      .toString();
+    return new ToStringBuilder(this).append("evaluatorKey", evaluatorKey).append("type", type).append("result", result)
+      .append("explanation", explanation).toString();
   }
 }

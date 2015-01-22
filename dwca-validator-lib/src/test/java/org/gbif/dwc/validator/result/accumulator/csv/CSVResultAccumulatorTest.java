@@ -29,6 +29,8 @@ import static org.junit.Assert.fail;
  */
 public class CSVResultAccumulatorTest {
 
+  private static final String key = "mockCriteria";
+
   @Test
   public void testCSVResultAccumulator() {
     String validationResultFileName = "test_CSVResultAccumulator_Validation.txt";
@@ -37,9 +39,9 @@ public class CSVResultAccumulatorTest {
     List<ValidationResultElement> resultElements = new ArrayList<ValidationResultElement>();
 
     ValidationResultElement vre1 =
-      new ValidationResultElement(ContentValidationType.FIELD_UNIQUENESS, Result.ERROR, "not unique");
+      new ValidationResultElement(key, ContentValidationType.FIELD_UNIQUENESS, Result.ERROR, "not unique");
     ValidationResultElement vre2 =
-      new ValidationResultElement(ContentValidationType.RECORD_CONTENT_VALUE, Result.ERROR,
+      new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, Result.ERROR,
         "contains invalid characters");
 
     resultElements.add(vre1);
@@ -47,8 +49,8 @@ public class CSVResultAccumulatorTest {
 
     ResultAccumulator ra = new CSVResultAccumulator(validationResultFileName);
     try {
-      ra.accumulate(new ValidationResult("8", "testResultAccumulator", EvaluationContext.CORE, DwcTerm.Occurrence
-        .qualifiedName(), resultElements));
+      ra.accumulate(new ValidationResult("8", EvaluationContext.CORE, DwcTerm.Occurrence.qualifiedName(),
+        resultElements));
     } catch (ResultAccumulationException e) {
       e.printStackTrace();
       fail();
@@ -58,6 +60,14 @@ public class CSVResultAccumulatorTest {
       ra.close();
     } catch (ResultAccumulationException e) {
       e.printStackTrace();
+      fail();
+    }
+
+    try {
+      System.out.println(FileUtils.readFileToString(validationResultFile));
+    } catch (IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
       fail();
     }
 

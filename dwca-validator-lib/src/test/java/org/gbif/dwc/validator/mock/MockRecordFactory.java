@@ -3,6 +3,7 @@ package org.gbif.dwc.validator.mock;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.record.RecordImpl;
 import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 
@@ -26,7 +27,7 @@ public class MockRecordFactory {
    * @param values this should not include the the value idValue
    * @return
    */
-  public static Record buildMockOccurrenceRecord(DwcTerm idTerm, String idValue, DwcTerm[] terms, String[] values) {
+  public static Record buildMockOccurrenceRecord(DwcTerm idTerm, String idValue, Term[] terms, String[] values) {
 
     if (terms == null || values == null || (terms.length != values.length)) {
       throw new IllegalArgumentException();
@@ -39,7 +40,7 @@ public class MockRecordFactory {
     // create ArchiveField
     List<ArchiveField> fieldList = new ArrayList<ArchiveField>();
 
-    for (DwcTerm currTerm : terms) {
+    for (Term currTerm : terms) {
       fieldList.add(new ArchiveField(idx, currTerm, null, DataType.string));
       idx++;
     }

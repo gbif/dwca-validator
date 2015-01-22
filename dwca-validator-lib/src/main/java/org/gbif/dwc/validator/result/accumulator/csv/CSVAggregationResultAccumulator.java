@@ -37,7 +37,7 @@ class CSVAggregationResultAccumulator extends AbstractThresholdAccumulatorSuppor
 
   private void printAggregationResultHeaders() throws IOException {
     aggregationCsvPrinter.printRecord(ValidatorConfig.getLocalizedString("result.header.id"),
-      ValidatorConfig.getLocalizedString("result.header.evaluator"),
+      ValidatorConfig.getLocalizedString("result.header.criteria"),
       ValidatorConfig.getLocalizedString("result.header.context"),
       ValidatorConfig.getLocalizedString("result.header.result"));
   }

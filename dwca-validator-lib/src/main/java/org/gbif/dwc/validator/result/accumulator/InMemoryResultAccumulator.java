@@ -26,6 +26,10 @@ public class InMemoryResultAccumulator implements ResultAccumulator {
 
   @Override
   public boolean accumulate(ValidationResult result) {
+    // Do not record passed result
+    if (result.passed()) {
+      return true;
+    }
     if (validationResultList.size() < MAX_RESULT) {
       return validationResultList.add(result);
     }

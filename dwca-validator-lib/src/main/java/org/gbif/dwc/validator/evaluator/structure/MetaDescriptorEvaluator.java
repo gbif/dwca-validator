@@ -61,7 +61,7 @@ public class MetaDescriptorEvaluator {
   protected void handleEval(File metaXML, ResultAccumulator result) throws ResultAccumulationException {
 
     if (metaXML == null || !metaXML.exists()) {
-      result.accumulate(new ValidationResult("meta XML", key, EvaluationContext.STRUCTURE, new ValidationResultElement(
+      result.accumulate(new ValidationResult("meta XML", EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.ARCHIVE_STRUCTURE, Result.ERROR, ValidatorConfig
           .getLocalizedString("evaluator.file_not_found"))));
     }
@@ -71,11 +71,11 @@ public class MetaDescriptorEvaluator {
     try {
       metaValidator.validate(new StreamSource(metaXML));
     } catch (SAXException saxEx) {
-      result.accumulate(new ValidationResult(identifier, key, EvaluationContext.STRUCTURE, new ValidationResultElement(
+      result.accumulate(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.METADATA_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", saxEx.getMessage()))));
     } catch (IOException ioEx) {
-      result.accumulate(new ValidationResult(identifier, key, EvaluationContext.STRUCTURE, new ValidationResultElement(
+      result.accumulate(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.METADATA_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", ioEx.getMessage()))));
     }

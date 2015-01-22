@@ -4,14 +4,14 @@ import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.annotation.AnnotationLoader;
-import org.gbif.dwc.validator.evaluator.RecordEvaluator;
-import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
-import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
-import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorConfigurationKey;
-import org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator;
-import org.gbif.dwc.validator.rule.EvaluationRuleBuilder;
-import org.gbif.dwc.validator.rule.annotation.EvaluationRuleBuilderKey;
-import org.gbif.dwc.validator.rule.annotation.EvaluationRuleConfigurationKey;
+import org.gbif.dwc.validator.chain.CriteriaChain;
+import org.gbif.dwc.validator.criteria.RecordCriteria;
+import org.gbif.dwc.validator.criteria.RecordCriteriaBuilder;
+import org.gbif.dwc.validator.criteria.annotation.CriteriaConfigurationKey;
+import org.gbif.dwc.validator.criteria.annotation.DatasetCriteriaBuilderKey;
+import org.gbif.dwc.validator.criteria.annotation.RecordCriteriaBuilderKey;
+import org.gbif.dwc.validator.criteria.dataset.DatasetCriteria;
+import org.gbif.dwc.validator.criteria.dataset.DatasetCriteriaBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,7 +40,8 @@ public class FileBasedValidationChainLoader {
   private static final Logger LOGGER = LoggerFactory.getLogger(FileBasedValidationChainLoader.class);
 
   private static final String BASE_PACKAGE_TO_SCAN = "org.gbif.dwc.validator";
-  private static final String EVALUATOR_BUILDERS_SECTION = "evaluators";
+  private static final String RECORD_CRITERIA_SECTION = "recordCriteria";
+  private static final String DATASET_CRITERIA_SECTION = "datasetCriteria";
 
   private static final String DWC_TERM_ALIAS = "!dwcTerm";
   private static final String DC_TERM_ALIAS = "!dcTerm";
@@ -53,9 +54,9 @@ public class FileBasedValidationChainLoader {
    * @throws IOException
    */
   @SuppressWarnings("unchecked")
-  public ChainableRecordEvaluator buildValidationChainFromYamlFile(File configFile) throws IOException {
+  public CriteriaChain buildValidationChainFromYamlFile(File configFile) throws IOException {
     InputStream ios = null;
-    ChainableRecordEvaluator chainHead = null;
+    CriteriaChain chainHead = null;
 
     try {
       ios = new FileInputStream(configFile);
@@ -65,11 +66,12 @@ public class FileBasedValidationChainLoader {
       // configuration file is organized as sections
       Map<String, Object> conf = (Map<String, Object>) yaml.load(ios);
 
-      List<RecordEvaluator> recordEvaluatorList = (List<RecordEvaluator>) conf.get(EVALUATOR_BUILDERS_SECTION);
+      List<RecordCriteria> recordEvaluatorList = (List<RecordCriteria>) conf.get(RECORD_CRITERIA_SECTION);
+      List<DatasetCriteria> datasetEvaluatorList = (List<DatasetCriteria>) conf.get(DATASET_CRITERIA_SECTION);
 
       ios.close();
 
-      chainHead = Evaluators.buildFromEvaluatorList(recordEvaluatorList);
+      chainHead = Evaluators.buildFromEvaluatorList(recordEvaluatorList, datasetEvaluatorList);
 
     } catch (IOException ioEx) {
       throw ioEx;
@@ -87,31 +89,32 @@ public class FileBasedValidationChainLoader {
    * @return
    */
   private Constructor buildYamlContructor() {
-    // Get all annotated EvaluationRuleBuilder implementations
-    Set<Class<EvaluationRuleBuilder>> evaluationRuleBuilderClasses =
-      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, EvaluationRuleBuilderKey.class,
-        EvaluationRuleBuilder.class);
 
     // Get all annotated EvaluationRuleBuilder implementations
-    Set<Class<RecordEvaluatorBuilder>> evaluatorBuilderClasses =
-      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, RecordEvaluatorBuilderKey.class,
-        RecordEvaluatorBuilder.class);
+    Set<Class<RecordCriteriaBuilder>> recordCriteriaBuilderClasses =
+      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, RecordCriteriaBuilderKey.class,
+        RecordCriteriaBuilder.class);
 
-    Constructor yamlConstructor = new ValidatorYamlContructor(evaluationRuleBuilderClasses, evaluatorBuilderClasses);
+    Set<Class<DatasetCriteriaBuilder>> datasetCriteriaBuilderClasses =
+      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, DatasetCriteriaBuilderKey.class,
+        DatasetCriteriaBuilder.class);
+
+    Constructor yamlConstructor =
+      new ValidatorYamlContructor(recordCriteriaBuilderClasses, datasetCriteriaBuilderClasses);
 
     // Register an alias for DwcTerm and DcTerm class
     yamlConstructor.addTypeDescription(new TypeDescription(DwcTerm.class, DWC_TERM_ALIAS));
     yamlConstructor.addTypeDescription(new TypeDescription(DcTerm.class, DC_TERM_ALIAS));
 
     // Register aliases on class name for @EvaluationRuleConfigurationKey
-    Set<Class<?>> evaluationRuleConfigurationClasses =
-      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, EvaluationRuleConfigurationKey.class);
-    registerAliases(evaluationRuleConfigurationClasses, yamlConstructor);
+// Set<Class<?>> evaluationRuleConfigurationClasses =
+// AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, EvaluationRuleConfigurationKey.class);
+// registerAliases(evaluationRuleConfigurationClasses, yamlConstructor);
 
     // Register aliases on class name for RecordEvaluatorConfigurationKey
-    Set<Class<?>> evaluatorConfigurationClasses =
-      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, RecordEvaluatorConfigurationKey.class);
-    registerAliases(evaluatorConfigurationClasses, yamlConstructor);
+    Set<Class<?>> criteriaConfigurationClasses =
+      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, CriteriaConfigurationKey.class);
+    registerAliases(criteriaConfigurationClasses, yamlConstructor);
 
     return yamlConstructor;
   }

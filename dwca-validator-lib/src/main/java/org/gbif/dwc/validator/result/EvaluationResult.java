@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.result;
 
 
+
 /**
  * Interface of an evaluation result.
  * 
@@ -10,8 +11,8 @@ public interface EvaluationResult {
 
   String getId();
 
-  String getEvaluatorKey();
-
   EvaluationContext getEvaluationContext();
+
+  // void accept(ResultAccumulator visitor) throws ResultAccumulationException;
 
 }

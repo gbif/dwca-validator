@@ -24,13 +24,12 @@ public class AggregationResult<T> implements EvaluationResult {
     this.result = result;
   }
 
-  // @Override
   @Override
   public String getId() {
     return id;
   }
 
-  @Override
+  // @Override
   public String getEvaluatorKey() {
     return evaluatorKey;
   }
@@ -43,6 +42,5 @@ public class AggregationResult<T> implements EvaluationResult {
   public T getResult() {
     return result;
   }
-
 
 }

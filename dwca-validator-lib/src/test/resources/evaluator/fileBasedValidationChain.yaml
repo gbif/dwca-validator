@@ -1,49 +1,22 @@
 # linked to FileBasedValidationChainLoaderTest test class
 --- 
-rules:
- - !ISODateValueEvaluationRule  &isoDateVER
-   - !iSODateValueEvaluationRuleConfiguration
-     allowPartialDate			: false
-     allowMissingLeadingZeros	: false
-     
- - !invalidCharacterEvaluationRule &invalidCharacterVER
-   - !invalidCharacterEvaluationRuleConfiguration
-     allowFormattingWhiteSpace	: false
-     rejectReplacementChar		: true
-     
- - !controlledVocabularyEvaluationRule
-   - !controlledVocabularyEvaluationRuleConfiguration
-     term						: !dwcTerm 'country'
-     dictionaryPath				: 'src/test/resources/dictionary/european_union_country.txt'
-     
- - !numericalValueEvaluationRule &latEvalRule
-   - !numericalValueEvaluationRuleConfiguration
-     lowerBound					: -90
-     upperBound					: 90
-     
- - !numericalValueEvaluationRule &longEvalRule
-   - !numericalValueEvaluationRuleConfiguration
-     lowerBound					: -180
-     upperBound					: 180
 
-evaluators:
- - !recordCompletionEvaluator
-   - !recordCompletionEvaluatorConfiguration
+recordCriteria:
+ - !completenessCriteria
+   - !completenessCriteriaConfiguration
      terms:
        - !dwcTerm 'country'
      rowTypeRestriction: 'http://rs.tdwg.org/dwc/terms/Occurrence'
-       
- - !valueEvaluator
-   - !valueEvaluatorConfiguration
-     rulesPerTerm:
-       !dwcTerm 'eventDate' : [*isoDateVER]
-       !dwcTerm 'scientificName' : [*invalidCharacterVER]
-       !dwcTerm 'decimalLatitude' : [*latEvalRule]
-       !dwcTerm 'decimalLongitude' : [*longEvalRule]
-       
- - !uniquenessEvaluator
-   - !uniquenessEvaluatorConfiguration {}
+     
+ - !controlledVocabularyCriteria
+    - !controlledVocabularyCriteriaConfiguration
+     term						: !dwcTerm 'country'
+     dictionaryPath				: 'src/test/resources/dictionary/european_union_country.txt'
+     
+datasetCriteria:
+ - !uniquenessCriteria
+   - !uniquenessCriteriaConfiguration {}
    
- - !referenceUniqueEvaluator
-   - !referenceUniqueEvaluatorConfiguration {}
-   - !uniquenessEvaluatorConfiguration {}
+ - !referenceUniqueCriteria
+   - !referenceUniqueCriteriaConfiguration {}
+   - !uniquenessCriteriaConfiguration {}

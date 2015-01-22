@@ -2,6 +2,7 @@ package org.gbif.dwc.validator.result.validation;
 
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.EvaluationResult;
+import org.gbif.dwc.validator.result.Result;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +21,8 @@ public class ValidationResult implements EvaluationResult {
   private final String id;
   private final EvaluationContext evaluationContext;
   private final String evaluationContextDetails;
+  private Result result;
 
-  private final String evaluatorKey;
   private final List<ValidationResultElement> results;
 
   /**
@@ -30,18 +31,30 @@ public class ValidationResult implements EvaluationResult {
    * @param evaluationContext
    * @param results
    */
-  public ValidationResult(String id, String evaluatorKey, EvaluationContext evaluationContext,
-    String evaluationContextDetails, List<ValidationResultElement> results) {
+  public ValidationResult(String id, EvaluationContext evaluationContext, String evaluationContextDetails,
+    List<ValidationResultElement> results) {
     this.id = id;
-    this.evaluatorKey = evaluatorKey;
     this.evaluationContext = evaluationContext;
     this.evaluationContextDetails = evaluationContextDetails;
 
-    // shouldn't we throw an exception or maybe create an empty list?
-    if (results == null) {
-      this.results = null;
-    } else {
+    if (results != null) {
       this.results = ImmutableList.copyOf(results);
+
+      Result tmpResult = Result.PASSED;
+      for (ValidationResultElement currElement : results) {
+        if (currElement.resultIs(Result.ERROR)) {
+          tmpResult = Result.ERROR;
+          break;
+        }
+
+        if (currElement.resultIs(Result.WARNING)) {
+          tmpResult = Result.WARNING;
+        }
+      }
+      this.result = tmpResult;
+    } else {
+      this.results = null;
+      this.result = Result.PASSED;
     }
   }
 
@@ -49,23 +62,20 @@ public class ValidationResult implements EvaluationResult {
    * Constructor to use only with one ValidationResultElement.
    * 
    * @param id
-   * @param evaluatorKey key of the validator who generated this entry
    * @param evaluationContext
    * @param result
    */
-  public ValidationResult(String id, String evaluatorKey, EvaluationContext evaluationContext,
+  public ValidationResult(String id, EvaluationContext evaluationContext, ValidationResultElement result) {
+    this(id, evaluationContext, "", Arrays.asList(result));
+  }
+
+  public ValidationResult(String id, EvaluationContext evaluationContext, String evaluationContextDetails,
     ValidationResultElement result) {
-    this(id, evaluatorKey, evaluationContext, "", Arrays.asList(result));
+    this(id, evaluationContext, evaluationContextDetails, Arrays.asList(result));
   }
 
-  public ValidationResult(String id, String evaluatorKey, EvaluationContext evaluationContext,
-    String evaluationContextDetails, ValidationResultElement result) {
-    this(id, evaluatorKey, evaluationContext, evaluationContextDetails, Arrays.asList(result));
-  }
-
-  @Override
-  public String getEvaluatorKey() {
-    return evaluatorKey;
+  public ValidationResult(String id, EvaluationContext evaluationContext, String evaluationContextDetails) {
+    this(id, evaluationContext, evaluationContextDetails, (List<ValidationResultElement>) null);
   }
 
   @Override
@@ -82,14 +92,36 @@ public class ValidationResult implements EvaluationResult {
     return id;
   }
 
+  public Result getResult() {
+    return result;
+  }
+
+  /**
+   * Same as getResult() == Result.PASSED
+   * 
+   * @return
+   */
+  public boolean passed() {
+    return (Result.PASSED == result);
+  }
+
+  /**
+   * Same as getResult() == Result.ERROR
+   * 
+   * @return
+   */
+  public boolean failed() {
+    return (Result.ERROR == result);
+  }
+
   public List<ValidationResultElement> getResults() {
     return results;
   }
 
   @Override
   public String toString() {
-    return new ToStringBuilder(this).append("id", id).append("evaluatorKey", evaluatorKey)
-      .append("evaluationContext", evaluationContext).append("evaluationContextDetails", evaluationContextDetails)
-      .append("results", results).toString();
+    return new ToStringBuilder(this).append("id", id).append("evaluationContext", evaluationContext)
+      .append("evaluationContextDetails", evaluationContextDetails).append("results", results).toString();
   }
+
 }

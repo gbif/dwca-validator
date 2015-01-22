@@ -1,9 +1,9 @@
 package org.gbif.dwc.validator.config;
 
-import org.gbif.dwc.validator.evaluator.RecordEvaluatorBuilder;
-import org.gbif.dwc.validator.evaluator.annotation.RecordEvaluatorBuilderKey;
-import org.gbif.dwc.validator.rule.EvaluationRuleBuilder;
-import org.gbif.dwc.validator.rule.annotation.EvaluationRuleBuilderKey;
+import org.gbif.dwc.validator.criteria.RecordCriteriaBuilder;
+import org.gbif.dwc.validator.criteria.annotation.DatasetCriteriaBuilderKey;
+import org.gbif.dwc.validator.criteria.annotation.RecordCriteriaBuilderKey;
+import org.gbif.dwc.validator.criteria.dataset.DatasetCriteriaBuilder;
 
 import java.util.Collection;
 
@@ -21,39 +21,37 @@ import org.yaml.snakeyaml.nodes.Tag;
 public class ValidatorYamlContructor extends Constructor {
 
   /**
-   * @param ruleBuilderClassList EvaluationRuleBuilder implementations must have the EvaluationRuleBuilderKey annotation
-   *        set. The value of
-   *        the annotation will be used for the alias name.
-   * @param evaluatorBuilderClassList RecordEvaluatorBuilder implementations must have the RecordEvaluatorBuilderKey
-   *        annotation set. The value of
-   *        the annotation will be used for the alias name.
+   * @param recordCriteriaBuilderClasses RecordCriteriaBuilder implementations must have the RecordCriteriaBuilderKey
+   *        annotation set. The value of the annotation will be used for the alias name.
+   * @param datasetCriteriaBuilderClasses DatasetCriteriaBuilder implementations must have the DatasetCriteriaBuilderKey
+   *        annotation set. The value of the annotation will be used for the alias name.
    */
-  public ValidatorYamlContructor(Collection<Class<EvaluationRuleBuilder>> ruleBuilderClassList,
-    Collection<Class<RecordEvaluatorBuilder>> evaluatorBuilderClassList) {
+  public ValidatorYamlContructor(Collection<Class<RecordCriteriaBuilder>> recordCriteriaBuilderClasses,
+    Collection<Class<DatasetCriteriaBuilder>> datasetCriteriaBuilderClasses) {
     super();
 
     String tagName;
-    for (Class<EvaluationRuleBuilder> currClass : ruleBuilderClassList) {
-      if (currClass.getAnnotation(EvaluationRuleBuilderKey.class) != null) {
-        tagName = "!" + currClass.getAnnotation(EvaluationRuleBuilderKey.class).value();
+    for (Class<RecordCriteriaBuilder> currClass : recordCriteriaBuilderClasses) {
+      if (currClass.getAnnotation(RecordCriteriaBuilderKey.class) != null) {
+        tagName = "!" + currClass.getAnnotation(RecordCriteriaBuilderKey.class).value();
 
         // register the alias to the class
         addTypeDescription(new TypeDescription(currClass, tagName));
 
         // register the class that will allow to use the builder
-        this.yamlConstructors.put(new Tag(tagName), new ConstructFromEvaluationRuleBuilder());
+        this.yamlConstructors.put(new Tag(tagName), new ConstructFromRecordCriteriaBuilder());
       }
     }
 
-    for (Class<RecordEvaluatorBuilder> currClass : evaluatorBuilderClassList) {
-      if (currClass.getAnnotation(RecordEvaluatorBuilderKey.class) != null) {
-        tagName = "!" + currClass.getAnnotation(RecordEvaluatorBuilderKey.class).value();
+    for (Class<DatasetCriteriaBuilder> currClass : datasetCriteriaBuilderClasses) {
+      if (currClass.getAnnotation(DatasetCriteriaBuilderKey.class) != null) {
+        tagName = "!" + currClass.getAnnotation(DatasetCriteriaBuilderKey.class).value();
 
         // register the alias to the class
         addTypeDescription(new TypeDescription(currClass, tagName));
 
         // register the class that will allow to use the builder
-        this.yamlConstructors.put(new Tag(tagName), new ConstructFromRecordEvaluatorBuilder());
+        this.yamlConstructors.put(new Tag(tagName), new ConstructFromDatasetCriteriaBuilder());
       }
     }
 
@@ -64,12 +62,12 @@ public class ValidatorYamlContructor extends Constructor {
    * 
    * @author cgendreau
    */
-  private class ConstructFromEvaluationRuleBuilder extends ConstructYamlObject {
+  private class ConstructFromRecordCriteriaBuilder extends ConstructYamlObject {
 
     @Override
     public Object construct(Node node) {
       Object obj = super.construct(node);
-      return ((EvaluationRuleBuilder) obj).build();
+      return ((RecordCriteriaBuilder) obj).build();
     }
   }
 
@@ -78,12 +76,12 @@ public class ValidatorYamlContructor extends Constructor {
    * 
    * @author cgendreau
    */
-  private class ConstructFromRecordEvaluatorBuilder extends ConstructYamlObject {
+  private class ConstructFromDatasetCriteriaBuilder extends ConstructYamlObject {
 
     @Override
     public Object construct(Node node) {
       Object obj = super.construct(node);
-      return ((RecordEvaluatorBuilder) obj).build();
+      return ((DatasetCriteriaBuilder) obj).build();
     }
   }
 

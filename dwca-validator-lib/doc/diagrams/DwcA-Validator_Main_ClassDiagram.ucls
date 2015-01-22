@@ -10,10 +10,10 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="org.gbif.dwc.validator.evaluator.chain.ChainableRecordEvaluator" 
+  <class id="2" language="java" name="org.gbif.dwc.validator.chain.ChainableRecordEvaluator" 
     project="dwca-validator-lib" 
-    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/evaluator/chain/ChainableRecordEvaluator.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/chain/ChainableRecordEvaluator.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="890" y="421"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      

@@ -6,8 +6,28 @@ import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
 import java.util.List;
 
+import com.google.common.base.Optional;
+
 
 public class TestEvaluationResultHelper {
+
+  /**
+   * This method is simply to increase code readability since Optional makes it too verbose.
+   * 
+   * @param result
+   */
+  public static boolean validationPassed(Optional<ValidationResult> result) {
+    return result.isPresent() && result.get().passed();
+  }
+
+  /**
+   * This method is simply to increase code readability since Optional makes it too verbose.
+   * 
+   * @param result
+   */
+  public static boolean validationFailed(Optional<ValidationResult> result) {
+    return result.isPresent() && result.get().failed();
+  }
 
 
   /**
@@ -42,9 +62,11 @@ public class TestEvaluationResultHelper {
     ValidationTypeIF validationType) {
     for (ValidationResult currResult : results) {
       if (currResult.getId().equals(id)) {
-        for (ValidationResultElement currValidationElement : currResult.getResults()) {
-          if (validationType.equals(currValidationElement.getType())) {
-            return true;
+        if (currResult.getResults() != null) {
+          for (ValidationResultElement currValidationElement : currResult.getResults()) {
+            if (validationType.equals(currValidationElement.getType())) {
+              return true;
+            }
           }
         }
       }
