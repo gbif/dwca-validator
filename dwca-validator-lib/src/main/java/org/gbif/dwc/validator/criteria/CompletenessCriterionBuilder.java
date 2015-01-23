@@ -2,39 +2,38 @@ package org.gbif.dwc.validator.criteria;
 
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
-import org.gbif.dwc.validator.criteria.configuration.CompletenessCriteriaConfiguration;
+import org.gbif.dwc.validator.criteria.configuration.CompletenessCriterionConfiguration;
 import org.gbif.dwc.validator.transformation.ValueTransformations;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Builder of CompletenessCriteria objects.
+ * Builder of CompletenessCriterion objects.
  * 
  * @author cgendreau
  */
-@RecordCriterionBuilderKey("completenessCriteria")
-public class CompletenessCriteriaBuilder implements RecordCriteriaBuilder {
+@RecordCriterionBuilderKey("completenessCriterion")
+public class CompletenessCriterionBuilder implements RecordCriteriaBuilder {
 
-  private final CompletenessCriteriaConfiguration configuration;
+  private final CompletenessCriterionConfiguration configuration;
 
-  public CompletenessCriteriaBuilder() {
-    configuration = new CompletenessCriteriaConfiguration();
+  public CompletenessCriterionBuilder() {
+    configuration = new CompletenessCriterionConfiguration();
   }
 
-  public CompletenessCriteriaBuilder(CompletenessCriteriaConfiguration configuration) {
+  public CompletenessCriterionBuilder(CompletenessCriterionConfiguration configuration) {
     this.configuration = configuration;
   }
 
-  public static CompletenessCriteriaBuilder builder() {
-    return new CompletenessCriteriaBuilder();
+  public static CompletenessCriterionBuilder builder() {
+    return new CompletenessCriterionBuilder();
   }
 
   /**
-   * Build RecordCompletionEvaluator object.
+   * Build CompletenessCriterion object.
    * 
-   * @return immutable RecordCompletionEvaluator object
-   * @throws NullPointerException evaluatorContext, terms or blankValueEvaluationRule is null
+   * @return immutable CompletenessCriterion object
    * @throws IllegalStateException if no terms were specified
    */
   @Override
@@ -56,7 +55,7 @@ public class CompletenessCriteriaBuilder implements RecordCriteriaBuilder {
 
     Preconditions.checkState(configuration.getValueTransformations().size() > 0, "At least one term must be set");
 
-    return new CompletenessCriteria(configuration);
+    return new CompletenessCriterion(configuration);
   }
 
   /**
@@ -65,7 +64,7 @@ public class CompletenessCriteriaBuilder implements RecordCriteriaBuilder {
    * @param term
    * @return
    */
-  public CompletenessCriteriaBuilder checkTerm(Term term) {
+  public CompletenessCriterionBuilder checkTerm(Term term) {
     configuration.addTerm(term);
     return this;
   }
@@ -76,7 +75,7 @@ public class CompletenessCriteriaBuilder implements RecordCriteriaBuilder {
    * @param rowTypeRestriction
    * @return
    */
-  public CompletenessCriteriaBuilder onRowType(Term rowTypeRestriction) {
+  public CompletenessCriterionBuilder onRowType(Term rowTypeRestriction) {
     configuration.setRowTypeRestriction(rowTypeRestriction.qualifiedName());
     return this;
   }

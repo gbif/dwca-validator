@@ -2,8 +2,8 @@
 --- 
 
 recordCriteria:
- - !completenessCriteria
-   - !completenessCriteriaConfiguration
+ - !completenessCriterion
+   - !completenessCriterionConfiguration
      terms:
        - !dwcTerm 'country'
      rowTypeRestriction: 'http://rs.tdwg.org/dwc/terms/Occurrence'

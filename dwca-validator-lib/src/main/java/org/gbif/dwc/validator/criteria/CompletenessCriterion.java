@@ -3,7 +3,7 @@ package org.gbif.dwc.validator.criteria;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
-import org.gbif.dwc.validator.criteria.configuration.CompletenessCriteriaConfiguration;
+import org.gbif.dwc.validator.criteria.configuration.CompletenessCriterionConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
@@ -19,17 +19,17 @@ import com.google.common.base.Optional;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
-@RecordCriterionKey(key = "completenessCriteria")
-public class CompletenessCriteria implements RecordCriteria {
+@RecordCriterionKey(key = "completenessCriterion")
+public class CompletenessCriterion implements RecordCriteria {
 
-  private final String key = CompletenessCriteria.class.getAnnotation(RecordCriterionKey.class).key();
+  private final String key = CompletenessCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
   private final List<ValueTransformation<Boolean>> valueTransformations;
 
   private final Result level = Result.ERROR;
   private final String rowTypeRestriction;
 
-  public CompletenessCriteria(CompletenessCriteriaConfiguration completenessCriteriaConfiguration) {
+  public CompletenessCriterion(CompletenessCriterionConfiguration completenessCriteriaConfiguration) {
     this.valueTransformations = completenessCriteriaConfiguration.getValueTransformations();
     this.rowTypeRestriction = completenessCriteriaConfiguration.getRowTypeRestriction();
   }

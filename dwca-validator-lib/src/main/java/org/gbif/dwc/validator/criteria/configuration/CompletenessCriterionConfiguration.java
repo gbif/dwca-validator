@@ -13,8 +13,8 @@ import java.util.List;
  * 
  * @author cgendreau
  */
-@CriterionConfigurationKey("completenessCriteria")
-public class CompletenessCriteriaConfiguration {
+@CriterionConfigurationKey("completenessCriterion")
+public class CompletenessCriterionConfiguration {
 
   private String rowTypeRestriction;
   private List<ValueTransformation<Boolean>> valueTransformations;

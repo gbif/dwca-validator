@@ -9,7 +9,7 @@ import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.BooleanUtils;
 
 /**
- * Builder for BoundCriteria objects.
+ * Builder for BoundCriterion objects.
  * 
  * @author cgendreau
  */
