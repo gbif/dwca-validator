@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.criteria.dataset;
 
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.validator.criteria.annotation.DatasetCriteriaBuilderKey;
+import org.gbif.dwc.validator.criteria.annotation.DatasetCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.configuration.ReferenceUniqueCriteriaConfiguration;
 import org.gbif.dwc.validator.criteria.configuration.UniquenessCriteriaConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
@@ -17,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author cgendreau
  */
-@DatasetCriteriaBuilderKey("referenceUniqueCriteria")
+@DatasetCriterionBuilderKey("referenceUniqueCriteria")
 public class ReferenceUniqueCriteriaBuilder implements DatasetCriteriaBuilder {
 
   private final ReferenceUniqueCriteriaConfiguration configuration;

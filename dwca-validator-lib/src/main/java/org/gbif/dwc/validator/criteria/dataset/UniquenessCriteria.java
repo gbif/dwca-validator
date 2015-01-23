@@ -3,7 +3,7 @@ package org.gbif.dwc.validator.criteria.dataset;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.criteria.annotation.RecordCriteriaKey;
+import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
 import org.gbif.dwc.validator.criteria.configuration.UniquenessCriteriaConfiguration;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
@@ -37,10 +37,10 @@ import org.slf4j.LoggerFactory;
  * 
  * @author cgendreau
  */
-@RecordCriteriaKey(key = "uniquenessCriteria")
+@RecordCriterionKey(key = "uniquenessCriteria")
 class UniquenessCriteria implements DatasetCriteria {
 
-  private final String key = UniquenessCriteria.class.getAnnotation(RecordCriteriaKey.class).key();
+  private final String key = UniquenessCriteria.class.getAnnotation(RecordCriterionKey.class).key();
   private final EvaluationContext evaluationContextRestriction;
   private final String rowTypeRestriction;
   private final Term term;

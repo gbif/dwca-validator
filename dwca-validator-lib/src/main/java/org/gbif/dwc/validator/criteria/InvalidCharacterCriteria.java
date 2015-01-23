@@ -3,7 +3,7 @@ package org.gbif.dwc.validator.criteria;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.criteria.annotation.RecordCriteriaKey;
+import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
 import org.gbif.dwc.validator.criteria.configuration.InvalidCharacterCriteriaConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
@@ -18,10 +18,10 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Optional;
 import org.apache.commons.lang3.StringUtils;
 
-@RecordCriteriaKey(key = "invalidCharacterCriteria")
+@RecordCriterionKey(key = "invalidCharacterCriteria")
 class InvalidCharacterCriteria implements RecordCriteria {
 
-  private final String key = InvalidCharacterCriteria.class.getAnnotation(RecordCriteriaKey.class).key();
+  private final String key = InvalidCharacterCriteria.class.getAnnotation(RecordCriterionKey.class).key();
 
   private final String rowTypeRestriction;
   private final Result level;

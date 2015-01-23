@@ -3,7 +3,7 @@ package org.gbif.dwc.validator.criteria;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.criteria.annotation.RecordCriteriaKey;
+import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
 import org.gbif.dwc.validator.criteria.configuration.ControlledVocabularyCriteriaConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
@@ -28,10 +28,10 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author cgendreau
  */
-@RecordCriteriaKey(key = "controlledVocabularyCriteria")
+@RecordCriterionKey(key = "controlledVocabularyCriteria")
 class ControlledVocabularyCriteria implements RecordCriteria {
 
-  private final String key = ControlledVocabularyCriteria.class.getAnnotation(RecordCriteriaKey.class).key();
+  private final String key = ControlledVocabularyCriteria.class.getAnnotation(RecordCriterionKey.class).key();
 
   private final Result level;
   private final String rowTypeRestriction;

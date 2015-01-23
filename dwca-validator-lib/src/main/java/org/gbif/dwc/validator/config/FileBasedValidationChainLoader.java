@@ -7,9 +7,9 @@ import org.gbif.dwc.validator.annotation.AnnotationLoader;
 import org.gbif.dwc.validator.chain.CriteriaChain;
 import org.gbif.dwc.validator.criteria.RecordCriteria;
 import org.gbif.dwc.validator.criteria.RecordCriteriaBuilder;
-import org.gbif.dwc.validator.criteria.annotation.CriteriaConfigurationKey;
-import org.gbif.dwc.validator.criteria.annotation.DatasetCriteriaBuilderKey;
-import org.gbif.dwc.validator.criteria.annotation.RecordCriteriaBuilderKey;
+import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
+import org.gbif.dwc.validator.criteria.annotation.DatasetCriterionBuilderKey;
+import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriteria;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriteriaBuilder;
 
@@ -92,11 +92,11 @@ public class FileBasedValidationChainLoader {
 
     // Get all annotated EvaluationRuleBuilder implementations
     Set<Class<RecordCriteriaBuilder>> recordCriteriaBuilderClasses =
-      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, RecordCriteriaBuilderKey.class,
+      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, RecordCriterionBuilderKey.class,
         RecordCriteriaBuilder.class);
 
     Set<Class<DatasetCriteriaBuilder>> datasetCriteriaBuilderClasses =
-      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, DatasetCriteriaBuilderKey.class,
+      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, DatasetCriterionBuilderKey.class,
         DatasetCriteriaBuilder.class);
 
     Constructor yamlConstructor =
@@ -113,7 +113,7 @@ public class FileBasedValidationChainLoader {
 
     // Register aliases on class name for RecordEvaluatorConfigurationKey
     Set<Class<?>> criteriaConfigurationClasses =
-      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, CriteriaConfigurationKey.class);
+      AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, CriterionConfigurationKey.class);
     registerAliases(criteriaConfigurationClasses, yamlConstructor);
 
     return yamlConstructor;

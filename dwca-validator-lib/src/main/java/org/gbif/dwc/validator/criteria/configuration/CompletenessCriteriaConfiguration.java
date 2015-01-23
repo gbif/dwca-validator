@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.criteria.configuration;
 
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.validator.criteria.annotation.CriteriaConfigurationKey;
+import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
 import org.gbif.dwc.validator.transformation.ValueTransformation;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
  * 
  * @author cgendreau
  */
-@CriteriaConfigurationKey("completenessCriteria")
+@CriterionConfigurationKey("completenessCriteria")
 public class CompletenessCriteriaConfiguration {
 
   private String rowTypeRestriction;

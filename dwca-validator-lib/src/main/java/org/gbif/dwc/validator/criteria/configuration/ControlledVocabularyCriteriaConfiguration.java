@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.criteria.configuration;
 
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.validator.criteria.annotation.CriteriaConfigurationKey;
+import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
 import org.gbif.dwc.validator.result.Result;
 
 import java.util.Set;
@@ -11,7 +11,7 @@ import java.util.Set;
  * 
  * @author cgendreau
  */
-@CriteriaConfigurationKey("controlledVocabularyCriteria")
+@CriterionConfigurationKey("controlledVocabularyCriteria")
 public class ControlledVocabularyCriteriaConfiguration {
 
   private Result level = Result.ERROR;

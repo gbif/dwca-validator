@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.criteria;
 
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.validator.criteria.annotation.RecordCriteriaBuilderKey;
+import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.configuration.InvalidCharacterCriteriaConfiguration;
 
 import com.google.common.base.CharMatcher;
@@ -11,7 +11,7 @@ import com.google.common.base.CharMatcher;
  * 
  * @author cgendreau
  */
-@RecordCriteriaBuilderKey("invalidCharacterCriteria")
+@RecordCriterionBuilderKey("invalidCharacterCriteria")
 public class InvalidCharacterCriteriaBuilder implements RecordCriteriaBuilder {
 
   // replacement char \uFFFD

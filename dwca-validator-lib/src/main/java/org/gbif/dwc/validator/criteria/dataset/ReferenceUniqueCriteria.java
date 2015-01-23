@@ -4,7 +4,7 @@ import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.criteria.annotation.RecordCriteriaKey;
+import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
 import org.gbif.dwc.validator.criteria.configuration.ReferenceUniqueCriteriaConfiguration;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
@@ -40,10 +40,10 @@ import org.slf4j.LoggerFactory;
  * 
  * @author cgendreau
  */
-@RecordCriteriaKey(key = "referentialIntegrityCriteria")
+@RecordCriterionKey(key = "referentialIntegrityCriteria")
 class ReferenceUniqueCriteria implements DatasetCriteria {
 
-  private final String key = ReferenceUniqueCriteria.class.getAnnotation(RecordCriteriaKey.class).key();
+  private final String key = ReferenceUniqueCriteria.class.getAnnotation(RecordCriterionKey.class).key();
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ReferenceUniqueCriteria.class);
   org.gbif.utils.file.FileUtils GBIF_FILE_UTILS = new org.gbif.utils.file.FileUtils();

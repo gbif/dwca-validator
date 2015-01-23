@@ -1,8 +1,8 @@
 package org.gbif.dwc.validator.config;
 
 import org.gbif.dwc.validator.criteria.RecordCriteriaBuilder;
-import org.gbif.dwc.validator.criteria.annotation.DatasetCriteriaBuilderKey;
-import org.gbif.dwc.validator.criteria.annotation.RecordCriteriaBuilderKey;
+import org.gbif.dwc.validator.criteria.annotation.DatasetCriterionBuilderKey;
+import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriteriaBuilder;
 
 import java.util.Collection;
@@ -32,8 +32,8 @@ public class ValidatorYamlContructor extends Constructor {
 
     String tagName;
     for (Class<RecordCriteriaBuilder> currClass : recordCriteriaBuilderClasses) {
-      if (currClass.getAnnotation(RecordCriteriaBuilderKey.class) != null) {
-        tagName = "!" + currClass.getAnnotation(RecordCriteriaBuilderKey.class).value();
+      if (currClass.getAnnotation(RecordCriterionBuilderKey.class) != null) {
+        tagName = "!" + currClass.getAnnotation(RecordCriterionBuilderKey.class).value();
 
         // register the alias to the class
         addTypeDescription(new TypeDescription(currClass, tagName));
@@ -44,8 +44,8 @@ public class ValidatorYamlContructor extends Constructor {
     }
 
     for (Class<DatasetCriteriaBuilder> currClass : datasetCriteriaBuilderClasses) {
-      if (currClass.getAnnotation(DatasetCriteriaBuilderKey.class) != null) {
-        tagName = "!" + currClass.getAnnotation(DatasetCriteriaBuilderKey.class).value();
+      if (currClass.getAnnotation(DatasetCriterionBuilderKey.class) != null) {
+        tagName = "!" + currClass.getAnnotation(DatasetCriterionBuilderKey.class).value();
 
         // register the alias to the class
         addTypeDescription(new TypeDescription(currClass, tagName));

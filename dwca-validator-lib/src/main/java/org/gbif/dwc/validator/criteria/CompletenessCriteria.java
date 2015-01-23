@@ -2,7 +2,7 @@ package org.gbif.dwc.validator.criteria;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.criteria.annotation.RecordCriteriaKey;
+import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
 import org.gbif.dwc.validator.criteria.configuration.CompletenessCriteriaConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
@@ -19,10 +19,10 @@ import com.google.common.base.Optional;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
-@RecordCriteriaKey(key = "completenessCriteria")
+@RecordCriterionKey(key = "completenessCriteria")
 public class CompletenessCriteria implements RecordCriteria {
 
-  private final String key = BoundCriteria.class.getAnnotation(RecordCriteriaKey.class).key();
+  private final String key = BoundCriteria.class.getAnnotation(RecordCriterionKey.class).key();
 
   private final List<ValueTransformation<Boolean>> valueTransformations;
 

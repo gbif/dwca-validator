@@ -1,10 +1,10 @@
 package org.gbif.dwc.validator.criteria.configuration;
 
-import org.gbif.dwc.validator.criteria.annotation.CriteriaConfigurationKey;
+import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.transformation.ValueTransformation;
 
-@CriteriaConfigurationKey("minMaxCriteria")
+@CriterionConfigurationKey("minMaxCriteria")
 public class MinMaxCriteriaConfiguration {
 
   private String rowTypeRestriction;

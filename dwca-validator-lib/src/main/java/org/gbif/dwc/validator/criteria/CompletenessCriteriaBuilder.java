@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.criteria;
 
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.validator.criteria.annotation.RecordCriteriaBuilderKey;
+import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.configuration.CompletenessCriteriaConfiguration;
 import org.gbif.dwc.validator.transformation.ValueTransformations;
 
@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author cgendreau
  */
-@RecordCriteriaBuilderKey("completenessCriteria")
+@RecordCriterionBuilderKey("completenessCriteria")
 public class CompletenessCriteriaBuilder implements RecordCriteriaBuilder {
 
   private final CompletenessCriteriaConfiguration configuration;

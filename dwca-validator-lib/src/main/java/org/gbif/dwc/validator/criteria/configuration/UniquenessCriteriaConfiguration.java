@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.criteria.configuration;
 
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.validator.criteria.annotation.CriteriaConfigurationKey;
+import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
 import org.gbif.dwc.validator.result.EvaluationContext;
 
 import java.io.File;
@@ -11,7 +11,7 @@ import java.io.File;
  * 
  * @author cgendreau
  */
-@CriteriaConfigurationKey("uniquenessCriteria")
+@CriterionConfigurationKey("uniquenessCriteria")
 public class UniquenessCriteriaConfiguration {
 
   private EvaluationContext evaluationContextRestriction;

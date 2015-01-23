@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.criteria;
 
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.validator.criteria.annotation.RecordCriteriaBuilderKey;
+import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.configuration.ControlledVocabularyCriteriaConfiguration;
 
 import java.io.File;
@@ -20,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author cgendreau
  */
-@RecordCriteriaBuilderKey("controlledVocabularyCriteria")
+@RecordCriterionBuilderKey("controlledVocabularyCriteria")
 public class ControlledVocabularyCriteriaBuilder implements RecordCriteriaBuilder {
 
   private final ControlledVocabularyCriteriaConfiguration configuration;

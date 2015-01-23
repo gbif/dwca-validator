@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface RecordCriteriaBuilderKey {
+public @interface RecordCriterionBuilderKey {
 
   /**
    * @return the key to use to uniquely identify the Evaluator implementation.

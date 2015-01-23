@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.criteria.configuration;
 
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.validator.criteria.annotation.CriteriaConfigurationKey;
+import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
 import org.gbif.dwc.validator.result.Result;
 
 import com.google.common.base.CharMatcher;
@@ -11,7 +11,7 @@ import com.google.common.base.CharMatcher;
  * 
  * @author cgendreau
  */
-@CriteriaConfigurationKey("invalidCharacterCriteria")
+@CriterionConfigurationKey("invalidCharacterCriteria")
 public class InvalidCharacterCriteriaConfiguration {
 
   private String rowTypeRestriction;

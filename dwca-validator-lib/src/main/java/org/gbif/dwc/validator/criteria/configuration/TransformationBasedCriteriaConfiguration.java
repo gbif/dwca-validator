@@ -1,6 +1,6 @@
 package org.gbif.dwc.validator.criteria.configuration;
 
-import org.gbif.dwc.validator.criteria.annotation.CriteriaConfigurationKey;
+import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.transformation.ValueTransformation;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * 
  * @author cgendreau
  */
-@CriteriaConfigurationKey("transformationBasedCriteria")
+@CriterionConfigurationKey("transformationBasedCriteria")
 public class TransformationBasedCriteriaConfiguration {
 
   private String rowTypeRestriction;
