@@ -8,8 +8,8 @@ recordCriteria:
        - !dwcTerm 'country'
      rowTypeRestriction: 'http://rs.tdwg.org/dwc/terms/Occurrence'
      
- - !controlledVocabularyCriteria
-    - !controlledVocabularyCriteriaConfiguration
+ - !controlledVocabularyCriterion
+    - !controlledVocabularyCriterionConfiguration
      term						: !dwcTerm 'country'
      dictionaryPath				: 'src/test/resources/dictionary/european_union_country.txt'
      

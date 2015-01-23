@@ -7,12 +7,12 @@ import org.gbif.dwc.validator.result.Result;
 import java.util.Set;
 
 /**
- * Container object holding ControlledVocabularyCriteria configurations.
+ * Container object holding ControlledVocabularyCriterion configurations.
  * 
  * @author cgendreau
  */
 @CriterionConfigurationKey("controlledVocabularyCriteria")
-public class ControlledVocabularyCriteriaConfiguration {
+public class ControlledVocabularyCriterionConfiguration {
 
   private Result level = Result.ERROR;
   private String rowTypeRestriction;

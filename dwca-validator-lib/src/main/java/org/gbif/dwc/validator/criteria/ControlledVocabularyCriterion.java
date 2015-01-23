@@ -4,7 +4,7 @@ import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
-import org.gbif.dwc.validator.criteria.configuration.ControlledVocabularyCriteriaConfiguration;
+import org.gbif.dwc.validator.criteria.configuration.ControlledVocabularyCriterionConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
@@ -20,18 +20,17 @@ import com.google.common.base.Optional;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Rule use to ensure a String is matching against a controlled vocabulary.
- * ControlledVocabularyEvaluationRule objects are immutable.
+ * RecordCriterion used to ensure the value of a term is matching against a controlled vocabulary.
  * TODO: add ability to set 'preferred' and 'alternative' string
  * TODO: should we only compare lowerCase (at least by default)?
  * TODO: should we accept ascii folding setting? If yes, how it will (should) react with characters like 保存標本
  * 
  * @author cgendreau
  */
-@RecordCriterionKey(key = "controlledVocabularyCriteria")
-class ControlledVocabularyCriteria implements RecordCriteria {
+@RecordCriterionKey(key = "controlledVocabularyCriterion")
+class ControlledVocabularyCriterion implements RecordCriteria {
 
-  private final String key = ControlledVocabularyCriteria.class.getAnnotation(RecordCriterionKey.class).key();
+  private final String key = ControlledVocabularyCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
   private final Result level;
   private final String rowTypeRestriction;
@@ -39,7 +38,7 @@ class ControlledVocabularyCriteria implements RecordCriteria {
   private final Term term;
   private final Set<String> vocabularySet;
 
-  ControlledVocabularyCriteria(ControlledVocabularyCriteriaConfiguration configuration) {
+  ControlledVocabularyCriterion(ControlledVocabularyCriterionConfiguration configuration) {
     this.level = configuration.getLevel();
     this.rowTypeRestriction = configuration.getRowTypeRestriction();
     this.term = configuration.getTerm();
@@ -66,7 +65,8 @@ class ControlledVocabularyCriteria implements RecordCriteria {
     List<ValidationResultElement> elementList = new ArrayList<ValidationResultElement>();
     if (!vocabularySet.contains(str)) {
       elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
-        ValidatorConfig.getLocalizedString("rule.controlled_vocabulary", str, term.simpleName())));
+        ValidatorConfig.getLocalizedString("criterion.controlled_vocabulary_criterion.controlled_vocabulary", str,
+          term.simpleName())));
     }
 
     if (elementList != null && elementList.size() > 0) {

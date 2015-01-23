@@ -19,8 +19,12 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-
-public class ControlledVocabularyCriteriaTest {
+/**
+ * Test ControlledVocabularyCriterion implementation.
+ * 
+ * @author cgendreau
+ */
+public class ControlledVocabularyCriterionTest {
 
   private Record buildMockRecord(String occID, String country, String basisOfRecord) {
     return MockRecordFactory.buildMockOccurrenceRecord(DwcTerm.occurrenceID, occID, new Term[] {DwcTerm.country,
@@ -39,8 +43,8 @@ public class ControlledVocabularyCriteriaTest {
     }
 
     RecordCriteria criteria =
-      ControlledVocabularyCriteriaBuilder.builder().onTerm(DwcTerm.country).useDictionaryAt(testFile.getAbsolutePath())
-        .build();
+      ControlledVocabularyCriterionBuilder.builder().onTerm(DwcTerm.country)
+        .useDictionaryAt(testFile.getAbsolutePath()).build();
 
     Optional<ValidationResult> result =
       criteria.validate(buildMockRecord("1", "Spain", "PreservedSpecimen"), EvaluationContext.CORE);
@@ -57,21 +61,21 @@ public class ControlledVocabularyCriteriaTest {
     Set<String> vocabulary = new HashSet<String>();
     vocabulary.add("PreservedSpecimen");
 
-    RecordCriteria criteria =
-      ControlledVocabularyCriteriaBuilder.builder().onTerm(DwcTerm.basisOfRecord).useVocabularySet(vocabulary).build();
+    RecordCriteria criterion =
+      ControlledVocabularyCriterionBuilder.builder().onTerm(DwcTerm.basisOfRecord).useVocabularySet(vocabulary).build();
 
     Optional<ValidationResult> result =
-      criteria.validate(buildMockRecord("1", "Spain", "PreservedSpecimen"), EvaluationContext.CORE);
+      criterion.validate(buildMockRecord("1", "Spain", "PreservedSpecimen"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result));
 
     // should not passed
-    result = criteria.validate(buildMockRecord("1", "Spain", "Gulo Gulo"), EvaluationContext.CORE);
+    result = criterion.validate(buildMockRecord("1", "Spain", "Gulo Gulo"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationFailed(result));
   }
 
   @Test(expected = IllegalStateException.class)
   public void testBuilderBehavior() {
-    ControlledVocabularyCriteriaBuilder.builder().onTerm(DwcTerm.basisOfRecord).build();
+    ControlledVocabularyCriterionBuilder.builder().onTerm(DwcTerm.basisOfRecord).build();
   }
 
 }
