@@ -70,8 +70,8 @@ class BoundCriterion implements RecordCriteria {
     if (parsedValue != null
       && (parsedValue.doubleValue() < lowerBound.doubleValue() || parsedValue.doubleValue() > upperBound.doubleValue())) {
       elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
-        ValidatorConfig.getLocalizedString("criteria.bound.out_of_bounds", parsedValue, lowerBound, upperBound,
-          parsingResult.getTerm())));
+        ValidatorConfig.getLocalizedString("criterion.bound_criterion.out_of_bounds", parsedValue, lowerBound,
+          upperBound, parsingResult.getTerm())));
       return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType(), elementList));
     }
 

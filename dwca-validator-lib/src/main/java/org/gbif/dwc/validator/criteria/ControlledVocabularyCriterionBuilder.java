@@ -2,7 +2,7 @@ package org.gbif.dwc.validator.criteria;
 
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
-import org.gbif.dwc.validator.criteria.configuration.ControlledVocabularyCriteriaConfiguration;
+import org.gbif.dwc.validator.criteria.configuration.ControlledVocabularyCriterionConfiguration;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,33 +16,33 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Builder for ControlledVocabularyEvaluationRule object.
+ * Builder for ControlledVocabularyCriterion object.
  * 
  * @author cgendreau
  */
-@RecordCriterionBuilderKey("controlledVocabularyCriteria")
-public class ControlledVocabularyCriteriaBuilder implements RecordCriteriaBuilder {
+@RecordCriterionBuilderKey("controlledVocabularyCriterion")
+public class ControlledVocabularyCriterionBuilder implements RecordCriteriaBuilder {
 
-  private final ControlledVocabularyCriteriaConfiguration configuration;
+  private final ControlledVocabularyCriterionConfiguration configuration;
 
   /**
    * Private constructor, use builder() method.
    */
-  private ControlledVocabularyCriteriaBuilder() {
-    configuration = new ControlledVocabularyCriteriaConfiguration();
+  private ControlledVocabularyCriterionBuilder() {
+    configuration = new ControlledVocabularyCriterionConfiguration();
   }
 
-  public ControlledVocabularyCriteriaBuilder(ControlledVocabularyCriteriaConfiguration configuration) {
+  public ControlledVocabularyCriterionBuilder(ControlledVocabularyCriterionConfiguration configuration) {
     this.configuration = configuration;
   }
 
   /**
-   * Creates a ControlledVocabularyEvaluationRuleBuilder.
+   * Creates a ControlledVocabularyCriterionBuilder.
    * 
    * @return
    */
-  public static ControlledVocabularyCriteriaBuilder builder() {
-    return new ControlledVocabularyCriteriaBuilder();
+  public static ControlledVocabularyCriterionBuilder builder() {
+    return new ControlledVocabularyCriterionBuilder();
   }
 
   /**
@@ -61,7 +61,7 @@ public class ControlledVocabularyCriteriaBuilder implements RecordCriteriaBuilde
     return null;
   }
 
-  public ControlledVocabularyCriteriaBuilder onTerm(Term term) {
+  public ControlledVocabularyCriterionBuilder onTerm(Term term) {
     configuration.setTerm(term);
     return this;
   }
@@ -72,7 +72,7 @@ public class ControlledVocabularyCriteriaBuilder implements RecordCriteriaBuilde
    * @param dictonaryPath
    * @return
    */
-  public ControlledVocabularyCriteriaBuilder useDictionaryAt(String dictonaryPath) {
+  public ControlledVocabularyCriterionBuilder useDictionaryAt(String dictonaryPath) {
     configuration.setDictionaryPath(dictonaryPath);
     return this;
   }
@@ -83,15 +83,15 @@ public class ControlledVocabularyCriteriaBuilder implements RecordCriteriaBuilde
    * @param vocabularySet
    * @return
    */
-  public ControlledVocabularyCriteriaBuilder useVocabularySet(Set<String> vocabularySet) {
+  public ControlledVocabularyCriterionBuilder useVocabularySet(Set<String> vocabularySet) {
     configuration.setVocabularySet(vocabularySet);
     return this;
   }
 
   /**
-   * Build an immutable ControlledVocabularyCriteria instance
+   * Build an immutable ControlledVocabularyCriterion instance
    * 
-   * @return immutable ControlledVocabularyEvaluationRule
+   * @return immutable ControlledVocabularyCriterion
    * @throws IllegalStateException
    */
   @Override
@@ -117,6 +117,6 @@ public class ControlledVocabularyCriteriaBuilder implements RecordCriteriaBuilde
       }
     }
 
-    return new ControlledVocabularyCriteria(configuration);
+    return new ControlledVocabularyCriterion(configuration);
   }
 }

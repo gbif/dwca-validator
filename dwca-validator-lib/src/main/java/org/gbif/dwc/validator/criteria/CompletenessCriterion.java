@@ -53,7 +53,7 @@ public class CompletenessCriterion implements RecordCriteria {
 
       if (parsingResult.isNotTransformed() || BooleanUtils.isFalse(parsingResult.getData())) {
         elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
-          ValidatorConfig.getLocalizedString("criteria.completeness.incomplete", parsingResult.getTerm())));
+          ValidatorConfig.getLocalizedString("criterion.completeness_criterion.incomplete", parsingResult.getTerm())));
       }
     }
 
