@@ -30,6 +30,11 @@ recordCriteria:
      term						: !dwcTerm 'scientificName'
      rejectReplacementChar		: true
      
+ - !minMaxCriterion
+   - !minMaxCriterionConfiguration
+     minValueTerm				: !dwcTerm 'minimumElevationInMeters'
+     maxValueTerm				: !dwcTerm 'maximumElevationInMeters'
+     
 datasetCriteria:
  - !uniquenessCriteria
    - !uniquenessCriteriaConfiguration {}

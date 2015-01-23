@@ -15,7 +15,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
-public class InvalidCharacterCriteriaTest {
+public class InvalidCharacterCriterionTest {
 
   // never allowed char
   private static final char NULL_CHAR = 0;

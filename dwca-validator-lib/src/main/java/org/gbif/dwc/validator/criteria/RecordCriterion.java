@@ -10,8 +10,8 @@ public class RecordCriterion {
     return BoundCriterionBuilder.builder().termBoundedBy(term, lowerBound, upperBound);
   }
 
-  public static MinMaxCriteriaBuilder minMax(Term minTerm, Term maxTerm) {
-    return MinMaxCriteriaBuilder.builder().terms(minTerm, maxTerm);
+  public static MinMaxCriterionBuilder minMax(Term minTerm, Term maxTerm) {
+    return MinMaxCriterionBuilder.builder().terms(minTerm, maxTerm);
   }
 
   public static InvalidCharacterCriterionBuilder checkForInvalidCharacter(Term term) {

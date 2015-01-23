@@ -3,7 +3,7 @@ package org.gbif.dwc.validator.criteria;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
-import org.gbif.dwc.validator.criteria.configuration.MinMaxCriteriaConfiguration;
+import org.gbif.dwc.validator.criteria.configuration.MinMaxCriterionConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
@@ -18,10 +18,10 @@ import java.util.List;
 import com.google.common.base.Optional;
 import org.apache.commons.lang3.StringUtils;
 
-@RecordCriterionKey(key = "minMaxCriteria")
-class MinMaxCriteria implements RecordCriteria {
+@RecordCriterionKey(key = "minMaxCriterion")
+class MinMaxCriterion implements RecordCriteria {
 
-  private final String key = MinMaxCriteria.class.getAnnotation(RecordCriterionKey.class).key();
+  private final String key = MinMaxCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
   private final String rowTypeRestriction;
   private final Result level;
@@ -29,7 +29,7 @@ class MinMaxCriteria implements RecordCriteria {
   private final ValueTransformation<Number> minValueTransformation;
   private final ValueTransformation<Number> maxValueTransformation;
 
-  MinMaxCriteria(MinMaxCriteriaConfiguration configuration) {
+  MinMaxCriterion(MinMaxCriterionConfiguration configuration) {
     this.rowTypeRestriction = configuration.getRowTypeRestriction();
     this.level = configuration.getLevel();
     this.minValueTransformation = configuration.getMinValueTransformation();
@@ -70,7 +70,7 @@ class MinMaxCriteria implements RecordCriteria {
       && minValueParsingResult.getData().doubleValue() > maxValueParsingResult.getData().doubleValue()) {
 
       elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
-        ValidatorConfig.getLocalizedString("criteria.min_max.min_greater_than_max",
+        ValidatorConfig.getLocalizedString("criterion.min_max_criterion.min_greater_than_max",
           minValueParsingResult.getOriginalValue(), minValueParsingResult.getTerm(),
           maxValueParsingResult.getOriginalValue(), maxValueParsingResult.getTerm())));
     }
