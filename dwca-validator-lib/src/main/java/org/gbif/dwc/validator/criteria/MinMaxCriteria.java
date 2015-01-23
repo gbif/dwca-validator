@@ -21,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 @RecordCriterionKey(key = "minMaxCriteria")
 class MinMaxCriteria implements RecordCriteria {
 
-  private final String key = BoundCriteria.class.getAnnotation(RecordCriterionKey.class).key();
+  private final String key = MinMaxCriteria.class.getAnnotation(RecordCriterionKey.class).key();
 
   private final String rowTypeRestriction;
   private final Result level;

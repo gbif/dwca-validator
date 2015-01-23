@@ -6,8 +6,8 @@ import org.gbif.dwc.validator.transformation.ValueTransformation;
 
 public class RecordCriterion {
 
-  public static BoundCriteriaBuilder withinRange(Term term, Number lowerBound, Number upperBound) {
-    return BoundCriteriaBuilder.builder().termBoundedBy(term, lowerBound, upperBound);
+  public static BoundCriterionBuilder withinRange(Term term, Number lowerBound, Number upperBound) {
+    return BoundCriterionBuilder.builder().termBoundedBy(term, lowerBound, upperBound);
   }
 
   public static MinMaxCriteriaBuilder minMax(Term minTerm, Term maxTerm) {

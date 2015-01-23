@@ -13,6 +13,18 @@ recordCriteria:
      term						: !dwcTerm 'country'
      dictionaryPath				: 'src/test/resources/dictionary/european_union_country.txt'
      
+ - !boundCriterion
+    - !boundCriterionConfiguration
+     term						: !dwcTerm 'decimalLatitude'
+     lowerBound					: -90
+     upperBound					: 90
+     
+ - !boundCriterion
+    - !boundCriterionConfiguration
+     term						: !dwcTerm 'decimalLongitude'
+     lowerBound					: -180
+     upperBound					: 180
+     
 datasetCriteria:
  - !uniquenessCriteria
    - !uniquenessCriteriaConfiguration {}

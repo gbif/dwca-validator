@@ -3,7 +3,7 @@ package org.gbif.dwc.validator.criteria;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
-import org.gbif.dwc.validator.criteria.configuration.BoundCriteriaConfiguration;
+import org.gbif.dwc.validator.criteria.configuration.BoundCriterionConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
@@ -18,10 +18,10 @@ import java.util.List;
 import com.google.common.base.Optional;
 import org.apache.commons.lang3.StringUtils;
 
-@RecordCriterionKey(key = "boundCriteria")
-class BoundCriteria implements RecordCriteria {
+@RecordCriterionKey(key = "boundCriterion")
+class BoundCriterion implements RecordCriteria {
 
-  private final String key = BoundCriteria.class.getAnnotation(RecordCriterionKey.class).key();
+  private final String key = BoundCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
   private final String rowTypeRestriction;
   private final Result level;
@@ -35,7 +35,7 @@ class BoundCriteria implements RecordCriteria {
    * 
    * @param boundCriteriaConfiguration
    */
-  BoundCriteria(BoundCriteriaConfiguration boundCriteriaConfiguration) {
+  BoundCriterion(BoundCriterionConfiguration boundCriteriaConfiguration) {
     this.level = boundCriteriaConfiguration.getLevel();
     this.rowTypeRestriction = boundCriteriaConfiguration.getRowTypeRestriction();
     this.lowerBound = boundCriteriaConfiguration.getLowerBound();

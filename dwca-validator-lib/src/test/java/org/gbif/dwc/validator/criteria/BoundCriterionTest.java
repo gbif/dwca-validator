@@ -13,7 +13,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 
-public class BoundCriteriaTest {
+public class BoundCriterionTest {
 
   public static final Double MIN_LATITUDE = -90d;
   public static final Double MAX_LATITUDE = 90d;
@@ -24,9 +24,9 @@ public class BoundCriteriaTest {
   }
 
   @Test
-  public void testBoundCriteria() {
+  public void testBoundCriterion() {
     RecordCriteria criteria =
-      BoundCriteriaBuilder.builder().termBoundedBy(DwcTerm.decimalLatitude, MIN_LATITUDE, MAX_LATITUDE).build();
+      BoundCriterionBuilder.builder().termBoundedBy(DwcTerm.decimalLatitude, MIN_LATITUDE, MAX_LATITUDE).build();
 
     Optional<ValidationResult> result =
       criteria.validate(buildMockRecord("1", MIN_LATITUDE.toString()), EvaluationContext.CORE);

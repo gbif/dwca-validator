@@ -22,7 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 @RecordCriterionKey(key = "completenessCriteria")
 public class CompletenessCriteria implements RecordCriteria {
 
-  private final String key = BoundCriteria.class.getAnnotation(RecordCriterionKey.class).key();
+  private final String key = CompletenessCriteria.class.getAnnotation(RecordCriterionKey.class).key();
 
   private final List<ValueTransformation<Boolean>> valueTransformations;
 
@@ -53,7 +53,7 @@ public class CompletenessCriteria implements RecordCriteria {
 
       if (parsingResult.isNotTransformed() || BooleanUtils.isFalse(parsingResult.getData())) {
         elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
-          ValidatorConfig.getLocalizedString("criteria.completeness.incomplete"), parsingResult.getTerm()));
+          ValidatorConfig.getLocalizedString("criteria.completeness.incomplete", parsingResult.getTerm())));
       }
     }
 
