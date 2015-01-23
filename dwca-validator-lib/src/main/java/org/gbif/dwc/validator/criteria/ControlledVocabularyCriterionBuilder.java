@@ -21,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author cgendreau
  */
 @RecordCriterionBuilderKey("controlledVocabularyCriterion")
-public class ControlledVocabularyCriterionBuilder implements RecordCriteriaBuilder {
+public class ControlledVocabularyCriterionBuilder implements RecordCriterionBuilder {
 
   private final ControlledVocabularyCriterionConfiguration configuration;
 

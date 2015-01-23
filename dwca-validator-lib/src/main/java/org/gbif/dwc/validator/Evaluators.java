@@ -4,10 +4,10 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.chain.CriteriaChain;
 import org.gbif.dwc.validator.criteria.DatasetCriterion;
 import org.gbif.dwc.validator.criteria.RecordCriteria;
-import org.gbif.dwc.validator.criteria.RecordCriteriaBuilder;
+import org.gbif.dwc.validator.criteria.RecordCriterionBuilder;
 import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriteria;
-import org.gbif.dwc.validator.criteria.dataset.DatasetCriteriaBuilder;
+import org.gbif.dwc.validator.criteria.dataset.DatasetCriterionBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,8 +28,8 @@ public class Evaluators {
   public static final double MIN_LONGITUDE = -180d;
   public static final double MAX_LONGITUDE = 180d;
 
-  private final List<RecordCriteriaBuilder> buildersList;
-  private final List<DatasetCriteriaBuilder> datasetCriteriaBuildersList;
+  private final List<RecordCriterionBuilder> buildersList;
+  private final List<DatasetCriterionBuilder> datasetCriteriaBuildersList;
 
   /**
    * Get a new Evaluators instance
@@ -87,8 +87,8 @@ public class Evaluators {
    * Private constructor, use Validator.builder()
    */
   private Evaluators() {
-    this.buildersList = new ArrayList<RecordCriteriaBuilder>();
-    this.datasetCriteriaBuildersList = new ArrayList<DatasetCriteriaBuilder>();
+    this.buildersList = new ArrayList<RecordCriterionBuilder>();
+    this.datasetCriteriaBuildersList = new ArrayList<DatasetCriterionBuilder>();
   }
 
   /**
@@ -97,12 +97,12 @@ public class Evaluators {
    * @param recordEvaluatorBuilder
    * @return
    */
-  public Evaluators with(RecordCriteriaBuilder recordEvaluatorBuilder) {
+  public Evaluators with(RecordCriterionBuilder recordEvaluatorBuilder) {
     buildersList.add(recordEvaluatorBuilder);
     return this;
   }
 
-  public Evaluators with(DatasetCriteriaBuilder datasetCriteriaBuilder) {
+  public Evaluators with(DatasetCriterionBuilder datasetCriteriaBuilder) {
     datasetCriteriaBuildersList.add(datasetCriteriaBuilder);
     return this;
   }
@@ -123,12 +123,12 @@ public class Evaluators {
    */
   public CriteriaChain buildChain() throws IllegalStateException {
     List<RecordCriteria> recordCriteriaList = new ArrayList<RecordCriteria>();
-    for (RecordCriteriaBuilder currRecordCriteriaBuilder : buildersList) {
+    for (RecordCriterionBuilder currRecordCriteriaBuilder : buildersList) {
       recordCriteriaList.add(currRecordCriteriaBuilder.build());
     }
 
     List<DatasetCriteria> datasetCriteriaList = new ArrayList<DatasetCriteria>();
-    for (DatasetCriteriaBuilder currDDatasetCriteriaBuilder : datasetCriteriaBuildersList) {
+    for (DatasetCriterionBuilder currDDatasetCriteriaBuilder : datasetCriteriaBuildersList) {
       datasetCriteriaList.add(currDDatasetCriteriaBuilder.build());
     }
 

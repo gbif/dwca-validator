@@ -12,7 +12,7 @@ import com.google.common.base.CharMatcher;
  * @author cgendreau
  */
 @RecordCriterionBuilderKey("invalidCharacterCriterion")
-public class InvalidCharacterCriterionBuilder implements RecordCriteriaBuilder {
+public class InvalidCharacterCriterionBuilder implements RecordCriterionBuilder {
 
   // replacement char \uFFFD
   public static final char REPLACEMENT_CHAR = 65533;

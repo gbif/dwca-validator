@@ -14,7 +14,7 @@ import org.apache.commons.lang3.BooleanUtils;
  * @author cgendreau
  */
 @RecordCriterionBuilderKey("minMaxCriterion")
-public class MinMaxCriterionBuilder implements RecordCriteriaBuilder {
+public class MinMaxCriterionBuilder implements RecordCriterionBuilder {
 
   private final MinMaxCriterionConfiguration configuration;
 

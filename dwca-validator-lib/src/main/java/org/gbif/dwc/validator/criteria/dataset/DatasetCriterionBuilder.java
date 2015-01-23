@@ -1,15 +1,15 @@
 package org.gbif.dwc.validator.criteria.dataset;
 
 /**
- * Interface defining a DatasetCriteria builder.
+ * Interface defining a DatasetCriterion builder.
  * 
  * @author cgendreau
  */
-public interface DatasetCriteriaBuilder {
+public interface DatasetCriterionBuilder {
 
 
   /**
-   * Build a concrete instance of DatasetCriteria.
+   * Build a concrete instance of DatasetCriterion.
    * 
    * @return
    * @throws IllegalStateException

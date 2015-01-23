@@ -6,12 +6,12 @@ import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.annotation.AnnotationLoader;
 import org.gbif.dwc.validator.chain.CriteriaChain;
 import org.gbif.dwc.validator.criteria.RecordCriteria;
-import org.gbif.dwc.validator.criteria.RecordCriteriaBuilder;
+import org.gbif.dwc.validator.criteria.RecordCriterionBuilder;
 import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
 import org.gbif.dwc.validator.criteria.annotation.DatasetCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriteria;
-import org.gbif.dwc.validator.criteria.dataset.DatasetCriteriaBuilder;
+import org.gbif.dwc.validator.criteria.dataset.DatasetCriterionBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -91,13 +91,13 @@ public class FileBasedValidationChainLoader {
   private Constructor buildYamlContructor() {
 
     // Get all annotated EvaluationRuleBuilder implementations
-    Set<Class<RecordCriteriaBuilder>> recordCriteriaBuilderClasses =
+    Set<Class<RecordCriterionBuilder>> recordCriteriaBuilderClasses =
       AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, RecordCriterionBuilderKey.class,
-        RecordCriteriaBuilder.class);
+        RecordCriterionBuilder.class);
 
-    Set<Class<DatasetCriteriaBuilder>> datasetCriteriaBuilderClasses =
+    Set<Class<DatasetCriterionBuilder>> datasetCriteriaBuilderClasses =
       AnnotationLoader.getAnnotatedClasses(BASE_PACKAGE_TO_SCAN, DatasetCriterionBuilderKey.class,
-        DatasetCriteriaBuilder.class);
+        DatasetCriterionBuilder.class);
 
     Constructor yamlConstructor =
       new ValidatorYamlContructor(recordCriteriaBuilderClasses, datasetCriteriaBuilderClasses);

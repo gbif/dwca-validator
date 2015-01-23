@@ -1,9 +1,9 @@
 package org.gbif.dwc.validator.config;
 
-import org.gbif.dwc.validator.criteria.RecordCriteriaBuilder;
+import org.gbif.dwc.validator.criteria.RecordCriterionBuilder;
 import org.gbif.dwc.validator.criteria.annotation.DatasetCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
-import org.gbif.dwc.validator.criteria.dataset.DatasetCriteriaBuilder;
+import org.gbif.dwc.validator.criteria.dataset.DatasetCriterionBuilder;
 
 import java.util.Collection;
 
@@ -26,12 +26,12 @@ public class ValidatorYamlContructor extends Constructor {
    * @param datasetCriteriaBuilderClasses DatasetCriteriaBuilder implementations must have the DatasetCriteriaBuilderKey
    *        annotation set. The value of the annotation will be used for the alias name.
    */
-  public ValidatorYamlContructor(Collection<Class<RecordCriteriaBuilder>> recordCriteriaBuilderClasses,
-    Collection<Class<DatasetCriteriaBuilder>> datasetCriteriaBuilderClasses) {
+  public ValidatorYamlContructor(Collection<Class<RecordCriterionBuilder>> recordCriteriaBuilderClasses,
+    Collection<Class<DatasetCriterionBuilder>> datasetCriteriaBuilderClasses) {
     super();
 
     String tagName;
-    for (Class<RecordCriteriaBuilder> currClass : recordCriteriaBuilderClasses) {
+    for (Class<RecordCriterionBuilder> currClass : recordCriteriaBuilderClasses) {
       if (currClass.getAnnotation(RecordCriterionBuilderKey.class) != null) {
         tagName = "!" + currClass.getAnnotation(RecordCriterionBuilderKey.class).value();
 
@@ -43,7 +43,7 @@ public class ValidatorYamlContructor extends Constructor {
       }
     }
 
-    for (Class<DatasetCriteriaBuilder> currClass : datasetCriteriaBuilderClasses) {
+    for (Class<DatasetCriterionBuilder> currClass : datasetCriteriaBuilderClasses) {
       if (currClass.getAnnotation(DatasetCriterionBuilderKey.class) != null) {
         tagName = "!" + currClass.getAnnotation(DatasetCriterionBuilderKey.class).value();
 
@@ -67,7 +67,7 @@ public class ValidatorYamlContructor extends Constructor {
     @Override
     public Object construct(Node node) {
       Object obj = super.construct(node);
-      return ((RecordCriteriaBuilder) obj).build();
+      return ((RecordCriterionBuilder) obj).build();
     }
   }
 
@@ -81,7 +81,7 @@ public class ValidatorYamlContructor extends Constructor {
     @Override
     public Object construct(Node node) {
       Object obj = super.construct(node);
-      return ((DatasetCriteriaBuilder) obj).build();
+      return ((DatasetCriterionBuilder) obj).build();
     }
   }
 

@@ -18,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author cgendreau
  */
 @DatasetCriterionBuilderKey("uniquenessCriterion")
-public class UniquenessCriterionBuilder implements DatasetCriteriaBuilder {
+public class UniquenessCriterionBuilder implements DatasetCriterionBuilder {
 
   private final UniquenessCriterionConfiguration configuration;
 

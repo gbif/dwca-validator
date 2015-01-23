@@ -11,7 +11,7 @@ import com.google.common.base.Preconditions;
  * 
  * @author cgendreau
  */
-public class TransformationBasedCriteriaBuilder implements RecordCriteriaBuilder {
+public class TransformationBasedCriteriaBuilder implements RecordCriterionBuilder {
 
   private final TransformationBasedCriteriaConfiguration configuration;
 

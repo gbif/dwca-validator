@@ -14,7 +14,7 @@ import org.apache.commons.lang3.BooleanUtils;
  * @author cgendreau
  */
 @RecordCriterionBuilderKey("boundCriterion")
-public class BoundCriterionBuilder implements RecordCriteriaBuilder {
+public class BoundCriterionBuilder implements RecordCriterionBuilder {
 
   private final BoundCriterionConfiguration configuration;
 

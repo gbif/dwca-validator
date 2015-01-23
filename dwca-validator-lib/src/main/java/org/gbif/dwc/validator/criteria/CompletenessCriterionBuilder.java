@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author cgendreau
  */
 @RecordCriterionBuilderKey("completenessCriterion")
-public class CompletenessCriterionBuilder implements RecordCriteriaBuilder {
+public class CompletenessCriterionBuilder implements RecordCriterionBuilder {
 
   private final CompletenessCriterionConfiguration configuration;
 
