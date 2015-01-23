@@ -64,10 +64,10 @@ public class FileBasedValidationChainLoaderTest {
       }
 
       Record testRecord = buildMockRecord("2");
-      Record testRecordDeplicate = buildMockRecord("2");
+      Record testRecordDuplicate = buildMockRecord("2");
       try {
         chainHead.evaluateRecord(testRecord, EvaluationContext.CORE, resultAccumulator);
-        chainHead.evaluateRecord(testRecordDeplicate, EvaluationContext.CORE, resultAccumulator);
+        chainHead.evaluateRecord(testRecordDuplicate, EvaluationContext.CORE, resultAccumulator);
 
         chainHead.evaluateDataset(resultAccumulator);
 

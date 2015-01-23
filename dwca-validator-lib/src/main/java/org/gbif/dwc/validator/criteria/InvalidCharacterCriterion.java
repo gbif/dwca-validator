@@ -4,7 +4,7 @@ import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
-import org.gbif.dwc.validator.criteria.configuration.InvalidCharacterCriteriaConfiguration;
+import org.gbif.dwc.validator.criteria.configuration.InvalidCharacterCriterionConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
@@ -18,10 +18,10 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Optional;
 import org.apache.commons.lang3.StringUtils;
 
-@RecordCriterionKey(key = "invalidCharacterCriteria")
-class InvalidCharacterCriteria implements RecordCriteria {
+@RecordCriterionKey(key = "invalidCharacterCriterion")
+class InvalidCharacterCriterion implements RecordCriteria {
 
-  private final String key = InvalidCharacterCriteria.class.getAnnotation(RecordCriterionKey.class).key();
+  private final String key = InvalidCharacterCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
   private final String rowTypeRestriction;
   private final Result level;
@@ -29,7 +29,7 @@ class InvalidCharacterCriteria implements RecordCriteria {
 
   private final CharMatcher charMatcher;
 
-  InvalidCharacterCriteria(InvalidCharacterCriteriaConfiguration configuration) {
+  InvalidCharacterCriterion(InvalidCharacterCriterionConfiguration configuration) {
     this.level = configuration.getLevel();
     this.rowTypeRestriction = configuration.getRowTypeRestriction();
     this.term = configuration.getTerm();
@@ -59,7 +59,8 @@ class InvalidCharacterCriteria implements RecordCriteria {
       int charValue = str.charAt(indexIn);
       // Remove invalid character from the error message to avoid display issues (e.g. NULL char)
       elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
-        ValidatorConfig.getLocalizedString("rule.invalid_character", charMatcher.removeFrom(str), indexIn, charValue)));
+        ValidatorConfig.getLocalizedString("criterion.invalid_character_criterion.invalid_character",
+          charMatcher.removeFrom(str), indexIn, charValue)));
     }
 
     if (elementList != null && elementList.size() > 0) {

@@ -14,8 +14,8 @@ public class RecordCriterion {
     return MinMaxCriteriaBuilder.builder().terms(minTerm, maxTerm);
   }
 
-  public static InvalidCharacterCriteriaBuilder checkForInvalidCharacter(Term term) {
-    return InvalidCharacterCriteriaBuilder.builder().onTerm(term);
+  public static InvalidCharacterCriterionBuilder checkForInvalidCharacter(Term term) {
+    return InvalidCharacterCriterionBuilder.builder().onTerm(term);
   }
 
   public static TransformationBasedCriteriaBuilder tryTransformations(ValueTransformation<?>... transformations) {

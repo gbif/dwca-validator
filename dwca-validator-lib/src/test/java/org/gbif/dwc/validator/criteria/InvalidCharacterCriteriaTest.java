@@ -36,7 +36,7 @@ public class InvalidCharacterCriteriaTest {
   @Test
   public void testFormattingWhiteSpaceAllowed() {
     RecordCriteria criteria =
-      InvalidCharacterCriteriaBuilder.builder().onTerm(DwcTerm.scientificName).allowFormattingWhiteSpace().build();
+      InvalidCharacterCriterionBuilder.builder().onTerm(DwcTerm.scientificName).allowFormattingWhiteSpace().build();
 
     testAlwaysValidString(criteria);
     testNeverValidString(criteria);
@@ -55,7 +55,7 @@ public class InvalidCharacterCriteriaTest {
   @Test
   public void testNoFormattingWhiteSpaceAllowed() {
     // noFormattingWhiteSpaceAllowed is the default behavior
-    RecordCriteria criteria = InvalidCharacterCriteriaBuilder.builder().onTerm(DwcTerm.scientificName).build();
+    RecordCriteria criteria = InvalidCharacterCriterionBuilder.builder().onTerm(DwcTerm.scientificName).build();
 
     testAlwaysValidString(criteria);
     testNeverValidString(criteria);
@@ -73,7 +73,7 @@ public class InvalidCharacterCriteriaTest {
   @Test
   public void testNoReplacementCharAllowed() {
     RecordCriteria criteria =
-      InvalidCharacterCriteriaBuilder.builder().onTerm(DwcTerm.scientificName).rejectReplacementChar().build();
+      InvalidCharacterCriterionBuilder.builder().onTerm(DwcTerm.scientificName).rejectReplacementChar().build();
 
     testAlwaysValidString(criteria);
     testNeverValidString(criteria);

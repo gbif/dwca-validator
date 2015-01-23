@@ -25,6 +25,11 @@ recordCriteria:
      lowerBound					: -180
      upperBound					: 180
      
+ - !invalidCharacterCriterion
+    - !invalidCharacterCriterionConfiguration
+     term						: !dwcTerm 'scientificName'
+     rejectReplacementChar		: true
+     
 datasetCriteria:
  - !uniquenessCriteria
    - !uniquenessCriteriaConfiguration {}

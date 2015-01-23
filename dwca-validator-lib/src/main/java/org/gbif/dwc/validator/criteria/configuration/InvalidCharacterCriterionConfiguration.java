@@ -7,12 +7,12 @@ import org.gbif.dwc.validator.result.Result;
 import com.google.common.base.CharMatcher;
 
 /**
- * Container object holding InvalidCharacterCriteria configurations.
+ * Container object holding InvalidCharacterCriterion configurations.
  * 
  * @author cgendreau
  */
-@CriterionConfigurationKey("invalidCharacterCriteria")
-public class InvalidCharacterCriteriaConfiguration {
+@CriterionConfigurationKey("invalidCharacterCriterion")
+public class InvalidCharacterCriterionConfiguration {
 
   private String rowTypeRestriction;
   private Result level = Result.ERROR;

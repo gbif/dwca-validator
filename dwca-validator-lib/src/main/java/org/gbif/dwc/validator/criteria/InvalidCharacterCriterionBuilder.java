@@ -2,17 +2,17 @@ package org.gbif.dwc.validator.criteria;
 
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
-import org.gbif.dwc.validator.criteria.configuration.InvalidCharacterCriteriaConfiguration;
+import org.gbif.dwc.validator.criteria.configuration.InvalidCharacterCriterionConfiguration;
 
 import com.google.common.base.CharMatcher;
 
 /**
- * Builder for InvalidCharacterEvaluationRule object.
+ * Builder for InvalidCharacterCriterion object.
  * 
  * @author cgendreau
  */
-@RecordCriterionBuilderKey("invalidCharacterCriteria")
-public class InvalidCharacterCriteriaBuilder implements RecordCriteriaBuilder {
+@RecordCriterionBuilderKey("invalidCharacterCriterion")
+public class InvalidCharacterCriterionBuilder implements RecordCriteriaBuilder {
 
   // replacement char \uFFFD
   public static final char REPLACEMENT_CHAR = 65533;
@@ -20,25 +20,25 @@ public class InvalidCharacterCriteriaBuilder implements RecordCriteriaBuilder {
   // default rule is no invisible character except space
   private static CharMatcher DEFAULT_CHAR_MATCHER = CharMatcher.INVISIBLE.and(CharMatcher.isNot(' '));
 
-  private final InvalidCharacterCriteriaConfiguration configuration;
+  private final InvalidCharacterCriterionConfiguration configuration;
 
   /**
    * Creates a default InvalidCharacterEvaluationRuleBuilder that rejects any invisible characters except space.
    * 
    * @return
    */
-  public static InvalidCharacterCriteriaBuilder builder() {
-    return new InvalidCharacterCriteriaBuilder();
+  public static InvalidCharacterCriterionBuilder builder() {
+    return new InvalidCharacterCriterionBuilder();
   }
 
   /**
    * Private constructor, use builder() method.
    */
-  private InvalidCharacterCriteriaBuilder() {
-    this.configuration = new InvalidCharacterCriteriaConfiguration();
+  private InvalidCharacterCriterionBuilder() {
+    this.configuration = new InvalidCharacterCriterionConfiguration();
   }
 
-  public InvalidCharacterCriteriaBuilder(InvalidCharacterCriteriaConfiguration configuration) {
+  public InvalidCharacterCriterionBuilder(InvalidCharacterCriterionConfiguration configuration) {
     this.configuration = configuration;
   }
 
@@ -67,7 +67,7 @@ public class InvalidCharacterCriteriaBuilder implements RecordCriteriaBuilder {
    * 
    * @return
    */
-  public InvalidCharacterCriteriaBuilder allowFormattingWhiteSpace() {
+  public InvalidCharacterCriterionBuilder allowFormattingWhiteSpace() {
     configuration.setAllowFormattingWhiteSpace(true);
     return this;
   }
@@ -77,25 +77,25 @@ public class InvalidCharacterCriteriaBuilder implements RecordCriteriaBuilder {
    * 
    * @return
    */
-  public InvalidCharacterCriteriaBuilder rejectReplacementChar() {
+  public InvalidCharacterCriterionBuilder rejectReplacementChar() {
     configuration.setRejectReplacementChar(true);
     return this;
   }
 
-  public InvalidCharacterCriteriaBuilder onTerm(Term term) {
+  public InvalidCharacterCriterionBuilder onTerm(Term term) {
     configuration.setTerm(term);
     return this;
   }
 
   /**
-   * Build an immutable InvalidCharacterEvaluationRule instance
+   * Build an immutable InvalidCharacterCriterion instance
    * 
-   * @return immutable InvalidCharacterEvaluationRule
+   * @return immutable InvalidCharacterCriterion
    */
   @Override
   public RecordCriteria build() {
     configuration.setCharMatcher(toCharMatcher());
-    return new InvalidCharacterCriteria(configuration);
+    return new InvalidCharacterCriterion(configuration);
   }
 
 }
