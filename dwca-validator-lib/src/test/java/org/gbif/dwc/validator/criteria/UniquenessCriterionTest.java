@@ -8,7 +8,7 @@ import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriteria;
-import org.gbif.dwc.validator.criteria.dataset.UniquenessCriteriaBuilder;
+import org.gbif.dwc.validator.criteria.dataset.UniquenessCriterionBuilder;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
@@ -19,15 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
- * Test UniquenessEvaluator with mock records.
+ * Test UniquenessCriterion with mock records.
  * 
  * @author cgendreau
  */
-public class UniquenessCriteriaTest {
+public class UniquenessCriterionTest {
 
   private Record buildMockRecord(String id, String catalogNumber) {
     // create a mock Record
@@ -44,12 +45,12 @@ public class UniquenessCriteriaTest {
   }
 
   @Test
-  public void testUniquenessEvaluatorNonUniqueId() {
+  public void testUniquenessCriterionNonUniqueId() {
 
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
-      DatasetCriteria uniquenessEvaluator = UniquenessCriteriaBuilder.builder().build();
+      DatasetCriteria uniquenessEvaluator = UniquenessCriterionBuilder.builder().build();
       uniquenessEvaluator.onRecord(buildMockRecord("1", "1"), EvaluationContext.CORE);
       uniquenessEvaluator.onRecord(buildMockRecord("1", "2"), EvaluationContext.CORE);
 
@@ -62,10 +63,6 @@ public class UniquenessCriteriaTest {
       e.printStackTrace();
       fail();
     }
-// catch (EvaluationException e) {
-// e.printStackTrace();
-// fail();
-// }
 
     assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
       ContentValidationType.FIELD_UNIQUENESS));
@@ -73,12 +70,12 @@ public class UniquenessCriteriaTest {
 
 
   @Test
-  public void testUniquenessEvaluatorWithEmptyString() {
+  public void testUniquenessCriterionWithEmptyString() {
 
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
-      DatasetCriteria valueEvaluator = UniquenessCriteriaBuilder.builder().build();
+      DatasetCriteria valueEvaluator = UniquenessCriterionBuilder.builder().build();
       valueEvaluator.onRecord(buildMockRecord("", "1"), EvaluationContext.CORE);
       valueEvaluator.onRecord(buildMockRecord("", "2"), EvaluationContext.CORE);
 
@@ -91,10 +88,6 @@ public class UniquenessCriteriaTest {
       e.printStackTrace();
       fail();
     }
-// catch (EvaluationException e) {
-// e.printStackTrace();
-// fail();
-// }
 
     assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(),
       ValidatorConfig.EMPTY_STRING_FOR_DISPLAY, ContentValidationType.FIELD_UNIQUENESS));
@@ -102,13 +95,13 @@ public class UniquenessCriteriaTest {
 
 
   @Test
-  public void testUniquenessEvaluatorOnAnotherTerm() {
+  public void testUniquenessCriterionOnAnotherTerm() {
 
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
       DatasetCriteria valueEvaluator =
-        UniquenessCriteriaBuilder.builder()
+        UniquenessCriterionBuilder.builder()
           .on(DwcTerm.catalogNumber, EvaluationContext.CORE, DwcTerm.Occurrence.qualifiedName()).build();
       valueEvaluator.onRecord(buildMockRecord("1", "1"), EvaluationContext.CORE);
       valueEvaluator.onRecord(buildMockRecord("2", "1"), EvaluationContext.CORE);
@@ -122,10 +115,6 @@ public class UniquenessCriteriaTest {
       e.printStackTrace();
       fail();
     }
-// catch (EvaluationException e) {
-// e.printStackTrace();
-// fail();
-// }
 
     // remember that the id in UniquenessEvaluator will be catalogNumber
     assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "1",
@@ -133,12 +122,12 @@ public class UniquenessCriteriaTest {
   }
 
   @Test
-  public void testUniquenessEvaluatorWithUniqueId() {
+  public void testUniquenessCriterionWithUniqueId() {
 
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
-      DatasetCriteria valueEvaluator = UniquenessCriteriaBuilder.builder().build();
+      DatasetCriteria valueEvaluator = UniquenessCriterionBuilder.builder().build();
       valueEvaluator.onRecord(buildMockRecord("1", "1"), EvaluationContext.CORE);
       valueEvaluator.onRecord(buildMockRecord("2", "1"), EvaluationContext.CORE);
 
@@ -151,10 +140,6 @@ public class UniquenessCriteriaTest {
       e.printStackTrace();
       fail();
     }
-// catch (EvaluationException e) {
-// e.printStackTrace();
-// fail();
-// }
     assertTrue(resultAccumulator.getValidationResultList().isEmpty());
   }
 

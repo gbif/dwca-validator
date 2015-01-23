@@ -7,12 +7,12 @@ import org.gbif.dwc.validator.result.EvaluationContext;
 import java.io.File;
 
 /**
- * Container object holding ReferenceUniqueEvaluator configurations.
+ * Container object holding ReferenceUniqueCriterion configurations.
  * 
  * @author cgendreau
  */
-@CriterionConfigurationKey("referenceUniqueCriteria")
-public class ReferenceUniqueCriteriaConfiguration {
+@CriterionConfigurationKey("referenceUniqueCriterion")
+public class ReferenceUniqueCriterionConfiguration {
 
   private EvaluationContext evaluationContextRestriction;
   private String rowTypeRestriction;

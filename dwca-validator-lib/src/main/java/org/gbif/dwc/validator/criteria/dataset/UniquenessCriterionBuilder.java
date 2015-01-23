@@ -2,7 +2,7 @@ package org.gbif.dwc.validator.criteria.dataset;
 
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.annotation.DatasetCriterionBuilderKey;
-import org.gbif.dwc.validator.criteria.configuration.UniquenessCriteriaConfiguration;
+import org.gbif.dwc.validator.criteria.configuration.UniquenessCriterionConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 
 import java.io.File;
@@ -12,21 +12,21 @@ import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Builder of UniquenessCriteria object.
- * Returned UniquenessCriteria is NOT totally immutable due to file access.
+ * Builder of UniquenessCriterion object.
+ * Returned UniquenessCriterion is NOT totally immutable due to file access.
  * 
  * @author cgendreau
  */
-@DatasetCriterionBuilderKey("uniquenessCriteria")
-public class UniquenessCriteriaBuilder implements DatasetCriteriaBuilder {
+@DatasetCriterionBuilderKey("uniquenessCriterion")
+public class UniquenessCriterionBuilder implements DatasetCriteriaBuilder {
 
-  private final UniquenessCriteriaConfiguration configuration;
+  private final UniquenessCriterionConfiguration configuration;
 
-  private UniquenessCriteriaBuilder() {
-    this.configuration = new UniquenessCriteriaConfiguration();
+  private UniquenessCriterionBuilder() {
+    this.configuration = new UniquenessCriterionConfiguration();
   }
 
-  public UniquenessCriteriaBuilder(UniquenessCriteriaConfiguration configuration) {
+  public UniquenessCriterionBuilder(UniquenessCriterionConfiguration configuration) {
     this.configuration = configuration;
   }
 
@@ -35,18 +35,18 @@ public class UniquenessCriteriaBuilder implements DatasetCriteriaBuilder {
    * 
    * @return
    */
-  public static UniquenessCriteriaBuilder builder() {
-    return new UniquenessCriteriaBuilder();
+  public static UniquenessCriterionBuilder builder() {
+    return new UniquenessCriterionBuilder();
   }
 
   /**
-   * Get a new builder instance using the provided UniquenessEvaluatorConfiguration.
+   * Get a new builder instance using the provided UniquenessCriterionConfiguration.
    * 
    * @param configuration
    * @return
    */
-  public static UniquenessCriteriaBuilder builder(UniquenessCriteriaConfiguration configuration) {
-    return new UniquenessCriteriaBuilder(configuration);
+  public static UniquenessCriterionBuilder builder(UniquenessCriterionConfiguration configuration) {
+    return new UniquenessCriterionBuilder(configuration);
   }
 
   /**
@@ -65,7 +65,7 @@ public class UniquenessCriteriaBuilder implements DatasetCriteriaBuilder {
    * innerBuild allows same package builders to get the StatefulRecordEvaluator as concrete class.
    * Mainly used for evaluator composition.
    */
-  UniquenessCriteria innerBuild() throws IllegalStateException {
+  UniquenessCriterion innerBuild() throws IllegalStateException {
 
     // use CORE context as default value
     if (configuration.getEvaluationContextRestriction() == null) {
@@ -85,7 +85,7 @@ public class UniquenessCriteriaBuilder implements DatasetCriteriaBuilder {
     }
 
     try {
-      return new UniquenessCriteria(configuration);
+      return new UniquenessCriterion(configuration);
     } catch (IOException e) {
       // Not sure it's the best solution
       throw new IllegalStateException(e);
@@ -98,7 +98,7 @@ public class UniquenessCriteriaBuilder implements DatasetCriteriaBuilder {
    * @param term
    * @return
    */
-  public UniquenessCriteriaBuilder on(Term term) {
+  public UniquenessCriterionBuilder on(Term term) {
     configuration.setTerm(term);
     return this;
   }
@@ -111,7 +111,7 @@ public class UniquenessCriteriaBuilder implements DatasetCriteriaBuilder {
    * @param rowType
    * @return
    */
-  public UniquenessCriteriaBuilder on(Term term, EvaluationContext evaluationContext, String rowType) {
+  public UniquenessCriterionBuilder on(Term term, EvaluationContext evaluationContext, String rowType) {
     configuration.setTerm(term);
     configuration.setEvaluationContextRestriction(evaluationContext);
     configuration.setRowTypeRestriction(rowType);
@@ -124,7 +124,7 @@ public class UniquenessCriteriaBuilder implements DatasetCriteriaBuilder {
    * @param workingFolder
    * @return
    */
-  public UniquenessCriteriaBuilder workingFolder(File workingFolder) {
+  public UniquenessCriterionBuilder workingFolder(File workingFolder) {
     configuration.setWorkingFolder(workingFolder);
     return this;
   }

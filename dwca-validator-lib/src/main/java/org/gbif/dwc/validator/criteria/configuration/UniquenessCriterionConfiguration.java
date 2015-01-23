@@ -11,8 +11,8 @@ import java.io.File;
  * 
  * @author cgendreau
  */
-@CriterionConfigurationKey("uniquenessCriteria")
-public class UniquenessCriteriaConfiguration {
+@CriterionConfigurationKey("uniquenessCriterion")
+public class UniquenessCriterionConfiguration {
 
   private EvaluationContext evaluationContextRestriction;
   private String rowTypeRestriction;

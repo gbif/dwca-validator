@@ -26,7 +26,7 @@ import static org.junit.Assert.fail;
  * 
  * @author cgendreau
  */
-public class ReferenceUniqueCriteriaTest {
+public class ReferenceUniqueCriterionTest {
 
   private Record buildMockRecord(String taxonID, String acceptedNameUsageID) {
     // create a mock Record

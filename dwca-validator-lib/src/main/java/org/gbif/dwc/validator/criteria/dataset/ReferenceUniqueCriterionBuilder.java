@@ -2,8 +2,8 @@ package org.gbif.dwc.validator.criteria.dataset;
 
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.annotation.DatasetCriterionBuilderKey;
-import org.gbif.dwc.validator.criteria.configuration.ReferenceUniqueCriteriaConfiguration;
-import org.gbif.dwc.validator.criteria.configuration.UniquenessCriteriaConfiguration;
+import org.gbif.dwc.validator.criteria.configuration.ReferenceUniqueCriterionConfiguration;
+import org.gbif.dwc.validator.criteria.configuration.UniquenessCriterionConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
 
 import java.io.File;
@@ -12,26 +12,26 @@ import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Builder of ReferenceUniqueEvaluator object.
- * Returned ReferenceUniqueEvaluator is NOT immutable due to file access.
+ * Builder of ReferenceUniqueCriteria object.
+ * Returned ReferenceUniqueCriteria is NOT immutable due to file access.
  * 
  * @author cgendreau
  */
-@DatasetCriterionBuilderKey("referenceUniqueCriteria")
-public class ReferenceUniqueCriteriaBuilder implements DatasetCriteriaBuilder {
+@DatasetCriterionBuilderKey("referenceUniqueCriterion")
+public class ReferenceUniqueCriterionBuilder implements DatasetCriteriaBuilder {
 
-  private final ReferenceUniqueCriteriaConfiguration configuration;
-  private final UniquenessCriteriaConfiguration uniquenessEvaluatorConfiguration;
+  private final ReferenceUniqueCriterionConfiguration configuration;
+  private final UniquenessCriterionConfiguration uniquenessCriterionConfiguration;
 
-  private ReferenceUniqueCriteriaBuilder() {
-    this.configuration = new ReferenceUniqueCriteriaConfiguration();
-    this.uniquenessEvaluatorConfiguration = new UniquenessCriteriaConfiguration();
+  private ReferenceUniqueCriterionBuilder() {
+    this.configuration = new ReferenceUniqueCriterionConfiguration();
+    this.uniquenessCriterionConfiguration = new UniquenessCriterionConfiguration();
   }
 
-  public ReferenceUniqueCriteriaBuilder(ReferenceUniqueCriteriaConfiguration configuration,
-    UniquenessCriteriaConfiguration uniquenessEvaluatorConfiguration) {
+  public ReferenceUniqueCriterionBuilder(ReferenceUniqueCriterionConfiguration configuration,
+    UniquenessCriterionConfiguration uniquenessCriterionConfiguration) {
     this.configuration = configuration;
-    this.uniquenessEvaluatorConfiguration = uniquenessEvaluatorConfiguration;
+    this.uniquenessCriterionConfiguration = uniquenessCriterionConfiguration;
   }
 
   /**
@@ -39,8 +39,8 @@ public class ReferenceUniqueCriteriaBuilder implements DatasetCriteriaBuilder {
    * 
    * @return
    */
-  public static ReferenceUniqueCriteriaBuilder builder() {
-    return new ReferenceUniqueCriteriaBuilder();
+  public static ReferenceUniqueCriterionBuilder builder() {
+    return new ReferenceUniqueCriterionBuilder();
   }
 
   /**
@@ -56,8 +56,8 @@ public class ReferenceUniqueCriteriaBuilder implements DatasetCriteriaBuilder {
     if (configuration.getTerm() != null) {
       Preconditions.checkState(StringUtils.isNotBlank(configuration.getRowTypeRestriction()),
         "rowTypeRestriction must be provided if a specific term is specified.");
-      Preconditions.checkState(uniquenessEvaluatorConfiguration != null,
-        "uniquenessEvaluatorConfiguration must be provided if a specific term is specified.");
+      Preconditions.checkState(uniquenessCriterionConfiguration != null,
+        "uniquenessCriterionConfiguration must be provided if a specific term is specified.");
     }
 
     // use EXT context as default value
@@ -72,34 +72,34 @@ public class ReferenceUniqueCriteriaBuilder implements DatasetCriteriaBuilder {
       configuration.setWorkingFolder(new File("."));
     }
 
-    // UniquenessEvaluatorBuilder will validate UniquenessEvaluator pre conditions.
+    // UniquenessCriterionBuilder will validate UniquenessCriterion pre conditions.
     // Always build our own instance to ensure it will not be reused.
-    UniquenessCriteria uniquenessCriteria;
-    if (uniquenessEvaluatorConfiguration == null) {
+    UniquenessCriterion uniquenessCriteria;
+    if (uniquenessCriterionConfiguration == null) {
       // Build uniquenessEvaluator on coreId
       uniquenessCriteria =
-        UniquenessCriteriaBuilder.builder().workingFolder(configuration.getWorkingFolder()).innerBuild();
+        UniquenessCriterionBuilder.builder().workingFolder(configuration.getWorkingFolder()).innerBuild();
     } else {
-      if (uniquenessEvaluatorConfiguration.getWorkingFolder() == null) {
-        uniquenessEvaluatorConfiguration.setWorkingFolder(configuration.getWorkingFolder());
+      if (uniquenessCriterionConfiguration.getWorkingFolder() == null) {
+        uniquenessCriterionConfiguration.setWorkingFolder(configuration.getWorkingFolder());
       }
-      uniquenessCriteria = UniquenessCriteriaBuilder.builder(uniquenessEvaluatorConfiguration).innerBuild();
+      uniquenessCriteria = UniquenessCriterionBuilder.builder(uniquenessCriterionConfiguration).innerBuild();
     }
 
-    return new ReferenceUniqueCriteria(configuration, uniquenessCriteria);
+    return new ReferenceUniqueCriterion(configuration, uniquenessCriteria);
 
   }
 
-  public ReferenceUniqueCriteriaBuilder termRefersToUnique(Term term, EvaluationContext evaluationContextRestriction,
+  public ReferenceUniqueCriterionBuilder termRefersToUnique(Term term, EvaluationContext evaluationContextRestriction,
     String rowTypeRestriction, Term referedTerm, EvaluationContext referedEvaluationContextRestriction,
     String referedRowTypeRestriction) {
     this.configuration.setTerm(term);
     this.configuration.setEvaluationContextRestriction(evaluationContextRestriction);
     this.configuration.setRowTypeRestriction(rowTypeRestriction);
 
-    this.uniquenessEvaluatorConfiguration.setTerm(referedTerm);
-    this.uniquenessEvaluatorConfiguration.setEvaluationContextRestriction(referedEvaluationContextRestriction);
-    this.uniquenessEvaluatorConfiguration.setRowTypeRestriction(referedRowTypeRestriction);
+    this.uniquenessCriterionConfiguration.setTerm(referedTerm);
+    this.uniquenessCriterionConfiguration.setEvaluationContextRestriction(referedEvaluationContextRestriction);
+    this.uniquenessCriterionConfiguration.setRowTypeRestriction(referedRowTypeRestriction);
 
     return this;
   }
@@ -111,7 +111,7 @@ public class ReferenceUniqueCriteriaBuilder implements DatasetCriteriaBuilder {
    * @param separator
    * @return
    */
-  public ReferenceUniqueCriteriaBuilder supportMultipleValues(String multipleValuesSeparator) {
+  public ReferenceUniqueCriterionBuilder supportMultipleValues(String multipleValuesSeparator) {
     this.configuration.setMultipleValuesSeparator(multipleValuesSeparator);
     return this;
   }
@@ -122,9 +122,9 @@ public class ReferenceUniqueCriteriaBuilder implements DatasetCriteriaBuilder {
    * @param workingFolder
    * @return
    */
-  public ReferenceUniqueCriteriaBuilder workingFolder(File workingFolder) {
+  public ReferenceUniqueCriterionBuilder workingFolder(File workingFolder) {
     this.configuration.setWorkingFolder(workingFolder);
-    this.uniquenessEvaluatorConfiguration.setWorkingFolder(workingFolder);
+    this.uniquenessCriterionConfiguration.setWorkingFolder(workingFolder);
     return this;
   }
 }

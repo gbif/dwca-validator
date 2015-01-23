@@ -4,7 +4,7 @@ import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
-import org.gbif.dwc.validator.criteria.configuration.UniquenessCriteriaConfiguration;
+import org.gbif.dwc.validator.criteria.configuration.UniquenessCriterionConfiguration;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
@@ -28,8 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * RecordEvaluatorIF implementation to check the uniqueness of specific fields.
- * This RecordEvaluator will only produce results on postIterate() call.
+ * DatasetCriteria implementation to check the uniqueness of specific fields.
  * This implementation will write a new file with all the id and then sort it using org.gbif.utils.file.FileUtils.
  * GBIF FileUtils can also sort directly on the archive file, it may be a better solution than writing a new
  * file containing all the id but referential integrity check needs the resulting file.
@@ -37,16 +36,16 @@ import org.slf4j.LoggerFactory;
  * 
  * @author cgendreau
  */
-@RecordCriterionKey(key = "uniquenessCriteria")
-class UniquenessCriteria implements DatasetCriteria {
+@RecordCriterionKey(key = "uniquenessCriterion")
+class UniquenessCriterion implements DatasetCriteria {
 
-  private final String key = UniquenessCriteria.class.getAnnotation(RecordCriterionKey.class).key();
+  private final String key = UniquenessCriterion.class.getAnnotation(RecordCriterionKey.class).key();
   private final EvaluationContext evaluationContextRestriction;
   private final String rowTypeRestriction;
   private final Term term;
   private final String conceptTermString;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(UniquenessCriteria.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(UniquenessCriterion.class);
   org.gbif.utils.file.FileUtils GBIF_FILE_UTILS = new org.gbif.utils.file.FileUtils();
   private static final int BUFFER_THRESHOLD = 1000;
 
@@ -57,10 +56,10 @@ class UniquenessCriteria implements DatasetCriteria {
   private final File sortedValueFile;
 
   /**
-   * @param UniquenessCriteriaConfiguration
+   * @param UniquenessCriterionConfiguration
    * @throws IOException
    */
-  UniquenessCriteria(UniquenessCriteriaConfiguration configuration) throws IOException {
+  UniquenessCriterion(UniquenessCriterionConfiguration configuration) throws IOException {
     this.evaluationContextRestriction = configuration.getEvaluationContextRestriction();
     this.rowTypeRestriction = configuration.getRowTypeRestriction();
     this.term = configuration.getTerm();
@@ -172,7 +171,8 @@ class UniquenessCriteria implements DatasetCriteria {
 
           validationResultElement =
             new ValidationResultElement(key, ContentValidationType.FIELD_UNIQUENESS, Result.ERROR,
-              ValidatorConfig.getLocalizedString("evaluator.uniqueness", displayValue, conceptTermString));
+              ValidatorConfig.getLocalizedString("criterion.uniqueness_criterion.not_unique", displayValue,
+                conceptTermString));
           resultAccumulator.accumulate(new ValidationResult(displayValue, evaluationContextRestriction, StringUtils
             .defaultString(rowTypeRestriction), validationResultElement));
         }

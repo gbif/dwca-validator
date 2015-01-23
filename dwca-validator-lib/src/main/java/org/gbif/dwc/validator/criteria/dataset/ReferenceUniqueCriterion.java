@@ -5,7 +5,7 @@ import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
-import org.gbif.dwc.validator.criteria.configuration.ReferenceUniqueCriteriaConfiguration;
+import org.gbif.dwc.validator.criteria.configuration.ReferenceUniqueCriterionConfiguration;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
@@ -34,18 +34,17 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * RecordEvaluator implementation to check the integrity of field references that should point to a unique value.
- * This implementation is composed by a UniquenessEvaluator.
- * This RecordEvaluator will only produce results on postIterate() call.
+ * DatasetCriteria implementation to check the integrity of field references that should point to a unique value.
+ * This implementation is composed by a UniquenessCriteria.
  * 
  * @author cgendreau
  */
-@RecordCriterionKey(key = "referentialIntegrityCriteria")
-class ReferenceUniqueCriteria implements DatasetCriteria {
+@RecordCriterionKey(key = "referenceUniqueCriterion")
+class ReferenceUniqueCriterion implements DatasetCriteria {
 
-  private final String key = ReferenceUniqueCriteria.class.getAnnotation(RecordCriterionKey.class).key();
+  private final String key = ReferenceUniqueCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ReferenceUniqueCriteria.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ReferenceUniqueCriterion.class);
   org.gbif.utils.file.FileUtils GBIF_FILE_UTILS = new org.gbif.utils.file.FileUtils();
   private final TermFactory TERM_FACTORY = TermFactory.instance();
   private static final int BUFFER_THRESHOLD = 1000;
@@ -57,7 +56,7 @@ class ReferenceUniqueCriteria implements DatasetCriteria {
   private final String rowTypeRestriction;
   private final Term term;
 
-  private final UniquenessCriteria uniquenessCriteria;
+  private final UniquenessCriterion uniquenessCriteria;
 
   private final String multipleValuesSeparator;
 
@@ -75,7 +74,7 @@ class ReferenceUniqueCriteria implements DatasetCriteria {
    * @param uniquenessEvaluator configured on the term we want to check the referential integrity on.
    * @throws IOException
    */
-  ReferenceUniqueCriteria(ReferenceUniqueCriteriaConfiguration configuration, UniquenessCriteria uniquenessCriteria) {
+  ReferenceUniqueCriterion(ReferenceUniqueCriterionConfiguration configuration, UniquenessCriterion uniquenessCriteria) {
 
     this.evaluationContextRestriction = configuration.getEvaluationContextRestriction();
     this.rowTypeRestriction = configuration.getRowTypeRestriction();
@@ -159,8 +158,8 @@ class ReferenceUniqueCriteria implements DatasetCriteria {
       while ((currentLine = br.readLine()) != null) {
         validationResultElement =
           new ValidationResultElement(key, ContentValidationType.FIELD_REFERENTIAL_INTEGRITY, Result.ERROR,
-            ValidatorConfig.getLocalizedString("evaluator.referential_integrity", currentLine, termString,
-              referedTermString));
+            ValidatorConfig.getLocalizedString("criterion.reference_unique_criterion.referential_integrity",
+              currentLine, termString, referedTermString));
         resultAccumulator.accumulate(new ValidationResult(currentLine, evaluationContextRestriction, rowType,
           validationResultElement));
       }
