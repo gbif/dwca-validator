@@ -1,8 +1,8 @@
 package org.gbif.dwc.validator.criteria;
 
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.validator.criteria.dataset.ReferenceUniqueCriteriaBuilder;
-import org.gbif.dwc.validator.criteria.dataset.UniquenessCriteriaBuilder;
+import org.gbif.dwc.validator.criteria.dataset.ReferenceUniqueCriterionBuilder;
+import org.gbif.dwc.validator.criteria.dataset.UniquenessCriterionBuilder;
 import org.gbif.dwc.validator.result.EvaluationContext;
 
 import java.io.File;
@@ -17,8 +17,8 @@ public class DatasetCriterion {
    * @param workingFolder folder that should be used to saved temporary files. The folder must already exist.
    * @return
    */
-  public static UniquenessCriteriaBuilder coreIdUniqueness(File tempFolder) {
-    return UniquenessCriteriaBuilder.builder().workingFolder(tempFolder);
+  public static UniquenessCriterionBuilder coreIdUniqueness(File tempFolder) {
+    return UniquenessCriterionBuilder.builder().workingFolder(tempFolder);
   }
 
   /**
@@ -27,8 +27,8 @@ public class DatasetCriterion {
    * @param tempFolder
    * @return
    */
-  public static ReferenceUniqueCriteriaBuilder archiveIdIntegrity(File tempFolder) {
-    return ReferenceUniqueCriteriaBuilder.builder().workingFolder(tempFolder);
+  public static ReferenceUniqueCriterionBuilder archiveIdIntegrity(File tempFolder) {
+    return ReferenceUniqueCriterionBuilder.builder().workingFolder(tempFolder);
   }
 
   /**
@@ -41,9 +41,9 @@ public class DatasetCriterion {
    * @param rowType targeted core rowType (e.g. DwcTerm.Taxon.qualifiedName())
    * @return
    */
-  public static ReferenceUniqueCriteriaBuilder termReferentialIntegrityInCore(File tempFolder, Term targetedTerm,
+  public static ReferenceUniqueCriterionBuilder termReferentialIntegrityInCore(File tempFolder, Term targetedTerm,
     Term referredTerm, String rowType) {
-    return ReferenceUniqueCriteriaBuilder.builder()
+    return ReferenceUniqueCriterionBuilder.builder()
       .termRefersToUnique(targetedTerm, EvaluationContext.CORE, rowType, referredTerm, EvaluationContext.CORE, rowType)
       .workingFolder(tempFolder);
   }

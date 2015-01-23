@@ -36,9 +36,9 @@ recordCriteria:
      maxValueTerm				: !dwcTerm 'maximumElevationInMeters'
      
 datasetCriteria:
- - !uniquenessCriteria
-   - !uniquenessCriteriaConfiguration {}
+ - !uniquenessCriterion
+   - !uniquenessCriterionConfiguration {}
    
- - !referenceUniqueCriteria
-   - !referenceUniqueCriteriaConfiguration {}
-   - !uniquenessCriteriaConfiguration {}
+ - !referenceUniqueCriterion
+   - !referenceUniqueCriterionConfiguration {}
+   - !uniquenessCriterionConfiguration {}
