@@ -4,6 +4,7 @@ import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
+import org.gbif.dwc.validator.criteria.record.ControlledVocabularyCriterionBuilder;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
@@ -15,7 +16,6 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -42,7 +42,7 @@ public class ControlledVocabularyCriterionTest {
       fail();
     }
 
-    RecordCriterionIF criteria =
+    RecordCriterion criteria =
       ControlledVocabularyCriterionBuilder.builder().onTerm(DwcTerm.country)
         .useDictionaryAt(testFile.getAbsolutePath()).build();
 
@@ -61,7 +61,7 @@ public class ControlledVocabularyCriterionTest {
     Set<String> vocabulary = new HashSet<String>();
     vocabulary.add("PreservedSpecimen");
 
-    RecordCriterionIF criterion =
+    RecordCriterion criterion =
       ControlledVocabularyCriterionBuilder.builder().onTerm(DwcTerm.basisOfRecord).useVocabularySet(vocabulary).build();
 
     Optional<ValidationResult> result =

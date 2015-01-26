@@ -4,13 +4,13 @@ import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
+import org.gbif.dwc.validator.criteria.record.InvalidCharacterCriterionBuilder;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -35,7 +35,7 @@ public class InvalidCharacterCriterionTest {
 
   @Test
   public void testFormattingWhiteSpaceAllowed() {
-    RecordCriterionIF criteria =
+    RecordCriterion criteria =
       InvalidCharacterCriterionBuilder.builder().onTerm(DwcTerm.scientificName).allowFormattingWhiteSpace().build();
 
     testAlwaysValidString(criteria);
@@ -55,7 +55,7 @@ public class InvalidCharacterCriterionTest {
   @Test
   public void testNoFormattingWhiteSpaceAllowed() {
     // noFormattingWhiteSpaceAllowed is the default behavior
-    RecordCriterionIF criteria = InvalidCharacterCriterionBuilder.builder().onTerm(DwcTerm.scientificName).build();
+    RecordCriterion criteria = InvalidCharacterCriterionBuilder.builder().onTerm(DwcTerm.scientificName).build();
 
     testAlwaysValidString(criteria);
     testNeverValidString(criteria);
@@ -72,7 +72,7 @@ public class InvalidCharacterCriterionTest {
 
   @Test
   public void testNoReplacementCharAllowed() {
-    RecordCriterionIF criteria =
+    RecordCriterion criteria =
       InvalidCharacterCriterionBuilder.builder().onTerm(DwcTerm.scientificName).rejectReplacementChar().build();
 
     testAlwaysValidString(criteria);
@@ -83,7 +83,7 @@ public class InvalidCharacterCriterionTest {
     assertTrue(result.isPresent() && result.get().failed());
   }
 
-  private void testAlwaysValidString(RecordCriterionIF criteria) {
+  private void testAlwaysValidString(RecordCriterion criteria) {
 
     Optional<ValidationResult> result = criteria.validate(buildMockRecord("1", "test"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result));
@@ -99,7 +99,7 @@ public class InvalidCharacterCriterionTest {
     assertFalse(result.isPresent());
   }
 
-  private void testNeverValidString(RecordCriterionIF criteria) {
+  private void testNeverValidString(RecordCriterion criteria) {
     Optional<ValidationResult> result =
       criteria.validate(buildMockRecord("1", "test" + NULL_CHAR), EvaluationContext.CORE);
     assertTrue(result.isPresent() && result.get().failed());

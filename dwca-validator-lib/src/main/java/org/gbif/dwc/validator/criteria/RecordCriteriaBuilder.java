@@ -1,6 +1,10 @@
 package org.gbif.dwc.validator.criteria;
 
 import org.gbif.dwc.terms.Term;
+import org.gbif.dwc.validator.criteria.record.BoundCriterionBuilder;
+import org.gbif.dwc.validator.criteria.record.InvalidCharacterCriterionBuilder;
+import org.gbif.dwc.validator.criteria.record.MinMaxCriterionBuilder;
+import org.gbif.dwc.validator.criteria.record.TransformationBasedCriteriaBuilder;
 import org.gbif.dwc.validator.transformation.ValueTransformation;
 
 

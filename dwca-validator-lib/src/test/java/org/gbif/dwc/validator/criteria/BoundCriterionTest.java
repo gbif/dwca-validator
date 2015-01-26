@@ -3,13 +3,13 @@ package org.gbif.dwc.validator.criteria;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
+import org.gbif.dwc.validator.criteria.record.BoundCriterionBuilder;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
-
 import static org.junit.Assert.assertTrue;
 
 
@@ -25,7 +25,7 @@ public class BoundCriterionTest {
 
   @Test
   public void testBoundCriterion() {
-    RecordCriterionIF criteria =
+    RecordCriterion criteria =
       BoundCriterionBuilder.builder().termBoundedBy(DwcTerm.decimalLatitude, MIN_LATITUDE, MAX_LATITUDE).build();
 
     Optional<ValidationResult> result =

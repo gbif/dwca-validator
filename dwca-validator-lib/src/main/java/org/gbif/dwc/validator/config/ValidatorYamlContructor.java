@@ -1,9 +1,9 @@
 package org.gbif.dwc.validator.config;
 
-import org.gbif.dwc.validator.criteria.RecordCriterionBuilder;
 import org.gbif.dwc.validator.criteria.annotation.DatasetCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriterionBuilder;
+import org.gbif.dwc.validator.criteria.record.RecordCriterionBuilder;
 
 import java.util.Collection;
 

@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.chain;
 
 import org.gbif.dwc.record.Record;
-import org.gbif.dwc.validator.criteria.RecordCriterionIF;
+import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriteria;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
@@ -26,10 +26,10 @@ public class CriteriaChain {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CriteriaChain.class);
 
-  private final List<RecordCriterionIF> recordCriteriaList;
+  private final List<RecordCriterion> recordCriteriaList;
   private final List<DatasetCriteria> datasetCriteria;
 
-  public CriteriaChain(List<RecordCriterionIF> recordCriteriaList, List<DatasetCriteria> datasetCriteria) {
+  public CriteriaChain(List<RecordCriterion> recordCriteriaList, List<DatasetCriteria> datasetCriteria) {
     this.recordCriteriaList = ImmutableList.copyOf(recordCriteriaList);
     this.datasetCriteria = ImmutableList.copyOf(datasetCriteria);
   }
@@ -38,7 +38,7 @@ public class CriteriaChain {
     throws ResultAccumulationException {
 
     Optional<ValidationResult> result;
-    for (RecordCriterionIF currRecordCriteria : recordCriteriaList) {
+    for (RecordCriterion currRecordCriteria : recordCriteriaList) {
       result = currRecordCriteria.validate(record, evaluationContext);
       if (result.isPresent()) {
         resultAccumulator.accumulate(result.get());

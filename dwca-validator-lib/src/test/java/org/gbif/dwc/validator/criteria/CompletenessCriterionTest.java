@@ -3,13 +3,13 @@ package org.gbif.dwc.validator.criteria;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
+import org.gbif.dwc.validator.criteria.record.CompletenessCriterionBuilder;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
-
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -32,7 +32,7 @@ public class CompletenessCriterionTest {
   @Test
   public void testRecordCompletionCriterion() {
 
-    RecordCriterionIF recordCompletionCriterion =
+    RecordCriterion recordCompletionCriterion =
       CompletenessCriterionBuilder.builder().checkTerm(DwcTerm.scientificName).onRowType(DwcTerm.Occurrence).build();
 
     Optional<ValidationResult> result1 =
