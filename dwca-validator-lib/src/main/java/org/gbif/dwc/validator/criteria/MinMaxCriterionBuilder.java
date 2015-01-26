@@ -60,7 +60,7 @@ public class MinMaxCriterionBuilder implements RecordCriterionBuilder {
    * @throws NullPointerException if the minValueTransformation or maxValueTransformation is null
    */
   @Override
-  public RecordCriteria build() throws NullPointerException, IllegalStateException {
+  public RecordCriterionIF build() throws NullPointerException, IllegalStateException {
 
     boolean transformationsProvided =
       configuration.getMinValueTransformation() != null && configuration.getMaxValueTransformation() != null;

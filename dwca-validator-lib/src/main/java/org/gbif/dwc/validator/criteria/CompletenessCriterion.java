@@ -20,7 +20,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 @RecordCriterionKey(key = "completenessCriterion")
-public class CompletenessCriterion implements RecordCriteria {
+public class CompletenessCriterion implements RecordCriterionIF {
 
   private final String key = CompletenessCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 

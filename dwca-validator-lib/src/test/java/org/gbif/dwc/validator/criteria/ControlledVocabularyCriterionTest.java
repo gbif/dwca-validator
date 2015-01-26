@@ -42,7 +42,7 @@ public class ControlledVocabularyCriterionTest {
       fail();
     }
 
-    RecordCriteria criteria =
+    RecordCriterionIF criteria =
       ControlledVocabularyCriterionBuilder.builder().onTerm(DwcTerm.country)
         .useDictionaryAt(testFile.getAbsolutePath()).build();
 
@@ -61,7 +61,7 @@ public class ControlledVocabularyCriterionTest {
     Set<String> vocabulary = new HashSet<String>();
     vocabulary.add("PreservedSpecimen");
 
-    RecordCriteria criterion =
+    RecordCriterionIF criterion =
       ControlledVocabularyCriterionBuilder.builder().onTerm(DwcTerm.basisOfRecord).useVocabularySet(vocabulary).build();
 
     Optional<ValidationResult> result =

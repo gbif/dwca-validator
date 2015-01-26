@@ -32,7 +32,7 @@ public class CompletenessCriterionTest {
   @Test
   public void testRecordCompletionCriterion() {
 
-    RecordCriteria recordCompletionCriterion =
+    RecordCriterionIF recordCompletionCriterion =
       CompletenessCriterionBuilder.builder().checkTerm(DwcTerm.scientificName).onRowType(DwcTerm.Occurrence).build();
 
     Optional<ValidationResult> result1 =

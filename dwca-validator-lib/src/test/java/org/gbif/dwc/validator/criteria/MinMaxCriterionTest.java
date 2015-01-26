@@ -24,7 +24,7 @@ public class MinMaxCriterionTest {
 
   @Test
   public void testMinMaxCriterion() {
-    RecordCriteria criterion =
+    RecordCriterionIF criterion =
       MinMaxCriterionBuilder.builder().terms(DwcTerm.minimumElevationInMeters, DwcTerm.maximumElevationInMeters)
         .build();
 

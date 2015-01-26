@@ -95,7 +95,7 @@ public class ControlledVocabularyCriterionBuilder implements RecordCriterionBuil
    * @throws IllegalStateException
    */
   @Override
-  public RecordCriteria build() throws IllegalStateException {
+  public RecordCriterionIF build() throws IllegalStateException {
     if (configuration.getTerm() == null) {
       throw new IllegalStateException("ControlledVocabularyEvaluationRule must be built on a Term.");
     }

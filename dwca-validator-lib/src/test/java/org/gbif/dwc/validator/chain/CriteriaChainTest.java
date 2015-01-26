@@ -6,7 +6,7 @@ import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.chain.CriteriaChain;
 import org.gbif.dwc.validator.criteria.DatasetCriterion;
-import org.gbif.dwc.validator.criteria.RecordCriterion;
+import org.gbif.dwc.validator.criteria.RecordCriteriaBuilder;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.EvaluationContext;
@@ -47,7 +47,7 @@ public class CriteriaChainTest {
         .builder()
         .with(DatasetCriterion.coreIdUniqueness(testFolder))
         .with(
-          RecordCriterion.tryTransformations(ValueTransformations.toNumeric(DwcTerm.decimalLatitude),
+          RecordCriteriaBuilder.tryTransformations(ValueTransformations.toNumeric(DwcTerm.decimalLatitude),
             ValueTransformations.toNumeric(DwcTerm.decimalLongitude))).buildChain();
 
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();

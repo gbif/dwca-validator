@@ -19,7 +19,7 @@ import com.google.common.base.Optional;
 import org.apache.commons.lang3.StringUtils;
 
 @RecordCriterionKey(key = "boundCriterion")
-class BoundCriterion implements RecordCriteria {
+class BoundCriterion implements RecordCriterionIF {
 
   private final String key = BoundCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 

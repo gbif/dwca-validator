@@ -93,7 +93,7 @@ public class InvalidCharacterCriterionBuilder implements RecordCriterionBuilder 
    * @return immutable InvalidCharacterCriterion
    */
   @Override
-  public RecordCriteria build() {
+  public RecordCriterionIF build() {
     configuration.setCharMatcher(toCharMatcher());
     return new InvalidCharacterCriterion(configuration);
   }

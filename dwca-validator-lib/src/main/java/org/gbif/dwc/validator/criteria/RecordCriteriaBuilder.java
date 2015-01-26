@@ -4,7 +4,7 @@ import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.transformation.ValueTransformation;
 
 
-public class RecordCriterion {
+public class RecordCriteriaBuilder {
 
   public static BoundCriterionBuilder withinRange(Term term, Number lowerBound, Number upperBound) {
     return BoundCriterionBuilder.builder().termBoundedBy(term, lowerBound, upperBound);

@@ -14,5 +14,5 @@ public interface RecordCriterionBuilder {
    * @return
    * @throws IllegalStateException
    */
-  RecordCriteria build() throws IllegalStateException;
+  RecordCriterionIF build() throws IllegalStateException;
 }

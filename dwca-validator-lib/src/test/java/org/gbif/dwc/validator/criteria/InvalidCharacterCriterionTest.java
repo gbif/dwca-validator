@@ -35,7 +35,7 @@ public class InvalidCharacterCriterionTest {
 
   @Test
   public void testFormattingWhiteSpaceAllowed() {
-    RecordCriteria criteria =
+    RecordCriterionIF criteria =
       InvalidCharacterCriterionBuilder.builder().onTerm(DwcTerm.scientificName).allowFormattingWhiteSpace().build();
 
     testAlwaysValidString(criteria);
@@ -55,7 +55,7 @@ public class InvalidCharacterCriterionTest {
   @Test
   public void testNoFormattingWhiteSpaceAllowed() {
     // noFormattingWhiteSpaceAllowed is the default behavior
-    RecordCriteria criteria = InvalidCharacterCriterionBuilder.builder().onTerm(DwcTerm.scientificName).build();
+    RecordCriterionIF criteria = InvalidCharacterCriterionBuilder.builder().onTerm(DwcTerm.scientificName).build();
 
     testAlwaysValidString(criteria);
     testNeverValidString(criteria);
@@ -72,7 +72,7 @@ public class InvalidCharacterCriterionTest {
 
   @Test
   public void testNoReplacementCharAllowed() {
-    RecordCriteria criteria =
+    RecordCriterionIF criteria =
       InvalidCharacterCriterionBuilder.builder().onTerm(DwcTerm.scientificName).rejectReplacementChar().build();
 
     testAlwaysValidString(criteria);
@@ -83,7 +83,7 @@ public class InvalidCharacterCriterionTest {
     assertTrue(result.isPresent() && result.get().failed());
   }
 
-  private void testAlwaysValidString(RecordCriteria criteria) {
+  private void testAlwaysValidString(RecordCriterionIF criteria) {
 
     Optional<ValidationResult> result = criteria.validate(buildMockRecord("1", "test"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result));
@@ -99,7 +99,7 @@ public class InvalidCharacterCriterionTest {
     assertFalse(result.isPresent());
   }
 
-  private void testNeverValidString(RecordCriteria criteria) {
+  private void testNeverValidString(RecordCriterionIF criteria) {
     Optional<ValidationResult> result =
       criteria.validate(buildMockRecord("1", "test" + NULL_CHAR), EvaluationContext.CORE);
     assertTrue(result.isPresent() && result.get().failed());

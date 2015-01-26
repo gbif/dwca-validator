@@ -34,7 +34,7 @@ public class TransformationBasedCriteriaBuilder implements RecordCriterionBuilde
    * @throws NullPointerException if the getTransformations is null
    */
   @Override
-  public RecordCriteria build() throws NullPointerException, IllegalStateException {
+  public RecordCriterionIF build() throws NullPointerException, IllegalStateException {
 
     Preconditions.checkNotNull(configuration.getTransformations());
     Preconditions.checkState(!configuration.getTransformations().isEmpty());

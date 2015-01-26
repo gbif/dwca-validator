@@ -7,11 +7,11 @@ import org.gbif.dwc.validator.result.validation.ValidationResult;
 import com.google.common.base.Optional;
 
 /**
- * Criteria interface for Record level.
+ * Criterion interface for Record level.
  * 
  * @author cgendreau
  */
-public interface RecordCriteria {
+public interface RecordCriterionIF {
 
   String getCriteriaKey();
 

@@ -19,7 +19,7 @@ import com.google.common.base.Optional;
 import org.apache.commons.lang3.StringUtils;
 
 @RecordCriterionKey(key = "minMaxCriterion")
-class MinMaxCriterion implements RecordCriteria {
+class MinMaxCriterion implements RecordCriterionIF {
 
   private final String key = MinMaxCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 

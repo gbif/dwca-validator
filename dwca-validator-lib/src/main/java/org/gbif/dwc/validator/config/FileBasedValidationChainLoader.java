@@ -5,7 +5,7 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.annotation.AnnotationLoader;
 import org.gbif.dwc.validator.chain.CriteriaChain;
-import org.gbif.dwc.validator.criteria.RecordCriteria;
+import org.gbif.dwc.validator.criteria.RecordCriterionIF;
 import org.gbif.dwc.validator.criteria.RecordCriterionBuilder;
 import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
 import org.gbif.dwc.validator.criteria.annotation.DatasetCriterionBuilderKey;
@@ -66,7 +66,7 @@ public class FileBasedValidationChainLoader {
       // configuration file is organized as sections
       Map<String, Object> conf = (Map<String, Object>) yaml.load(ios);
 
-      List<RecordCriteria> recordEvaluatorList = (List<RecordCriteria>) conf.get(RECORD_CRITERIA_SECTION);
+      List<RecordCriterionIF> recordEvaluatorList = (List<RecordCriterionIF>) conf.get(RECORD_CRITERIA_SECTION);
       List<DatasetCriteria> datasetEvaluatorList = (List<DatasetCriteria>) conf.get(DATASET_CRITERIA_SECTION);
 
       ios.close();

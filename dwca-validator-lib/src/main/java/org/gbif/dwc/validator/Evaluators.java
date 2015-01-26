@@ -3,9 +3,9 @@ package org.gbif.dwc.validator;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.chain.CriteriaChain;
 import org.gbif.dwc.validator.criteria.DatasetCriterion;
-import org.gbif.dwc.validator.criteria.RecordCriteria;
+import org.gbif.dwc.validator.criteria.RecordCriterionIF;
 import org.gbif.dwc.validator.criteria.RecordCriterionBuilder;
-import org.gbif.dwc.validator.criteria.RecordCriterion;
+import org.gbif.dwc.validator.criteria.RecordCriteriaBuilder;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriteria;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriterionBuilder;
 
@@ -52,9 +52,9 @@ public class Evaluators {
    */
   public static Evaluators defaultChain(File tempFolder) {
     Evaluators val =
-      builder().with(RecordCriterion.checkForInvalidCharacter(DwcTerm.scientificName))
-        .with(RecordCriterion.withinRange(DwcTerm.decimalLatitude, MIN_LATITUDE, MAX_LATITUDE))
-        .with(RecordCriterion.withinRange(DwcTerm.decimalLongitude, MIN_LONGITUDE, MAX_LONGITUDE))
+      builder().with(RecordCriteriaBuilder.checkForInvalidCharacter(DwcTerm.scientificName))
+        .with(RecordCriteriaBuilder.withinRange(DwcTerm.decimalLatitude, MIN_LATITUDE, MAX_LATITUDE))
+        .with(RecordCriteriaBuilder.withinRange(DwcTerm.decimalLongitude, MIN_LONGITUDE, MAX_LONGITUDE))
         .with(DatasetCriterion.archiveIdIntegrity(tempFolder));
     return val;
   }
@@ -77,7 +77,7 @@ public class Evaluators {
    * @param datasetCriteriaList
    * @return new CriteriaChain
    */
-  public static CriteriaChain buildFromEvaluatorList(List<RecordCriteria> recordCriteriaList,
+  public static CriteriaChain buildFromEvaluatorList(List<RecordCriterionIF> recordCriteriaList,
     List<DatasetCriteria> datasetCriteriaList) {
     return new CriteriaChain(recordCriteriaList, datasetCriteriaList);
   }
@@ -122,7 +122,7 @@ public class Evaluators {
    * @return head of the chain
    */
   public CriteriaChain buildChain() throws IllegalStateException {
-    List<RecordCriteria> recordCriteriaList = new ArrayList<RecordCriteria>();
+    List<RecordCriterionIF> recordCriteriaList = new ArrayList<RecordCriterionIF>();
     for (RecordCriterionBuilder currRecordCriteriaBuilder : buildersList) {
       recordCriteriaList.add(currRecordCriteriaBuilder.build());
     }

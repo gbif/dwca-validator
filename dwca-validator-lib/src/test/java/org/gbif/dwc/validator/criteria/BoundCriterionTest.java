@@ -25,7 +25,7 @@ public class BoundCriterionTest {
 
   @Test
   public void testBoundCriterion() {
-    RecordCriteria criteria =
+    RecordCriterionIF criteria =
       BoundCriterionBuilder.builder().termBoundedBy(DwcTerm.decimalLatitude, MIN_LATITUDE, MAX_LATITUDE).build();
 
     Optional<ValidationResult> result =

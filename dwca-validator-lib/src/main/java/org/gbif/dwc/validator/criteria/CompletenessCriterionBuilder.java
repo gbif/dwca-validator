@@ -37,7 +37,7 @@ public class CompletenessCriterionBuilder implements RecordCriterionBuilder {
    * @throws IllegalStateException if no terms were specified
    */
   @Override
-  public RecordCriteria build() throws IllegalStateException {
+  public RecordCriterionIF build() throws IllegalStateException {
 
     Preconditions.checkState(configuration.getValueTransformations() != null || configuration.getTerms() != null);
 

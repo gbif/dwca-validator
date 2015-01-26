@@ -19,7 +19,7 @@ import com.google.common.base.Optional;
 import org.apache.commons.lang3.StringUtils;
 
 @RecordCriterionKey(key = "invalidCharacterCriterion")
-class InvalidCharacterCriterion implements RecordCriteria {
+class InvalidCharacterCriterion implements RecordCriterionIF {
 
   private final String key = InvalidCharacterCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 

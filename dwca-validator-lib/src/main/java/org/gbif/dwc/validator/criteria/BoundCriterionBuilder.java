@@ -63,7 +63,7 @@ public class BoundCriterionBuilder implements RecordCriterionBuilder {
    *         IllegalStateException if lower bound is greater than upperBound.
    */
   @Override
-  public RecordCriteria build() throws NullPointerException, IllegalStateException {
+  public RecordCriterionIF build() throws NullPointerException, IllegalStateException {
 
     Preconditions.checkNotNull(configuration.getLowerBound());
     Preconditions.checkNotNull(configuration.getUpperBound());

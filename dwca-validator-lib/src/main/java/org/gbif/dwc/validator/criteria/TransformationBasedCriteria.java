@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author cgendreau
  */
 @RecordCriterionKey(key = "transformationBasedCriteria")
-class TransformationBasedCriteria implements RecordCriteria {
+class TransformationBasedCriteria implements RecordCriterionIF {
 
   private final String key = TransformationBasedCriteria.class.getAnnotation(RecordCriterionKey.class).key();
 
