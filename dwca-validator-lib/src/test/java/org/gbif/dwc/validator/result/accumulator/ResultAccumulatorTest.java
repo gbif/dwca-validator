@@ -3,15 +3,18 @@ package org.gbif.dwc.validator.result.accumulator;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.mock.MockDataGenerator;
 import org.gbif.dwc.validator.result.EvaluationContext;
+import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.accumulator.csv.CSVResultAccumulator;
 import org.gbif.dwc.validator.result.aggregation.AggregationResult;
+import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -32,7 +35,8 @@ public class ResultAccumulatorTest {
     for (String currDummyId : dummyIdList) {
       try {
         fwra.accumulate(new ValidationResult(currDummyId, EvaluationContext.CORE, "",
-          new ArrayList<ValidationResultElement>()));
+          new ArrayList<ValidationResultElement>(Arrays.asList(new ValidationResultElement("unit test",
+            ContentValidationType.RECORD_CONTENT_VALUE, Result.ERROR, "explanation")))));
         // also test AggregationResult
         fwra
           .accumulate(new AggregationResult<String>(currDummyId, "testResultAccumulator", EvaluationContext.CORE, "8"));

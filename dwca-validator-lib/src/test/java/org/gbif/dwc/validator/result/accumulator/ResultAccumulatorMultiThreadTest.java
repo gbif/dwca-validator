@@ -3,14 +3,17 @@ package org.gbif.dwc.validator.result.accumulator;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.mock.MockDataGenerator;
 import org.gbif.dwc.validator.result.EvaluationContext;
+import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.accumulator.csv.CSVResultAccumulator;
+import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -73,7 +76,8 @@ public class ResultAccumulatorMultiThreadTest {
             try {
               success =
                 (success && resultAccumulator.accumulate(new ValidationResult(currDummyId, EvaluationContext.CORE, "",
-                  new ArrayList<ValidationResultElement>())));
+                  new ArrayList<ValidationResultElement>(Arrays.asList(new ValidationResultElement("unit test",
+                    ContentValidationType.RECORD_CONTENT_VALUE, Result.ERROR, "explanation"))))));
             } catch (ResultAccumulationException e) {
               e.printStackTrace();
               fail();

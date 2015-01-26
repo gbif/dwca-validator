@@ -35,6 +35,10 @@ public class CSVResultAccumulator implements ResultAccumulator {
 
   @Override
   public boolean accumulate(ValidationResult result) throws ResultAccumulationException {
+    // Do not record passed result
+    if (result.passed()) {
+      return true;
+    }
     if (csvValidationResultAccumulator == null) {
       throw new ResultAccumulationException("This ResultAccumulator was not configured to record ValidationResult");
     }
