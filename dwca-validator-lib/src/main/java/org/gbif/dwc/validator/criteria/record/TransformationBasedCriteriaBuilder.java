@@ -1,7 +1,6 @@
 package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.configuration.TransformationBasedCriteriaConfiguration;
 import org.gbif.dwc.validator.transformation.ValueTransformation;
 

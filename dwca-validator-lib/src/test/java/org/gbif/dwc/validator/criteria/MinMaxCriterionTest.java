@@ -5,6 +5,7 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.configuration.MinMaxCriterionConfiguration;
 import org.gbif.dwc.validator.criteria.record.MinMaxCriterionBuilder;
+import org.gbif.dwc.validator.criteria.record.RecordCriterion;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.validation.ValidationResult;

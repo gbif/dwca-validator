@@ -1,8 +1,8 @@
 package org.gbif.dwc.validator.chain;
 
 import org.gbif.dwc.record.Record;
-import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriterion;
+import org.gbif.dwc.validator.criteria.record.RecordCriterion;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.ResultAccumulator;

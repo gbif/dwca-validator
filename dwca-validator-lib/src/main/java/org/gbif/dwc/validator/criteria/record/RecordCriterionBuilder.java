@@ -1,6 +1,5 @@
 package org.gbif.dwc.validator.criteria.record;
 
-import org.gbif.dwc.validator.criteria.RecordCriterion;
 
 /**
  * Interface defining a RecordCriterion builder.

@@ -4,9 +4,9 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.chain.CriteriaChain;
 import org.gbif.dwc.validator.criteria.DatasetCriteria;
 import org.gbif.dwc.validator.criteria.RecordCriteria;
-import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriterion;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriterionBuilder;
+import org.gbif.dwc.validator.criteria.record.RecordCriterion;
 import org.gbif.dwc.validator.criteria.record.RecordCriterionBuilder;
 
 import java.io.File;

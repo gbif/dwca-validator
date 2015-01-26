@@ -2,7 +2,6 @@ package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
 import org.gbif.dwc.validator.criteria.configuration.BoundCriterionConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
