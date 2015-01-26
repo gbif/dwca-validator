@@ -2,6 +2,7 @@ package org.gbif.dwc.validator.criteria.configuration;
 
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
+import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.transformation.ValueTransformation;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 
 /**
- * Container object holding CompletenessCriteria configurations.
+ * Container object holding CompletenessCriterion configurations.
  * 
  * @author cgendreau
  */
@@ -17,6 +18,8 @@ import java.util.List;
 public class CompletenessCriterionConfiguration {
 
   private String rowTypeRestriction;
+  private Result level = Result.ERROR;
+
   private List<ValueTransformation<Boolean>> valueTransformations;
   private List<Term> terms;
 
@@ -56,5 +59,13 @@ public class CompletenessCriterionConfiguration {
 
   public void setTerms(List<Term> terms) {
     this.terms = terms;
+  }
+
+  public Result getLevel() {
+    return level;
+  }
+
+  public void setLevel(Result level) {
+    this.level = level;
   }
 }

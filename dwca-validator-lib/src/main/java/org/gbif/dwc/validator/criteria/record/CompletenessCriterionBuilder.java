@@ -4,6 +4,7 @@ import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.configuration.CompletenessCriterionConfiguration;
+import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.transformation.ValueTransformations;
 
 import com.google.common.base.Preconditions;
@@ -42,6 +43,9 @@ public class CompletenessCriterionBuilder implements RecordCriterionBuilder {
 
     Preconditions.checkState(configuration.getValueTransformations() != null || configuration.getTerms() != null);
 
+    Preconditions.checkState(configuration.getLevel() == Result.ERROR || configuration.getLevel() == Result.WARNING,
+      "Level must be set to ERROR or WARNING");
+
     // we need a RowTypeRestriction otherwise all extension records could be flagged as incomplete
     // even if the don't use the term by definition.
     Preconditions.checkState(StringUtils.isNotBlank(configuration.getRowTypeRestriction()),
@@ -67,6 +71,11 @@ public class CompletenessCriterionBuilder implements RecordCriterionBuilder {
    */
   public CompletenessCriterionBuilder checkTerm(Term term) {
     configuration.addTerm(term);
+    return this;
+  }
+
+  public CompletenessCriterionBuilder setLevel(Result level) {
+    configuration.setLevel(level);
     return this;
   }
 

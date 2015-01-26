@@ -21,18 +21,19 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 @RecordCriterionKey(key = "completenessCriterion")
-public class CompletenessCriterion implements RecordCriterion {
+class CompletenessCriterion implements RecordCriterion {
 
   private final String key = CompletenessCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
   private final List<ValueTransformation<Boolean>> valueTransformations;
 
-  private final Result level = Result.ERROR;
+  private final Result level;
   private final String rowTypeRestriction;
 
-  public CompletenessCriterion(CompletenessCriterionConfiguration completenessCriteriaConfiguration) {
-    this.valueTransformations = completenessCriteriaConfiguration.getValueTransformations();
-    this.rowTypeRestriction = completenessCriteriaConfiguration.getRowTypeRestriction();
+  CompletenessCriterion(CompletenessCriterionConfiguration completenessCriterionConfiguration) {
+    this.valueTransformations = completenessCriterionConfiguration.getValueTransformations();
+    this.rowTypeRestriction = completenessCriterionConfiguration.getRowTypeRestriction();
+    this.level = completenessCriterionConfiguration.getLevel();
   }
 
   @Override
