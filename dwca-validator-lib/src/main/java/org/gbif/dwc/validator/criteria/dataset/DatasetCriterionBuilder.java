@@ -14,5 +14,5 @@ public interface DatasetCriterionBuilder {
    * @return
    * @throws IllegalStateException
    */
-  DatasetCriteria build() throws IllegalStateException;
+  DatasetCriterion build() throws IllegalStateException;
 }

@@ -1,6 +1,7 @@
-package org.gbif.dwc.validator.criteria;
+package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.terms.Term;
+import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.configuration.MinMaxCriterionConfiguration;
 import org.gbif.dwc.validator.transformation.ValueTransformations;
@@ -60,7 +61,7 @@ public class MinMaxCriterionBuilder implements RecordCriterionBuilder {
    * @throws NullPointerException if the minValueTransformation or maxValueTransformation is null
    */
   @Override
-  public RecordCriterionIF build() throws NullPointerException, IllegalStateException {
+  public RecordCriterion build() throws NullPointerException, IllegalStateException {
 
     boolean transformationsProvided =
       configuration.getMinValueTransformation() != null && configuration.getMaxValueTransformation() != null;

@@ -1,6 +1,7 @@
-package org.gbif.dwc.validator.criteria;
+package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.record.Record;
+import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
 import org.gbif.dwc.validator.criteria.configuration.TransformationBasedCriteriaConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
@@ -24,7 +25,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author cgendreau
  */
 @RecordCriterionKey(key = "transformationBasedCriteria")
-class TransformationBasedCriteria implements RecordCriterionIF {
+class TransformationBasedCriteria implements RecordCriterion {
 
   private final String key = TransformationBasedCriteria.class.getAnnotation(RecordCriterionKey.class).key();
 

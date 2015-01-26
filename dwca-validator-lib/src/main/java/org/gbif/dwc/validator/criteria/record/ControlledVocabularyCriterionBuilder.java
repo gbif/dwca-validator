@@ -1,6 +1,7 @@
-package org.gbif.dwc.validator.criteria;
+package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.terms.Term;
+import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.configuration.ControlledVocabularyCriterionConfiguration;
 
@@ -95,7 +96,7 @@ public class ControlledVocabularyCriterionBuilder implements RecordCriterionBuil
    * @throws IllegalStateException
    */
   @Override
-  public RecordCriterionIF build() throws IllegalStateException {
+  public RecordCriterion build() throws IllegalStateException {
     if (configuration.getTerm() == null) {
       throw new IllegalStateException("ControlledVocabularyEvaluationRule must be built on a Term.");
     }

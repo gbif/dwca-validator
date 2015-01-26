@@ -1,6 +1,7 @@
-package org.gbif.dwc.validator.criteria;
+package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.terms.Term;
+import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.configuration.BoundCriterionConfiguration;
 import org.gbif.dwc.validator.transformation.ValueTransformations;
@@ -63,7 +64,7 @@ public class BoundCriterionBuilder implements RecordCriterionBuilder {
    *         IllegalStateException if lower bound is greater than upperBound.
    */
   @Override
-  public RecordCriterionIF build() throws NullPointerException, IllegalStateException {
+  public RecordCriterion build() throws NullPointerException, IllegalStateException {
 
     Preconditions.checkNotNull(configuration.getLowerBound());
     Preconditions.checkNotNull(configuration.getUpperBound());

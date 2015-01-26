@@ -1,8 +1,9 @@
-package org.gbif.dwc.validator.criteria;
+package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
+import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
 import org.gbif.dwc.validator.criteria.configuration.ControlledVocabularyCriterionConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
@@ -28,7 +29,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author cgendreau
  */
 @RecordCriterionKey(key = "controlledVocabularyCriterion")
-class ControlledVocabularyCriterion implements RecordCriterionIF {
+class ControlledVocabularyCriterion implements RecordCriterion {
 
   private final String key = ControlledVocabularyCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 

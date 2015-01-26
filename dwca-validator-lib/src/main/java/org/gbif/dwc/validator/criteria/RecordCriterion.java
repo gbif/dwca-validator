@@ -11,7 +11,7 @@ import com.google.common.base.Optional;
  * 
  * @author cgendreau
  */
-public interface RecordCriterionIF {
+public interface RecordCriterion {
 
   String getCriteriaKey();
 

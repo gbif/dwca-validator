@@ -8,7 +8,7 @@ import org.gbif.dwc.validator.result.EvaluationContext;
 import java.io.File;
 
 
-public class DatasetCriterion {
+public class DatasetCriteria {
 
 
   /**

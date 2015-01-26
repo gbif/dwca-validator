@@ -7,8 +7,12 @@ import org.gbif.dwc.validator.criteria.record.MinMaxCriterionBuilder;
 import org.gbif.dwc.validator.criteria.record.TransformationBasedCriteriaBuilder;
 import org.gbif.dwc.validator.transformation.ValueTransformation;
 
-
-public class RecordCriteriaBuilder {
+/**
+ * Main builder for record criteria.
+ * 
+ * @author cgendreau
+ */
+public class RecordCriteria {
 
   public static BoundCriterionBuilder withinRange(Term term, Number lowerBound, Number upperBound) {
     return BoundCriterionBuilder.builder().termBoundedBy(term, lowerBound, upperBound);

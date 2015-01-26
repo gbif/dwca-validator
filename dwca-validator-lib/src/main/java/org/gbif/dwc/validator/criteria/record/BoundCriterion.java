@@ -1,7 +1,8 @@
-package org.gbif.dwc.validator.criteria;
+package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.config.ValidatorConfig;
+import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
 import org.gbif.dwc.validator.criteria.configuration.BoundCriterionConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
@@ -19,7 +20,7 @@ import com.google.common.base.Optional;
 import org.apache.commons.lang3.StringUtils;
 
 @RecordCriterionKey(key = "boundCriterion")
-class BoundCriterion implements RecordCriterionIF {
+class BoundCriterion implements RecordCriterion {
 
   private final String key = BoundCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 

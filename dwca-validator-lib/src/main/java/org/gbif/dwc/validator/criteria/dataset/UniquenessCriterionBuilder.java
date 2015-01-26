@@ -57,7 +57,7 @@ public class UniquenessCriterionBuilder implements DatasetCriterionBuilder {
    * @throws IOException
    */
   @Override
-  public DatasetCriteria build() throws IllegalStateException {
+  public DatasetCriterion build() throws IllegalStateException {
     return innerBuild();
   }
 

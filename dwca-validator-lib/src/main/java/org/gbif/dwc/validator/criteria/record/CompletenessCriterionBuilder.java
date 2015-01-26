@@ -1,6 +1,7 @@
-package org.gbif.dwc.validator.criteria;
+package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.terms.Term;
+import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.configuration.CompletenessCriterionConfiguration;
 import org.gbif.dwc.validator.transformation.ValueTransformations;
@@ -37,7 +38,7 @@ public class CompletenessCriterionBuilder implements RecordCriterionBuilder {
    * @throws IllegalStateException if no terms were specified
    */
   @Override
-  public RecordCriterionIF build() throws IllegalStateException {
+  public RecordCriterion build() throws IllegalStateException {
 
     Preconditions.checkState(configuration.getValueTransformations() != null || configuration.getTerms() != null);
 

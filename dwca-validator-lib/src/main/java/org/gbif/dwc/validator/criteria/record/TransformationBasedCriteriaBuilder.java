@@ -1,6 +1,7 @@
-package org.gbif.dwc.validator.criteria;
+package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.terms.Term;
+import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.configuration.TransformationBasedCriteriaConfiguration;
 import org.gbif.dwc.validator.transformation.ValueTransformation;
 
@@ -34,7 +35,7 @@ public class TransformationBasedCriteriaBuilder implements RecordCriterionBuilde
    * @throws NullPointerException if the getTransformations is null
    */
   @Override
-  public RecordCriterionIF build() throws NullPointerException, IllegalStateException {
+  public RecordCriterion build() throws NullPointerException, IllegalStateException {
 
     Preconditions.checkNotNull(configuration.getTransformations());
     Preconditions.checkState(!configuration.getTransformations().isEmpty());

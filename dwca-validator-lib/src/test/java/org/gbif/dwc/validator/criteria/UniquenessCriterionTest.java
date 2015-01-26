@@ -7,7 +7,7 @@ import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.criteria.dataset.DatasetCriteria;
+import org.gbif.dwc.validator.criteria.dataset.DatasetCriterion;
 import org.gbif.dwc.validator.criteria.dataset.UniquenessCriterionBuilder;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
@@ -50,7 +50,7 @@ public class UniquenessCriterionTest {
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
-      DatasetCriteria uniquenessEvaluator = UniquenessCriterionBuilder.builder().build();
+      DatasetCriterion uniquenessEvaluator = UniquenessCriterionBuilder.builder().build();
       uniquenessEvaluator.onRecord(buildMockRecord("1", "1"), EvaluationContext.CORE);
       uniquenessEvaluator.onRecord(buildMockRecord("1", "2"), EvaluationContext.CORE);
 
@@ -75,7 +75,7 @@ public class UniquenessCriterionTest {
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
-      DatasetCriteria valueEvaluator = UniquenessCriterionBuilder.builder().build();
+      DatasetCriterion valueEvaluator = UniquenessCriterionBuilder.builder().build();
       valueEvaluator.onRecord(buildMockRecord("", "1"), EvaluationContext.CORE);
       valueEvaluator.onRecord(buildMockRecord("", "2"), EvaluationContext.CORE);
 
@@ -100,7 +100,7 @@ public class UniquenessCriterionTest {
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
-      DatasetCriteria valueEvaluator =
+      DatasetCriterion valueEvaluator =
         UniquenessCriterionBuilder.builder()
           .on(DwcTerm.catalogNumber, EvaluationContext.CORE, DwcTerm.Occurrence.qualifiedName()).build();
       valueEvaluator.onRecord(buildMockRecord("1", "1"), EvaluationContext.CORE);
@@ -127,7 +127,7 @@ public class UniquenessCriterionTest {
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
     try {
-      DatasetCriteria valueEvaluator = UniquenessCriterionBuilder.builder().build();
+      DatasetCriterion valueEvaluator = UniquenessCriterionBuilder.builder().build();
       valueEvaluator.onRecord(buildMockRecord("1", "1"), EvaluationContext.CORE);
       valueEvaluator.onRecord(buildMockRecord("2", "1"), EvaluationContext.CORE);
 

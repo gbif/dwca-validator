@@ -1,4 +1,6 @@
-package org.gbif.dwc.validator.criteria;
+package org.gbif.dwc.validator.criteria.record;
+
+import org.gbif.dwc.validator.criteria.RecordCriterion;
 
 /**
  * Interface defining a RecordCriterion builder.
@@ -14,5 +16,5 @@ public interface RecordCriterionBuilder {
    * @return
    * @throws IllegalStateException
    */
-  RecordCriterionIF build() throws IllegalStateException;
+  RecordCriterion build() throws IllegalStateException;
 }

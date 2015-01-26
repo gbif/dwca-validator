@@ -2,10 +2,10 @@ package org.gbif.dwc.validator;
 
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.chain.CriteriaChain;
-import org.gbif.dwc.validator.criteria.DatasetCriterion;
+import org.gbif.dwc.validator.criteria.DatasetCriteria;
+import org.gbif.dwc.validator.criteria.RecordCriteria;
 import org.gbif.dwc.validator.criteria.RecordCriterion;
-import org.gbif.dwc.validator.criteria.RecordCriteriaBuilder;
-import org.gbif.dwc.validator.criteria.dataset.DatasetCriteria;
+import org.gbif.dwc.validator.criteria.dataset.DatasetCriterion;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriterionBuilder;
 import org.gbif.dwc.validator.criteria.record.RecordCriterionBuilder;
 
@@ -52,10 +52,10 @@ public class Evaluators {
    */
   public static Evaluators defaultChain(File tempFolder) {
     Evaluators val =
-      builder().with(RecordCriteriaBuilder.checkForInvalidCharacter(DwcTerm.scientificName))
-        .with(RecordCriteriaBuilder.withinRange(DwcTerm.decimalLatitude, MIN_LATITUDE, MAX_LATITUDE))
-        .with(RecordCriteriaBuilder.withinRange(DwcTerm.decimalLongitude, MIN_LONGITUDE, MAX_LONGITUDE))
-        .with(DatasetCriterion.archiveIdIntegrity(tempFolder));
+      builder().with(RecordCriteria.checkForInvalidCharacter(DwcTerm.scientificName))
+        .with(RecordCriteria.withinRange(DwcTerm.decimalLatitude, MIN_LATITUDE, MAX_LATITUDE))
+        .with(RecordCriteria.withinRange(DwcTerm.decimalLongitude, MIN_LONGITUDE, MAX_LONGITUDE))
+        .with(DatasetCriteria.archiveIdIntegrity(tempFolder));
     return val;
   }
 
@@ -73,13 +73,13 @@ public class Evaluators {
   /**
    * Build a validation chain from a list of RecordCriteria and DatasetCriteria.
    * 
-   * @param recordCriteriaList
-   * @param datasetCriteriaList
+   * @param recordCriterionList
+   * @param datasetCriterionList
    * @return new CriteriaChain
    */
-  public static CriteriaChain buildFromEvaluatorList(List<RecordCriterion> recordCriteriaList,
-    List<DatasetCriteria> datasetCriteriaList) {
-    return new CriteriaChain(recordCriteriaList, datasetCriteriaList);
+  public static CriteriaChain buildFromEvaluatorList(List<RecordCriterion> recordCriterionList,
+    List<DatasetCriterion> datasetCriterionList) {
+    return new CriteriaChain(recordCriterionList, datasetCriterionList);
   }
 
 
@@ -127,7 +127,7 @@ public class Evaluators {
       recordCriteriaList.add(currRecordCriteriaBuilder.build());
     }
 
-    List<DatasetCriteria> datasetCriteriaList = new ArrayList<DatasetCriteria>();
+    List<DatasetCriterion> datasetCriteriaList = new ArrayList<DatasetCriterion>();
     for (DatasetCriterionBuilder currDDatasetCriteriaBuilder : datasetCriteriaBuildersList) {
       datasetCriteriaList.add(currDDatasetCriteriaBuilder.build());
     }

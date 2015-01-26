@@ -2,7 +2,7 @@ package org.gbif.dwc.validator.chain;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.criteria.RecordCriterion;
-import org.gbif.dwc.validator.criteria.dataset.DatasetCriteria;
+import org.gbif.dwc.validator.criteria.dataset.DatasetCriterion;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.ResultAccumulator;
@@ -27,9 +27,9 @@ public class CriteriaChain {
   private static final Logger LOGGER = LoggerFactory.getLogger(CriteriaChain.class);
 
   private final List<RecordCriterion> recordCriteriaList;
-  private final List<DatasetCriteria> datasetCriteria;
+  private final List<DatasetCriterion> datasetCriteria;
 
-  public CriteriaChain(List<RecordCriterion> recordCriteriaList, List<DatasetCriteria> datasetCriteria) {
+  public CriteriaChain(List<RecordCriterion> recordCriteriaList, List<DatasetCriterion> datasetCriteria) {
     this.recordCriteriaList = ImmutableList.copyOf(recordCriteriaList);
     this.datasetCriteria = ImmutableList.copyOf(datasetCriteria);
   }
@@ -45,19 +45,19 @@ public class CriteriaChain {
       }
     }
 
-    for (DatasetCriteria currRecordCriteria : datasetCriteria) {
+    for (DatasetCriterion currRecordCriteria : datasetCriteria) {
       currRecordCriteria.onRecord(record, evaluationContext);
     }
   }
 
   public void evaluateDataset(ResultAccumulator resultAccumulator) throws ResultAccumulationException {
-    for (DatasetCriteria currRecordCriteria : datasetCriteria) {
+    for (DatasetCriterion currRecordCriteria : datasetCriteria) {
       currRecordCriteria.validateDataset(resultAccumulator);
     }
   }
 
   public void cleanup() throws IOException {
-    for (DatasetCriteria currRecordCriteria : datasetCriteria) {
+    for (DatasetCriterion currRecordCriteria : datasetCriteria) {
       currRecordCriteria.close();
     }
   }

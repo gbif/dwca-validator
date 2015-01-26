@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * @author cgendreau
  */
 @RecordCriterionKey(key = "uniquenessCriterion")
-class UniquenessCriterion implements DatasetCriteria {
+class UniquenessCriterion implements DatasetCriterion {
 
   private final String key = UniquenessCriterion.class.getAnnotation(RecordCriterionKey.class).key();
   private final EvaluationContext evaluationContextRestriction;

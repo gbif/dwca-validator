@@ -12,7 +12,7 @@ import java.io.Closeable;
  * 
  * @author cgendreau
  */
-public interface DatasetCriteria extends Closeable {
+public interface DatasetCriterion extends Closeable {
 
   String getCriteriaKey();
 

@@ -1,6 +1,7 @@
-package org.gbif.dwc.validator.criteria;
+package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.terms.Term;
+import org.gbif.dwc.validator.criteria.RecordCriterion;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.configuration.InvalidCharacterCriterionConfiguration;
 
@@ -93,7 +94,7 @@ public class InvalidCharacterCriterionBuilder implements RecordCriterionBuilder 
    * @return immutable InvalidCharacterCriterion
    */
   @Override
-  public RecordCriterionIF build() {
+  public RecordCriterion build() {
     configuration.setCharMatcher(toCharMatcher());
     return new InvalidCharacterCriterion(configuration);
   }

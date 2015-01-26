@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  * @author cgendreau
  */
 @RecordCriterionKey(key = "referenceUniqueCriterion")
-class ReferenceUniqueCriterion implements DatasetCriteria {
+class ReferenceUniqueCriterion implements DatasetCriterion {
 
   private final String key = ReferenceUniqueCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 

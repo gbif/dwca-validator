@@ -50,7 +50,7 @@ public class ReferenceUniqueCriterionBuilder implements DatasetCriterionBuilder 
    * @throws IllegalStateException
    */
   @Override
-  public DatasetCriteria build() throws IllegalStateException {
+  public DatasetCriterion build() throws IllegalStateException {
 
     // if no 'term' is set the id will be used to test as 'star' records
     if (configuration.getTerm() != null) {
