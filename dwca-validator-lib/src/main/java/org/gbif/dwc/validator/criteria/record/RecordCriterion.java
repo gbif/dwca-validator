@@ -1,4 +1,4 @@
-package org.gbif.dwc.validator.criteria;
+package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.result.EvaluationContext;
