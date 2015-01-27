@@ -1,55 +1,43 @@
 # Example of validation chain expressed in YAML
 # Documentation: https://github.com/gbif/dwca-validator/wiki/ConfigurationFile
 --- 
-rules:
- - !ISODateValueEvaluationRule  &isoDateEvalRule
-   - !iSODateValueEvaluationRuleConfiguration
-     allowPartialDate			: false
-     allowMissingLeadingZeros	: false
-     
- - !invalidCharacterEvaluationRule &invalidCharacterEvalRule
-   - !invalidCharacterEvaluationRuleConfiguration
-     allowFormattingWhiteSpace	: false
-     rejectReplacementChar		: true
-     
-# The dictionary file must exist path can be absolute or relative to the app location
- - !controlledVocabularyEvaluationRule &basisOfRecordControlledVocEvalRule
-   - !controlledVocabularyEvaluationRuleConfiguration
-     term						: !dwcTerm 'basisOfRecord'
-     dictionaryPath	: 'basis_of_record.txt'
-     
- - !numericalValueEvaluationRule &latEvalRule
-   - !numericalValueEvaluationRuleConfiguration
-     lowerBound					: -90
-     upperBound					: 90
-     
- - !numericalValueEvaluationRule &longEvalRule
-   - !numericalValueEvaluationRuleConfiguration
-     lowerBound					: -180
-     upperBound					: 180
-
-evaluators:
- - !recordCompletionEvaluator
-   - !recordCompletionEvaluatorConfiguration
+recordCriteria:
+ - !completenessCriterion
+   - !completenessCriterionConfiguration
      terms:
        - !dwcTerm 'country'
      rowTypeRestriction: 'http://rs.tdwg.org/dwc/terms/Occurrence'
-       
- - !valueEvaluator
-   - !valueEvaluatorConfiguration
-     rulesPerTerm:
-       !dwcTerm 'eventDate' : [*isoDateEvalRule]
-       !dwcTerm 'scientificName' : [*invalidCharacterEvalRule]
-       !dwcTerm 'decimalLatitude' : [*latEvalRule]
-       !dwcTerm 'decimalLongitude' : [*longEvalRule]
-       !dwcTerm 'basisOfRecord' : [*basisOfRecordControlledVocEvalRule]
-       
-# default UniquenessEvaluator on coreId
-# Note: Do not used this evaluator if the default referenceUniqueEvaluator is already in the chain, it is unnecessary.
-# - !uniquenessEvaluator
-#    - !uniquenessEvaluatorConfiguration {}
-
-# default ReferenceUniqueEvaluator will ensure coreId is unique and extension records are pointing to a valid coreId
- - !referenceUniqueEvaluator
-   - !referenceUniqueEvaluatorConfiguration {}
-   - !uniquenessEvaluatorConfiguration {}
+     
+# The dictionary file must exist, path can be absolute or relative to the app location
+ - !controlledVocabularyCriterion
+    - !controlledVocabularyCriterionConfiguration
+     term						: !dwcTerm 'basisOfRecord'
+     dictionaryPath	: 'basis_of_record.txt'
+     
+ - !boundCriterion
+    - !boundCriterionConfiguration
+     term						: !dwcTerm 'decimalLatitude'
+     lowerBound					: -90
+     upperBound					: 90
+     
+ - !boundCriterion
+    - !boundCriterionConfiguration
+     term						: !dwcTerm 'decimalLongitude'
+     lowerBound					: -180
+     upperBound					: 180
+     
+ - !invalidCharacterCriterion
+    - !invalidCharacterCriterionConfiguration
+     term						: !dwcTerm 'scientificName'
+     rejectReplacementChar		: true
+     
+ - !minMaxCriterion
+   - !minMaxCriterionConfiguration
+     minValueTerm				: !dwcTerm 'minimumElevationInMeters'
+     maxValueTerm				: !dwcTerm 'maximumElevationInMeters'
+     
+datasetCriteria:
+# default ReferenceUniqueCriterion will ensure coreId is unique and extension records are pointing to a valid coreId
+ - !referenceUniqueCriterion
+   - !referenceUniqueCriterionConfiguration {}
+   - !uniquenessCriterionConfiguration {}
