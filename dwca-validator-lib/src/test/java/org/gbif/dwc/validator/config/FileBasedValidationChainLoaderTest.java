@@ -6,7 +6,7 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.text.ArchiveField;
 import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
-import org.gbif.dwc.validator.chain.CriteriaChain;
+import org.gbif.dwc.validator.chain.EvaluatorChain;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
@@ -55,7 +55,7 @@ public class FileBasedValidationChainLoaderTest {
     try {
       File testFile = new File(this.getClass().getResource("/evaluator/fileBasedValidationChain.yaml").toURI());
       FileBasedValidationChainLoader fbValidationChainLoader = new FileBasedValidationChainLoader();
-      CriteriaChain chainHead = null;
+      EvaluatorChain chainHead = null;
       try {
         chainHead = fbValidationChainLoader.buildValidationChainFromYamlFile(testFile);
       } catch (IOException e) {

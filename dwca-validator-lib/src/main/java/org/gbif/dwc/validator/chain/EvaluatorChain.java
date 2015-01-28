@@ -17,19 +17,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Wrapper class to allow RecordEvaluatorIF to be chainable.
+ * This class is responsible to manage the evaluation chain.
  * The class is immutable but the RecordEvaluator immutability can not be enforced.
  * 
  * @author cgendreau
  */
-public class CriteriaChain {
+public class EvaluatorChain {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CriteriaChain.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(EvaluatorChain.class);
 
   private final List<RecordCriterion> recordCriteriaList;
   private final List<DatasetCriterion> datasetCriteria;
 
-  public CriteriaChain(List<RecordCriterion> recordCriteriaList, List<DatasetCriterion> datasetCriteria) {
+  public EvaluatorChain(List<RecordCriterion> recordCriteriaList, List<DatasetCriterion> datasetCriteria) {
     this.recordCriteriaList = ImmutableList.copyOf(recordCriteriaList);
     this.datasetCriteria = ImmutableList.copyOf(datasetCriteria);
   }

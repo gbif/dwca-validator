@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator;
 
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwc.validator.chain.CriteriaChain;
+import org.gbif.dwc.validator.chain.EvaluatorChain;
 import org.gbif.dwc.validator.criteria.DatasetCriteria;
 import org.gbif.dwc.validator.criteria.RecordCriteria;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriterion;
@@ -66,7 +66,7 @@ public class Evaluators {
    * @param head
    * @return
    */
-  public static FileEvaluator buildFromValidationChain(File tempFolder, CriteriaChain head) {
+  public static FileEvaluator buildFromValidationChain(File tempFolder, EvaluatorChain head) {
     return new DwcArchiveEvaluator(head);
   }
 
@@ -77,9 +77,9 @@ public class Evaluators {
    * @param datasetCriterionList
    * @return new CriteriaChain
    */
-  public static CriteriaChain buildFromEvaluatorList(List<RecordCriterion> recordCriterionList,
+  public static EvaluatorChain buildFromEvaluatorList(List<RecordCriterion> recordCriterionList,
     List<DatasetCriterion> datasetCriterionList) {
-    return new CriteriaChain(recordCriterionList, datasetCriterionList);
+    return new EvaluatorChain(recordCriterionList, datasetCriterionList);
   }
 
 
@@ -121,7 +121,7 @@ public class Evaluators {
    * 
    * @return head of the chain
    */
-  public CriteriaChain buildChain() throws IllegalStateException {
+  public EvaluatorChain buildChain() throws IllegalStateException {
     List<RecordCriterion> recordCriteriaList = new ArrayList<RecordCriterion>();
     for (RecordCriterionBuilder currRecordCriteriaBuilder : buildersList) {
       recordCriteriaList.add(currRecordCriteriaBuilder.build());
@@ -132,7 +132,7 @@ public class Evaluators {
       datasetCriteriaList.add(currDDatasetCriteriaBuilder.build());
     }
 
-    return new CriteriaChain(recordCriteriaList, datasetCriteriaList);
+    return new EvaluatorChain(recordCriteriaList, datasetCriteriaList);
   }
 
 // Taxon only evaluators

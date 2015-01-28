@@ -2,7 +2,7 @@ package org.gbif.dwc.validator.cli;
 
 import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.FileEvaluator;
-import org.gbif.dwc.validator.chain.CriteriaChain;
+import org.gbif.dwc.validator.chain.EvaluatorChain;
 import org.gbif.dwc.validator.config.FileBasedValidationChainLoader;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
@@ -176,7 +176,7 @@ public class ValidatorMain {
     return urlValidator.isValid(source);
   }
 
-  private CriteriaChain handleConfigurationFile(File configurationFile) {
+  private EvaluatorChain handleConfigurationFile(File configurationFile) {
     if (!configurationFile.exists()) {
       LOGGER.error("Can not find the configuration file from " + configurationFile.getAbsolutePath());
       return null;

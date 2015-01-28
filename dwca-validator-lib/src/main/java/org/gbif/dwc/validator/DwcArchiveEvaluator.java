@@ -5,7 +5,7 @@ import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.text.ArchiveFactory;
 import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
-import org.gbif.dwc.validator.chain.CriteriaChain;
+import org.gbif.dwc.validator.chain.EvaluatorChain;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.evaluator.structure.EMLEvaluator;
 import org.gbif.dwc.validator.evaluator.structure.MetaDescriptorEvaluator;
@@ -38,9 +38,9 @@ public class DwcArchiveEvaluator implements FileEvaluator {
 
   private String workingFolder = ".";
 
-  private final CriteriaChain criteriaChain;
+  private final EvaluatorChain criteriaChain;
 
-  DwcArchiveEvaluator(CriteriaChain criteriaChain) {
+  DwcArchiveEvaluator(EvaluatorChain criteriaChain) {
     this.criteriaChain = criteriaChain;
   }
 
@@ -136,7 +136,7 @@ public class DwcArchiveEvaluator implements FileEvaluator {
    * @throws ResultAccumulationException
    */
   private void inspectDwcComponent(ArchiveFile dwcaComponent, EvaluationContext evaluationContext,
-    CriteriaChain evaluatorChain, ResultAccumulator resultAccumulator) throws ResultAccumulationException {
+    EvaluatorChain evaluatorChain, ResultAccumulator resultAccumulator) throws ResultAccumulationException {
 
     // In theory, we could optimize the validation if we realize the coreId is a term used in the chain
     // but it could also be very error prone.

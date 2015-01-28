@@ -32,6 +32,7 @@ public class DatasetCriteria {
   }
 
   /**
+   * Maybe this should be named referenceStarSchema ?
    * Check that targetedTerm value is pointing to a valid value of referredTerm within the Core. Uniqueness of
    * referredTerm will also be checked.
    * 

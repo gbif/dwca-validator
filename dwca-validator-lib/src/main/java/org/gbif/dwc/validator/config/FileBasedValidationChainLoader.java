@@ -4,7 +4,7 @@ import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.annotation.AnnotationLoader;
-import org.gbif.dwc.validator.chain.CriteriaChain;
+import org.gbif.dwc.validator.chain.EvaluatorChain;
 import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
 import org.gbif.dwc.validator.criteria.annotation.DatasetCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
@@ -54,9 +54,9 @@ public class FileBasedValidationChainLoader {
    * @throws IOException
    */
   @SuppressWarnings("unchecked")
-  public CriteriaChain buildValidationChainFromYamlFile(File configFile) throws IOException {
+  public EvaluatorChain buildValidationChainFromYamlFile(File configFile) throws IOException {
     InputStream ios = null;
-    CriteriaChain chainHead = null;
+    EvaluatorChain chainHead = null;
 
     try {
       ios = new FileInputStream(configFile);

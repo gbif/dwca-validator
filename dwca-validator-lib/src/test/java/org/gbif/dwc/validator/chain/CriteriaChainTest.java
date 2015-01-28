@@ -4,7 +4,7 @@ import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
-import org.gbif.dwc.validator.chain.CriteriaChain;
+import org.gbif.dwc.validator.chain.EvaluatorChain;
 import org.gbif.dwc.validator.criteria.DatasetCriteria;
 import org.gbif.dwc.validator.criteria.RecordCriteria;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
@@ -42,7 +42,7 @@ public class CriteriaChainTest {
     File testFolder = new File(".", "ChainableRecordEvaluatorTest");
     testFolder.mkdir();
 
-    CriteriaChain chain =
+    EvaluatorChain chain =
       Evaluators
         .builder()
         .with(DatasetCriteria.coreIdUniqueness(testFolder))
