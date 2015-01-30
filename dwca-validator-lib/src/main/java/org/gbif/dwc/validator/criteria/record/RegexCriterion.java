@@ -11,11 +11,11 @@ import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -35,12 +35,14 @@ class RegexCriterion implements RecordCriterion {
   private final Result level;
   private final Term term;
   private final Pattern pattern;
+  private final String explanation;
 
   public RegexCriterion(RegexCriterionConfiguration configuration) {
     rowTypeRestriction = configuration.getRowTypeRestriction();
     level = configuration.getLevel();
     term = configuration.getTerm();
     pattern = Pattern.compile(configuration.getRegex());
+    explanation = configuration.getExplanation();
   }
 
   @Override
@@ -58,10 +60,13 @@ class RegexCriterion implements RecordCriterion {
 
     List<ValidationResultElement> elementList = null;
     if (!pattern.matcher(str).matches()) {
-      elementList = new ArrayList<ValidationResultElement>();
-
+      elementList = Lists.newArrayList();
+      String completeExplanation = ValidatorConfig.getLocalizedString("criterion.regex_criterion.value", str, term);
+      completeExplanation +=
+        StringUtils.defaultIfBlank(this.explanation,
+          ValidatorConfig.getLocalizedString("criterion.regex_criterion.no_match"));
       elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
-        ValidatorConfig.getLocalizedString("criterion.regex_criterion.no_match", str)));
+        completeExplanation));
     }
 
     if (elementList != null && elementList.size() > 0) {

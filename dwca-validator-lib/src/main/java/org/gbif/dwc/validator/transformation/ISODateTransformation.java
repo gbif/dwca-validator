@@ -66,7 +66,7 @@ public class ISODateTransformation implements ValueTransformation<TemporalAccess
 
   private ValueTransformationResult<TemporalAccessor> createNonISOEvaluationRuleResult(String value) {
     return ValueTransformationResult.notTransformed(term, "",
-      ValidatorConfig.getLocalizedString("rule.date.non_ISO", value));
+      ValidatorConfig.getLocalizedString("transformation.date.non_ISO", value));
   }
 
   @Override

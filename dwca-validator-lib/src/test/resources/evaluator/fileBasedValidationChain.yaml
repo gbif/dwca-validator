@@ -35,6 +35,12 @@ recordCriteria:
      minValueTerm				: !dwcTerm 'minimumElevationInMeters'
      maxValueTerm				: !dwcTerm 'maximumElevationInMeters'
      
+ - !regexCriterion
+   - !regexCriterionConfiguration
+     term				: !dwcTerm 'genus'
+     regex				: ^[A-Z].*
+     explanation		: "must starts with a capital letter"
+     
 datasetCriteria:
  - !uniquenessCriterion
    - !uniquenessCriterionConfiguration {}

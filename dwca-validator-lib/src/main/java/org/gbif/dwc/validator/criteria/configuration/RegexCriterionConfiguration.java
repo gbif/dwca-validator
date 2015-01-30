@@ -16,6 +16,7 @@ public class RegexCriterionConfiguration {
   private Result level = Result.ERROR;
   private Term term;
   private String regex;
+  private String explanation;
 
   public String getRowTypeRestriction() {
     return rowTypeRestriction;
@@ -33,11 +34,9 @@ public class RegexCriterionConfiguration {
     this.level = level;
   }
 
-
   public Term getTerm() {
     return term;
   }
-
 
   public void setTerm(Term term) {
     this.term = term;
@@ -49,6 +48,19 @@ public class RegexCriterionConfiguration {
 
   public void setRegex(String regex) {
     this.regex = regex;
+  }
+
+  public String getExplanation() {
+    return explanation;
+  }
+
+  /**
+   * Set an optional explanation for end user explaining the purpose of the regex.
+   * 
+   * @param explanation
+   */
+  public void setExplanation(String explanation) {
+    this.explanation = explanation;
   }
 
 }

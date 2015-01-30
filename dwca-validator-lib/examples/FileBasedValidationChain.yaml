@@ -36,6 +36,12 @@ recordCriteria:
      minValueTerm				: !dwcTerm 'minimumElevationInMeters'
      maxValueTerm				: !dwcTerm 'maximumElevationInMeters'
      
+ - !regexCriterion
+   - !regexCriterionConfiguration
+     term				: !dwcTerm 'genus'
+     regex				: ^[A-Z].*
+     explanation		: "must starts with a capital letter"
+     
 datasetCriteria:
 # default ReferenceUniqueCriterion will ensure coreId is unique and extension records are pointing to a valid coreId
  - !referenceUniqueCriterion

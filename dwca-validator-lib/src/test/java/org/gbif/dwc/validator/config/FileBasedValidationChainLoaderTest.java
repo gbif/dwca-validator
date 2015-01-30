@@ -37,14 +37,16 @@ public class FileBasedValidationChainLoaderTest {
     ArchiveField eventDateField = new ArchiveField(2, DwcTerm.eventDate, null, DataType.string);
     ArchiveField decimalLatitudeField = new ArchiveField(3, DwcTerm.decimalLatitude, null, DataType.string);
     ArchiveField decimalLongitudeField = new ArchiveField(4, DwcTerm.decimalLongitude, null, DataType.string);
+    ArchiveField genusField = new ArchiveField(5, DwcTerm.genus, null, DataType.string);
 
     List<ArchiveField> fieldList = new ArrayList<ArchiveField>();
     fieldList.add(scientificNameField);
     fieldList.add(eventDateField);
     fieldList.add(decimalLatitudeField);
     fieldList.add(decimalLongitudeField);
+    fieldList.add(genusField);
     RecordImpl testRecord = new RecordImpl(idField, fieldList, DwcTerm.Occurrence.qualifiedName(), false);
-    testRecord.setRow(new String[] {id, "gulo\tgulo", "10-07-2014", "2.3", "a"});
+    testRecord.setRow(new String[] {id, "gulo\tgulo", "10-07-2014", "2.3", "a", "monodon"});
     return testRecord;
   }
 
@@ -94,6 +96,8 @@ public class FileBasedValidationChainLoaderTest {
 
       assertTrue(TestEvaluationResultHelper.containsValidationType(resultAccumulator.getValidationResultList(), "2",
         ContentValidationType.FIELD_UNIQUENESS));
+
+      System.out.println(resultAccumulator.getValidationResultList());
 
     } catch (URISyntaxException e) {
       e.printStackTrace();
