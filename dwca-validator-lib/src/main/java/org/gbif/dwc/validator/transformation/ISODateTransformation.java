@@ -15,7 +15,13 @@ import org.threeten.bp.format.ResolverStyle;
 import org.threeten.bp.temporal.ChronoField;
 import org.threeten.bp.temporal.TemporalAccessor;
 
-
+/**
+ * Transform the value associated with a Term into an ISO date.
+ * Note that the provided 'raw' value must already be in ISO format and this class will simply transform
+ * it into a TemporalAccessor object.
+ * 
+ * @author cgendreau
+ */
 public class ISODateTransformation implements ValueTransformation<TemporalAccessor> {
 
   private final Term term;

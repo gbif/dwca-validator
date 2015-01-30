@@ -32,7 +32,7 @@ class NumericValueTransformation implements ValueTransformation<Number> {
       value = Double.parseDouble(str);
     } catch (NumberFormatException nfEx) {
       return ValueTransformationResult.notTransformed(term, str,
-        ValidatorConfig.getLocalizedString("parser.numeric.non_numerical", str, term));
+        ValidatorConfig.getLocalizedString("transformation.numeric.non_numerical", str, term));
     }
     return ValueTransformationResult.transformed(term, str, (Number) value);
   }
