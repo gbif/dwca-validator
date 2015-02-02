@@ -22,6 +22,12 @@ public class MinMaxCriterionConfiguration {
   private ValueTransformation<Number> minValueTransformation;
   private ValueTransformation<Number> maxValueTransformation;
 
+  /**
+   * Enforce minValue AND maxValue to be provided.
+   * Default to false
+   */
+  private boolean enforceTwoTermsUse = false;
+
   public String getRowTypeRestriction() {
     return rowTypeRestriction;
   }
@@ -68,5 +74,13 @@ public class MinMaxCriterionConfiguration {
 
   public void setMaxValueTerm(Term maxValueTerm) {
     this.maxValueTerm = maxValueTerm;
+  }
+
+  public boolean isEnforceTwoTermsUse() {
+    return enforceTwoTermsUse;
+  }
+
+  public void setEnforceTwoTermsUse(boolean enforceTwoTermsUse) {
+    this.enforceTwoTermsUse = enforceTwoTermsUse;
   }
 }

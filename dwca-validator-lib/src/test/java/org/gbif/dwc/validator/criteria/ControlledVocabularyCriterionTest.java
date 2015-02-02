@@ -17,6 +17,8 @@ import java.util.Set;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -72,6 +74,10 @@ public class ControlledVocabularyCriterionTest {
     // should not passed
     result = criterion.validate(buildMockRecord("1", "Spain", "Gulo Gulo"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationFailed(result));
+
+    // Empty value should just be skipped
+    result = criterion.validate(buildMockRecord("1", "Spain", ""), EvaluationContext.CORE);
+    assertFalse(result.isPresent());
   }
 
   @Test(expected = IllegalStateException.class)

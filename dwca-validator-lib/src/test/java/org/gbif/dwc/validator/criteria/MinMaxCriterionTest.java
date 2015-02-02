@@ -3,6 +3,7 @@ package org.gbif.dwc.validator.criteria;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
+import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.criteria.configuration.MinMaxCriterionConfiguration;
 import org.gbif.dwc.validator.criteria.record.MinMaxCriterionBuilder;
 import org.gbif.dwc.validator.criteria.record.RecordCriterion;
@@ -13,6 +14,8 @@ import org.gbif.dwc.validator.transformation.ValueTransformations;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
@@ -31,15 +34,58 @@ public class MinMaxCriterionTest {
 
     // min < max should be valid
     Optional<ValidationResult> result = criterion.validate(buildMockRecord("1", "10", "11"), EvaluationContext.CORE);
-    assertTrue(result.isPresent() && result.get().passed());
+    assertTrue(TestEvaluationResultHelper.validationPassed(result));
 
     // same value should be valid
     result = criterion.validate(buildMockRecord("1", "10", "10"), EvaluationContext.CORE);
-    assertTrue(result.isPresent() && result.get().passed());
+    assertTrue(TestEvaluationResultHelper.validationPassed(result));
 
     // min > max should NOT be valid
     result = criterion.validate(buildMockRecord("1", "11", "10"), EvaluationContext.CORE);
-    assertTrue(result.isPresent() && result.get().failed());
+    assertTrue(TestEvaluationResultHelper.validationFailed(result));
+
+    // a non numeric value should fail
+    result = criterion.validate(buildMockRecord("1", "1", "b"), EvaluationContext.CORE);
+    assertTrue(TestEvaluationResultHelper.validationFailed(result));
+
+    // empty values should be skipped
+    result = criterion.validate(buildMockRecord("1", "", ""), EvaluationContext.CORE);
+    assertFalse(result.isPresent());
+
+    // one numeric value and the other empty should pass
+    result = criterion.validate(buildMockRecord("1", "1", ""), EvaluationContext.CORE);
+    assertTrue(TestEvaluationResultHelper.validationPassed(result));
+  }
+
+  @Test
+  public void testMinMaxCriterionEnforceTwoTerms() {
+    RecordCriterion criterion =
+      MinMaxCriterionBuilder.builder().terms(DwcTerm.minimumElevationInMeters, DwcTerm.maximumElevationInMeters)
+        .enforceTwoTermsUse().build();
+
+    // min < max should be valid
+    Optional<ValidationResult> result = criterion.validate(buildMockRecord("1", "10", "11"), EvaluationContext.CORE);
+    assertTrue(TestEvaluationResultHelper.validationPassed(result));
+
+    // same value should be valid
+    result = criterion.validate(buildMockRecord("1", "10", "10"), EvaluationContext.CORE);
+    assertTrue(TestEvaluationResultHelper.validationPassed(result));
+
+    // min > max should NOT be valid
+    result = criterion.validate(buildMockRecord("1", "11", "10"), EvaluationContext.CORE);
+    assertTrue(TestEvaluationResultHelper.validationFailed(result));
+
+    // a non numeric value should fail
+    result = criterion.validate(buildMockRecord("1", "1", "b"), EvaluationContext.CORE);
+    assertTrue(TestEvaluationResultHelper.validationFailed(result));
+
+    // empty value should still be skipped
+    result = criterion.validate(buildMockRecord("1", "", ""), EvaluationContext.CORE);
+    assertFalse(result.isPresent());
+
+    // one numeric value and the other empty should fail
+    result = criterion.validate(buildMockRecord("1", "1", ""), EvaluationContext.CORE);
+    assertTrue(TestEvaluationResultHelper.validationFailed(result));
   }
 
   @Test(expected = IllegalStateException.class)

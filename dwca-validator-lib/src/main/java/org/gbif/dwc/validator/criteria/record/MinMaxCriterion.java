@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.record.Record;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
 import org.gbif.dwc.validator.criteria.configuration.MinMaxCriterionConfiguration;
@@ -12,10 +13,10 @@ import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 import org.gbif.dwc.validator.transformation.ValueTransformation;
 import org.gbif.dwc.validator.transformation.ValueTransformationResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 
 @RecordCriterionKey(key = "minMaxCriterion")
@@ -28,12 +29,14 @@ class MinMaxCriterion implements RecordCriterion {
 
   private final ValueTransformation<Number> minValueTransformation;
   private final ValueTransformation<Number> maxValueTransformation;
+  private final boolean enforceTwoTermsUse;
 
   MinMaxCriterion(MinMaxCriterionConfiguration configuration) {
     this.rowTypeRestriction = configuration.getRowTypeRestriction();
     this.level = configuration.getLevel();
     this.minValueTransformation = configuration.getMinValueTransformation();
     this.maxValueTransformation = configuration.getMaxValueTransformation();
+    this.enforceTwoTermsUse = configuration.isEnforceTwoTermsUse();
   }
 
   @Override
@@ -48,12 +51,17 @@ class MinMaxCriterion implements RecordCriterion {
       return Optional.absent();
     }
 
-    List<ValidationResultElement> elementList = new ArrayList<ValidationResultElement>();
+    List<ValidationResultElement> elementList = Lists.newArrayList();
 
     ValueTransformationResult<Number> minValueParsingResult = minValueTransformation.transform(record);
     ValueTransformationResult<Number> maxValueParsingResult = maxValueTransformation.transform(record);
 
-    // ensure we can extract numbers for those fields
+    // if both values are skipped, skip also the criterion
+    if (minValueParsingResult.isSkipped() && maxValueParsingResult.isSkipped()) {
+      return Optional.absent();
+    }
+
+    // ensure we can extract numbers for those fields if provided
     if (minValueParsingResult.isNotTransformed()) {
       elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
         minValueParsingResult.getExplanation()));
@@ -61,6 +69,14 @@ class MinMaxCriterion implements RecordCriterion {
     if (maxValueParsingResult.isNotTransformed()) {
       elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
         maxValueParsingResult.getExplanation()));
+    }
+
+    // if min or max was skipped and we enforce the use of the 2 terms, add an validation result
+    if ((minValueParsingResult.isSkipped() || maxValueParsingResult.isSkipped()) && enforceTwoTermsUse) {
+      Term guiltyTerm =
+        minValueParsingResult.isSkipped() ? minValueParsingResult.getTerm() : maxValueParsingResult.getTerm();
+      elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
+        ValidatorConfig.getLocalizedString("criterion.min_max_criterion.min_or_max_missing", guiltyTerm)));
     }
 
     Number minValue = minValueParsingResult.getData();

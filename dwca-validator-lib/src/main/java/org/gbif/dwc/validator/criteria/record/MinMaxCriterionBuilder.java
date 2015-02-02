@@ -43,6 +43,16 @@ public class MinMaxCriterionBuilder implements RecordCriterionBuilder {
   }
 
   /**
+   * Enforce that a value for minimum and maximum is provided if one of the 2 is provided.
+   * By default the MinMaxCriterion accepts that only the minimum or maximum value is provided this option
+   * allows to change that behavior.
+   */
+  public MinMaxCriterionBuilder enforceTwoTermsUse() {
+    configuration.setEnforceTwoTermsUse(true);
+    return this;
+  }
+
+  /**
    * Set the restriction on the rowType to avoid the evaluation to run on all rowType.
    * 
    * @param rowTypeRestriction
