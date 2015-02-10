@@ -97,9 +97,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="10" language="java" name="org.gbif.dwc.validator.result.accumulator.AbstractThresholdAccumulatorSupport" 
+  <class id="10" language="java" name="org.gbif.dwc.validator.result.accumulator.AbstractThresholdResultWriter" 
     project="dwca-validator-lib" 
-    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/result/accumulator/AbstractThresholdAccumulatorSupport.java" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/result/accumulator/AbstractThresholdResultWriter.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-6" y="346"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 
@@ -119,9 +119,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="org.gbif.dwc.validator.result.accumulator.csv.CSVValidationResultAccumulator" 
+  <class id="12" language="java" name="org.gbif.dwc.validator.result.accumulator.csv.CSVValidationResultWriter" 
     project="dwca-validator-lib" 
-    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/result/accumulator/csv/CSVValidationResultAccumulator.java" 
+    file="/dwca-validator-lib/src/main/java/org/gbif/dwc/validator/result/accumulator/csv/CSVValidationResultWriter.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-335" y="344"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" accessors="true" 

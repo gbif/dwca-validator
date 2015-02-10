@@ -10,12 +10,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Support for threshold based accumulator for a single EvaluationResult implementation.
+ * Abstract threshold based writer for a single EvaluationResult implementation.
  * 
  * @author cgendreau
  * @param <T>
  */
-public abstract class AbstractThresholdAccumulatorSupport<T extends EvaluationResult> {
+public abstract class AbstractThresholdResultWriter<T extends EvaluationResult> {
 
   protected static final int DEFAULT_THRESHOLD = 1000;
 
@@ -24,7 +24,7 @@ public abstract class AbstractThresholdAccumulatorSupport<T extends EvaluationRe
   private final ConcurrentLinkedQueue<T> queue;
   private final AtomicBoolean flushing;
 
-  public AbstractThresholdAccumulatorSupport(int threshold) {
+  public AbstractThresholdResultWriter(int threshold) {
     this.threshold = threshold;
 
     queue = new ConcurrentLinkedQueue<T>();

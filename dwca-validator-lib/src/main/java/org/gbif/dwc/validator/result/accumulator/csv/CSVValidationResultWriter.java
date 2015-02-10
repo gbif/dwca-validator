@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.result.accumulator.csv;
 
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.result.accumulator.AbstractThresholdAccumulatorSupport;
+import org.gbif.dwc.validator.result.accumulator.AbstractThresholdResultWriter;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
@@ -12,20 +12,20 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
 /**
- * Threshold based accumulator saving ValidationResult to CSV file.
+ * Threshold based writer to save ValidationResult to CSV file.
  * 
  * @author cgendreau
  */
-class CSVValidationResultAccumulator extends AbstractThresholdAccumulatorSupport<ValidationResult> {
+class CSVValidationResultWriter extends AbstractThresholdResultWriter<ValidationResult> {
 
   private CSVPrinter validationCsvPrinter;
   private final String validationResultFilePath;
 
-  CSVValidationResultAccumulator(String validationResultFilePath) {
+  CSVValidationResultWriter(String validationResultFilePath) {
     this(validationResultFilePath, DEFAULT_THRESHOLD);
   }
 
-  CSVValidationResultAccumulator(String validationResultFilePath, int threshold) {
+  CSVValidationResultWriter(String validationResultFilePath, int threshold) {
     super(threshold);
     this.validationResultFilePath = validationResultFilePath;
   }

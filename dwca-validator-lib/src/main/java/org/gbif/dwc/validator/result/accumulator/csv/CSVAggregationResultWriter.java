@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.result.accumulator.csv;
 
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.result.accumulator.AbstractThresholdAccumulatorSupport;
+import org.gbif.dwc.validator.result.accumulator.AbstractThresholdResultWriter;
 import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 
 import java.io.FileWriter;
@@ -15,16 +15,16 @@ import org.apache.commons.csv.CSVPrinter;
  * 
  * @author cgendreau
  */
-class CSVAggregationResultAccumulator extends AbstractThresholdAccumulatorSupport<AggregationResult<?>> {
+class CSVAggregationResultWriter extends AbstractThresholdResultWriter<AggregationResult<?>> {
 
   private final String aggregationResultFilePath;
   private CSVPrinter aggregationCsvPrinter;
 
-  public CSVAggregationResultAccumulator(String aggregationResultFilePath) {
+  public CSVAggregationResultWriter(String aggregationResultFilePath) {
     this(aggregationResultFilePath, DEFAULT_THRESHOLD);
   }
 
-  public CSVAggregationResultAccumulator(String aggregationResultFilePath, int threshold) {
+  public CSVAggregationResultWriter(String aggregationResultFilePath, int threshold) {
     super(threshold);
     this.aggregationResultFilePath = aggregationResultFilePath;
   }

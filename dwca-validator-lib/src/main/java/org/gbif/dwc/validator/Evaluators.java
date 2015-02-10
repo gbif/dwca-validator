@@ -92,7 +92,7 @@ public class Evaluators {
   }
 
   /**
-   * Append a validation to the validation chain.
+   * Append a record level criterion to the validation chain.
    * 
    * @param recordEvaluatorBuilder
    * @return
@@ -102,6 +102,12 @@ public class Evaluators {
     return this;
   }
 
+  /**
+   * Append a dataset level criterion to the validation chain.
+   * 
+   * @param datasetCriteriaBuilder
+   * @return
+   */
   public Evaluators with(DatasetCriterionBuilder datasetCriteriaBuilder) {
     datasetCriteriaBuildersList.add(datasetCriteriaBuilder);
     return this;

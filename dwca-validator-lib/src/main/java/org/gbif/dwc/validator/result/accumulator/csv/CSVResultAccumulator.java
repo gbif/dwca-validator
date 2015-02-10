@@ -16,8 +16,8 @@ public class CSVResultAccumulator implements ResultAccumulator {
 
   protected static final int DEFAULT_THRESHOLD = 1000;
 
-  private CSVValidationResultAccumulator csvValidationResultAccumulator;
-  private CSVAggregationResultAccumulator csvAggregationResultAccumulator;
+  private CSVValidationResultWriter csvValidationResultAccumulator;
+  private CSVAggregationResultWriter csvAggregationResultAccumulator;
 
   public CSVResultAccumulator(String validationResultFilePath) {
     this(validationResultFilePath, null);
@@ -25,11 +25,11 @@ public class CSVResultAccumulator implements ResultAccumulator {
 
   public CSVResultAccumulator(String validationResultFilePath, String aggregationResultFilePath) {
     if (StringUtils.isNotBlank(validationResultFilePath)) {
-      csvValidationResultAccumulator = new CSVValidationResultAccumulator(validationResultFilePath);
+      csvValidationResultAccumulator = new CSVValidationResultWriter(validationResultFilePath);
     }
 
     if (StringUtils.isNotBlank(aggregationResultFilePath)) {
-      csvAggregationResultAccumulator = new CSVAggregationResultAccumulator(aggregationResultFilePath);
+      csvAggregationResultAccumulator = new CSVAggregationResultWriter(aggregationResultFilePath);
     }
   }
 

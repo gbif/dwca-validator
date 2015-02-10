@@ -1,4 +1,4 @@
-package org.gbif.dwc.validator.result.accumulator.csv;
+package org.gbif.dwc.validator.result.accumulator.json;
 
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
@@ -23,17 +23,17 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
- * This test ensures we generate the CSV result file as expected.
+ * This test ensures we generate the json result file as expected.
  * 
  * @author cgendreau
  */
-public class CSVResultAccumulatorTest {
+public class JSONResultAccumulatorTest {
 
   private static final String key = "mockCriteria";
 
   @Test
   public void testCSVResultAccumulator() {
-    String validationResultFileName = "test_CSVResultAccumulator_Validation.txt";
+    String validationResultFileName = "test_JSONResultAccumulator_Results.json";
     File validationResultFile = new File(validationResultFileName);
 
     List<ValidationResultElement> resultElements = new ArrayList<ValidationResultElement>();
@@ -47,9 +47,13 @@ public class CSVResultAccumulatorTest {
     resultElements.add(vre1);
     resultElements.add(vre2);
 
-    ResultAccumulator ra = new CSVResultAccumulator(validationResultFileName);
+    ResultAccumulator ra = new JSONResultAccumulator(validationResultFileName);
     try {
       ra.accumulate(new ValidationResult("8", EvaluationContext.CORE, DwcTerm.Occurrence.qualifiedName(),
+        resultElements));
+
+      // mock results to test the json array
+      ra.accumulate(new ValidationResult("9", EvaluationContext.CORE, DwcTerm.Occurrence.qualifiedName(),
         resultElements));
     } catch (ResultAccumulationException e) {
       e.printStackTrace();
@@ -65,7 +69,7 @@ public class CSVResultAccumulatorTest {
 
     // Compare with expected file
     try {
-      File expectedCsv = new File(getClass().getResource("/accumulator/expectedCsv.txt").toURI());
+      File expectedCsv = new File(getClass().getResource("/accumulator/expectedJson.json").toURI());
       try {
         assertTrue(FileUtils.contentEqualsIgnoreEOL(expectedCsv, validationResultFile, Charsets.UTF_8.name()));
       } catch (IOException e) {
@@ -78,4 +82,5 @@ public class CSVResultAccumulatorTest {
     }
     validationResultFile.delete();
   }
+
 }
