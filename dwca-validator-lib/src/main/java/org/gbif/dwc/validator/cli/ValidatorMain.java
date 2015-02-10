@@ -6,7 +6,9 @@ import org.gbif.dwc.validator.chain.EvaluatorChain;
 import org.gbif.dwc.validator.config.FileBasedValidationChainLoader;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
+import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.accumulator.csv.CSVResultAccumulator;
+import org.gbif.dwc.validator.result.accumulator.json.JSONResultAccumulator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,6 +47,8 @@ public class ValidatorMain {
     Map<String, String> cliArgs = CliManager.parseCommandLine(args);
     String sourceFileLocation = cliArgs.get(CliManager.CLI_SOURCE);
     String resultFolderLocation = cliArgs.get(CliManager.CLI_OUT);
+    String resultOutputFormat =
+      StringUtils.defaultIfBlank(cliArgs.get(CliManager.CLI_OUTPUT_FORMAT), ValidatorConfig.CSV_OUTPUT_FORMAT);
     String configurationFile = cliArgs.get(CliManager.CLI_CONFIG);
 
     String sourceIdentifier = Long.toString(System.currentTimeMillis());
@@ -52,14 +56,14 @@ public class ValidatorMain {
     // TODO probably load from configuration file
     ValidatorConfig validatorConfig = ValidatorConfig.getInstance();
 
-    // ensure source file was provided
-    if (StringUtils.isBlank(sourceFileLocation)) {
+    // ensure source file was provided and resultOutputFormat is a valid format
+    if (StringUtils.isBlank(sourceFileLocation) || !isValidResultOutputFormat(resultOutputFormat)) {
       CliManager.printHelp();
       return;
     }
 
     // handle output folder/file location
-    File outputFile = handleValidationResultFile(resultFolderLocation);
+    File outputFile = handleValidationResultFile(resultFolderLocation, resultOutputFormat);
     if (outputFile == null) {
       CliManager.printHelp();
       return;
@@ -105,7 +109,8 @@ public class ValidatorMain {
       return;
     }
 
-    CSVResultAccumulator resultAccumulator = new CSVResultAccumulator(outputFile.getAbsolutePath());
+
+    ResultAccumulator resultAccumulator = handleResultAccumulator(outputFile, resultOutputFormat);
 
     long startTime = System.currentTimeMillis();
     System.out.println("Starting validation ... ");
@@ -176,6 +181,23 @@ public class ValidatorMain {
     return urlValidator.isValid(source);
   }
 
+  /**
+   * Checks if the provided resultOutputFormat is a valid format.
+   * 
+   * @param resultOutputFormat
+   * @return
+   */
+  private boolean isValidResultOutputFormat(String resultOutputFormat) {
+    return resultOutputFormat.equalsIgnoreCase(ValidatorConfig.CSV_OUTPUT_FORMAT)
+      || resultOutputFormat.equalsIgnoreCase(ValidatorConfig.JSON_OUTPUT_FORMAT);
+  }
+
+  /**
+   * Load the EvaluatorChain from a configuration file.
+   * 
+   * @param configurationFile
+   * @return
+   */
   private EvaluatorChain handleConfigurationFile(File configurationFile) {
     if (!configurationFile.exists()) {
       LOGGER.error("Can not find the configuration file from " + configurationFile.getAbsolutePath());
@@ -192,12 +214,29 @@ public class ValidatorMain {
   }
 
   /**
+   * Get a configured ResultAccumulator based on the result output format.
+   * 
+   * @param outputFile File where the result will be printed
+   * @param resultOutputFormat format to use to output result
+   * @return configured ResultAccumulator or null if no ResultAccumulator match the output format.
+   */
+  private ResultAccumulator handleResultAccumulator(File outputFile, String resultOutputFormat) {
+    if (resultOutputFormat.equalsIgnoreCase(ValidatorConfig.CSV_OUTPUT_FORMAT)) {
+      return new CSVResultAccumulator(outputFile.getAbsolutePath());
+    } else if (resultOutputFormat.equalsIgnoreCase(ValidatorConfig.JSON_OUTPUT_FORMAT)) {
+      return new JSONResultAccumulator(outputFile.getAbsolutePath());
+    }
+    return null;
+  }
+
+  /**
    * Handle the name and location of validation result file.
    * 
    * @param resultFolderLocation if null, the current folder will be used
-   * @return
+   * @param extension extension to use for the validation result file.
+   * @return the file
    */
-  private File handleValidationResultFile(String resultFolderLocation) {
+  private File handleValidationResultFile(String resultFolderLocation, String extension) {
     File outputFolder = new File("");
     if (StringUtils.isNotBlank(resultFolderLocation)) {
       File resultFolder = new File(resultFolderLocation);
@@ -206,7 +245,7 @@ public class ValidatorMain {
       }
       outputFolder = resultFolder;
     }
-    return new File(outputFolder.getAbsoluteFile(), RESULT_FILENAME + DF.format(Calendar.getInstance().getTime())
-      + ValidatorConfig.TEXT_FILE_EXT);
+    return new File(outputFolder.getAbsoluteFile(), RESULT_FILENAME + DF.format(Calendar.getInstance().getTime()) + "."
+      + extension);
   }
 }

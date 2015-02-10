@@ -25,6 +25,10 @@ public class ValidatorConfig {
   public static final String EMPTY_STRING_FOR_DISPLAY = "<emtpy string>";
 
   public static final String ENDLINE = System.getProperty("line.separator");
+
+  public static final String CSV_OUTPUT_FORMAT = "csv";
+  public static final String JSON_OUTPUT_FORMAT = "json";
+
   public static final String TEXT_FILE_EXT = ".txt";
   public static final String CSV_FILE_EXT = ".csv";
 

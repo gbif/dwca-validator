@@ -22,11 +22,13 @@ public class CliManager {
   static final String CLI_SOURCE = "s";
   static final String CLI_OUT = "o";
   static final String CLI_CONFIG = "c";
+  static final String CLI_OUTPUT_FORMAT = "of";
 
   static {
     cmdLineOptions = new Options();
     cmdLineOptions.addOption(CLI_SOURCE, true, "Path or URL pointing to the DarwinCore Archive file");
     cmdLineOptions.addOption(CLI_OUT, true, "Output folder (optional)");
+    cmdLineOptions.addOption(CLI_OUTPUT_FORMAT, true, "Output format: csv or json (optional)");
     cmdLineOptions.addOption(CLI_CONFIG, true, "Path of a configuration file (optional)");
   }
 
@@ -48,6 +50,7 @@ public class CliManager {
     }
     cmdValues.put(CLI_SOURCE, cmdLine.getOptionValue(CLI_SOURCE));
     cmdValues.put(CLI_OUT, cmdLine.getOptionValue(CLI_OUT));
+    cmdValues.put(CLI_OUTPUT_FORMAT, cmdLine.getOptionValue(CLI_OUTPUT_FORMAT));
     cmdValues.put(CLI_CONFIG, cmdLine.getOptionValue(CLI_CONFIG));
     return cmdValues;
   }
