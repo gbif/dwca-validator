@@ -36,6 +36,10 @@ public class RecordCriteria {
     return InvalidCharacterCriterionBuilder.builder().onTerm(term);
   }
 
+  /**
+   * @param transformations
+   * @return
+   */
   public static TransformationBasedCriteriaBuilder tryTransformations(ValueTransformation<?>... transformations) {
     TransformationBasedCriteriaBuilder bldr = TransformationBasedCriteriaBuilder.builder();
     for (ValueTransformation<?> currTransformation : transformations) {

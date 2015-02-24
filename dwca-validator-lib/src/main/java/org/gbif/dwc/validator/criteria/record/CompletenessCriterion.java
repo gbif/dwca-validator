@@ -24,6 +24,7 @@ class CompletenessCriterion implements RecordCriterion {
 
   private final String key = CompletenessCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
+  // List of all transformations that indicate if a record is complete
   private final List<ValueTransformation<Boolean>> valueTransformations;
 
   private final Result level;

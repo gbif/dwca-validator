@@ -47,6 +47,12 @@ public class ToBeMovedFileUtilsTest {
 
   @Test
   public void testDiffFileInUnix() {
+
+    // skip if test is running on non-Unix OS
+    if (!SystemUtils.IS_OS_UNIX) {
+      return;
+    }
+
     boolean success = false;
     try {
       File referenceFile = new File(this.getClass().getResource("/files/referenceFile.txt").toURI());
@@ -68,7 +74,7 @@ public class ToBeMovedFileUtilsTest {
       e.printStackTrace();
       fail();
     }
-    // do not fail if the test is running on non-unix OS
-    assertTrue(success || !SystemUtils.IS_OS_UNIX);
+
+    assertTrue(success);
   }
 }
