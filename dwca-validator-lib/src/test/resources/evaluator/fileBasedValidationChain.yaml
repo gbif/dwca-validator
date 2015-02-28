@@ -4,9 +4,8 @@
 recordCriteria:
  - !completenessCriterion
    - !completenessCriterionConfiguration
-     terms:
-       - !dwcTerm 'country'
-     rowTypeRestriction: 'http://rs.tdwg.org/dwc/terms/Occurrence'
+     term						: !dwcTerm 'country'
+     rowTypeRestriction			: 'http://rs.tdwg.org/dwc/terms/Occurrence'
      
  - !controlledVocabularyCriterion
     - !controlledVocabularyCriterionConfiguration

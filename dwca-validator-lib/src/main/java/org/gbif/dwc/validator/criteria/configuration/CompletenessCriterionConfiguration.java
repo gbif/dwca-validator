@@ -3,10 +3,10 @@ package org.gbif.dwc.validator.criteria.configuration;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
 import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.transformation.ValueTransformation;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import com.google.common.collect.Lists;
 
 
 /**
@@ -19,23 +19,8 @@ public class CompletenessCriterionConfiguration {
 
   private String rowTypeRestriction;
   private Result level = Result.ERROR;
-
-  private List<ValueTransformation<Boolean>> valueTransformations;
-  private List<Term> terms;
-
-  public void addTerm(Term term) {
-    if (terms == null) {
-      terms = new ArrayList<Term>();
-    }
-    terms.add(term);
-  }
-
-  public void addValueTransformation(ValueTransformation<Boolean> transformation) {
-    if (valueTransformations == null) {
-      valueTransformations = new ArrayList<ValueTransformation<Boolean>>();
-    }
-    valueTransformations.add(transformation);
-  }
+  private List<String> absenceSynonyms;
+  private Term term;
 
   public String getRowTypeRestriction() {
     return rowTypeRestriction;
@@ -45,20 +30,23 @@ public class CompletenessCriterionConfiguration {
     this.rowTypeRestriction = rowTypeRestriction;
   }
 
-  public List<ValueTransformation<Boolean>> getValueTransformations() {
-    return valueTransformations;
+  public Term getTerm() {
+    return term;
   }
 
-  public void setValueTransformations(List<ValueTransformation<Boolean>> valueTransformations) {
-    this.valueTransformations = valueTransformations;
+  public void setTerm(Term term) {
+    this.term = term;
   }
 
-  public List<Term> getTerms() {
-    return terms;
+  public void addAbsenceSynonym(String absenceSynonym) {
+    if (absenceSynonyms == null) {
+      absenceSynonyms = Lists.newArrayList();
+    }
+    absenceSynonyms.add(absenceSynonym);
   }
 
-  public void setTerms(List<Term> terms) {
-    this.terms = terms;
+  public List<String> getAbsenceSynonyms() {
+    return absenceSynonyms;
   }
 
   public Result getLevel() {

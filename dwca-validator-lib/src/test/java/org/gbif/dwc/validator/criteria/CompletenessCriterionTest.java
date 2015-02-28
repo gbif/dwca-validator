@@ -11,6 +11,7 @@ import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
+
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -66,6 +67,20 @@ public class CompletenessCriterionTest {
       recordCompletionCriterion.validate(buildMockRecord("7", "7", "\"\""), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result8));
 
+  }
+
+  @Test
+  public void testRecordCompletionCriterionWithAbsenceSynonym() {
+    RecordCriterion recordCompletionCriterion =
+      CompletenessCriterionBuilder.builder().checkTerm(DwcTerm.scientificName, "null").onRowType(DwcTerm.Occurrence)
+        .build();
+
+    Optional<ValidationResult> result =
+      recordCompletionCriterion.validate(buildMockRecord("2", "2", "nil"), EvaluationContext.CORE);
+    assertTrue(TestEvaluationResultHelper.validationPassed(result));
+
+    result = recordCompletionCriterion.validate(buildMockRecord("2", "2", "null"), EvaluationContext.CORE);
+    assertTrue(TestEvaluationResultHelper.validationFailed(result));
   }
 
   @Test(expected = IllegalStateException.class)

@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.record.Record;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
 import org.gbif.dwc.validator.criteria.configuration.CompletenessCriterionConfiguration;
@@ -9,31 +10,41 @@ import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
-import org.gbif.dwc.validator.transformation.ValueTransformation;
-import org.gbif.dwc.validator.transformation.ValueTransformationResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Optional;
-import org.apache.commons.lang3.BooleanUtils;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * CompletenessCriterion allows to check if the value of a term is complete.
+ * Complete means that the value is not blank (not null and not empty).
+ * It is also possible to specify a list of strings that should be considered as an absence of value (e.g. "null", "na")
+ * 
+ * @author cgendreau
+ */
 @RecordCriterionKey(key = "completenessCriterion")
 class CompletenessCriterion implements RecordCriterion {
 
   private final String key = CompletenessCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
-  // List of all transformations that indicate if a record is complete
-  private final List<ValueTransformation<Boolean>> valueTransformations;
-
+  private final Term term;
+  private final List<String> absenceSynonyms;
   private final Result level;
   private final String rowTypeRestriction;
 
   CompletenessCriterion(CompletenessCriterionConfiguration completenessCriterionConfiguration) {
-    this.valueTransformations = completenessCriterionConfiguration.getValueTransformations();
+    this.term = completenessCriterionConfiguration.getTerm();
     this.rowTypeRestriction = completenessCriterionConfiguration.getRowTypeRestriction();
     this.level = completenessCriterionConfiguration.getLevel();
+
+    if (completenessCriterionConfiguration.getAbsenceSynonyms() != null) {
+      this.absenceSynonyms = Lists.newArrayList(completenessCriterionConfiguration.getAbsenceSynonyms());
+    } else {
+      this.absenceSynonyms = null;
+    }
   }
 
   @Override
@@ -50,13 +61,15 @@ class CompletenessCriterion implements RecordCriterion {
 
     List<ValidationResultElement> elementList = new ArrayList<ValidationResultElement>();
 
-    for (ValueTransformation<Boolean> currValueTransformation : valueTransformations) {
-      ValueTransformationResult<Boolean> parsingResult = currValueTransformation.transform(record);
+    String str = record.value(term);
+    boolean isPresent = StringUtils.isNotBlank(str);
+    if (isPresent && absenceSynonyms != null) {
+      isPresent = !absenceSynonyms.contains(str);
+    }
 
-      if (parsingResult.isNotTransformed() || BooleanUtils.isFalse(parsingResult.getData())) {
-        elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
-          ValidatorConfig.getLocalizedString("criterion.completeness_criterion.incomplete", parsingResult.getTerm())));
-      }
+    if (!isPresent) {
+      elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
+        ValidatorConfig.getLocalizedString("criterion.completeness_criterion.incomplete", term)));
     }
 
     if (elementList != null && elementList.size() > 0) {

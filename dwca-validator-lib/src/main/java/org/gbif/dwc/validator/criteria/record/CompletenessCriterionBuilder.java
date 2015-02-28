@@ -4,7 +4,6 @@ import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionBuilderKey;
 import org.gbif.dwc.validator.criteria.configuration.CompletenessCriterionConfiguration;
 import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.transformation.ValueTransformations;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
@@ -40,7 +39,7 @@ public class CompletenessCriterionBuilder implements RecordCriterionBuilder {
   @Override
   public RecordCriterion build() throws IllegalStateException {
 
-    Preconditions.checkState(configuration.getValueTransformations() != null || configuration.getTerms() != null);
+    Preconditions.checkState(configuration.getTerm() != null, "A term must be set");
 
     Preconditions.checkState(configuration.getLevel() == Result.ERROR || configuration.getLevel() == Result.WARNING,
       "Level must be set to ERROR or WARNING");
@@ -50,26 +49,33 @@ public class CompletenessCriterionBuilder implements RecordCriterionBuilder {
     Preconditions.checkState(StringUtils.isNotBlank(configuration.getRowTypeRestriction()),
       "A RowTypeRestriction must be provided");
 
-    // if configuration is holding terms without transformation, create a default one
-    if (configuration.getTerms().size() > 0) {
-      for (Term currTerm : configuration.getTerms()) {
-        configuration.addValueTransformation(ValueTransformations.toPresence(currTerm));
-      }
-    }
-
-    Preconditions.checkState(configuration.getValueTransformations().size() > 0, "At least one term must be set");
-
     return new CompletenessCriterion(configuration);
   }
 
   /**
-   * Add a term to check for completion.
+   * Check the provided Term for completion.
    * 
    * @param term
    * @return
    */
   public CompletenessCriterionBuilder checkTerm(Term term) {
-    configuration.addTerm(term);
+    configuration.setTerm(term);
+    return this;
+  }
+
+  /**
+   * Check the provided Term for completion and specify 1 or more absence synonyms.
+   * 
+   * @param term
+   * @param absenceSynonyms strings that should be considered as an absence of value e.g. "null", "na"
+   * @return
+   */
+  public CompletenessCriterionBuilder checkTerm(Term term, String... absenceSynonyms) {
+    configuration.setTerm(term);
+
+    for (String as : absenceSynonyms) {
+      configuration.addAbsenceSynonym(as);
+    }
     return this;
   }
 
