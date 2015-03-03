@@ -1,25 +1,23 @@
 package org.gbif.dwc.validator.criteria.record;
 
-import org.gbif.dwc.record.Record;
-import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.validation.ValidationResult;
+import org.gbif.dwc.validator.criteria.ValidationCriterion;
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
+import org.gbif.dwc.validator.result.ResultAccumulator;
 
-import com.google.common.base.Optional;
 
 /**
  * Criterion interface for Record level.
  * 
  * @author cgendreau
  */
-public interface RecordCriterion {
-
-  String getCriteriaKey();
+public abstract class RecordCriterion implements ValidationCriterion {
 
   /**
-   * @param record
-   * @param evaluationContext
-   * @return returns Optional.absent() when the criteria can not be evaluated (e.g. rowTypeRestriction)
+   * RecordCriterion should not use postIterate to record results.
    */
-  Optional<ValidationResult> validate(Record record, EvaluationContext evaluationContext);
+  @Override
+  public void postIterate(ResultAccumulator resultAccumulator) throws ResultAccumulationException {
+    // no op
+  }
 
 }

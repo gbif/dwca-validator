@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author cgendreau
  */
 @RecordCriterionKey(key = "transformationBasedCriteria")
-class TransformationBasedCriteria implements RecordCriterion {
+class TransformationBasedCriteria extends RecordCriterion {
 
   private final String key = TransformationBasedCriteria.class.getAnnotation(RecordCriterionKey.class).key();
 
@@ -40,12 +40,12 @@ class TransformationBasedCriteria implements RecordCriterion {
   }
 
   @Override
-  public String getCriteriaKey() {
+  public String getCriterionKey() {
     return key;
   }
 
   @Override
-  public Optional<ValidationResult> validate(Record record, EvaluationContext evaluationContext) {
+  public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
 
     // if we specified a rowType restriction, check that the record is also of this rowType
     if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {

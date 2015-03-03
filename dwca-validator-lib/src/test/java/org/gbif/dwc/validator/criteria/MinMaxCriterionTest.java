@@ -33,27 +33,28 @@ public class MinMaxCriterionTest {
         .build();
 
     // min < max should be valid
-    Optional<ValidationResult> result = criterion.validate(buildMockRecord("1", "10", "11"), EvaluationContext.CORE);
+    Optional<ValidationResult> result =
+      criterion.handleRecord(buildMockRecord("1", "10", "11"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result));
 
     // same value should be valid
-    result = criterion.validate(buildMockRecord("1", "10", "10"), EvaluationContext.CORE);
+    result = criterion.handleRecord(buildMockRecord("1", "10", "10"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result));
 
     // min > max should NOT be valid
-    result = criterion.validate(buildMockRecord("1", "11", "10"), EvaluationContext.CORE);
+    result = criterion.handleRecord(buildMockRecord("1", "11", "10"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationFailed(result));
 
     // a non numeric value should fail
-    result = criterion.validate(buildMockRecord("1", "1", "b"), EvaluationContext.CORE);
+    result = criterion.handleRecord(buildMockRecord("1", "1", "b"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationFailed(result));
 
     // empty values should be skipped
-    result = criterion.validate(buildMockRecord("1", "", ""), EvaluationContext.CORE);
+    result = criterion.handleRecord(buildMockRecord("1", "", ""), EvaluationContext.CORE);
     assertFalse(result.isPresent());
 
     // one numeric value and the other empty should pass
-    result = criterion.validate(buildMockRecord("1", "1", ""), EvaluationContext.CORE);
+    result = criterion.handleRecord(buildMockRecord("1", "1", ""), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result));
   }
 
@@ -64,27 +65,28 @@ public class MinMaxCriterionTest {
         .enforceTwoTermsUse().build();
 
     // min < max should be valid
-    Optional<ValidationResult> result = criterion.validate(buildMockRecord("1", "10", "11"), EvaluationContext.CORE);
+    Optional<ValidationResult> result =
+      criterion.handleRecord(buildMockRecord("1", "10", "11"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result));
 
     // same value should be valid
-    result = criterion.validate(buildMockRecord("1", "10", "10"), EvaluationContext.CORE);
+    result = criterion.handleRecord(buildMockRecord("1", "10", "10"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result));
 
     // min > max should NOT be valid
-    result = criterion.validate(buildMockRecord("1", "11", "10"), EvaluationContext.CORE);
+    result = criterion.handleRecord(buildMockRecord("1", "11", "10"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationFailed(result));
 
     // a non numeric value should fail
-    result = criterion.validate(buildMockRecord("1", "1", "b"), EvaluationContext.CORE);
+    result = criterion.handleRecord(buildMockRecord("1", "1", "b"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationFailed(result));
 
     // empty value should still be skipped
-    result = criterion.validate(buildMockRecord("1", "", ""), EvaluationContext.CORE);
+    result = criterion.handleRecord(buildMockRecord("1", "", ""), EvaluationContext.CORE);
     assertFalse(result.isPresent());
 
     // one numeric value and the other empty should fail
-    result = criterion.validate(buildMockRecord("1", "1", ""), EvaluationContext.CORE);
+    result = criterion.handleRecord(buildMockRecord("1", "1", ""), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationFailed(result));
   }
 

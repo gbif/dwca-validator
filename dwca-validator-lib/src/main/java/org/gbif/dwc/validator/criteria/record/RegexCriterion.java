@@ -27,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author cgendreau
  */
 @RecordCriterionKey(key = "regexCriterion")
-class RegexCriterion implements RecordCriterion {
+class RegexCriterion extends RecordCriterion {
 
   private final String key = RegexCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
@@ -46,7 +46,7 @@ class RegexCriterion implements RecordCriterion {
   }
 
   @Override
-  public Optional<ValidationResult> validate(Record record, EvaluationContext evaluationContext) {
+  public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
     // if we specified a rowType restriction, check that the record is also of this rowType
     if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
       return Optional.absent();
@@ -76,7 +76,7 @@ class RegexCriterion implements RecordCriterion {
   }
 
   @Override
-  public String getCriteriaKey() {
+  public String getCriterionKey() {
     return key;
   }
 

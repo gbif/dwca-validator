@@ -50,11 +50,11 @@ public class ControlledVocabularyCriterionTest {
         .useDictionaryAt(testFile.getAbsolutePath()).build();
 
     Optional<ValidationResult> result =
-      criteria.validate(buildMockRecord("1", "Spain", "PreservedSpecimen"), EvaluationContext.CORE);
+      criteria.handleRecord(buildMockRecord("1", "Spain", "PreservedSpecimen"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result));
 
     // should not passed
-    result = criteria.validate(buildMockRecord("1", "xyz", "PreservedSpecimen"), EvaluationContext.CORE);
+    result = criteria.handleRecord(buildMockRecord("1", "xyz", "PreservedSpecimen"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationFailed(result));
   }
 
@@ -68,15 +68,15 @@ public class ControlledVocabularyCriterionTest {
       ControlledVocabularyCriterionBuilder.builder().onTerm(DwcTerm.basisOfRecord).useVocabularySet(vocabulary).build();
 
     Optional<ValidationResult> result =
-      criterion.validate(buildMockRecord("1", "Spain", "PreservedSpecimen"), EvaluationContext.CORE);
+      criterion.handleRecord(buildMockRecord("1", "Spain", "PreservedSpecimen"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result));
 
     // should not passed
-    result = criterion.validate(buildMockRecord("1", "Spain", "Gulo Gulo"), EvaluationContext.CORE);
+    result = criterion.handleRecord(buildMockRecord("1", "Spain", "Gulo Gulo"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationFailed(result));
 
     // Empty value should just be skipped
-    result = criterion.validate(buildMockRecord("1", "Spain", ""), EvaluationContext.CORE);
+    result = criterion.handleRecord(buildMockRecord("1", "Spain", ""), EvaluationContext.CORE);
     assertFalse(result.isPresent());
   }
 

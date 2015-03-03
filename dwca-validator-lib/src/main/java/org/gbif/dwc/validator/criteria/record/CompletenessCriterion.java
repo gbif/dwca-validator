@@ -26,7 +26,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author cgendreau
  */
 @RecordCriterionKey(key = "completenessCriterion")
-class CompletenessCriterion implements RecordCriterion {
+class CompletenessCriterion extends RecordCriterion {
 
   private final String key = CompletenessCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
@@ -48,12 +48,12 @@ class CompletenessCriterion implements RecordCriterion {
   }
 
   @Override
-  public String getCriteriaKey() {
+  public String getCriterionKey() {
     return key;
   }
 
   @Override
-  public Optional<ValidationResult> validate(Record record, EvaluationContext evaluationContext) {
+  public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
     // if we specified a rowType restriction, check that the record is also of this rowType
     if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
       return Optional.absent();

@@ -38,15 +38,15 @@ public class CompletenessCriterionTest {
       CompletenessCriterionBuilder.builder().checkTerm(DwcTerm.scientificName).onRowType(DwcTerm.Occurrence).build();
 
     Optional<ValidationResult> result1 =
-      recordCompletionCriterion.validate(buildMockRecord("1", "1", null), EvaluationContext.CORE);
+      recordCompletionCriterion.handleRecord(buildMockRecord("1", "1", null), EvaluationContext.CORE);
     Optional<ValidationResult> result2 =
-      recordCompletionCriterion.validate(buildMockRecord("2", "2", ""), EvaluationContext.CORE);
+      recordCompletionCriterion.handleRecord(buildMockRecord("2", "2", ""), EvaluationContext.CORE);
     Optional<ValidationResult> result3 =
-      recordCompletionCriterion.validate(buildMockRecord("3", "3"), EvaluationContext.CORE);
+      recordCompletionCriterion.handleRecord(buildMockRecord("3", "3"), EvaluationContext.CORE);
     Optional<ValidationResult> result4 =
-      recordCompletionCriterion.validate(buildMockRecord("4", "4", "\t"), EvaluationContext.CORE);
+      recordCompletionCriterion.handleRecord(buildMockRecord("4", "4", "\t"), EvaluationContext.CORE);
     Optional<ValidationResult> result5 =
-      recordCompletionCriterion.validate(buildMockRecord("5", "5", " "), EvaluationContext.CORE);
+      recordCompletionCriterion.handleRecord(buildMockRecord("5", "5", " "), EvaluationContext.CORE);
 
     assertTrue(TestEvaluationResultHelper.validationFailed(result1));
     assertTrue(TestEvaluationResultHelper.validationFailed(result2));
@@ -55,16 +55,16 @@ public class CompletenessCriterionTest {
     assertTrue(TestEvaluationResultHelper.validationFailed(result5));
 
     Optional<ValidationResult> result6 =
-      recordCompletionCriterion.validate(buildMockRecord("6", "6", "a name"), EvaluationContext.CORE);
+      recordCompletionCriterion.handleRecord(buildMockRecord("6", "6", "a name"), EvaluationContext.CORE);
     Optional<ValidationResult> result7 =
-      recordCompletionCriterion.validate(buildMockRecord("7", "7", " a "), EvaluationContext.CORE);
+      recordCompletionCriterion.handleRecord(buildMockRecord("7", "7", " a "), EvaluationContext.CORE);
 
     assertTrue(TestEvaluationResultHelper.validationPassed(result6));
     assertTrue(TestEvaluationResultHelper.validationPassed(result7));
 
     // simply demonstrate that this would be considered valid. Maybe the criterion should accommodate that.
     Optional<ValidationResult> result8 =
-      recordCompletionCriterion.validate(buildMockRecord("7", "7", "\"\""), EvaluationContext.CORE);
+      recordCompletionCriterion.handleRecord(buildMockRecord("7", "7", "\"\""), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result8));
 
   }
@@ -76,10 +76,10 @@ public class CompletenessCriterionTest {
         .build();
 
     Optional<ValidationResult> result =
-      recordCompletionCriterion.validate(buildMockRecord("2", "2", "nil"), EvaluationContext.CORE);
+      recordCompletionCriterion.handleRecord(buildMockRecord("2", "2", "nil"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result));
 
-    result = recordCompletionCriterion.validate(buildMockRecord("2", "2", "null"), EvaluationContext.CORE);
+    result = recordCompletionCriterion.handleRecord(buildMockRecord("2", "2", "null"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationFailed(result));
   }
 

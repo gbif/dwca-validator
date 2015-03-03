@@ -39,7 +39,7 @@ public class EvaluatorChain {
 
     Optional<ValidationResult> result;
     for (RecordCriterion currRecordCriteria : recordCriteriaList) {
-      result = currRecordCriteria.validate(record, evaluationContext);
+      result = currRecordCriteria.handleRecord(record, evaluationContext);
       if (result.isPresent()) {
         resultAccumulator.accumulate(result.get());
       }

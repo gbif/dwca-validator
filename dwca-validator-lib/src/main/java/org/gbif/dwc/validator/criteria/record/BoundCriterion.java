@@ -19,7 +19,7 @@ import com.google.common.base.Optional;
 import org.apache.commons.lang3.StringUtils;
 
 @RecordCriterionKey(key = "boundCriterion")
-class BoundCriterion implements RecordCriterion {
+class BoundCriterion extends RecordCriterion {
 
   private final String key = BoundCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
@@ -44,12 +44,12 @@ class BoundCriterion implements RecordCriterion {
   }
 
   @Override
-  public String getCriteriaKey() {
+  public String getCriterionKey() {
     return key;
   }
 
   @Override
-  public Optional<ValidationResult> validate(Record record, EvaluationContext evaluationContext) {
+  public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
 
     // if we specified a rowType restriction, check that the record is also of this rowType
     if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {

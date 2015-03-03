@@ -20,7 +20,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 
 @RecordCriterionKey(key = "minMaxCriterion")
-class MinMaxCriterion implements RecordCriterion {
+class MinMaxCriterion extends RecordCriterion {
 
   private final String key = MinMaxCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
@@ -40,12 +40,12 @@ class MinMaxCriterion implements RecordCriterion {
   }
 
   @Override
-  public String getCriteriaKey() {
+  public String getCriterionKey() {
     return key;
   }
 
   @Override
-  public Optional<ValidationResult> validate(Record record, EvaluationContext evaluationContext) {
+  public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
     // if we specified a rowType restriction, check that the record is also of this rowType
     if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
       return Optional.absent();

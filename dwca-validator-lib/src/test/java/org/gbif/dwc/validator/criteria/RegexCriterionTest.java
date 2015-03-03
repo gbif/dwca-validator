@@ -32,15 +32,15 @@ public class RegexCriterionTest {
 
     RecordCriterion criteria = RegexCriterionBuilder.builder().regex(DwcTerm.country, "[hc]at").build();
 
-    Optional<ValidationResult> result = criteria.validate(buildMockRecord("1", "cat"), EvaluationContext.CORE);
+    Optional<ValidationResult> result = criteria.handleRecord(buildMockRecord("1", "cat"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result));
-    result = criteria.validate(buildMockRecord("12", "hat"), EvaluationContext.CORE);
+    result = criteria.handleRecord(buildMockRecord("12", "hat"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationPassed(result));
 
     // should not passed
-    result = criteria.validate(buildMockRecord("3", "bat"), EvaluationContext.CORE);
+    result = criteria.handleRecord(buildMockRecord("3", "bat"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationFailed(result));
-    result = criteria.validate(buildMockRecord("4", "a cat"), EvaluationContext.CORE);
+    result = criteria.handleRecord(buildMockRecord("4", "a cat"), EvaluationContext.CORE);
     assertTrue(TestEvaluationResultHelper.validationFailed(result));
   }
 

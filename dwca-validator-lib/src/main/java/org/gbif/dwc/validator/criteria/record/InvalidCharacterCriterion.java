@@ -19,7 +19,7 @@ import com.google.common.base.Optional;
 import org.apache.commons.lang3.StringUtils;
 
 @RecordCriterionKey(key = "invalidCharacterCriterion")
-class InvalidCharacterCriterion implements RecordCriterion {
+class InvalidCharacterCriterion extends RecordCriterion {
 
   private final String key = InvalidCharacterCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
@@ -38,7 +38,12 @@ class InvalidCharacterCriterion implements RecordCriterion {
   }
 
   @Override
-  public Optional<ValidationResult> validate(Record record, EvaluationContext evaluationContext) {
+  public String getCriterionKey() {
+    return key;
+  }
+
+  @Override
+  public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
 
     // if we specified a rowType restriction, check that the record is also of this rowType
     if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
@@ -70,8 +75,4 @@ class InvalidCharacterCriterion implements RecordCriterion {
     return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType()));
   }
 
-  @Override
-  public String getCriteriaKey() {
-    return key;
-  }
 }

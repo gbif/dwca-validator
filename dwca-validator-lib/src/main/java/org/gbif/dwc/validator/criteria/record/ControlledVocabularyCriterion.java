@@ -28,7 +28,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author cgendreau
  */
 @RecordCriterionKey(key = "controlledVocabularyCriterion")
-class ControlledVocabularyCriterion implements RecordCriterion {
+class ControlledVocabularyCriterion extends RecordCriterion {
 
   private final String key = ControlledVocabularyCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
@@ -51,7 +51,12 @@ class ControlledVocabularyCriterion implements RecordCriterion {
   }
 
   @Override
-  public Optional<ValidationResult> validate(Record record, EvaluationContext evaluationContext) {
+  public String getCriterionKey() {
+    return key;
+  }
+
+  @Override
+  public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
     // if we specified a rowType restriction, check that the record is also of this rowType
     if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
       return Optional.absent();
@@ -75,8 +80,4 @@ class ControlledVocabularyCriterion implements RecordCriterion {
     return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType()));
   }
 
-  @Override
-  public String getCriteriaKey() {
-    return key;
-  }
 }
