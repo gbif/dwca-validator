@@ -14,8 +14,8 @@ public interface FileEvaluator {
   /**
    * Initiate validation of a file or folder.
    * 
-   * @param file to validate
+   * @param file or folder to validate
    * @param resultAccumulator
    */
-  void evaluateFile(File dwcaFile, ResultAccumulator resultAccumulator);
+  void evaluateFile(File source, ResultAccumulator resultAccumulator);
 }

@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  * @author cgendreau
  */
 @RecordCriterionKey(key = "referenceUniqueCriterion")
-class ReferenceUniqueCriterion implements DatasetCriterion {
+class ReferenceUniqueCriterion extends DatasetCriterion {
 
   private final String key = ReferenceUniqueCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
@@ -91,6 +91,12 @@ class ReferenceUniqueCriterion implements DatasetCriterion {
     this.valuePerRowType = new HashMap<String, List<String>>();
     this.fileWriterPerRowType = new HashMap<String, FileWriter>();
     this.valueFilePerRowType = new HashMap<String, File>();
+  }
+
+
+  @Override
+  public String getCriterionKey() {
+    return key;
   }
 
   /**
@@ -171,11 +177,6 @@ class ReferenceUniqueCriterion implements DatasetCriterion {
   }
 
   @Override
-  public String getCriteriaKey() {
-    return key;
-  }
-
-  @Override
   public void onRecord(Record record, EvaluationContext evaluationContext) {
 
     // always send to our composed RecordEvaluator
@@ -223,13 +224,13 @@ class ReferenceUniqueCriterion implements DatasetCriterion {
   }
 
   @Override
-  public void validateDataset(ResultAccumulator resultAccumulator) throws ResultAccumulationException {
+  public void postIterate(ResultAccumulator resultAccumulator) throws ResultAccumulationException {
     String sortedFileName, diffFileName;
     File sortedValueFile, diffFile;
     ToBeMovedFileUtils tbmFu = new ToBeMovedFileUtils();
 
     // call our composed RecordEvaluator first
-    uniquenessCriteria.validateDataset(resultAccumulator);
+    uniquenessCriteria.postIterate(resultAccumulator);
 
     // use the UniquenessEvaluator sorted values file as reference file
     // this file could contains duplicates and the UniquenessEvaluator is responsible to flag them.

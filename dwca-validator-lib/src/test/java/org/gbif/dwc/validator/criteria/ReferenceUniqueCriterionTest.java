@@ -55,7 +55,7 @@ public class ReferenceUniqueCriterionTest {
       // add blank acceptedNameUsageID, should be ignored.
       referenceCriterion.onRecord(buildMockRecord("2b", ""), EvaluationContext.CORE);
 
-      referenceCriterion.validateDataset(resultAccumulator);
+      referenceCriterion.postIterate(resultAccumulator);
       referenceCriterion.close();
     } catch (IOException e) {
       e.printStackTrace();
@@ -79,7 +79,7 @@ public class ReferenceUniqueCriterionTest {
       referenceCriterion.onRecord(buildMockRecord("1", "4"), EvaluationContext.CORE);
       referenceCriterion.onRecord(buildMockRecord("2", "1"), EvaluationContext.CORE);
 
-      referenceCriterion.validateDataset(resultAccumulator);
+      referenceCriterion.postIterate(resultAccumulator);
       referenceCriterion.close();
     } catch (IOException e) {
       e.printStackTrace();
@@ -105,7 +105,7 @@ public class ReferenceUniqueCriterionTest {
       referenceCriterion.onRecord(buildMockRecord("1", "3|4"), EvaluationContext.CORE);
       referenceCriterion.onRecord(buildMockRecord("3", ""), EvaluationContext.CORE);
       referenceCriterion.onRecord(buildMockRecord("4", ""), EvaluationContext.CORE);
-      referenceCriterion.validateDataset(resultAccumulator);
+      referenceCriterion.postIterate(resultAccumulator);
       referenceCriterion.close();
     } catch (IOException e) {
       e.printStackTrace();
@@ -130,7 +130,7 @@ public class ReferenceUniqueCriterionTest {
       referenceCriterion.onRecord(buildMockRecord("3", ""), EvaluationContext.CORE);
       referenceCriterion.onRecord(buildMockRecord("4", ""), EvaluationContext.CORE);
 
-      referenceCriterion.validateDataset(resultAccumulator);
+      referenceCriterion.postIterate(resultAccumulator);
       referenceCriterion.close();
     } catch (IOException e) {
       e.printStackTrace();

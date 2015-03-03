@@ -1,30 +1,31 @@
 package org.gbif.dwc.validator.criteria.dataset;
 
 import org.gbif.dwc.record.Record;
-import org.gbif.dwc.validator.exception.ResultAccumulationException;
+import org.gbif.dwc.validator.criteria.ValidationCriterion;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.ResultAccumulator;
+import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 import java.io.Closeable;
 
+import com.google.common.base.Optional;
+
 /**
- * A DatasetCriteria record data at the record level and generates result after iteration through all records.
+ * A DatasetCriteria record data at the record level and generates result after iteration over all records.
  * 
  * @author cgendreau
  */
-public interface DatasetCriterion extends Closeable {
-
-  String getCriteriaKey();
-
-  // should throw error when failed
-  void onRecord(Record record, EvaluationContext evaluationContext);
+public abstract class DatasetCriterion implements ValidationCriterion, Closeable {
 
   /**
-   * This function use a ResultAccumulator to avoid returning a massive object in case all record failed.
-   * 
-   * @param resultAccumulator
-   * @throws ResultAccumulationException
+   * Always return Optional.absent() but ensures onRecord() is called.
    */
-  void validateDataset(ResultAccumulator resultAccumulator) throws ResultAccumulationException;
+  @Override
+  public final Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
+    onRecord(record, evaluationContext);
+    return Optional.absent();
+  }
+
+  // should throw error when failed
+  public abstract void onRecord(Record record, EvaluationContext evaluationContext);
 
 }

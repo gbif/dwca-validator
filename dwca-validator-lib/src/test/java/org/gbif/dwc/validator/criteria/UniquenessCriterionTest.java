@@ -54,7 +54,7 @@ public class UniquenessCriterionTest {
       uniquenessEvaluator.onRecord(buildMockRecord("1", "1"), EvaluationContext.CORE);
       uniquenessEvaluator.onRecord(buildMockRecord("1", "2"), EvaluationContext.CORE);
 
-      uniquenessEvaluator.validateDataset(resultAccumulator);
+      uniquenessEvaluator.postIterate(resultAccumulator);
       uniquenessEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
@@ -79,7 +79,7 @@ public class UniquenessCriterionTest {
       valueEvaluator.onRecord(buildMockRecord("", "1"), EvaluationContext.CORE);
       valueEvaluator.onRecord(buildMockRecord("", "2"), EvaluationContext.CORE);
 
-      valueEvaluator.validateDataset(resultAccumulator);
+      valueEvaluator.postIterate(resultAccumulator);
       valueEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
@@ -106,7 +106,7 @@ public class UniquenessCriterionTest {
       valueEvaluator.onRecord(buildMockRecord("1", "1"), EvaluationContext.CORE);
       valueEvaluator.onRecord(buildMockRecord("2", "1"), EvaluationContext.CORE);
 
-      valueEvaluator.validateDataset(resultAccumulator);
+      valueEvaluator.postIterate(resultAccumulator);
       valueEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();
@@ -131,7 +131,7 @@ public class UniquenessCriterionTest {
       valueEvaluator.onRecord(buildMockRecord("1", "1"), EvaluationContext.CORE);
       valueEvaluator.onRecord(buildMockRecord("2", "1"), EvaluationContext.CORE);
 
-      valueEvaluator.validateDataset(resultAccumulator);
+      valueEvaluator.postIterate(resultAccumulator);
       valueEvaluator.close();
     } catch (IOException e) {
       e.printStackTrace();

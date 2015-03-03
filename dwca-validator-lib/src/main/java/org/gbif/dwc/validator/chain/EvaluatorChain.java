@@ -52,7 +52,7 @@ public class EvaluatorChain {
 
   public void evaluateDataset(ResultAccumulator resultAccumulator) throws ResultAccumulationException {
     for (DatasetCriterion currRecordCriteria : datasetCriteria) {
-      currRecordCriteria.validateDataset(resultAccumulator);
+      currRecordCriteria.postIterate(resultAccumulator);
     }
   }
 

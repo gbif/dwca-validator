@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * @author cgendreau
  */
 @RecordCriterionKey(key = "uniquenessCriterion")
-class UniquenessCriterion implements DatasetCriterion {
+class UniquenessCriterion extends DatasetCriterion {
 
   private final String key = UniquenessCriterion.class.getAnnotation(RecordCriterionKey.class).key();
   private final EvaluationContext evaluationContextRestriction;
@@ -75,6 +75,11 @@ class UniquenessCriterion implements DatasetCriterion {
     fw = new FileWriter(valueRecordingFile);
   }
 
+  @Override
+  public String getCriterionKey() {
+    return key;
+  }
+
   private void flushCurrentIdList() {
     try {
       for (String curr : idList) {
@@ -85,11 +90,6 @@ class UniquenessCriterion implements DatasetCriterion {
       LOGGER.error("Can't write to file using FileWriter", ioEx);
     }
     idList.clear();
-  }
-
-  @Override
-  public String getCriteriaKey() {
-    return key;
   }
 
   /**
@@ -139,7 +139,7 @@ class UniquenessCriterion implements DatasetCriterion {
   }
 
   @Override
-  public void validateDataset(ResultAccumulator resultAccumulator) throws ResultAccumulationException {
+  public void postIterate(ResultAccumulator resultAccumulator) throws ResultAccumulationException {
     flushCurrentIdList();
 
     try {
