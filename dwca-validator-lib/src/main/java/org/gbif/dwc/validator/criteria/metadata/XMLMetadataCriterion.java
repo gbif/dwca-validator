@@ -1,4 +1,4 @@
-package org.gbif.dwc.validator.criteria.archive;
+package org.gbif.dwc.validator.criteria.metadata;
 
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.EvaluationContext;

@@ -1,9 +1,9 @@
 package org.gbif.dwc.validator.criteria.metadata;
 
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
-import org.gbif.dwc.validator.criteria.archive.EMLCriterionBuilder;
-import org.gbif.dwc.validator.criteria.archive.MetaDescriptorCriterionBuilder;
-import org.gbif.dwc.validator.criteria.archive.MetadataCriterion;
+import org.gbif.dwc.validator.criteria.metadata.EMLCriterionBuilder;
+import org.gbif.dwc.validator.criteria.metadata.MetaDescriptorCriterionBuilder;
+import org.gbif.dwc.validator.criteria.metadata.MetadataCriterion;
 import org.gbif.dwc.validator.exception.CriterionBuilderException;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
@@ -12,7 +12,6 @@ import java.net.URISyntaxException;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
