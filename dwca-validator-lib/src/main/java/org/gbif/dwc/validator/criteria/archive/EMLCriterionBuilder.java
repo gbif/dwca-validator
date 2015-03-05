@@ -70,7 +70,7 @@ public class EMLCriterionBuilder {
       // TODO this should be exposed in case we want to use another schema
       Schema schema = factory.newSchema(new URL(StringUtils.defaultString(emlSchemaURL, EML_SCHEMA_URL)));
       Validator metaValidator = schema.newValidator();
-      return new MetadataFileCriterion(metaValidator, StringUtils.defaultString(emlFileName, EML_FILE));
+      return new XMLMetadataCriterion(metaValidator, StringUtils.defaultString(emlFileName, EML_FILE));
     } catch (MalformedURLException e) {
       throw new CriterionBuilderException("Can't create Meta XML Schema", e);
     } catch (SAXException e) {

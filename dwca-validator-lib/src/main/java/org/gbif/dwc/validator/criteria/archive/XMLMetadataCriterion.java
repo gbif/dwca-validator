@@ -14,28 +14,23 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Validator;
 
 import com.google.common.base.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 /**
- * MetaDescriptorCriterion allows validate the metadescriptor (meta.xml) against
- * the defined schema.
+ * XMLMetadataCriterion allows validate a XML metadata file against a XML schema.
  * 
  * @author melecoq
  * @author cgendreau
  */
-class MetadataFileCriterion implements MetadataCriterion {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(MetadataFileCriterion.class);
+class XMLMetadataCriterion implements MetadataCriterion {
 
   // TODO replace with new annotation like @StructureEvaluator
-  private static final String key = "MetaDescriptorEvaluator";
+  private static final String key = "XMLMetadataCriterion";
 
   private final String metadataFilename;
   private final Validator metaValidator;
 
-  MetadataFileCriterion(Validator metaValidator, String metadataFilename) {
+  XMLMetadataCriterion(Validator metaValidator, String metadataFilename) {
     this.metaValidator = metaValidator;
     this.metadataFilename = metadataFilename;
   }
@@ -59,11 +54,11 @@ class MetadataFileCriterion implements MetadataCriterion {
     } catch (SAXException saxEx) {
       return Optional.of(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.METADATA_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
-          "evaluator.internal_error", saxEx.getMessage()))));
+          "criterion.xml_metadata_criterion.schema_validation", saxEx.getMessage()))));
     } catch (IOException ioEx) {
       return Optional.of(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.METADATA_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
-          "evaluator.internal_error", ioEx.getMessage()))));
+          "criterion.xml_metadata_criterion.schema_validation", ioEx.getMessage()))));
     }
 
     return Optional.of(new ValidationResult(identifier, EvaluationContext.STRUCTURE, (String) null));

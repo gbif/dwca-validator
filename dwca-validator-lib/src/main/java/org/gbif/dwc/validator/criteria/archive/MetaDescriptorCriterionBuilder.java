@@ -46,7 +46,7 @@ public class MetaDescriptorCriterionBuilder {
       Schema schema = factory.newSchema(new URL(ValidatorConfig.META_XML_SCHEMA));
       Validator metaValidator = schema.newValidator();
 
-      return new MetadataFileCriterion(metaValidator, StringUtils.defaultString(metadataFilename, META_XML_FILE));
+      return new XMLMetadataCriterion(metaValidator, StringUtils.defaultString(metadataFilename, META_XML_FILE));
     } catch (MalformedURLException e) {
       throw new CriterionBuilderException("Can't create Meta XML Schema", e);
     } catch (SAXException e) {
