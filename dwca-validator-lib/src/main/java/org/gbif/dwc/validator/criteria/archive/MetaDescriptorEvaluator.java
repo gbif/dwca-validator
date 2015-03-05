@@ -1,10 +1,9 @@
-package org.gbif.dwc.validator.evaluator.structure;
+package org.gbif.dwc.validator.criteria.archive;
 
+import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.type.StructureValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
@@ -19,6 +18,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import com.google.common.base.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -27,9 +27,11 @@ import org.xml.sax.SAXException;
  * The DwcA reader will run the schema check on the meta.xml.
  * 
  * @author melecoq
+ * @author cgendreau
  */
-public class MetaDescriptorEvaluator {
+public class MetaDescriptorEvaluator implements ArchiveCriterion {
 
+  private static final String META_XML_FILE = "meta.xml";
   private static final Logger LOGGER = LoggerFactory.getLogger(MetaDescriptorEvaluator.class);
 
   // TODO replace with new annotation like @StructureEvaluator
@@ -54,16 +56,13 @@ public class MetaDescriptorEvaluator {
     }
   }
 
-  public void doEval(File metaXML, ResultAccumulator result) throws ResultAccumulationException {
-    handleEval(metaXML, result);
-  }
+  @Override
+  public Optional<ValidationResult> validate(Archive dwc) {
 
-  protected void handleEval(File metaXML, ResultAccumulator result) throws ResultAccumulationException {
+    File metaXML = new File(dwc.getLocation(), META_XML_FILE);
 
-    if (metaXML == null || !metaXML.exists()) {
-      result.accumulate(new ValidationResult("meta XML", EvaluationContext.STRUCTURE, new ValidationResultElement(key,
-        StructureValidationType.ARCHIVE_STRUCTURE, Result.ERROR, ValidatorConfig
-          .getLocalizedString("evaluator.file_not_found"))));
+    if (!metaXML.exists()) {
+      return Optional.absent();
     }
 
     String identifier = metaXML.getName();
@@ -71,13 +70,15 @@ public class MetaDescriptorEvaluator {
     try {
       metaValidator.validate(new StreamSource(metaXML));
     } catch (SAXException saxEx) {
-      result.accumulate(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
+      return Optional.of(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.METADATA_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", saxEx.getMessage()))));
     } catch (IOException ioEx) {
-      result.accumulate(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
+      return Optional.of(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.METADATA_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", ioEx.getMessage()))));
     }
+
+    return Optional.of(new ValidationResult(identifier, EvaluationContext.STRUCTURE, (String) null));
   }
 }

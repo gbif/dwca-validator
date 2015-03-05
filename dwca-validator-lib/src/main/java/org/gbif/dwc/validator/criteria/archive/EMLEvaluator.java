@@ -1,10 +1,9 @@
-package org.gbif.dwc.validator.evaluator.structure;
+package org.gbif.dwc.validator.criteria.archive;
 
+import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
-import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.type.StructureValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
@@ -22,6 +21,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import com.google.common.base.Optional;
 import org.xml.sax.SAXException;
 
 /**
@@ -30,7 +30,7 @@ import org.xml.sax.SAXException;
  * @author melecoq
  * @author cgendreau
  */
-public class EMLEvaluator {
+public class EMLEvaluator implements ArchiveCriterion {
 
   // define the type of schema - we use W3C:
   private static final String XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
@@ -63,42 +63,38 @@ public class EMLEvaluator {
     return validator;
   }
 
-  public void doEval(File eml, ResultAccumulator result) throws ResultAccumulationException {
-    handleEval(eml, result);
-  }
-
   protected Source getEmlSource(File eml) throws FileNotFoundException {
     Source src = new StreamSource(new FileInputStream(eml));
     return src;
   }
 
-  protected void handleEval(File eml, ResultAccumulator result) throws ResultAccumulationException {
-
-    if (eml == null || !eml.exists()) {
-      result.accumulate(new ValidationResult("EML", EvaluationContext.STRUCTURE, new ValidationResultElement(key,
-        StructureValidationType.ARCHIVE_STRUCTURE, Result.ERROR, ValidatorConfig
-          .getLocalizedString("evaluator.file_not_found"))));
+  @Override
+  public Optional<ValidationResult> validate(Archive dwc) {
+    if (dwc.getMetadataLocation() == null || !dwc.getMetadataLocationFile().exists()) {
+      return Optional.absent();
     }
-
+    File eml = dwc.getMetadataLocationFile();
     String identifier = eml.getName();
+
     try {
       getValidator().validate(getEmlSource(eml));
     } catch (MalformedURLException e) {
-      result.accumulate(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
+      return Optional.of(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.EML_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", e.getMessage()))));
     } catch (FileNotFoundException e) {
-      result.accumulate(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
+      return Optional.of(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.EML_SCHEMA, Result.ERROR, ValidatorConfig
           .getLocalizedString("evaluator.file_not_found"))));
     } catch (SAXException e) {
-      result.accumulate(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
+      return Optional.of(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.EML_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", e.getMessage()))));
     } catch (IOException e) {
-      result.accumulate(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
+      return Optional.of(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.EML_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
           "evaluator.internal_error", e.getMessage()))));
     }
+    return Optional.of(new ValidationResult(identifier, EvaluationContext.STRUCTURE, (String) null));
   }
 }

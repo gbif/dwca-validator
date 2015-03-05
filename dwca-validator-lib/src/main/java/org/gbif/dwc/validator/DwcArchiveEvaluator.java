@@ -7,8 +7,8 @@ import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.dwc.validator.chain.EvaluatorChain;
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.evaluator.structure.EMLEvaluator;
-import org.gbif.dwc.validator.evaluator.structure.MetaDescriptorEvaluator;
+import org.gbif.dwc.validator.criteria.archive.EMLEvaluator;
+import org.gbif.dwc.validator.criteria.archive.MetaDescriptorEvaluator;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
 
+import com.google.common.base.Optional;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -148,13 +149,19 @@ public class DwcArchiveEvaluator implements FileEvaluator {
     }
   }
 
-  public void inspectEML(File eml, ResultAccumulator resultAccumulator) throws ResultAccumulationException {
+  public void inspectEML(Archive dwc, ResultAccumulator resultAccumulator) throws ResultAccumulationException {
     EMLEvaluator validator = new EMLEvaluator();
-    validator.doEval(eml, resultAccumulator);
+    Optional<ValidationResult> result = validator.validate(dwc);
+    if (result.isPresent()) {
+      resultAccumulator.accumulate(result.get());
+    }
   }
 
-  public void inspectMetaXML(File metaXML, ResultAccumulator resultAccumulator) throws ResultAccumulationException {
+  public void inspectMetaXML(Archive dwc, ResultAccumulator resultAccumulator) throws ResultAccumulationException {
     MetaDescriptorEvaluator validator = new MetaDescriptorEvaluator();
-    validator.doEval(metaXML, resultAccumulator);
+    Optional<ValidationResult> result = validator.validate(dwc);
+    if (result.isPresent()) {
+      resultAccumulator.accumulate(result.get());
+    }
   }
 }

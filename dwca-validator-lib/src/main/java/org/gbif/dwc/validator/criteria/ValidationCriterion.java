@@ -9,7 +9,8 @@ import org.gbif.dwc.validator.result.validation.ValidationResult;
 import com.google.common.base.Optional;
 
 /**
- * ValidationCriterion represents a criterion that can produce validation result(s).
+ * ValidationCriterion represents a criterion that can produce validation result(s) based on
+ * content (Records).
  * 
  * @author cgendreau
  */
