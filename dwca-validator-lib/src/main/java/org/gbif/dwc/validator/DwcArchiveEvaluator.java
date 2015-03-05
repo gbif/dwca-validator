@@ -7,8 +7,10 @@ import org.gbif.dwc.text.ArchiveFile;
 import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.dwc.validator.chain.EvaluatorChain;
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.criteria.archive.EMLEvaluator;
-import org.gbif.dwc.validator.criteria.archive.MetaDescriptorEvaluator;
+import org.gbif.dwc.validator.criteria.archive.EMLCriterionBuilder;
+import org.gbif.dwc.validator.criteria.archive.MetaDescriptorCriterionBuilder;
+import org.gbif.dwc.validator.criteria.archive.MetadataCriterion;
+import org.gbif.dwc.validator.exception.CriterionBuilderException;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
@@ -149,17 +151,21 @@ public class DwcArchiveEvaluator implements FileEvaluator {
     }
   }
 
-  public void inspectEML(Archive dwc, ResultAccumulator resultAccumulator) throws ResultAccumulationException {
-    EMLEvaluator validator = new EMLEvaluator();
-    Optional<ValidationResult> result = validator.validate(dwc);
+  public void inspectEML(File emlFile, ResultAccumulator resultAccumulator) throws ResultAccumulationException,
+    CriterionBuilderException {
+    // when should we use GBIF profile vs regular profile? should we run both?
+    MetadataCriterion criterion = EMLCriterionBuilder.builder().build();
+    Optional<ValidationResult> result = criterion.validate(emlFile);
     if (result.isPresent()) {
       resultAccumulator.accumulate(result.get());
     }
   }
 
-  public void inspectMetaXML(Archive dwc, ResultAccumulator resultAccumulator) throws ResultAccumulationException {
-    MetaDescriptorEvaluator validator = new MetaDescriptorEvaluator();
-    Optional<ValidationResult> result = validator.validate(dwc);
+  public void inspectMetaXML(File metaXmlFile, ResultAccumulator resultAccumulator) throws ResultAccumulationException,
+    CriterionBuilderException {
+
+    MetadataCriterion criterion = MetaDescriptorCriterionBuilder.builder().build();
+    Optional<ValidationResult> result = criterion.validate(metaXmlFile);
     if (result.isPresent()) {
       resultAccumulator.accumulate(result.get());
     }

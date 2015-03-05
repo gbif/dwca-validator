@@ -16,7 +16,9 @@ public class ValidatorConfig {
 
   private static final ValidatorConfig _instance = new ValidatorConfig();
 
-  // TODO load from config file
+  // TODO load those URLs from config file
+  // define the type of schema - we use W3C:
+  public static final String XML_SCHEMA_LANG = "http://www.w3.org/2001/XMLSchema";
   public static final String META_XML_SCHEMA = "http://rs.tdwg.org/dwc/text/tdwg_dwc_text.xsd";
 
   public static final String CORE_ID = "coreId";

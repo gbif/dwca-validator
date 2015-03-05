@@ -1,6 +1,5 @@
 package org.gbif.dwc.validator.criteria.archive;
 
-import org.gbif.dwc.text.Archive;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
@@ -10,12 +9,8 @@ import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import com.google.common.base.Optional;
@@ -24,51 +19,43 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 /**
- * The DwcA reader will run the schema check on the meta.xml.
+ * MetaDescriptorCriterion allows validate the metadescriptor (meta.xml) against
+ * the defined schema.
  * 
  * @author melecoq
  * @author cgendreau
  */
-public class MetaDescriptorEvaluator implements ArchiveCriterion {
+class MetadataFileCriterion implements MetadataCriterion {
 
-  private static final String META_XML_FILE = "meta.xml";
-  private static final Logger LOGGER = LoggerFactory.getLogger(MetaDescriptorEvaluator.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MetadataFileCriterion.class);
 
   // TODO replace with new annotation like @StructureEvaluator
   private static final String key = "MetaDescriptorEvaluator";
-  private Validator metaValidator;
 
-  /**
-   * TODO propagate exceptions
-   */
-  public MetaDescriptorEvaluator() {
-    String schemaLang = "http://www.w3.org/2001/XMLSchema";
+  private final String metadataFilename;
+  private final Validator metaValidator;
 
-    try {
-      SchemaFactory factory = SchemaFactory.newInstance(schemaLang);
-      Schema schema = factory.newSchema(new URL(ValidatorConfig.META_XML_SCHEMA));
-      metaValidator = schema.newValidator();
-    } catch (MalformedURLException e) {
-      e.printStackTrace();
-      LOGGER.error("Can't create Meta XML Schema", e);
-    } catch (SAXException e) {
-      LOGGER.error("Can't create Meta XML Schema", e);
-    }
+  MetadataFileCriterion(Validator metaValidator, String metadataFilename) {
+    this.metaValidator = metaValidator;
+    this.metadataFilename = metadataFilename;
   }
 
   @Override
-  public Optional<ValidationResult> validate(Archive dwc) {
+  public Optional<ValidationResult> validate(File metadataFile) {
 
-    File metaXML = new File(dwc.getLocation(), META_XML_FILE);
-
-    if (!metaXML.exists()) {
+    // only validate the meta.xml file
+    if (!metadataFilename.equalsIgnoreCase(metadataFile.getName())) {
       return Optional.absent();
     }
 
-    String identifier = metaXML.getName();
+// if (!metaXML.exists()) {
+// return Optional.absent();
+// }
+
+    String identifier = metadataFile.getName();
 
     try {
-      metaValidator.validate(new StreamSource(metaXML));
+      metaValidator.validate(new StreamSource(metadataFile));
     } catch (SAXException saxEx) {
       return Optional.of(new ValidationResult(identifier, EvaluationContext.STRUCTURE, new ValidationResultElement(key,
         StructureValidationType.METADATA_SCHEMA, Result.ERROR, ValidatorConfig.getLocalizedString(
