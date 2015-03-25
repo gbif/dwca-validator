@@ -8,7 +8,7 @@ import org.gbif.dwc.validator.result.validation.ValidationResult;
 import com.google.common.base.Optional;
 
 /**
- * ValidationCriterion represents a criterion that can produce validation result(s) based on records.
+ * ValidationCriterion represents a criterion that can produce {@link ValidationResult} based on records.
  *
  * @author cgendreau
  */

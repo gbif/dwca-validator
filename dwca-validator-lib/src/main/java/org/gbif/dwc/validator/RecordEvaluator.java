@@ -9,12 +9,19 @@ import org.gbif.dwc.validator.result.ResultAccumulator;
 import com.google.common.base.Optional;
 
 /**
- * RecordEvaluator represents an evaluation that can produce result(s) based on Record.
+ * RecordEvaluator represents an evaluation that can produce result(s) based on {@link Record}
  *
  * @author cgendreau
  */
 public interface RecordEvaluator<T extends EvaluationResult> {
 
+  /**
+   * Handle a {@link Record} for a specific {@link EvaluationContext}.
+   *
+   * @param record
+   * @param evaluationContext
+   * @return
+   */
   Optional<T> handleRecord(Record record, EvaluationContext evaluationContext);
 
   /**
