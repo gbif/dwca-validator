@@ -5,7 +5,6 @@ import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.RecordEvaluator;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
-import org.gbif.dwc.validator.result.EvaluationResult;
 import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 
@@ -22,7 +21,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
  *
  * @author cgendreau
  */
-public class DistinctCountEvaluator implements RecordEvaluator {
+public class DistinctCountEvaluator implements RecordEvaluator<AggregationResult<Integer>> {
 
   // TODO replace by EvaluatorKey annotation
   private static final String KEY = "distinctCountEvaluator";
@@ -42,7 +41,7 @@ public class DistinctCountEvaluator implements RecordEvaluator {
   }
 
   @Override
-  public Optional<? extends EvaluationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
+  public Optional<AggregationResult<Integer>> handleRecord(Record record, EvaluationContext evaluationContext) {
     String value = record.value(term);
     if (!distinctCount.containsKey(value)) {
       distinctCount.put(value, new MutableInt());

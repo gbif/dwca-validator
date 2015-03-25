@@ -13,9 +13,9 @@ import com.google.common.base.Optional;
  *
  * @author cgendreau
  */
-public interface RecordEvaluator {
+public interface RecordEvaluator<T extends EvaluationResult> {
 
-  Optional<? extends EvaluationResult> handleRecord(Record record, EvaluationContext evaluationContext);
+  Optional<T> handleRecord(Record record, EvaluationContext evaluationContext);
 
   /**
    * This function accepts a ResultAccumulator to avoid returning a massive object in case all records failed.
