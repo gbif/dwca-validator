@@ -22,7 +22,7 @@ import com.google.common.base.Predicate;
 /**
  * Criterion used to check the value of a term.
  * The operation used is provided using a predicate.
- * 
+ *
  * @author cgendreau
  * @param <T>
  */
@@ -61,6 +61,9 @@ class ValueCriterion<T> extends RecordCriterion {
           ValidatorConfig.getLocalizedString("criterion.value_criterion.not_valid", valueToCompareResult.getData(),
             term)));
       }
+    } else {
+      elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
+        valueToCompareResult.getExplanation()));
     }
 
     if (elementList != null && elementList.size() > 0) {
@@ -68,8 +71,6 @@ class ValueCriterion<T> extends RecordCriterion {
     }
 
     return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType()));
-
   }
-
 
 }

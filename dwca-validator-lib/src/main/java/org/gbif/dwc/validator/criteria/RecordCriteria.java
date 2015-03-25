@@ -6,19 +6,23 @@ import org.gbif.dwc.validator.criteria.record.CompletenessCriterionBuilder;
 import org.gbif.dwc.validator.criteria.record.InvalidCharacterCriterionBuilder;
 import org.gbif.dwc.validator.criteria.record.MinMaxCriterionBuilder;
 import org.gbif.dwc.validator.criteria.record.TransformationBasedCriteriaBuilder;
+import org.gbif.dwc.validator.criteria.record.ValueCriterionBuilder;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.transformation.ValueTransformation;
+import org.gbif.dwc.validator.transformation.ValueTransformations;
+
+import com.google.common.base.Predicate;
 
 /**
  * Main builder for record criteria.
- * 
+ *
  * @author cgendreau
  */
 public class RecordCriteria {
 
   /**
    * Get a configured builder to check if the value of a term is between bounds.
-   * 
+   *
    * @param term
    * @param lowerBound
    * @param upperBound
@@ -37,6 +41,23 @@ public class RecordCriteria {
   }
 
   /**
+   * Get a configured builder to check if the value of a term is not equals to a specific number.
+   *
+   * @param term
+   * @param value
+   * @return
+   */
+  public static ValueCriterionBuilder<Number> termNotEqualsTo(final Term term, final Number value) {
+    return ValueCriterionBuilder.builderNumber().checkValue(new Predicate<Number>() {
+
+      @Override
+      public boolean apply(Number input) {
+        return value.doubleValue() != input.doubleValue();
+      }
+    }, ValueTransformations.toNumeric(term));
+  }
+
+  /**
    * @param transformations
    * @return
    */
@@ -51,7 +72,7 @@ public class RecordCriteria {
   /**
    * Get a builder configured to check that each records provide a value for the terms.
    * If no value is provided for a term, a the result will be flagged as Result.ERROR.
-   * 
+   *
    * @param terms
    * @return
    */
@@ -67,7 +88,7 @@ public class RecordCriteria {
   /**
    * Get a builder configured to check that each records provide a value for the terms.
    * If no value is provided for a term, a the result will be flagged as Result.WARNING.
-   * 
+   *
    * @param terms
    * @return
    */

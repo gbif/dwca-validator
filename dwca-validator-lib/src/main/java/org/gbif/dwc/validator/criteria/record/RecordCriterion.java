@@ -6,8 +6,8 @@ import org.gbif.dwc.validator.result.ResultAccumulator;
 
 
 /**
- * Criterion interface for Record level.
- * 
+ * Criterion abstract class for Record level.
+ *
  * @author cgendreau
  */
 public abstract class RecordCriterion implements ValidationCriterion {

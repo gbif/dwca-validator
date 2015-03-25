@@ -20,7 +20,7 @@ public interface RecordEvaluator<T extends EvaluationResult> {
    *
    * @param record
    * @param evaluationContext
-   * @return
+   * @return result or Optional.absent() if the record is out of scope
    */
   Optional<T> handleRecord(Record record, EvaluationContext evaluationContext);
 
