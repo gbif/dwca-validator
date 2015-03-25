@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * In memory ResultAccumulatorIF, maximum number of accumulated results is defined
  * by MAX_RESULT.
- * 
+ *
  * @author cgendreau
  */
 public class InMemoryResultAccumulator implements ResultAccumulator {
@@ -56,7 +56,7 @@ public class InMemoryResultAccumulator implements ResultAccumulator {
 
   @Override
   public int getAggregationResultCount() {
-    return validationResultList.size();
+    return aggregationResultList.size();
   }
 
   public List<ValidationResult> getValidationResultList() {
@@ -66,4 +66,5 @@ public class InMemoryResultAccumulator implements ResultAccumulator {
   public List<AggregationResult<?>> getAggregationResultList() {
     return aggregationResultList;
   }
+
 }
