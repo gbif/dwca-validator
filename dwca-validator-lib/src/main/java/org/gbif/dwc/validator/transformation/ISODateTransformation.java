@@ -4,6 +4,9 @@ import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 
+import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.StringUtils;
 import org.threeten.bp.DateTimeException;
 import org.threeten.bp.LocalDate;
@@ -19,33 +22,33 @@ import org.threeten.bp.temporal.TemporalAccessor;
  * Transform the value associated with a Term into an ISO date.
  * Note that the provided 'raw' value must already be in ISO format and this class will simply transform
  * it into a TemporalAccessor object.
- * 
+ *
  * @author cgendreau
  */
 public class ISODateTransformation implements ValueTransformation<TemporalAccessor> {
 
   private final Term term;
+  private final List<Term> termList;
 
   private static final DateTimeFormatter ISO8601_BASIC_ISO_DATE = DateTimeFormatter.BASIC_ISO_DATE;
-
   private static final DateTimeFormatter ISO8601_ISO_DATE = DateTimeFormatter.ISO_DATE;
 
   // ISO8601 Date with no leading zeros e.g. 2014-8-7
   private static final DateTimeFormatter ISO8601_ISO_DATE_ALLOW_NO_LZ = new DateTimeFormatterBuilder()
-    .appendValue(ChronoField.YEAR, 4).appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR).appendLiteral("-")
-    .appendValue(ChronoField.DAY_OF_MONTH).toFormatter().withResolverStyle(ResolverStyle.STRICT);
+  .appendValue(ChronoField.YEAR, 4).appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR).appendLiteral("-")
+  .appendValue(ChronoField.DAY_OF_MONTH).toFormatter().withResolverStyle(ResolverStyle.STRICT);
 
   // ISO8601 Partial Date with no leading zeros e.g. 2014-8
   public static final DateTimeFormatter ISO8601_PARTIAL_DATE_ALLOW_NO_LZ = new DateTimeFormatterBuilder()
-    .appendValue(ChronoField.YEAR, 4).optionalStart().appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR)
-    .optionalStart().appendLiteral("-").appendValue(ChronoField.DAY_OF_MONTH, 2).optionalEnd().optionalEnd()
-    .toFormatter().withResolverStyle(ResolverStyle.STRICT);
+  .appendValue(ChronoField.YEAR, 4).optionalStart().appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR)
+  .optionalStart().appendLiteral("-").appendValue(ChronoField.DAY_OF_MONTH, 2).optionalEnd().optionalEnd()
+  .toFormatter().withResolverStyle(ResolverStyle.STRICT);
 
   // ISO8601 Partial Date e.g. 2014 or 2014-08
   public static final DateTimeFormatter ISO8601_PARTIAL_DATE = new DateTimeFormatterBuilder()
-    .appendValue(ChronoField.YEAR, 4).optionalStart().appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR, 2)
-    .optionalStart().appendLiteral("-").appendValue(ChronoField.DAY_OF_MONTH, 2).optionalEnd().optionalEnd()
-    .toFormatter().withResolverStyle(ResolverStyle.STRICT);
+  .appendValue(ChronoField.YEAR, 4).optionalStart().appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR, 2)
+  .optionalStart().appendLiteral("-").appendValue(ChronoField.DAY_OF_MONTH, 2).optionalEnd().optionalEnd()
+  .toFormatter().withResolverStyle(ResolverStyle.STRICT);
 
   private final boolean allowPartialDate;
   private final DateTimeFormatter activeCompleteDateFormatter;
@@ -53,6 +56,8 @@ public class ISODateTransformation implements ValueTransformation<TemporalAccess
 
   ISODateTransformation(Term term, boolean allowPartialDate, boolean allowMissingLeadingZeros) {
     this.term = term;
+    // we only keep it in a list because getTerms() function
+    this.termList = ImmutableList.of(term);
     this.allowPartialDate = allowPartialDate;
 
     if (allowMissingLeadingZeros) {
@@ -65,7 +70,7 @@ public class ISODateTransformation implements ValueTransformation<TemporalAccess
   }
 
   private ValueTransformationResult<TemporalAccessor> createNonISOEvaluationRuleResult(String value) {
-    return ValueTransformationResult.notTransformed(term, "",
+    return ValueTransformationResult.notTransformed("",
       ValidatorConfig.getLocalizedString("transformation.date.non_ISO", value));
   }
 
@@ -74,13 +79,13 @@ public class ISODateTransformation implements ValueTransformation<TemporalAccess
 
     String str = record.value(term);
     if (StringUtils.isBlank(str)) {
-      return ValueTransformationResult.skipped(term, str);
+      return ValueTransformationResult.skipped(str);
     }
 
     // if we can parse it as complete ISO date, it's fine
     TemporalAccessor ta = tryParseLocalDate(str, ISO8601_BASIC_ISO_DATE, activeCompleteDateFormatter);
     if (ta != null) {
-      return ValueTransformationResult.transformed(term, "", ta);
+      return ValueTransformationResult.transformed("", ta);
     }
 
     if (allowPartialDate) {
@@ -93,13 +98,13 @@ public class ISODateTransformation implements ValueTransformation<TemporalAccess
       return createNonISOEvaluationRuleResult(str);
     }
 
-    return ValueTransformationResult.transformed(term, "", ta);
+    return ValueTransformationResult.transformed("", ta);
   }
 
   /**
    * Can we parse the provided String in LocalDate with at least on DateTimeFormatter.
    * As soon as one DateTimeFormatter can parse the String, the method returns.
-   * 
+   *
    * @param str
    * @param dtFormatters
    * @return null if can't parse str with provided DateTimeFormatter
@@ -114,6 +119,11 @@ public class ISODateTransformation implements ValueTransformation<TemporalAccess
       }
     }
     return null;
+  }
+
+  @Override
+  public List<Term> getTerms() {
+    return termList;
   }
 
 }

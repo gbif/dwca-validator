@@ -29,6 +29,8 @@ class MinMaxCriterion extends RecordCriterion {
 
   private final ValueTransformation<Number> minValueTransformation;
   private final ValueTransformation<Number> maxValueTransformation;
+  private final Term minTerm;
+  private final Term maxTerm;
   private final boolean enforceTwoTermsUse;
 
   MinMaxCriterion(MinMaxCriterionConfiguration configuration) {
@@ -36,6 +38,9 @@ class MinMaxCriterion extends RecordCriterion {
     this.level = configuration.getLevel();
     this.minValueTransformation = configuration.getMinValueTransformation();
     this.maxValueTransformation = configuration.getMaxValueTransformation();
+    // we trust the builder
+    this.minTerm = minValueTransformation.getTerms().get(0);
+    this.maxTerm = maxValueTransformation.getTerms().get(0);
     this.enforceTwoTermsUse = configuration.isEnforceTwoTermsUse();
   }
 
@@ -51,6 +56,7 @@ class MinMaxCriterion extends RecordCriterion {
       return Optional.absent();
     }
 
+    // TODO we should probably avoid creating list when there is no result
     List<ValidationResultElement> elementList = Lists.newArrayList();
 
     ValueTransformationResult<Number> minValueParsingResult = minValueTransformation.transform(record);
@@ -73,8 +79,7 @@ class MinMaxCriterion extends RecordCriterion {
 
     // if min or max was skipped and we enforce the use of the 2 terms, add an validation result
     if ((minValueParsingResult.isSkipped() || maxValueParsingResult.isSkipped()) && enforceTwoTermsUse) {
-      Term guiltyTerm =
-        minValueParsingResult.isSkipped() ? minValueParsingResult.getTerm() : maxValueParsingResult.getTerm();
+      Term guiltyTerm = minValueParsingResult.isSkipped() ? minTerm : maxTerm;
       elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
         ValidatorConfig.getLocalizedString("criterion.min_max_criterion.min_or_max_missing", guiltyTerm)));
     }
@@ -87,8 +92,7 @@ class MinMaxCriterion extends RecordCriterion {
 
       elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
         ValidatorConfig.getLocalizedString("criterion.min_max_criterion.min_greater_than_max",
-          minValueParsingResult.getOriginalValue(), minValueParsingResult.getTerm(),
-          maxValueParsingResult.getOriginalValue(), maxValueParsingResult.getTerm())));
+          minValueParsingResult.getOriginalValue(), minTerm, maxValueParsingResult.getOriginalValue(), maxTerm)));
     }
 
     if (elementList != null && elementList.size() > 0) {

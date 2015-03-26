@@ -1,6 +1,5 @@
 package org.gbif.dwc.validator.transformation;
 
-import org.gbif.dwc.terms.Term;
 
 
 public class ValueTransformationResult<T> {
@@ -11,29 +10,24 @@ public class ValueTransformationResult<T> {
 
   private final TransformationStatus status;
 
-  // not sure if we should carry that if we want to support composed values later
   private final String originalValue;
-  private final Term term;
 
   private final T dataObject;
   private final String explanation;
 
-  public static <T> ValueTransformationResult<T> skipped(Term term, String originalValue) {
-    return new ValueTransformationResult<T>(term, originalValue, TransformationStatus.SKIPPED, null, null);
+  public static <T> ValueTransformationResult<T> skipped(String originalValue) {
+    return new ValueTransformationResult<T>(originalValue, TransformationStatus.SKIPPED, null, null);
   }
 
-  public static <T> ValueTransformationResult<T> notTransformed(Term term, String originalValue, String explanation) {
-    return new ValueTransformationResult<T>(term, originalValue, TransformationStatus.NOT_TRANSFORMED, null,
-      explanation);
+  public static <T> ValueTransformationResult<T> notTransformed(String originalValue, String explanation) {
+    return new ValueTransformationResult<T>(originalValue, TransformationStatus.NOT_TRANSFORMED, null, explanation);
   }
 
-  public static <T> ValueTransformationResult<T> transformed(Term term, String originalValue, T dataObject) {
-    return new ValueTransformationResult<T>(term, originalValue, TransformationStatus.TRANSFORMED, dataObject, null);
+  public static <T> ValueTransformationResult<T> transformed(String originalValue, T dataObject) {
+    return new ValueTransformationResult<T>(originalValue, TransformationStatus.TRANSFORMED, dataObject, null);
   }
 
-  public ValueTransformationResult(Term term, String originalValue, TransformationStatus status, T dataObject,
-    String explanation) {
-    this.term = term;
+  public ValueTransformationResult(String originalValue, TransformationStatus status, T dataObject, String explanation) {
     this.originalValue = originalValue;
     this.status = status;
     this.dataObject = dataObject;
@@ -64,7 +58,4 @@ public class ValueTransformationResult<T> {
     return originalValue;
   }
 
-  public Term getTerm() {
-    return term;
-  }
 }

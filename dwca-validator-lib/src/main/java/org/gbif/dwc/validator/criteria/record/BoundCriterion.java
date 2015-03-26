@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.record.Record;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
 import org.gbif.dwc.validator.criteria.configuration.BoundCriterionConfiguration;
@@ -29,10 +30,11 @@ class BoundCriterion extends RecordCriterion {
   private final Number lowerBound;
   private final Number upperBound;
   private final ValueTransformation<Number> valueTransformation;
+  private final Term term;
 
   /**
    * Package protected constructor, use BoundCriteriaBuilder.
-   * 
+   *
    * @param boundCriteriaConfiguration
    */
   BoundCriterion(BoundCriterionConfiguration boundCriteriaConfiguration) {
@@ -41,6 +43,8 @@ class BoundCriterion extends RecordCriterion {
     this.lowerBound = boundCriteriaConfiguration.getLowerBound();
     this.upperBound = boundCriteriaConfiguration.getUpperBound();
     this.valueTransformation = boundCriteriaConfiguration.getValueTransformation();
+    // we trust the builder
+    this.term = valueTransformation.getTerms().get(0);
   }
 
   @Override
@@ -71,7 +75,7 @@ class BoundCriterion extends RecordCriterion {
       && (parsedValue.doubleValue() < lowerBound.doubleValue() || parsedValue.doubleValue() > upperBound.doubleValue())) {
       elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
         ValidatorConfig.getLocalizedString("criterion.bound_criterion.out_of_bounds", parsedValue, lowerBound,
-          upperBound, parsingResult.getTerm())));
+          upperBound, term)));
       return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType(), elementList));
     }
 
