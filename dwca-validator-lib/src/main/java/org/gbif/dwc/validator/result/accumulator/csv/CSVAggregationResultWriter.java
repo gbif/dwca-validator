@@ -1,8 +1,8 @@
 package org.gbif.dwc.validator.result.accumulator.csv;
 
+import org.gbif.dwc.validator.aggregation.AggregationResult;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.result.accumulator.AbstractThresholdResultWriter;
-import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 
 import java.io.FileWriter;
 import java.io.IOException;

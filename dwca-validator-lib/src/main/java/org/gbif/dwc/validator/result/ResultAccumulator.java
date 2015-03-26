@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.result;
 
+import org.gbif.dwc.validator.aggregation.AggregationResult;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
-import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 /**

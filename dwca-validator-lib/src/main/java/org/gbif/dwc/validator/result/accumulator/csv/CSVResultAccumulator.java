@@ -1,8 +1,8 @@
 package org.gbif.dwc.validator.result.accumulator.csv;
 
+import org.gbif.dwc.validator.aggregation.AggregationResult;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.ResultAccumulator;
-import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 import org.apache.commons.lang3.StringUtils;

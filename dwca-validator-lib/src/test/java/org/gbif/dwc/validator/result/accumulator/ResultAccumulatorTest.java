@@ -1,12 +1,12 @@
 package org.gbif.dwc.validator.result.accumulator;
 
+import org.gbif.dwc.validator.aggregation.AggregationResult;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.mock.MockDataGenerator;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.accumulator.csv.CSVResultAccumulator;
-import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 

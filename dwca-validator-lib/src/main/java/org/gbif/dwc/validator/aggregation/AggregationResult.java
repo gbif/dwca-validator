@@ -1,4 +1,4 @@
-package org.gbif.dwc.validator.result.aggregation;
+package org.gbif.dwc.validator.aggregation;
 
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;

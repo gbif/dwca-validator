@@ -6,7 +6,6 @@ import org.gbif.dwc.validator.RecordEvaluator;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.ResultAccumulator;
-import org.gbif.dwc.validator.result.aggregation.AggregationResult;
 
 import java.util.Map;
 
