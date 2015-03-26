@@ -1,57 +1,70 @@
 package org.gbif.dwc.validator.chain;
 
 import org.gbif.dwc.record.Record;
+import org.gbif.dwc.validator.RecordEvaluator;
+import org.gbif.dwc.validator.criteria.ValidationCriterion;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriterion;
-import org.gbif.dwc.validator.criteria.record.RecordCriterion;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
+import org.gbif.dwc.validator.result.EvaluationResult;
 import org.gbif.dwc.validator.result.ResultAccumulator;
-import org.gbif.dwc.validator.result.validation.ValidationResult;
 
 import java.io.IOException;
 import java.util.List;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * This class is responsible to manage the evaluation chain.
- * The class is immutable but the RecordEvaluator immutability can not be enforced.
- * 
+ *
  * @author cgendreau
  */
 public class EvaluatorChain {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(EvaluatorChain.class);
 
-  private final List<RecordCriterion> recordCriteriaList;
+  private final List<RecordEvaluator<? extends EvaluationResult>> evaluatorList = Lists.newArrayList();
+  // we need to keep a reference on all DatasetCriterion to release resources
   private final List<DatasetCriterion> datasetCriteria;
 
-  public EvaluatorChain(List<RecordCriterion> recordCriteriaList, List<DatasetCriterion> datasetCriteria) {
-    this.recordCriteriaList = ImmutableList.copyOf(recordCriteriaList);
+  public EvaluatorChain(List<ValidationCriterion> recordCriteriaList, List<DatasetCriterion> datasetCriteria) {
+    this.evaluatorList.addAll(ImmutableList.copyOf(recordCriteriaList));
     this.datasetCriteria = ImmutableList.copyOf(datasetCriteria);
+    this.evaluatorList.addAll(datasetCriteria);
   }
 
+  /**
+   * Evaluate one record within a context.
+   *
+   * @param record
+   * @param evaluationContext
+   * @param resultAccumulator
+   * @throws ResultAccumulationException
+   */
   public void evaluateRecord(Record record, EvaluationContext evaluationContext, ResultAccumulator resultAccumulator)
     throws ResultAccumulationException {
 
-    Optional<ValidationResult> result;
-    for (RecordCriterion currRecordCriteria : recordCriteriaList) {
+    Optional<? extends EvaluationResult> result;
+    for (RecordEvaluator<? extends EvaluationResult> currRecordCriteria : evaluatorList) {
       result = currRecordCriteria.handleRecord(record, evaluationContext);
       if (result.isPresent()) {
-        resultAccumulator.accumulate(result.get());
+        result.get().accept(resultAccumulator);
       }
-    }
-
-    for (DatasetCriterion currRecordCriteria : datasetCriteria) {
-      currRecordCriteria.onRecord(record, evaluationContext);
     }
   }
 
-  public void evaluateDataset(ResultAccumulator resultAccumulator) throws ResultAccumulationException {
-    for (DatasetCriterion currRecordCriteria : datasetCriteria) {
+  /**
+   * Indicates that the iteration on all records is completed.
+   *
+   * @param resultAccumulator
+   * @throws ResultAccumulationException
+   */
+  public void postIterate(ResultAccumulator resultAccumulator) throws ResultAccumulationException {
+    for (RecordEvaluator<?> currRecordCriteria : evaluatorList) {
       currRecordCriteria.postIterate(resultAccumulator);
     }
   }

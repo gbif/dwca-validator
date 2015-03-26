@@ -2,35 +2,15 @@ package org.gbif.dwc.validator.criteria.configuration;
 
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
-import org.gbif.dwc.validator.result.Result;
 import org.gbif.dwc.validator.transformation.ValueTransformation;
 
 @CriterionConfigurationKey("boundCriteria")
-public class BoundCriterionConfiguration {
-
-  private String rowTypeRestriction;
-  private Result level = Result.ERROR;
+public class BoundCriterionConfiguration extends AbstractRecordCriterionConfiguration {
 
   private Number lowerBound;
   private Number upperBound;
   private Term term;
   private ValueTransformation<Number> valueTransformation;
-
-  public String getRowTypeRestriction() {
-    return rowTypeRestriction;
-  }
-
-  public void setRowTypeRestriction(String rowTypeRestriction) {
-    this.rowTypeRestriction = rowTypeRestriction;
-  }
-
-  public Result getLevel() {
-    return level;
-  }
-
-  public void setLevel(Result level) {
-    this.level = level;
-  }
 
   public Number getLowerBound() {
     return lowerBound;

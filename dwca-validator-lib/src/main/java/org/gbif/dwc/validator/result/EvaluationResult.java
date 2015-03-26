@@ -1,5 +1,6 @@
 package org.gbif.dwc.validator.result;
 
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
 
 
 /**
@@ -13,6 +14,13 @@ public interface EvaluationResult {
 
   EvaluationContext getEvaluationContext();
 
-  // void accept(ResultAccumulator visitor) throws ResultAccumulationException;
+  /**
+   * Allows the concrete result class to call the most specific method on the ResultAccumulator.
+   * Also permits composed object to generate more than one EvaluationResult object.
+   * 
+   * @param visitor
+   * @throws ResultAccumulationException
+   */
+  void accept(ResultAccumulator visitor) throws ResultAccumulationException;
 
 }

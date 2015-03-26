@@ -42,11 +42,6 @@ public class ValueCriterionBuilder<T> implements RecordCriterionBuilder {
     return this;
   }
 
-  public ValueCriterionBuilder<T> checkValue(Predicate<String> predicate) {
-
-    return this;
-  }
-
   @Override
   public RecordCriterion build() throws IllegalStateException {
     return new ValueCriterion<T>(configuration);

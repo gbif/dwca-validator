@@ -4,7 +4,6 @@ import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
-import org.gbif.dwc.validator.chain.EvaluatorChain;
 import org.gbif.dwc.validator.criteria.DatasetCriteria;
 import org.gbif.dwc.validator.criteria.RecordCriteria;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
@@ -26,7 +25,7 @@ import static org.junit.Assert.fail;
 /**
  * Test the ChainableRecordEvaluator wrapper.
  * Ensure chain element are connected properly.
- * 
+ *
  * @author cgendreau
  */
 public class CriteriaChainTest {
@@ -62,7 +61,7 @@ public class CriteriaChainTest {
       chain.evaluateRecord(rec2, EvaluationContext.CORE, resultAccumulator);
       chain.evaluateRecord(rec3, EvaluationContext.CORE, resultAccumulator);
       chain.evaluateRecord(rec4, EvaluationContext.CORE, resultAccumulator);
-      chain.evaluateDataset(resultAccumulator);
+      chain.postIterate(resultAccumulator);
     } catch (ResultAccumulationException e) {
       e.printStackTrace();
       fail();

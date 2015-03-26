@@ -14,8 +14,10 @@ import org.gbif.dwc.validator.result.validation.ValidationResult;
  */
 public interface ResultAccumulator {
 
-
-  // boolean accumulate(EvaluationResult result) throws ResultAccumulationException;
+  // idea to eventually support user defined Result but do we really need it
+  // boolean accumulate(ExtensionEvaluationResult result) throws ResultAccumulationException;
+  // boolean accumulate(SuggestionResult result) throws ResultAccumulationException;
+  // boolean accumulate(FitnessForUseResult result) throws ResultAccumulationException;
 
   /**
    * Append ValidationResult to current results.

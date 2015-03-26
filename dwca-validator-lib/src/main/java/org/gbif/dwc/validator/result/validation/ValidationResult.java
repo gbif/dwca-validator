@@ -1,8 +1,10 @@
 package org.gbif.dwc.validator.result.validation;
 
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.EvaluationResult;
 import org.gbif.dwc.validator.result.Result;
+import org.gbif.dwc.validator.result.ResultAccumulator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -122,6 +124,11 @@ public class ValidationResult implements EvaluationResult {
   public String toString() {
     return new ToStringBuilder(this).append("id", id).append("evaluationContext", evaluationContext)
       .append("evaluationContextDetails", evaluationContextDetails).append("results", results).toString();
+  }
+
+  @Override
+  public void accept(ResultAccumulator visitor) throws ResultAccumulationException {
+    visitor.accumulate(this);
   }
 
 }

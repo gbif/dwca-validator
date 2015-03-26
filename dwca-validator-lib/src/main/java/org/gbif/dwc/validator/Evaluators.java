@@ -4,9 +4,9 @@ import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.chain.EvaluatorChain;
 import org.gbif.dwc.validator.criteria.DatasetCriteria;
 import org.gbif.dwc.validator.criteria.RecordCriteria;
+import org.gbif.dwc.validator.criteria.ValidationCriterion;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriterion;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriterionBuilder;
-import org.gbif.dwc.validator.criteria.record.RecordCriterion;
 import org.gbif.dwc.validator.criteria.record.RecordCriterionBuilder;
 
 import java.io.File;
@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * Main builder to create evaluation chain.
- * 
+ *
  * @author cgendreau
  */
 public class Evaluators {
@@ -33,7 +33,7 @@ public class Evaluators {
 
   /**
    * Get a new Evaluators instance
-   * 
+   *
    * @return
    */
   public static Evaluators builder() {
@@ -46,7 +46,7 @@ public class Evaluators {
    * -decimalLatitude and decimalLongitude are number within valid bounds
    * -coreId is unique
    * -extension records points to a valid coreID
-   * 
+   *
    * @param tempFolder
    * @return
    */
@@ -61,7 +61,7 @@ public class Evaluators {
 
   /**
    * Build a FileEvaluator from an existing validation chain.
-   * 
+   *
    * @param tempFolder
    * @param head
    * @return
@@ -72,12 +72,12 @@ public class Evaluators {
 
   /**
    * Build a validation chain from a list of RecordCriteria and DatasetCriteria.
-   * 
+   *
    * @param recordCriterionList
    * @param datasetCriterionList
    * @return new CriteriaChain
    */
-  public static EvaluatorChain buildFromEvaluatorList(List<RecordCriterion> recordCriterionList,
+  public static EvaluatorChain buildFromEvaluatorList(List<ValidationCriterion> recordCriterionList,
     List<DatasetCriterion> datasetCriterionList) {
     return new EvaluatorChain(recordCriterionList, datasetCriterionList);
   }
@@ -93,7 +93,7 @@ public class Evaluators {
 
   /**
    * Append a record level criterion to the validation chain.
-   * 
+   *
    * @param recordEvaluatorBuilder
    * @return
    */
@@ -104,7 +104,7 @@ public class Evaluators {
 
   /**
    * Append a dataset level criterion to the validation chain.
-   * 
+   *
    * @param datasetCriteriaBuilder
    * @return
    */
@@ -115,7 +115,7 @@ public class Evaluators {
 
   /**
    * Build the ArchiveValidator instance.
-   * 
+   *
    * @return
    */
   public FileEvaluator build() throws IllegalStateException {
@@ -124,11 +124,11 @@ public class Evaluators {
 
   /**
    * Build the validation chain.
-   * 
+   *
    * @return head of the chain
    */
   public EvaluatorChain buildChain() throws IllegalStateException {
-    List<RecordCriterion> recordCriteriaList = new ArrayList<RecordCriterion>();
+    List<ValidationCriterion> recordCriteriaList = new ArrayList<ValidationCriterion>();
     for (RecordCriterionBuilder currRecordCriteriaBuilder : buildersList) {
       recordCriteriaList.add(currRecordCriteriaBuilder.build());
     }

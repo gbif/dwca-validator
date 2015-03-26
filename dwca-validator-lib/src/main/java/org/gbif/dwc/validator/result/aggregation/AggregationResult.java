@@ -1,7 +1,9 @@
 package org.gbif.dwc.validator.result.aggregation;
 
+import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.EvaluationResult;
+import org.gbif.dwc.validator.result.ResultAccumulator;
 
 
 /**
@@ -41,6 +43,11 @@ public class AggregationResult<T> implements EvaluationResult {
 
   public T getResult() {
     return result;
+  }
+
+  @Override
+  public void accept(ResultAccumulator visitor) throws ResultAccumulationException {
+    visitor.accumulate(this);
   }
 
 }

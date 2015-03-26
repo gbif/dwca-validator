@@ -2,7 +2,11 @@ package org.gbif.dwc.validator.criteria.configuration;
 
 import org.gbif.dwc.validator.result.Result;
 
-
+/**
+ * Provide basic support for record based criterion configuration.
+ *
+ * @author cgendreau
+ */
 public abstract class AbstractRecordCriterionConfiguration {
 
   private String rowTypeRestriction;

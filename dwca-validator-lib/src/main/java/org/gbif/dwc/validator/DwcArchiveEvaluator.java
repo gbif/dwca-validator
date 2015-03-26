@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Main DarwinCore archive validation implementation.
- * 
+ *
  * @author cgendreau
  */
 public class DwcArchiveEvaluator implements FileEvaluator {
@@ -49,7 +49,7 @@ public class DwcArchiveEvaluator implements FileEvaluator {
 
   /**
    * Create a ValidationResult object when it's not possible to open the archive.
-   * 
+   *
    * @param file
    * @param message
    * @return
@@ -106,8 +106,8 @@ public class DwcArchiveEvaluator implements FileEvaluator {
       for (ArchiveFile currExt : extensions) {
         inspectDwcComponent(currExt, EvaluationContext.EXT, criteriaChain, resultAccumulator);
       }
-      // we only call postIterate one, at the end
-      criteriaChain.evaluateDataset(resultAccumulator);
+      // we only call postIterate once, at the end
+      criteriaChain.postIterate(resultAccumulator);
 
       criteriaChain.cleanup();
     } catch (UnsupportedArchiveException e) {
@@ -131,7 +131,7 @@ public class DwcArchiveEvaluator implements FileEvaluator {
 
   /**
    * Inspect DarwinCore component record loop function.
-   * 
+   *
    * @param dwcaComponent
    * @param evaluationContext
    * @param evaluatorChain head of the evaluators chain
@@ -152,7 +152,7 @@ public class DwcArchiveEvaluator implements FileEvaluator {
   }
 
   public void inspectEML(File emlFile, ResultAccumulator resultAccumulator) throws ResultAccumulationException,
-    CriterionBuilderException {
+  CriterionBuilderException {
     // when should we use GBIF profile vs regular profile? should we run both?
     MetadataCriterion criterion = EMLCriterionBuilder.builder().build();
     Optional<ValidationResult> result = criterion.validate(emlFile);
@@ -162,7 +162,7 @@ public class DwcArchiveEvaluator implements FileEvaluator {
   }
 
   public void inspectMetaXML(File metaXmlFile, ResultAccumulator resultAccumulator) throws ResultAccumulationException,
-    CriterionBuilderException {
+  CriterionBuilderException {
 
     MetadataCriterion criterion = MetaDescriptorCriterionBuilder.builder().build();
     Optional<ValidationResult> result = criterion.validate(metaXmlFile);

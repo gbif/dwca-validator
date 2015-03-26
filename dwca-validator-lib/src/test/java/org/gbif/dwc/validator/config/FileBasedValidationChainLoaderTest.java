@@ -25,7 +25,7 @@ import static org.junit.Assert.fail;
 
 /**
  * Test a validation chain built from a configuration file.
- * 
+ *
  * @author cgendreau
  */
 public class FileBasedValidationChainLoaderTest {
@@ -71,7 +71,7 @@ public class FileBasedValidationChainLoaderTest {
         chainHead.evaluateRecord(testRecord, EvaluationContext.CORE, resultAccumulator);
         chainHead.evaluateRecord(testRecordDuplicate, EvaluationContext.CORE, resultAccumulator);
 
-        chainHead.evaluateDataset(resultAccumulator);
+        chainHead.postIterate(resultAccumulator);
 
         chainHead.cleanup();
       } catch (ResultAccumulationException e) {
