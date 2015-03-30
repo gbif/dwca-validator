@@ -2,7 +2,6 @@ package org.gbif.dwc.validator.criteria.configuration;
 
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
-import org.gbif.dwc.validator.result.Result;
 
 import java.util.List;
 
@@ -11,24 +10,14 @@ import com.google.common.collect.Lists;
 
 /**
  * Container object holding CompletenessCriterion configurations.
- * 
+ *
  * @author cgendreau
  */
 @CriterionConfigurationKey("completenessCriterion")
-public class CompletenessCriterionConfiguration {
+public class CompletenessCriterionConfiguration extends AbstractRecordCriterionConfiguration {
 
-  private String rowTypeRestriction;
-  private Result level = Result.ERROR;
   private List<String> absenceSynonyms;
   private Term term;
-
-  public String getRowTypeRestriction() {
-    return rowTypeRestriction;
-  }
-
-  public void setRowTypeRestriction(String rowTypeRestriction) {
-    this.rowTypeRestriction = rowTypeRestriction;
-  }
 
   public Term getTerm() {
     return term;
@@ -49,11 +38,4 @@ public class CompletenessCriterionConfiguration {
     return absenceSynonyms;
   }
 
-  public Result getLevel() {
-    return level;
-  }
-
-  public void setLevel(Result level) {
-    this.level = level;
-  }
 }

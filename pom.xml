@@ -24,7 +24,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- versions -->
 		<dwc-api.version>1.10-SNAPSHOT</dwc-api.version>
-		<dwca-reader.version>1.20-SNAPSHOT</dwca-reader.version>
+		<dwca-io.version>1.22-SNAPSHOT</dwca-io.version>
 		<threetenbp.version>1.0</threetenbp.version>
 		<snakeyaml.version>1.14</snakeyaml.version>
     <commons-csv.version>1.0</commons-csv.version>
@@ -86,8 +86,8 @@
       </dependency>
       <dependency>
         <groupId>org.gbif</groupId>
-        <artifactId>dwca-reader</artifactId>
-        <version>${dwca-reader.version}</version>
+        <artifactId>dwca-io</artifactId>
+        <version>${dwca-io.version}</version>
       </dependency>
       <dependency>
         <groupId>org.threeten</groupId>

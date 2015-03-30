@@ -11,7 +11,6 @@ import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Optional;
@@ -22,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
  * CompletenessCriterion allows to check if the value of a term is complete.
  * Complete means that the value is not blank (not null and not empty).
  * It is also possible to specify a list of strings that should be considered as an absence of value (e.g. "null", "na")
- * 
+ *
  * @author cgendreau
  */
 @RecordCriterionKey(key = "completenessCriterion")
@@ -32,8 +31,9 @@ class CompletenessCriterion extends RecordCriterion {
 
   private final Term term;
   private final List<String> absenceSynonyms;
+
   private final Result level;
-  private final String rowTypeRestriction;
+  private final Term rowTypeRestriction;
 
   CompletenessCriterion(CompletenessCriterionConfiguration completenessCriterionConfiguration) {
     this.term = completenessCriterionConfiguration.getTerm();
@@ -55,11 +55,11 @@ class CompletenessCriterion extends RecordCriterion {
   @Override
   public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
     // if we specified a rowType restriction, check that the record is also of this rowType
-    if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
+    if (rowTypeRestriction != null && !rowTypeRestriction.equals(record.rowType())) {
       return Optional.absent();
     }
 
-    List<ValidationResultElement> elementList = new ArrayList<ValidationResultElement>();
+    List<ValidationResultElement> elementList = null;
 
     String str = record.value(term);
     boolean isPresent = StringUtils.isNotBlank(str);
@@ -68,15 +68,17 @@ class CompletenessCriterion extends RecordCriterion {
     }
 
     if (!isPresent) {
+      elementList = Lists.newArrayListWithCapacity(1);
       elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
         ValidatorConfig.getLocalizedString("criterion.completeness_criterion.incomplete", term)));
     }
 
     if (elementList != null && elementList.size() > 0) {
-      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType(), elementList));
+      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName(),
+        elementList));
     }
 
-    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType()));
+    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName()));
   }
 
 }

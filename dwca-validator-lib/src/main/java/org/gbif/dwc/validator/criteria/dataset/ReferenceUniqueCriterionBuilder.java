@@ -9,12 +9,11 @@ import org.gbif.dwc.validator.result.EvaluationContext;
 import java.io.File;
 
 import com.google.common.base.Preconditions;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Builder of ReferenceUniqueCriteria object.
  * Returned ReferenceUniqueCriteria is NOT immutable due to file access.
- * 
+ *
  * @author cgendreau
  */
 @DatasetCriterionBuilderKey("referenceUniqueCriterion")
@@ -36,7 +35,7 @@ public class ReferenceUniqueCriterionBuilder implements DatasetCriterionBuilder 
 
   /**
    * Create with default value. Using coreId.
-   * 
+   *
    * @return
    */
   public static ReferenceUniqueCriterionBuilder builder() {
@@ -45,7 +44,7 @@ public class ReferenceUniqueCriterionBuilder implements DatasetCriterionBuilder 
 
   /**
    * Build UniquenessEvaluator object.
-   * 
+   *
    * @return
    * @throws IllegalStateException
    */
@@ -54,7 +53,7 @@ public class ReferenceUniqueCriterionBuilder implements DatasetCriterionBuilder 
 
     // if no 'term' is set the id will be used to test as 'star' records
     if (configuration.getTerm() != null) {
-      Preconditions.checkState(StringUtils.isNotBlank(configuration.getRowTypeRestriction()),
+      Preconditions.checkState(configuration.getRowTypeRestriction() != null,
         "rowTypeRestriction must be provided if a specific term is specified.");
       Preconditions.checkState(uniquenessCriterionConfiguration != null,
         "uniquenessCriterionConfiguration must be provided if a specific term is specified.");
@@ -91,8 +90,8 @@ public class ReferenceUniqueCriterionBuilder implements DatasetCriterionBuilder 
   }
 
   public ReferenceUniqueCriterionBuilder termRefersToUnique(Term term, EvaluationContext evaluationContextRestriction,
-    String rowTypeRestriction, Term referedTerm, EvaluationContext referedEvaluationContextRestriction,
-    String referedRowTypeRestriction) {
+    Term rowTypeRestriction, Term referedTerm, EvaluationContext referedEvaluationContextRestriction,
+    Term referedRowTypeRestriction) {
     this.configuration.setTerm(term);
     this.configuration.setEvaluationContextRestriction(evaluationContextRestriction);
     this.configuration.setRowTypeRestriction(rowTypeRestriction);
@@ -107,7 +106,7 @@ public class ReferenceUniqueCriterionBuilder implements DatasetCriterionBuilder 
   /**
    * Should the evaluator accept multiple values using a defined separator.
    * e.g. 1234|2345
-   * 
+   *
    * @param separator
    * @return
    */
@@ -118,7 +117,7 @@ public class ReferenceUniqueCriterionBuilder implements DatasetCriterionBuilder 
 
   /**
    * Set working folder to save temporary files.
-   * 
+   *
    * @param workingFolder
    * @return
    */

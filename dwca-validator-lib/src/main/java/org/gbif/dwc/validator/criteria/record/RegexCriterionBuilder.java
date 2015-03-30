@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
 
 /**
  * Builder for BoundCriterion objects.
- * 
+ *
  * @author cgendreau
  */
 @RecordCriterionBuilderKey("regexCriterion")
@@ -30,7 +30,7 @@ public class RegexCriterionBuilder implements RecordCriterionBuilder {
 
   /**
    * Set the Regular Expression on a term.
-   * 
+   *
    * @param regex
    */
   public RegexCriterionBuilder regex(Term term, String regex) {
@@ -41,18 +41,18 @@ public class RegexCriterionBuilder implements RecordCriterionBuilder {
 
   /**
    * Set the restriction on the rowType to avoid the evaluation to run on all rowType.
-   * 
+   *
    * @param rowTypeRestriction
    * @return
    */
   public RegexCriterionBuilder onRowType(Term rowTypeRestriction) {
-    configuration.setRowTypeRestriction(rowTypeRestriction.qualifiedName());
+    configuration.setRowTypeRestriction(rowTypeRestriction);
     return this;
   }
 
   /**
    * Build RegexCriterion object.
-   * 
+   *
    * @return immutable BoundCriteria object
    * @throws NullPointerException if the regex is null
    */

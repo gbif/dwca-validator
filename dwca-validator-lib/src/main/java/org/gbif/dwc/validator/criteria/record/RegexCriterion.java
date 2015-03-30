@@ -23,7 +23,7 @@ import org.apache.commons.lang3.StringUtils;
  * Check if the provided String can be matched against a specific Regular Expression.
  * Criterion is using Matcher(str).matches() meaning that it will 'Attempt to match the entire region against the
  * pattern.'
- * 
+ *
  * @author cgendreau
  */
 @RecordCriterionKey(key = "regexCriterion")
@@ -31,8 +31,9 @@ class RegexCriterion extends RecordCriterion {
 
   private final String key = RegexCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
-  private final String rowTypeRestriction;
+  private final Term rowTypeRestriction;
   private final Result level;
+
   private final Term term;
   private final Pattern pattern;
   private final String explanation;
@@ -48,7 +49,7 @@ class RegexCriterion extends RecordCriterion {
   @Override
   public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
     // if we specified a rowType restriction, check that the record is also of this rowType
-    if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
+    if (rowTypeRestriction != null && !rowTypeRestriction.equals(record.rowType())) {
       return Optional.absent();
     }
 
@@ -70,9 +71,10 @@ class RegexCriterion extends RecordCriterion {
     }
 
     if (elementList != null && elementList.size() > 0) {
-      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType(), elementList));
+      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName(),
+        elementList));
     }
-    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType()));
+    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName()));
   }
 
   @Override

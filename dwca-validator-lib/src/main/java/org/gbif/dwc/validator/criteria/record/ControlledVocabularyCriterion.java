@@ -17,14 +17,13 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Optional;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * RecordCriterion used to ensure the value of a term is matching against a controlled vocabulary.
  * TODO: add ability to set 'preferred' and 'alternative' string
  * TODO: should we only compare lowerCase (at least by default)?
  * TODO: should we accept ascii folding setting? If yes, how it will (should) react with characters like 保存標本
- * 
+ *
  * @author cgendreau
  */
 @RecordCriterionKey(key = "controlledVocabularyCriterion")
@@ -33,7 +32,7 @@ class ControlledVocabularyCriterion extends RecordCriterion {
   private final String key = ControlledVocabularyCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
   private final Result level;
-  private final String rowTypeRestriction;
+  private final Term rowTypeRestriction;
 
   private final Term term;
   private final Set<String> vocabularySet;
@@ -58,7 +57,7 @@ class ControlledVocabularyCriterion extends RecordCriterion {
   @Override
   public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
     // if we specified a rowType restriction, check that the record is also of this rowType
-    if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
+    if (rowTypeRestriction != null && !rowTypeRestriction.equals(record.rowType())) {
       return Optional.absent();
     }
 
@@ -75,9 +74,10 @@ class ControlledVocabularyCriterion extends RecordCriterion {
     }
 
     if (elementList != null && elementList.size() > 0) {
-      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType(), elementList));
+      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName(),
+        elementList));
     }
-    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType()));
+    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName()));
   }
 
 }

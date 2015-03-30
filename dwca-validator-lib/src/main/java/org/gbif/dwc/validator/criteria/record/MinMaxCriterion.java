@@ -17,14 +17,13 @@ import java.util.List;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
 
 @RecordCriterionKey(key = "minMaxCriterion")
 class MinMaxCriterion extends RecordCriterion {
 
   private final String key = MinMaxCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
-  private final String rowTypeRestriction;
+  private final Term rowTypeRestriction;
   private final Result level;
 
   private final ValueTransformation<Number> minValueTransformation;
@@ -52,7 +51,7 @@ class MinMaxCriterion extends RecordCriterion {
   @Override
   public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
     // if we specified a rowType restriction, check that the record is also of this rowType
-    if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
+    if (rowTypeRestriction != null && !rowTypeRestriction.equals(record.rowType())) {
       return Optional.absent();
     }
 
@@ -96,9 +95,10 @@ class MinMaxCriterion extends RecordCriterion {
     }
 
     if (elementList != null && elementList.size() > 0) {
-      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType(), elementList));
+      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName(),
+        elementList));
     }
 
-    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType()));
+    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName()));
   }
 }

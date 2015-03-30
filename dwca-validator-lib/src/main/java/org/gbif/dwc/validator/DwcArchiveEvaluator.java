@@ -145,14 +145,14 @@ public class DwcArchiveEvaluator implements FileEvaluator {
     // but it could also be very error prone.
     // Term idTerm = dwcaComponent.getId().getTerm();
 
-    RecordIterator recordIt = RecordIterator.build(dwcaComponent, false);
+    RecordIterator recordIt = RecordIterator.build(dwcaComponent, false, false);
     while (recordIt.hasNext()) {
       evaluatorChain.evaluateRecord(recordIt.next(), evaluationContext, resultAccumulator);
     }
   }
 
   public void inspectEML(File emlFile, ResultAccumulator resultAccumulator) throws ResultAccumulationException,
-  CriterionBuilderException {
+    CriterionBuilderException {
     // when should we use GBIF profile vs regular profile? should we run both?
     MetadataCriterion criterion = EMLCriterionBuilder.builder().build();
     Optional<ValidationResult> result = criterion.validate(emlFile);
@@ -162,7 +162,7 @@ public class DwcArchiveEvaluator implements FileEvaluator {
   }
 
   public void inspectMetaXML(File metaXmlFile, ResultAccumulator resultAccumulator) throws ResultAccumulationException,
-  CriterionBuilderException {
+    CriterionBuilderException {
 
     MetadataCriterion criterion = MetaDescriptorCriterionBuilder.builder().build();
     Optional<ValidationResult> result = criterion.validate(metaXmlFile);

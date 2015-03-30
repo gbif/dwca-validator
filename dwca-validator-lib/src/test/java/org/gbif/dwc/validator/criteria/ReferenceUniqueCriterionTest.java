@@ -23,7 +23,7 @@ import static org.junit.Assert.fail;
 
 /**
  * Test ReferenceUniqueCriterion with mock records.
- * 
+ *
  * @author cgendreau
  */
 public class ReferenceUniqueCriterionTest {
@@ -36,7 +36,7 @@ public class ReferenceUniqueCriterionTest {
     fieldList.add(idField);
     fieldList.add(acceptedNameUsageIDField);
 
-    RecordImpl testRecord = new RecordImpl(idField, fieldList, DwcTerm.Taxon.qualifiedName(), false);
+    RecordImpl testRecord = new RecordImpl(idField, fieldList, DwcTerm.Taxon, false, false);
     testRecord.setRow(new String[] {taxonID, acceptedNameUsageID});
     return testRecord;
   }
@@ -48,7 +48,7 @@ public class ReferenceUniqueCriterionTest {
     try {
       DatasetCriterion referenceCriterion =
         DatasetCriteria.termReferentialIntegrityInCore(null, DwcTerm.acceptedNameUsageID, DwcTerm.taxonID,
-          DwcTerm.Taxon.qualifiedName()).build();
+          DwcTerm.Taxon).build();
 
       referenceCriterion.onRecord(buildMockRecord("1", "2b"), EvaluationContext.CORE);
       referenceCriterion.onRecord(buildMockRecord("2a", "1"), EvaluationContext.CORE);
@@ -74,7 +74,7 @@ public class ReferenceUniqueCriterionTest {
     try {
       DatasetCriterion referenceCriterion =
         DatasetCriteria.termReferentialIntegrityInCore(null, DwcTerm.acceptedNameUsageID, DwcTerm.taxonID,
-          DwcTerm.Taxon.qualifiedName()).build();
+          DwcTerm.Taxon).build();
 
       referenceCriterion.onRecord(buildMockRecord("1", "4"), EvaluationContext.CORE);
       referenceCriterion.onRecord(buildMockRecord("2", "1"), EvaluationContext.CORE);
@@ -99,8 +99,8 @@ public class ReferenceUniqueCriterionTest {
     try {
       DatasetCriterion referenceCriterion =
         DatasetCriteria
-          .termReferentialIntegrityInCore(null, DwcTerm.acceptedNameUsageID, DwcTerm.taxonID,
-            DwcTerm.Taxon.qualifiedName()).supportMultipleValues("|").build();
+          .termReferentialIntegrityInCore(null, DwcTerm.acceptedNameUsageID, DwcTerm.taxonID, DwcTerm.Taxon)
+          .supportMultipleValues("|").build();
 
       referenceCriterion.onRecord(buildMockRecord("1", "3|4"), EvaluationContext.CORE);
       referenceCriterion.onRecord(buildMockRecord("3", ""), EvaluationContext.CORE);
@@ -124,8 +124,8 @@ public class ReferenceUniqueCriterionTest {
     try {
       DatasetCriterion referenceCriterion =
         DatasetCriteria
-          .termReferentialIntegrityInCore(null, DwcTerm.acceptedNameUsageID, DwcTerm.taxonID,
-            DwcTerm.Taxon.qualifiedName()).supportMultipleValues("|").build();
+          .termReferentialIntegrityInCore(null, DwcTerm.acceptedNameUsageID, DwcTerm.taxonID, DwcTerm.Taxon)
+          .supportMultipleValues("|").build();
       referenceCriterion.onRecord(buildMockRecord("1", "3|5"), EvaluationContext.CORE);
       referenceCriterion.onRecord(buildMockRecord("3", ""), EvaluationContext.CORE);
       referenceCriterion.onRecord(buildMockRecord("4", ""), EvaluationContext.CORE);

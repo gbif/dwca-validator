@@ -6,11 +6,10 @@ import org.gbif.dwc.validator.criteria.configuration.CompletenessCriterionConfig
 import org.gbif.dwc.validator.result.Result;
 
 import com.google.common.base.Preconditions;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Builder of CompletenessCriterion objects.
- * 
+ *
  * @author cgendreau
  */
 @RecordCriterionBuilderKey("completenessCriterion")
@@ -32,7 +31,7 @@ public class CompletenessCriterionBuilder implements RecordCriterionBuilder {
 
   /**
    * Build CompletenessCriterion object.
-   * 
+   *
    * @return immutable CompletenessCriterion object
    * @throws IllegalStateException if no terms were specified
    */
@@ -46,15 +45,14 @@ public class CompletenessCriterionBuilder implements RecordCriterionBuilder {
 
     // we need a RowTypeRestriction otherwise all extension records could be flagged as incomplete
     // even if the don't use the term by definition.
-    Preconditions.checkState(StringUtils.isNotBlank(configuration.getRowTypeRestriction()),
-      "A RowTypeRestriction must be provided");
+    Preconditions.checkState(configuration.getRowTypeRestriction() != null, "A RowTypeRestriction must be provided");
 
     return new CompletenessCriterion(configuration);
   }
 
   /**
    * Check the provided Term for completion.
-   * 
+   *
    * @param term
    * @return
    */
@@ -65,7 +63,7 @@ public class CompletenessCriterionBuilder implements RecordCriterionBuilder {
 
   /**
    * Check the provided Term for completion and specify 1 or more absence synonyms.
-   * 
+   *
    * @param term
    * @param absenceSynonyms strings that should be considered as an absence of value e.g. "null", "na"
    * @return
@@ -86,12 +84,12 @@ public class CompletenessCriterionBuilder implements RecordCriterionBuilder {
 
   /**
    * Set the restriction on the rowType to avoid the evaluation to run on all rowType.
-   * 
+   *
    * @param rowTypeRestriction
    * @return
    */
   public CompletenessCriterionBuilder onRowType(Term rowTypeRestriction) {
-    configuration.setRowTypeRestriction(rowTypeRestriction.qualifiedName());
+    configuration.setRowTypeRestriction(rowTypeRestriction);
     return this;
   }
 }

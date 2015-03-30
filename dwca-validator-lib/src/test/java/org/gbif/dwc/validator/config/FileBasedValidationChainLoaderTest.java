@@ -45,7 +45,7 @@ public class FileBasedValidationChainLoaderTest {
     fieldList.add(decimalLatitudeField);
     fieldList.add(decimalLongitudeField);
     fieldList.add(genusField);
-    RecordImpl testRecord = new RecordImpl(idField, fieldList, DwcTerm.Occurrence.qualifiedName(), false);
+    RecordImpl testRecord = new RecordImpl(idField, fieldList, DwcTerm.Occurrence, false, false);
     testRecord.setRow(new String[] {id, "gulo\tgulo", "10-07-2014", "2.3", "a", "monodon"});
     return testRecord;
   }

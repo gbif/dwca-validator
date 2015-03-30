@@ -25,7 +25,7 @@ import static org.junit.Assert.fail;
 
 /**
  * Test UniquenessCriterion with mock records.
- * 
+ *
  * @author cgendreau
  */
 public class UniquenessCriterionTest {
@@ -39,7 +39,7 @@ public class UniquenessCriterionTest {
     fieldList.add(scientificNameField);
     fieldList.add(catalogNumberField);
 
-    RecordImpl testRecord = new RecordImpl(idField, fieldList, DwcTerm.Occurrence.qualifiedName(), false);
+    RecordImpl testRecord = new RecordImpl(idField, fieldList, DwcTerm.Occurrence, false, false);
     testRecord.setRow(new String[] {id, "gulo\tgulo", catalogNumber});
     return testRecord;
   }
@@ -101,8 +101,8 @@ public class UniquenessCriterionTest {
 
     try {
       DatasetCriterion valueEvaluator =
-        UniquenessCriterionBuilder.builder()
-          .on(DwcTerm.catalogNumber, EvaluationContext.CORE, DwcTerm.Occurrence.qualifiedName()).build();
+        UniquenessCriterionBuilder.builder().on(DwcTerm.catalogNumber, EvaluationContext.CORE, DwcTerm.Occurrence)
+          .build();
       valueEvaluator.onRecord(buildMockRecord("1", "1"), EvaluationContext.CORE);
       valueEvaluator.onRecord(buildMockRecord("2", "1"), EvaluationContext.CORE);
 

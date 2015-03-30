@@ -1,5 +1,6 @@
 package org.gbif.dwc.validator.criteria.configuration;
 
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.result.Result;
 
 /**
@@ -9,14 +10,14 @@ import org.gbif.dwc.validator.result.Result;
  */
 public abstract class AbstractRecordCriterionConfiguration {
 
-  private String rowTypeRestriction;
+  private Term rowTypeRestriction;
   private Result level = Result.ERROR;
 
-  public String getRowTypeRestriction() {
+  public Term getRowTypeRestriction() {
     return rowTypeRestriction;
   }
 
-  public void setRowTypeRestriction(String rowTypeRestriction) {
+  public void setRowTypeRestriction(Term rowTypeRestriction) {
     this.rowTypeRestriction = rowTypeRestriction;
   }
 

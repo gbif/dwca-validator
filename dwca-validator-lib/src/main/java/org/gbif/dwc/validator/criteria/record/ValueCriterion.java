@@ -33,12 +33,14 @@ class ValueCriterion<T> extends RecordCriterion {
 
   private final Term term;
   private final Result level;
+  private final Term rowTypeRestriction;
 
   private final ValueTransformation<T> transformation;
   private final Predicate<T> predicate;
 
   ValueCriterion(ValueCriterionConfiguration<T> configuration) {
     this.level = configuration.getLevel();
+    this.rowTypeRestriction = configuration.getRowTypeRestriction();
     this.term = configuration.getTerm();
     this.predicate = configuration.getPredicate();
     this.transformation = configuration.getTransformation();
@@ -51,6 +53,10 @@ class ValueCriterion<T> extends RecordCriterion {
 
   @Override
   public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
+    // if we specified a rowType restriction, check that the record is also of this rowType
+    if (rowTypeRestriction != null && !rowTypeRestriction.equals(record.rowType())) {
+      return Optional.absent();
+    }
 
     List<ValidationResultElement> elementList = new ArrayList<ValidationResultElement>();
     ValueTransformationResult<T> valueToCompareResult = transformation.transform(record);
@@ -67,10 +73,11 @@ class ValueCriterion<T> extends RecordCriterion {
     }
 
     if (elementList != null && elementList.size() > 0) {
-      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType(), elementList));
+      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName(),
+        elementList));
     }
 
-    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType()));
+    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName()));
   }
 
 }

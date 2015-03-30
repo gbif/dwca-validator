@@ -2,37 +2,18 @@ package org.gbif.dwc.validator.criteria.configuration;
 
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
-import org.gbif.dwc.validator.result.Result;
 
 /**
  * Container object holding RegexCriterion configurations.
- * 
+ *
  * @author cgendreau
  */
 @CriterionConfigurationKey("regexCriterion")
-public class RegexCriterionConfiguration {
+public class RegexCriterionConfiguration extends AbstractRecordCriterionConfiguration {
 
-  private String rowTypeRestriction;
-  private Result level = Result.ERROR;
   private Term term;
   private String regex;
   private String explanation;
-
-  public String getRowTypeRestriction() {
-    return rowTypeRestriction;
-  }
-
-  public void setRowTypeRestriction(String rowTypeRestriction) {
-    this.rowTypeRestriction = rowTypeRestriction;
-  }
-
-  public Result getLevel() {
-    return level;
-  }
-
-  public void setLevel(Result level) {
-    this.level = level;
-  }
 
   public Term getTerm() {
     return term;
@@ -56,7 +37,7 @@ public class RegexCriterionConfiguration {
 
   /**
    * Set an optional explanation for end user explaining the purpose of the regex.
-   * 
+   *
    * @param explanation
    */
   public void setExplanation(String explanation) {

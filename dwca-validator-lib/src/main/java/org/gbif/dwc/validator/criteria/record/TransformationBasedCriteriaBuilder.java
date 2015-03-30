@@ -8,7 +8,7 @@ import com.google.common.base.Preconditions;
 
 /**
  * Builder for BoundCriteria objects.
- * 
+ *
  * @author cgendreau
  */
 public class TransformationBasedCriteriaBuilder implements RecordCriterionBuilder {
@@ -29,7 +29,7 @@ public class TransformationBasedCriteriaBuilder implements RecordCriterionBuilde
 
   /**
    * Build TransformationBasedCriteria object.
-   * 
+   *
    * @return immutable TransformationBasedCriteria object
    * @throws NullPointerException if the getTransformations is null
    */
@@ -44,7 +44,7 @@ public class TransformationBasedCriteriaBuilder implements RecordCriterionBuilde
 
   /**
    * Append a transformation to the transformation list.
-   * 
+   *
    * @param transformation
    */
   public TransformationBasedCriteriaBuilder appendTransformation(ValueTransformation<?> transformation) {
@@ -54,12 +54,12 @@ public class TransformationBasedCriteriaBuilder implements RecordCriterionBuilde
 
   /**
    * Set the restriction on the rowType to avoid the evaluation to run on all rowType.
-   * 
+   *
    * @param rowTypeRestriction
    * @return
    */
   public TransformationBasedCriteriaBuilder onRowType(Term rowTypeRestriction) {
-    configuration.setRowTypeRestriction(rowTypeRestriction.qualifiedName());
+    configuration.setRowTypeRestriction(rowTypeRestriction);
     return this;
   }
 

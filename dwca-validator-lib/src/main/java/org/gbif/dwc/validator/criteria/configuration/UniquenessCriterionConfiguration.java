@@ -8,14 +8,14 @@ import java.io.File;
 
 /**
  * Container object holding UniquenessEvaluator configurations.
- * 
+ *
  * @author cgendreau
  */
 @CriterionConfigurationKey("uniquenessCriterion")
 public class UniquenessCriterionConfiguration {
 
   private EvaluationContext evaluationContextRestriction;
-  private String rowTypeRestriction;
+  private Term rowTypeRestriction;
 
   private Term term;
   private File workingFolder;
@@ -36,11 +36,11 @@ public class UniquenessCriterionConfiguration {
     this.workingFolder = workingFolder;
   }
 
-  public String getRowTypeRestriction() {
+  public Term getRowTypeRestriction() {
     return rowTypeRestriction;
   }
 
-  public void setRowTypeRestriction(String rowTypeRestriction) {
+  public void setRowTypeRestriction(Term rowTypeRestriction) {
     this.rowTypeRestriction = rowTypeRestriction;
   }
 

@@ -10,7 +10,7 @@ import org.apache.commons.lang3.BooleanUtils;
 
 /**
  * Builder for MinMaxCriterion objects.
- * 
+ *
  * @author cgendreau
  */
 @RecordCriterionBuilderKey("minMaxCriterion")
@@ -32,7 +32,7 @@ public class MinMaxCriterionBuilder implements RecordCriterionBuilder {
 
   /**
    * Sets terms who should contain minimum and maximum values.
-   * 
+   *
    * @param minTerm lower inclusive bound
    * @param maxTerm upper inclusive bound
    */
@@ -54,18 +54,18 @@ public class MinMaxCriterionBuilder implements RecordCriterionBuilder {
 
   /**
    * Set the restriction on the rowType to avoid the evaluation to run on all rowType.
-   * 
+   *
    * @param rowTypeRestriction
    * @return
    */
   public MinMaxCriterionBuilder onRowType(Term rowTypeRestriction) {
-    configuration.setRowTypeRestriction(rowTypeRestriction.qualifiedName());
+    configuration.setRowTypeRestriction(rowTypeRestriction);
     return this;
   }
 
   /**
    * Build MinMaxCriterion object.
-   * 
+   *
    * @return immutable MinMaxCriterion object
    * @throws NullPointerException if the minValueTransformation or maxValueTransformation is null
    */

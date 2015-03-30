@@ -2,42 +2,23 @@ package org.gbif.dwc.validator.criteria.configuration;
 
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.annotation.CriterionConfigurationKey;
-import org.gbif.dwc.validator.result.Result;
 
 import com.google.common.base.CharMatcher;
 
 /**
  * Container object holding InvalidCharacterCriterion configurations.
- * 
+ *
  * @author cgendreau
  */
 @CriterionConfigurationKey("invalidCharacterCriterion")
-public class InvalidCharacterCriterionConfiguration {
+public class InvalidCharacterCriterionConfiguration extends AbstractRecordCriterionConfiguration {
 
-  private String rowTypeRestriction;
-  private Result level = Result.ERROR;
   private Term term;
 
   private boolean allowFormattingWhiteSpace = false;
   private boolean rejectReplacementChar = false;
 
   private CharMatcher charMatcher;
-
-  public String getRowTypeRestriction() {
-    return rowTypeRestriction;
-  }
-
-  public void setRowTypeRestriction(String rowTypeRestriction) {
-    this.rowTypeRestriction = rowTypeRestriction;
-  }
-
-  public Result getLevel() {
-    return level;
-  }
-
-  public void setLevel(Result level) {
-    this.level = level;
-  }
 
   public Term getTerm() {
     return term;
@@ -69,7 +50,7 @@ public class InvalidCharacterCriterionConfiguration {
 
   /**
    * CharMatcher will be set by the build, do not set a CharMatcher directly using this method.
-   * 
+   *
    * @param charMatcher
    */
   public void setCharMatcher(CharMatcher charMatcher) {

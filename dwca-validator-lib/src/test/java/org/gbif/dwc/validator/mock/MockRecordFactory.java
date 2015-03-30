@@ -13,14 +13,14 @@ import java.util.List;
 
 /**
  * Factory class to build mock record for testing purpose.
- * 
+ *
  * @author cgendreau
  */
 public class MockRecordFactory {
 
   /**
    * Build a mock Record instance for testing purpose.
-   * 
+   *
    * @param idTerm
    * @param idValue
    * @param terms this should not include the term used in idTerm
@@ -44,7 +44,7 @@ public class MockRecordFactory {
       fieldList.add(new ArchiveField(idx, currTerm, null, DataType.string));
       idx++;
     }
-    RecordImpl testRecord = new RecordImpl(idField, fieldList, DwcTerm.Occurrence.qualifiedName(), false);
+    RecordImpl testRecord = new RecordImpl(idField, fieldList, DwcTerm.Occurrence, false, false);
 
     List<String> row = new ArrayList<String>(Arrays.asList(values));
     row.add(0, idValue);

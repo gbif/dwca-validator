@@ -17,14 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Optional;
-import org.apache.commons.lang3.StringUtils;
 
 @RecordCriterionKey(key = "boundCriterion")
 class BoundCriterion extends RecordCriterion {
 
   private final String key = BoundCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
-  private final String rowTypeRestriction;
+  private final Term rowTypeRestriction;
   private final Result level;
 
   private final Number lowerBound;
@@ -56,7 +55,7 @@ class BoundCriterion extends RecordCriterion {
   public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
 
     // if we specified a rowType restriction, check that the record is also of this rowType
-    if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
+    if (rowTypeRestriction != null && !rowTypeRestriction.equals(record.rowType())) {
       return Optional.absent();
     }
 
@@ -76,13 +75,15 @@ class BoundCriterion extends RecordCriterion {
       elementList.add(new ValidationResultElement(key, ContentValidationType.RECORD_CONTENT_VALUE, level,
         ValidatorConfig.getLocalizedString("criterion.bound_criterion.out_of_bounds", parsedValue, lowerBound,
           upperBound, term)));
-      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType(), elementList));
+      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName(),
+        elementList));
     }
 
     if (elementList != null && elementList.size() > 0) {
-      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType(), elementList));
+      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName(),
+        elementList));
     }
 
-    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType()));
+    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName()));
   }
 }

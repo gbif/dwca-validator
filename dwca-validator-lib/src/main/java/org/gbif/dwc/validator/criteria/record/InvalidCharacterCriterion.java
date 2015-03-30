@@ -16,14 +16,13 @@ import java.util.List;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Optional;
-import org.apache.commons.lang3.StringUtils;
 
 @RecordCriterionKey(key = "invalidCharacterCriterion")
 class InvalidCharacterCriterion extends RecordCriterion {
 
   private final String key = InvalidCharacterCriterion.class.getAnnotation(RecordCriterionKey.class).key();
 
-  private final String rowTypeRestriction;
+  private final Term rowTypeRestriction;
   private final Result level;
   private final Term term;
 
@@ -46,7 +45,7 @@ class InvalidCharacterCriterion extends RecordCriterion {
   public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
 
     // if we specified a rowType restriction, check that the record is also of this rowType
-    if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
+    if (rowTypeRestriction != null && !rowTypeRestriction.equals(record.rowType())) {
       return Optional.absent();
     }
 
@@ -69,10 +68,11 @@ class InvalidCharacterCriterion extends RecordCriterion {
     }
 
     if (elementList != null && elementList.size() > 0) {
-      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType(), elementList));
+      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName(),
+        elementList));
     }
 
-    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType()));
+    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName()));
   }
 
 }

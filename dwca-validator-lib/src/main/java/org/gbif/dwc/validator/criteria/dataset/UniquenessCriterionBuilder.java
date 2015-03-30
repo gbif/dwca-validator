@@ -9,12 +9,11 @@ import java.io.File;
 import java.io.IOException;
 
 import com.google.common.base.Preconditions;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Builder of UniquenessCriterion object.
  * Returned UniquenessCriterion is NOT totally immutable due to file access.
- * 
+ *
  * @author cgendreau
  */
 @DatasetCriterionBuilderKey("uniquenessCriterion")
@@ -32,7 +31,7 @@ public class UniquenessCriterionBuilder implements DatasetCriterionBuilder {
 
   /**
    * Create with default value. Using coreId.
-   * 
+   *
    * @return
    */
   public static UniquenessCriterionBuilder builder() {
@@ -41,7 +40,7 @@ public class UniquenessCriterionBuilder implements DatasetCriterionBuilder {
 
   /**
    * Get a new builder instance using the provided UniquenessCriterionConfiguration.
-   * 
+   *
    * @param configuration
    * @return
    */
@@ -51,7 +50,7 @@ public class UniquenessCriterionBuilder implements DatasetCriterionBuilder {
 
   /**
    * Build UniquenessEvaluator object.
-   * 
+   *
    * @return
    * @throws IllegalStateException
    * @throws IOException
@@ -71,7 +70,7 @@ public class UniquenessCriterionBuilder implements DatasetCriterionBuilder {
     if (configuration.getEvaluationContextRestriction() == null) {
       this.configuration.setEvaluationContextRestriction(EvaluationContext.CORE);
     } else if (configuration.getEvaluationContextRestriction() == EvaluationContext.EXT) {
-      Preconditions.checkState(StringUtils.isNotBlank(configuration.getRowTypeRestriction()),
+      Preconditions.checkState(configuration.getRowTypeRestriction() != null,
         "RowTypeRestriction must be provided for extension");
       Preconditions.checkState(configuration.getTerm() != null, "A Term must be provided for extension");
     }
@@ -94,7 +93,7 @@ public class UniquenessCriterionBuilder implements DatasetCriterionBuilder {
 
   /**
    * Set on which Term the evaluation should be made on core file.
-   * 
+   *
    * @param term
    * @return
    */
@@ -105,13 +104,13 @@ public class UniquenessCriterionBuilder implements DatasetCriterionBuilder {
 
   /**
    * Set on which Term and rowType the evaluation should be made on extension.
-   * 
+   *
    * @param term
    * @param evaluationContext
    * @param rowType
    * @return
    */
-  public UniquenessCriterionBuilder on(Term term, EvaluationContext evaluationContext, String rowType) {
+  public UniquenessCriterionBuilder on(Term term, EvaluationContext evaluationContext, Term rowType) {
     configuration.setTerm(term);
     configuration.setEvaluationContextRestriction(evaluationContext);
     configuration.setRowTypeRestriction(rowType);
@@ -120,7 +119,7 @@ public class UniquenessCriterionBuilder implements DatasetCriterionBuilder {
 
   /**
    * Set working folder to save temporary files.
-   * 
+   *
    * @param workingFolder
    * @return
    */

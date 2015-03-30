@@ -1,6 +1,7 @@
 package org.gbif.dwc.validator.criteria.record;
 
 import org.gbif.dwc.record.Record;
+import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
 import org.gbif.dwc.validator.criteria.configuration.TransformationBasedCriteriaConfiguration;
 import org.gbif.dwc.validator.result.EvaluationContext;
@@ -16,11 +17,10 @@ import java.util.Collections;
 import java.util.List;
 
 import com.google.common.base.Optional;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Criteria that only validates that the registered transformation(s) can be applied.
- * 
+ *
  * @author cgendreau
  */
 @RecordCriterionKey(key = "transformationBasedCriteria")
@@ -28,7 +28,7 @@ class TransformationBasedCriteria extends RecordCriterion {
 
   private final String key = TransformationBasedCriteria.class.getAnnotation(RecordCriterionKey.class).key();
 
-  private final String rowTypeRestriction;
+  private final Term rowTypeRestriction;
   private final Result level;
 
   private final List<ValueTransformation<?>> transformations;
@@ -48,7 +48,7 @@ class TransformationBasedCriteria extends RecordCriterion {
   public Optional<ValidationResult> handleRecord(Record record, EvaluationContext evaluationContext) {
 
     // if we specified a rowType restriction, check that the record is also of this rowType
-    if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
+    if (rowTypeRestriction != null && !rowTypeRestriction.equals(record.rowType())) {
       return Optional.absent();
     }
 
@@ -63,10 +63,11 @@ class TransformationBasedCriteria extends RecordCriterion {
       }
     }
     if (elementList != null && elementList.size() > 0) {
-      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType(), elementList));
+      return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName(),
+        elementList));
     }
 
-    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType()));
+    return Optional.of(new ValidationResult(record.id(), evaluationContext, record.rowType().qualifiedName()));
   }
 
 }

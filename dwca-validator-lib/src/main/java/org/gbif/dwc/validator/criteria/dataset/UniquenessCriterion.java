@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  * GBIF FileUtils can also sort directly on the archive file, it may be a better solution than writing a new
  * file containing all the id but referential integrity check needs the resulting file.
  * NOT thread-safe
- * 
+ *
  * @author cgendreau
  */
 @RecordCriterionKey(key = "uniquenessCriterion")
@@ -41,7 +41,7 @@ class UniquenessCriterion extends DatasetCriterion {
 
   private final String key = UniquenessCriterion.class.getAnnotation(RecordCriterionKey.class).key();
   private final EvaluationContext evaluationContextRestriction;
-  private final String rowTypeRestriction;
+  private final Term rowTypeRestriction;
   private final Term term;
   private final String conceptTermString;
 
@@ -95,7 +95,7 @@ class UniquenessCriterion extends DatasetCriterion {
   /**
    * Returns the file used(or to be used) to store the sorted record value.
    * The file may or may not exist yet.
-   * 
+   *
    * @return
    */
   File getSortedValueFile() {
@@ -104,7 +104,7 @@ class UniquenessCriterion extends DatasetCriterion {
 
   /**
    * Get term on which the uniqueness evaluation is performed.
-   * 
+   *
    * @return
    */
   Term getTerm() {
@@ -123,7 +123,7 @@ class UniquenessCriterion extends DatasetCriterion {
     }
 
     // if we specified a rowType restriction, check that the record is also of this rowType
-    if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(record.rowType())) {
+    if (rowTypeRestriction != null && !rowTypeRestriction.equals(record.rowType())) {
       return;
     }
 
@@ -142,6 +142,7 @@ class UniquenessCriterion extends DatasetCriterion {
   public void postIterate(ResultAccumulator resultAccumulator) throws ResultAccumulationException {
     flushCurrentIdList();
 
+    String evaluationContextDetails = rowTypeRestriction != null ? rowTypeRestriction.qualifiedName() : "";
     try {
       fw.close();
     } catch (IOException ioEx) {
@@ -173,9 +174,10 @@ class UniquenessCriterion extends DatasetCriterion {
             new ValidationResultElement(key, ContentValidationType.FIELD_UNIQUENESS, Result.ERROR,
               ValidatorConfig.getLocalizedString("criterion.uniqueness_criterion.not_unique", displayValue,
                 conceptTermString));
-          resultAccumulator.accumulate(new ValidationResult(displayValue, evaluationContextRestriction, StringUtils
-            .defaultString(rowTypeRestriction), validationResultElement));
+          resultAccumulator.accumulate(new ValidationResult(displayValue, evaluationContextRestriction,
+            evaluationContextDetails, validationResultElement));
         }
+
         previousLine = currentLine;
       }
     } catch (IOException ioEx) {

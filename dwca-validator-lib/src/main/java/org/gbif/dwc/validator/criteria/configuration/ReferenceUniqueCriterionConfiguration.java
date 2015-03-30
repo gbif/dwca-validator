@@ -8,14 +8,14 @@ import java.io.File;
 
 /**
  * Container object holding ReferenceUniqueCriterion configurations.
- * 
+ *
  * @author cgendreau
  */
 @CriterionConfigurationKey("referenceUniqueCriterion")
 public class ReferenceUniqueCriterionConfiguration {
 
   private EvaluationContext evaluationContextRestriction;
-  private String rowTypeRestriction;
+  private Term rowTypeRestriction;
 
   private Term term;
   private String multipleValuesSeparator;
@@ -31,11 +31,11 @@ public class ReferenceUniqueCriterionConfiguration {
     this.evaluationContextRestriction = evaluationContextRestriction;
   }
 
-  public String getRowTypeRestriction() {
+  public Term getRowTypeRestriction() {
     return rowTypeRestriction;
   }
 
-  public void setRowTypeRestriction(String rowTypeRestriction) {
+  public void setRowTypeRestriction(Term rowTypeRestriction) {
     this.rowTypeRestriction = rowTypeRestriction;
   }
 

@@ -10,7 +10,7 @@ import org.apache.commons.lang3.BooleanUtils;
 
 /**
  * Builder for BoundCriterion objects.
- * 
+ *
  * @author cgendreau
  */
 @RecordCriterionBuilderKey("boundCriterion")
@@ -32,7 +32,7 @@ public class BoundCriterionBuilder implements RecordCriterionBuilder {
 
   /**
    * Set a lower and upper inclusive bounds.
-   * 
+   *
    * @param term term on which bounds should be checked
    * @param lowerBound lower inclusive bound
    * @param upperBound upper inclusive bound
@@ -46,18 +46,18 @@ public class BoundCriterionBuilder implements RecordCriterionBuilder {
 
   /**
    * Set the restriction on the rowType to avoid the evaluation to run on all rowType.
-   * 
+   *
    * @param rowTypeRestriction
    * @return
    */
   public BoundCriterionBuilder onRowType(Term rowTypeRestriction) {
-    configuration.setRowTypeRestriction(rowTypeRestriction.qualifiedName());
+    configuration.setRowTypeRestriction(rowTypeRestriction);
     return this;
   }
 
   /**
    * Build BoundCriteria object.
-   * 
+   *
    * @return immutable BoundCriteria object
    * @throws NullPointerException if the lowerBound or upperBound is null
    *         IllegalStateException if lower bound is greater than upperBound.

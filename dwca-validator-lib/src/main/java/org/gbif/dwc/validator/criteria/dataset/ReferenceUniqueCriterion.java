@@ -21,12 +21,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.Maps;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 /**
  * DatasetCriteria implementation to check the integrity of field references that should point to a unique value.
  * This implementation is composed by a UniquenessCriteria.
- * 
+ *
  * @author cgendreau
  */
 @RecordCriterionKey(key = "referenceUniqueCriterion")
@@ -53,7 +53,7 @@ class ReferenceUniqueCriterion extends DatasetCriterion {
   private static final String DIFF_FILE_SUFFIX = "_diff" + ValidatorConfig.TEXT_FILE_EXT;
 
   private final EvaluationContext evaluationContextRestriction;
-  private final String rowTypeRestriction;
+  private final Term rowTypeRestriction;
   private final Term term;
 
   private final UniquenessCriterion uniquenessCriteria;
@@ -63,9 +63,9 @@ class ReferenceUniqueCriterion extends DatasetCriterion {
   private final File workingFolder;
   private final String randomUUID;
 
-  private final Map<String, List<String>> valuePerRowType;
-  private final Map<String, FileWriter> fileWriterPerRowType;
-  private final Map<String, File> valueFilePerRowType;
+  private final Map<Term, List<String>> valuePerRowType;
+  private final Map<Term, FileWriter> fileWriterPerRowType;
+  private final Map<Term, File> valueFilePerRowType;
 
   private final List<File> filesCreated;
 
@@ -88,9 +88,9 @@ class ReferenceUniqueCriterion extends DatasetCriterion {
     this.workingFolder = configuration.getWorkingFolder();
     this.filesCreated = new ArrayList<File>();
 
-    this.valuePerRowType = new HashMap<String, List<String>>();
-    this.fileWriterPerRowType = new HashMap<String, FileWriter>();
-    this.valueFilePerRowType = new HashMap<String, File>();
+    this.valuePerRowType = Maps.newHashMap();
+    this.fileWriterPerRowType = Maps.newHashMap();
+    this.valueFilePerRowType = Maps.newHashMap();
   }
 
 
@@ -101,7 +101,7 @@ class ReferenceUniqueCriterion extends DatasetCriterion {
 
   /**
    * Flush the provided valueList into the provided FileWriter and clear the list.
-   * 
+   *
    * @param valueList
    * @param fw
    * @throws IOException
@@ -118,21 +118,20 @@ class ReferenceUniqueCriterion extends DatasetCriterion {
 
   /**
    * Ensure the provided maps are ready to deal with the provided rowType.
-   * 
+   *
    * @param rowType
    * @param valuePerRowType
    * @param fileWriterPerRowType
    */
-  private void ensureReadyForRowType(String rowType, Map<String, List<String>> valuePerRowType,
-    Map<String, File> valueFilePerRowType, Map<String, FileWriter> fileWriterPerRowType) throws IOException {
+  private void ensureReadyForRowType(Term rowType, Map<Term, List<String>> valuePerRowType,
+    Map<Term, File> valueFilePerRowType, Map<Term, FileWriter> fileWriterPerRowType) throws IOException {
     if (valuePerRowType.get(rowType) == null) {
       valuePerRowType.put(rowType, new ArrayList<String>(BUFFER_THRESHOLD));
     }
 
     if (fileWriterPerRowType.get(rowType) == null) {
 
-      Term ct = TERM_FACTORY.findTerm(rowType);
-      String fileName = randomUUID + "_" + ct.simpleName() + ValidatorConfig.TEXT_FILE_EXT;
+      String fileName = randomUUID + "_" + rowType.simpleName() + ValidatorConfig.TEXT_FILE_EXT;
       File valueRecordingFile = new File(workingFolder, fileName);
       fileWriterPerRowType.put(rowType, new FileWriter(valueRecordingFile));
       valueFilePerRowType.put(rowType, valueRecordingFile);
@@ -143,13 +142,13 @@ class ReferenceUniqueCriterion extends DatasetCriterion {
 
   /**
    * Record in resultAccumulator all broken links (if any).
-   * 
+   *
    * @param rowType
    * @param diffFile
    * @param resultAccumulator
    * @throws ResultAccumulationException
    */
-  private void recordBrokenLinks(String rowType, File diffFile, ResultAccumulator resultAccumulator)
+  private void recordBrokenLinks(Term rowType, File diffFile, ResultAccumulator resultAccumulator)
     throws ResultAccumulationException {
 
     BufferedReader br = null;
@@ -166,8 +165,8 @@ class ReferenceUniqueCriterion extends DatasetCriterion {
           new ValidationResultElement(key, ContentValidationType.FIELD_REFERENTIAL_INTEGRITY, Result.ERROR,
             ValidatorConfig.getLocalizedString("criterion.reference_unique_criterion.referential_integrity",
               currentLine, termString, referedTermString));
-        resultAccumulator.accumulate(new ValidationResult(currentLine, evaluationContextRestriction, rowType,
-          validationResultElement));
+        resultAccumulator.accumulate(new ValidationResult(currentLine, evaluationContextRestriction, rowType
+          .qualifiedName(), validationResultElement));
       }
     } catch (IOException ioEx) {
       LOGGER.error("Can't sort id file", ioEx);
@@ -182,7 +181,7 @@ class ReferenceUniqueCriterion extends DatasetCriterion {
     // always send to our composed RecordEvaluator
     uniquenessCriteria.onRecord(record, evaluationContext);
 
-    String currentRowType = record.rowType();
+    Term currentRowType = record.rowType();
 
     // check that the record is in the right evaluation context
     if (evaluationContext != evaluationContextRestriction) {
@@ -190,7 +189,7 @@ class ReferenceUniqueCriterion extends DatasetCriterion {
     }
 
     // if we specified a rowType restriction, check that the record is also of this rowType
-    if (StringUtils.isNotBlank(rowTypeRestriction) && !rowTypeRestriction.equalsIgnoreCase(currentRowType)) {
+    if (rowTypeRestriction != null && !rowTypeRestriction.equals(currentRowType)) {
       return;
     }
 
@@ -238,12 +237,11 @@ class ReferenceUniqueCriterion extends DatasetCriterion {
 
     try {
       // flush and close all resources
-      for (String currRowType : valuePerRowType.keySet()) {
+      for (Term currRowType : valuePerRowType.keySet()) {
         flushValueList(valuePerRowType.get(currRowType), fileWriterPerRowType.get(currRowType));
         fileWriterPerRowType.get(currRowType).close();
-        Term ct = TERM_FACTORY.findTerm(currRowType);
-        sortedFileName = randomUUID + "_" + ct.simpleName() + SORTED_FILE_SUFFIX;
-        diffFileName = randomUUID + "_" + ct.simpleName() + DIFF_FILE_SUFFIX;
+        sortedFileName = randomUUID + "_" + currRowType.simpleName() + SORTED_FILE_SUFFIX;
+        diffFileName = randomUUID + "_" + currRowType.simpleName() + DIFF_FILE_SUFFIX;
 
         sortedValueFile = new File(workingFolder, sortedFileName);
         diffFile = new File(workingFolder, diffFileName);
