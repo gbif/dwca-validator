@@ -1,10 +1,10 @@
 package org.gbif.dwc.validator;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.EvaluationResult;
 import org.gbif.dwc.validator.result.ResultAccumulator;
+import org.gbif.dwca.record.Record;
 
 import com.google.common.base.Optional;
 

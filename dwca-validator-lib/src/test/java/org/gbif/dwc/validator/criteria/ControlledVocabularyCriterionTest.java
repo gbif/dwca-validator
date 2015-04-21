@@ -1,6 +1,5 @@
 package org.gbif.dwc.validator.criteria;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
@@ -9,6 +8,7 @@ import org.gbif.dwc.validator.criteria.record.RecordCriterion;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
+import org.gbif.dwca.record.Record;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -24,7 +24,7 @@ import static org.junit.Assert.fail;
 
 /**
  * Test ControlledVocabularyCriterion implementation.
- * 
+ *
  * @author cgendreau
  */
 public class ControlledVocabularyCriterionTest {
@@ -47,7 +47,7 @@ public class ControlledVocabularyCriterionTest {
 
     RecordCriterion criteria =
       ControlledVocabularyCriterionBuilder.builder().onTerm(DwcTerm.country)
-        .useDictionaryAt(testFile.getAbsolutePath()).build();
+      .useDictionaryAt(testFile.getAbsolutePath()).build();
 
     Optional<ValidationResult> result =
       criteria.handleRecord(buildMockRecord("1", "Spain", "PreservedSpecimen"), EvaluationContext.CORE);

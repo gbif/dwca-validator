@@ -1,9 +1,9 @@
 package org.gbif.dwc.validator.transformation;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
+import org.gbif.dwca.record.Record;
 
 import org.junit.Test;
 import org.threeten.bp.temporal.TemporalAccessor;
@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Test ISODateTransformation behavior.
- * 
+ *
  * @author cgendreau
  */
 public class ISODateTransformationTest {
@@ -96,7 +96,7 @@ public class ISODateTransformationTest {
 
   /**
    * Dates that must always be evaluated as valid.
-   * 
+   *
    * @param rule
    */
   private void testAlwaysValidString(ValueTransformation<TemporalAccessor> transformation) {
@@ -115,7 +115,7 @@ public class ISODateTransformationTest {
 
   /**
    * Dates that must never be evaluated as valid.
-   * 
+   *
    * @param rule
    */
   private void testNeverValidString(ValueTransformation<TemporalAccessor> transformation) {

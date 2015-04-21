@@ -1,7 +1,6 @@
 package org.gbif.dwc.validator.transformation;
 
 
-
 public class ValueTransformationResult<T> {
 
   public enum TransformationStatus {

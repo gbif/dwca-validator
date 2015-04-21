@@ -5,6 +5,7 @@ import org.gbif.dwc.validator.FileEvaluator;
 import org.gbif.dwc.validator.chain.EvaluatorChain;
 import org.gbif.dwc.validator.config.FileBasedValidationChainLoader;
 import org.gbif.dwc.validator.config.ValidatorConfig;
+import org.gbif.dwc.validator.exception.CriterionBuilderException;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.accumulator.csv.CSVResultAccumulator;
@@ -33,7 +34,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Main class used to run the library from command line.
  * Only zipped archive can be validated for now.
- * 
+ *
  * @author cgendreau
  */
 public class ValidatorMain {
@@ -79,15 +80,20 @@ public class ValidatorMain {
     // build validation chain
     File tmpFolder = new File(validatorConfig.getWorkingFolder(), "validator-dwca-" + sourceIdentifier);
     tmpFolder.mkdir();
-    FileEvaluator archiveValidator;
-    if (StringUtils.isNotBlank(configurationFile)) {
-      archiveValidator =
-        Evaluators.buildFromValidationChain(tmpFolder, handleConfigurationFile(new File(configurationFile)));
-      if (archiveValidator == null) {
-        return;
+    FileEvaluator archiveValidator = null;
+    try {
+      if (StringUtils.isNotBlank(configurationFile)) {
+        archiveValidator =
+          Evaluators.buildFromValidationChain(tmpFolder, handleConfigurationFile(new File(configurationFile)));
+
+        if (archiveValidator == null) {
+          return;
+        }
+      } else {
+        archiveValidator = Evaluators.defaultChain(tmpFolder).build();
       }
-    } else {
-      archiveValidator = Evaluators.defaultChain(tmpFolder).build();
+    } catch (CriterionBuilderException e) {
+      LOGGER.error("Issue while building evaluation chain", e);
     }
 
     if (isURL(sourceFileLocation)) {
@@ -99,7 +105,7 @@ public class ValidatorMain {
         sourceFileLocation = dFile.getAbsolutePath();
         System.out.println("Download completed");
       } catch (MalformedURLException e) {
-        LOGGER.error("Issue source file URL: " + sourceFileLocation, e);
+        LOGGER.error("Issue with source file URL: " + sourceFileLocation, e);
       }
     }
 
@@ -142,7 +148,7 @@ public class ValidatorMain {
 
   /**
    * Download a file from a URL and save it locally.
-   * 
+   *
    * @param url
    * @param destinationFile
    * @return
@@ -172,7 +178,7 @@ public class ValidatorMain {
 
   /**
    * Check if the provided source is a URL or not.
-   * 
+   *
    * @param source
    * @return
    */
@@ -183,7 +189,7 @@ public class ValidatorMain {
 
   /**
    * Checks if the provided resultOutputFormat is a valid format.
-   * 
+   *
    * @param resultOutputFormat
    * @return
    */
@@ -194,7 +200,7 @@ public class ValidatorMain {
 
   /**
    * Load the EvaluatorChain from a configuration file.
-   * 
+   *
    * @param configurationFile
    * @return
    */
@@ -215,7 +221,7 @@ public class ValidatorMain {
 
   /**
    * Get a configured ResultAccumulator based on the result output format.
-   * 
+   *
    * @param outputFile File where the result will be printed
    * @param resultOutputFormat format to use to output result
    * @return configured ResultAccumulator or null if no ResultAccumulator match the output format.
@@ -231,7 +237,7 @@ public class ValidatorMain {
 
   /**
    * Handle the name and location of validation result file.
-   * 
+   *
    * @param resultFolderLocation if null, the current folder will be used
    * @param extension extension to use for the validation result file.
    * @return the file

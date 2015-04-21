@@ -1,9 +1,9 @@
 package org.gbif.dwc.validator.transformation;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
+import org.gbif.dwca.record.Record;
 
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Test NumericValueTransformation behavior.
- * 
+ *
  * @author cgendreau
  */
 public class NumericValueTransformationTest {

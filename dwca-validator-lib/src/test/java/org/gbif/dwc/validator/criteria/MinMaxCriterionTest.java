@@ -1,6 +1,5 @@
 package org.gbif.dwc.validator.criteria;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
@@ -11,6 +10,7 @@ import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.transformation.ValueTransformations;
+import org.gbif.dwca.record.Record;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class MinMaxCriterionTest {
   public void testMinMaxCriterion() {
     RecordCriterion criterion =
       MinMaxCriterionBuilder.builder().terms(DwcTerm.minimumElevationInMeters, DwcTerm.maximumElevationInMeters)
-        .build();
+      .build();
 
     // min < max should be valid
     Optional<ValidationResult> result =
@@ -62,7 +62,7 @@ public class MinMaxCriterionTest {
   public void testMinMaxCriterionEnforceTwoTerms() {
     RecordCriterion criterion =
       MinMaxCriterionBuilder.builder().terms(DwcTerm.minimumElevationInMeters, DwcTerm.maximumElevationInMeters)
-        .enforceTwoTermsUse().build();
+      .enforceTwoTermsUse().build();
 
     // min < max should be valid
     Optional<ValidationResult> result =

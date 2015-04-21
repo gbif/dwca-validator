@@ -1,11 +1,11 @@
 package org.gbif.dwc.validator.aggregation;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
+import org.gbif.dwca.record.Record;
 
 import org.junit.Test;
 

@@ -1,11 +1,11 @@
 package org.gbif.dwc.validator.aggregation;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.RecordEvaluator;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.ResultAccumulator;
+import org.gbif.dwca.record.Record;
 
 import java.util.Map;
 

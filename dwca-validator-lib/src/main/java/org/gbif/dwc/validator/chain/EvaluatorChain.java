@@ -1,6 +1,5 @@
 package org.gbif.dwc.validator.chain;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.validator.RecordEvaluator;
 import org.gbif.dwc.validator.criteria.ValidationCriterion;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriterion;
@@ -8,6 +7,7 @@ import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.EvaluationResult;
 import org.gbif.dwc.validator.result.ResultAccumulator;
+import org.gbif.dwca.record.Record;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class is responsible to manage the evaluation chain.
+ * This class is responsible to manage the evaluation chain for records.
  *
  * @author cgendreau
  */

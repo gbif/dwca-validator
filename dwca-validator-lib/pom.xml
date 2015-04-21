@@ -18,6 +18,19 @@
     </repository>
   </repositories>
   
+  <properties>
+     <logback.scope>test</logback.scope>
+  </properties>
+  
+  <profiles>
+    <profile>
+      <id>runnable-jar</id>
+      <properties>
+        <logback.scope>compile</logback.scope>
+      </properties>
+    </profile>
+  </profiles>
+  
   <build>
 		<plugins>
 			<plugin>
@@ -105,7 +118,7 @@
 	<dependency>
 		<groupId>ch.qos.logback</groupId>
 		<artifactId>logback-classic</artifactId>
-		<scope>test</scope>
+		<scope>${logback.scope}</scope>
 	</dependency>
     
     <dependency>

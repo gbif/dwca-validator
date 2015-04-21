@@ -1,8 +1,8 @@
 package org.gbif.dwc.validator.transformation;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
+import org.gbif.dwca.record.Record;
 
 import java.util.List;
 

@@ -2,16 +2,22 @@ package org.gbif.dwc.validator;
 
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.chain.EvaluatorChain;
+import org.gbif.dwc.validator.chain.MetadataEvaluatorChain;
 import org.gbif.dwc.validator.criteria.DatasetCriteria;
 import org.gbif.dwc.validator.criteria.RecordCriteria;
 import org.gbif.dwc.validator.criteria.ValidationCriterion;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriterion;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriterionBuilder;
+import org.gbif.dwc.validator.criteria.metadata.MetaDescriptorCriterionBuilder;
+import org.gbif.dwc.validator.criteria.metadata.MetadataCriterion;
 import org.gbif.dwc.validator.criteria.record.RecordCriterionBuilder;
+import org.gbif.dwc.validator.exception.CriterionBuilderException;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.common.collect.Lists;
 
 /**
  * Main builder to create evaluation chain.
@@ -63,11 +69,13 @@ public class Evaluators {
    * Build a FileEvaluator from an existing validation chain.
    *
    * @param tempFolder
-   * @param head
+   * @param chain
    * @return
+   * @throws CriterionBuilderException
    */
-  public static FileEvaluator buildFromValidationChain(File tempFolder, EvaluatorChain head) {
-    return new DwcArchiveEvaluator(head);
+  public static FileEvaluator buildFromValidationChain(File tempFolder, EvaluatorChain chain)
+    throws CriterionBuilderException {
+    return new DwcArchiveEvaluator(buildMetadataChain(), chain);
   }
 
   /**
@@ -117,9 +125,10 @@ public class Evaluators {
    * Build the ArchiveValidator instance.
    *
    * @return
+   * @throws CriterionBuilderException
    */
-  public FileEvaluator build() throws IllegalStateException {
-    return new DwcArchiveEvaluator(buildChain());
+  public FileEvaluator build() throws IllegalStateException, CriterionBuilderException {
+    return new DwcArchiveEvaluator(buildMetadataChain(), buildChain());
   }
 
   /**
@@ -139,6 +148,12 @@ public class Evaluators {
     }
 
     return new EvaluatorChain(recordCriteriaList, datasetCriteriaList);
+  }
+
+  private static MetadataEvaluatorChain buildMetadataChain() throws CriterionBuilderException {
+    List<MetadataCriterion> metadataCriteriaList = Lists.newArrayList();
+    metadataCriteriaList.add(MetaDescriptorCriterionBuilder.builder().build());
+    return new MetadataEvaluatorChain(metadataCriteriaList);
   }
 
 // Taxon only evaluators

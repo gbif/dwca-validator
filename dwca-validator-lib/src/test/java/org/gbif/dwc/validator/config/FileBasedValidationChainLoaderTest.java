@@ -1,16 +1,16 @@
 package org.gbif.dwc.validator.config;
 
-import org.gbif.dwc.record.Record;
-import org.gbif.dwc.record.RecordImpl;
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwc.text.ArchiveField;
-import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.chain.EvaluatorChain;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
+import org.gbif.dwca.io.ArchiveField;
+import org.gbif.dwca.io.ArchiveField.DataType;
+import org.gbif.dwca.record.Record;
+import org.gbif.dwca.record.RecordImpl;
 
 import java.io.File;
 import java.io.IOException;

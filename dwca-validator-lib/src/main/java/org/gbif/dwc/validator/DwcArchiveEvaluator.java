@@ -1,16 +1,8 @@
 package org.gbif.dwc.validator;
 
-import org.gbif.dwc.record.RecordIterator;
-import org.gbif.dwc.text.Archive;
-import org.gbif.dwc.text.ArchiveFactory;
-import org.gbif.dwc.text.ArchiveFile;
-import org.gbif.dwc.text.UnsupportedArchiveException;
 import org.gbif.dwc.validator.chain.EvaluatorChain;
+import org.gbif.dwc.validator.chain.MetadataEvaluatorChain;
 import org.gbif.dwc.validator.config.ValidatorConfig;
-import org.gbif.dwc.validator.criteria.metadata.EMLCriterionBuilder;
-import org.gbif.dwc.validator.criteria.metadata.MetaDescriptorCriterionBuilder;
-import org.gbif.dwc.validator.criteria.metadata.MetadataCriterion;
-import org.gbif.dwc.validator.exception.CriterionBuilderException;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.Result;
@@ -18,13 +10,17 @@ import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.type.StructureValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
+import org.gbif.dwca.io.Archive;
+import org.gbif.dwca.io.ArchiveFactory;
+import org.gbif.dwca.io.ArchiveFile;
+import org.gbif.dwca.io.UnsupportedArchiveException;
+import org.gbif.dwca.record.RecordIterator;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
 
-import com.google.common.base.Optional;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +37,11 @@ public class DwcArchiveEvaluator implements FileEvaluator {
 
   private String workingFolder = ".";
 
+  private final MetadataEvaluatorChain metadataEvaluatorChain;
   private final EvaluatorChain criteriaChain;
 
-  DwcArchiveEvaluator(EvaluatorChain criteriaChain) {
+  DwcArchiveEvaluator(MetadataEvaluatorChain metadataEvaluatorChain, EvaluatorChain criteriaChain) {
+    this.metadataEvaluatorChain = metadataEvaluatorChain;
     this.criteriaChain = criteriaChain;
   }
 
@@ -86,10 +84,10 @@ public class DwcArchiveEvaluator implements FileEvaluator {
         dwcFolder = dwcaFile;
       }
 
+      // for now explicitly check meta.xml file
       File metaFile = new File(dwcFolder, META_XML_FILE);
       if (metaFile.exists()) {
-        // inspectMetaXML(metaFile, resultAccumulator);
-        System.out.println("meta.xml validation temporary suspended");
+        metadataEvaluatorChain.evaluateMetadataFile(metaFile, resultAccumulator);
       }
 
       // Inspect the eml, if declared
@@ -151,23 +149,4 @@ public class DwcArchiveEvaluator implements FileEvaluator {
     }
   }
 
-  public void inspectEML(File emlFile, ResultAccumulator resultAccumulator) throws ResultAccumulationException,
-    CriterionBuilderException {
-    // when should we use GBIF profile vs regular profile? should we run both?
-    MetadataCriterion criterion = EMLCriterionBuilder.builder().build();
-    Optional<ValidationResult> result = criterion.validate(emlFile);
-    if (result.isPresent()) {
-      resultAccumulator.accumulate(result.get());
-    }
-  }
-
-  public void inspectMetaXML(File metaXmlFile, ResultAccumulator resultAccumulator) throws ResultAccumulationException,
-    CriterionBuilderException {
-
-    MetadataCriterion criterion = MetaDescriptorCriterionBuilder.builder().build();
-    Optional<ValidationResult> result = criterion.validate(metaXmlFile);
-    if (result.isPresent()) {
-      resultAccumulator.accumulate(result.get());
-    }
-  }
 }

@@ -1,7 +1,7 @@
 package org.gbif.dwc.validator.transformation;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
+import org.gbif.dwca.record.Record;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface ValueTransformation<T> {
 
   /**
    * Get the list of term used by this transformation.
-   * 
+   *
    * @return
    */
   List<Term> getTerms();

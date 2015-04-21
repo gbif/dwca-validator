@@ -1,11 +1,11 @@
 package org.gbif.dwc.validator.mock;
 
-import org.gbif.dwc.record.Record;
-import org.gbif.dwc.record.RecordImpl;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
-import org.gbif.dwc.text.ArchiveField;
-import org.gbif.dwc.text.ArchiveField.DataType;
+import org.gbif.dwca.io.ArchiveField;
+import org.gbif.dwca.io.ArchiveField.DataType;
+import org.gbif.dwca.record.Record;
+import org.gbif.dwca.record.RecordImpl;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,8 +1,8 @@
 package org.gbif.dwc.validator.transformation;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
+import org.gbif.dwca.record.Record;
 
 import java.util.List;
 
@@ -35,20 +35,20 @@ public class ISODateTransformation implements ValueTransformation<TemporalAccess
 
   // ISO8601 Date with no leading zeros e.g. 2014-8-7
   private static final DateTimeFormatter ISO8601_ISO_DATE_ALLOW_NO_LZ = new DateTimeFormatterBuilder()
-  .appendValue(ChronoField.YEAR, 4).appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR).appendLiteral("-")
-  .appendValue(ChronoField.DAY_OF_MONTH).toFormatter().withResolverStyle(ResolverStyle.STRICT);
+    .appendValue(ChronoField.YEAR, 4).appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR).appendLiteral("-")
+    .appendValue(ChronoField.DAY_OF_MONTH).toFormatter().withResolverStyle(ResolverStyle.STRICT);
 
   // ISO8601 Partial Date with no leading zeros e.g. 2014-8
   public static final DateTimeFormatter ISO8601_PARTIAL_DATE_ALLOW_NO_LZ = new DateTimeFormatterBuilder()
-  .appendValue(ChronoField.YEAR, 4).optionalStart().appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR)
-  .optionalStart().appendLiteral("-").appendValue(ChronoField.DAY_OF_MONTH, 2).optionalEnd().optionalEnd()
-  .toFormatter().withResolverStyle(ResolverStyle.STRICT);
+    .appendValue(ChronoField.YEAR, 4).optionalStart().appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR)
+    .optionalStart().appendLiteral("-").appendValue(ChronoField.DAY_OF_MONTH, 2).optionalEnd().optionalEnd()
+    .toFormatter().withResolverStyle(ResolverStyle.STRICT);
 
   // ISO8601 Partial Date e.g. 2014 or 2014-08
   public static final DateTimeFormatter ISO8601_PARTIAL_DATE = new DateTimeFormatterBuilder()
-  .appendValue(ChronoField.YEAR, 4).optionalStart().appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR, 2)
-  .optionalStart().appendLiteral("-").appendValue(ChronoField.DAY_OF_MONTH, 2).optionalEnd().optionalEnd()
-  .toFormatter().withResolverStyle(ResolverStyle.STRICT);
+    .appendValue(ChronoField.YEAR, 4).optionalStart().appendLiteral("-").appendValue(ChronoField.MONTH_OF_YEAR, 2)
+    .optionalStart().appendLiteral("-").appendValue(ChronoField.DAY_OF_MONTH, 2).optionalEnd().optionalEnd()
+    .toFormatter().withResolverStyle(ResolverStyle.STRICT);
 
   private final boolean allowPartialDate;
   private final DateTimeFormatter activeCompleteDateFormatter;

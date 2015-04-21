@@ -1,5 +1,6 @@
 package org.gbif.dwc.validator;
 
+import org.gbif.dwc.validator.exception.CriterionBuilderException;
 import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
 
 import java.io.File;
@@ -14,7 +15,7 @@ import static org.junit.Assert.fail;
 
 /**
  * Unit tests related to DwcArchiveEvaluator.
- * 
+ *
  * @author cgendreau
  */
 public class DwcArchiveEvaluatorTest {
@@ -28,9 +29,9 @@ public class DwcArchiveEvaluatorTest {
     File testDwcFolder = new File("test-dwca-" + System.currentTimeMillis());
     testDwcFolder.mkdir();
 
-    FileEvaluator validator = Evaluators.defaultChain(testDwcFolder).build();
-
     try {
+      FileEvaluator validator = Evaluators.defaultChain(testDwcFolder).build();
+
       File testDwca = new File(getClass().getResource("/dwca/vascan_dwca.zip").toURI());
       InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
       validator.evaluateFile(testDwca, resultAccumulator);
@@ -40,6 +41,12 @@ public class DwcArchiveEvaluatorTest {
         .getValidationResultList().isEmpty());
 
     } catch (URISyntaxException e) {
+      e.printStackTrace();
+      fail();
+    } catch (IllegalStateException e) {
+      e.printStackTrace();
+      fail();
+    } catch (CriterionBuilderException e) {
       e.printStackTrace();
       fail();
     }

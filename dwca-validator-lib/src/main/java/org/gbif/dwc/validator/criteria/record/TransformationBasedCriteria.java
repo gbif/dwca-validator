@@ -1,6 +1,5 @@
 package org.gbif.dwc.validator.criteria.record;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
 import org.gbif.dwc.validator.criteria.configuration.TransformationBasedCriteriaConfiguration;
@@ -11,6 +10,7 @@ import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
 import org.gbif.dwc.validator.transformation.ValueTransformation;
 import org.gbif.dwc.validator.transformation.ValueTransformationResult;
+import org.gbif.dwca.record.Record;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,6 +1,5 @@
 package org.gbif.dwc.validator.criteria;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.criteria.record.CompletenessCriterionBuilder;
@@ -8,6 +7,7 @@ import org.gbif.dwc.validator.criteria.record.RecordCriterion;
 import org.gbif.dwc.validator.mock.MockRecordFactory;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
+import org.gbif.dwca.record.Record;
 
 import com.google.common.base.Optional;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Test RecordCompletionCriterion implementation.
- * 
+ *
  * @author cgendreau
  */
 public class CompletenessCriterionTest {
@@ -73,7 +73,7 @@ public class CompletenessCriterionTest {
   public void testRecordCompletionCriterionWithAbsenceSynonym() {
     RecordCriterion recordCompletionCriterion =
       CompletenessCriterionBuilder.builder().checkTerm(DwcTerm.scientificName, "null").onRowType(DwcTerm.Occurrence)
-        .build();
+      .build();
 
     Optional<ValidationResult> result =
       recordCompletionCriterion.handleRecord(buildMockRecord("2", "2", "nil"), EvaluationContext.CORE);

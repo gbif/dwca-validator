@@ -1,6 +1,5 @@
 package org.gbif.dwc.validator.criteria.dataset;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.validator.config.ValidatorConfig;
 import org.gbif.dwc.validator.criteria.annotation.RecordCriterionKey;
@@ -12,6 +11,7 @@ import org.gbif.dwc.validator.result.ResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.result.validation.ValidationResult;
 import org.gbif.dwc.validator.result.validation.ValidationResultElement;
+import org.gbif.dwca.record.Record;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -1,16 +1,16 @@
 package org.gbif.dwc.validator.criteria;
 
-import org.gbif.dwc.record.Record;
-import org.gbif.dwc.record.RecordImpl;
 import org.gbif.dwc.terms.DwcTerm;
-import org.gbif.dwc.text.ArchiveField;
-import org.gbif.dwc.text.ArchiveField.DataType;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
 import org.gbif.dwc.validator.criteria.dataset.DatasetCriterion;
 import org.gbif.dwc.validator.exception.ResultAccumulationException;
 import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
+import org.gbif.dwca.io.ArchiveField;
+import org.gbif.dwca.io.ArchiveField.DataType;
+import org.gbif.dwca.record.Record;
+import org.gbif.dwca.record.RecordImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -99,8 +99,8 @@ public class ReferenceUniqueCriterionTest {
     try {
       DatasetCriterion referenceCriterion =
         DatasetCriteria
-          .termReferentialIntegrityInCore(null, DwcTerm.acceptedNameUsageID, DwcTerm.taxonID, DwcTerm.Taxon)
-          .supportMultipleValues("|").build();
+        .termReferentialIntegrityInCore(null, DwcTerm.acceptedNameUsageID, DwcTerm.taxonID, DwcTerm.Taxon)
+        .supportMultipleValues("|").build();
 
       referenceCriterion.onRecord(buildMockRecord("1", "3|4"), EvaluationContext.CORE);
       referenceCriterion.onRecord(buildMockRecord("3", ""), EvaluationContext.CORE);
@@ -124,8 +124,8 @@ public class ReferenceUniqueCriterionTest {
     try {
       DatasetCriterion referenceCriterion =
         DatasetCriteria
-          .termReferentialIntegrityInCore(null, DwcTerm.acceptedNameUsageID, DwcTerm.taxonID, DwcTerm.Taxon)
-          .supportMultipleValues("|").build();
+        .termReferentialIntegrityInCore(null, DwcTerm.acceptedNameUsageID, DwcTerm.taxonID, DwcTerm.Taxon)
+        .supportMultipleValues("|").build();
       referenceCriterion.onRecord(buildMockRecord("1", "3|5"), EvaluationContext.CORE);
       referenceCriterion.onRecord(buildMockRecord("3", ""), EvaluationContext.CORE);
       referenceCriterion.onRecord(buildMockRecord("4", ""), EvaluationContext.CORE);

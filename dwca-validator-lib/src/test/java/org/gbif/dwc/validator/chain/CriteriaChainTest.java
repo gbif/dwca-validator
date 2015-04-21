@@ -1,6 +1,5 @@
 package org.gbif.dwc.validator.chain;
 
-import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.validator.Evaluators;
 import org.gbif.dwc.validator.TestEvaluationResultHelper;
@@ -12,6 +11,7 @@ import org.gbif.dwc.validator.result.EvaluationContext;
 import org.gbif.dwc.validator.result.accumulator.InMemoryResultAccumulator;
 import org.gbif.dwc.validator.result.type.ContentValidationType;
 import org.gbif.dwc.validator.transformation.ValueTransformations;
+import org.gbif.dwca.record.Record;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,11 +43,11 @@ public class CriteriaChainTest {
 
     EvaluatorChain chain =
       Evaluators
-        .builder()
-        .with(DatasetCriteria.coreIdUniqueness(testFolder))
-        .with(
-          RecordCriteria.tryTransformations(ValueTransformations.toNumeric(DwcTerm.decimalLatitude),
-            ValueTransformations.toNumeric(DwcTerm.decimalLongitude))).buildChain();
+      .builder()
+      .with(DatasetCriteria.coreIdUniqueness(testFolder))
+      .with(
+        RecordCriteria.tryTransformations(ValueTransformations.toNumeric(DwcTerm.decimalLatitude),
+          ValueTransformations.toNumeric(DwcTerm.decimalLongitude))).buildChain();
 
     InMemoryResultAccumulator resultAccumulator = new InMemoryResultAccumulator();
 
