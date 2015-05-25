@@ -19,15 +19,23 @@ import java.util.List;
 public class MockRecordFactory {
 
   /**
+   * Build a mock Occurrence Record instance for testing purpose.
+   */
+  public static Record buildMockOccurrenceRecord(DwcTerm idTerm, String idValue, Term[] terms, String[] values) {
+    return buildMockRecord(DwcTerm.Occurrence, idTerm, idValue, terms, values);
+  }
+
+  /**
    * Build a mock Record instance for testing purpose.
    *
+   * @param rowType
    * @param idTerm
    * @param idValue
    * @param terms this should not include the term used in idTerm
    * @param values this should not include the the value idValue
    * @return
    */
-  public static Record buildMockOccurrenceRecord(DwcTerm idTerm, String idValue, Term[] terms, String[] values) {
+  public static Record buildMockRecord(Term rowType, DwcTerm idTerm, String idValue, Term[] terms, String[] values) {
 
     if (terms == null || values == null || (terms.length != values.length)) {
       throw new IllegalArgumentException();
@@ -44,7 +52,7 @@ public class MockRecordFactory {
       fieldList.add(new ArchiveField(idx, currTerm, null, DataType.string));
       idx++;
     }
-    RecordImpl testRecord = new RecordImpl(idField, fieldList, DwcTerm.Occurrence, false, false);
+    RecordImpl testRecord = new RecordImpl(idField, fieldList, rowType, false, false);
 
     List<String> row = new ArrayList<String>(Arrays.asList(values));
     row.add(0, idValue);
