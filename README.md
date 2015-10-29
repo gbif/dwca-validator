@@ -1,11 +1,11 @@
 # dwca-validator
 
-*This project is still in developement and has not been released yet.*
+*This project is still in development and has not been released yet.*
 
 The dwca-validator library provides:
  * Base for validating a DarwinCore archive file from the file system or a URL
  * Command-line interface (CLI) producing validation results in CSV or JSON file
- * Predefined and configurable validation criterion.
+ * Predefined and configurable validation [criteria](https://github.com/gbif/dwca-validator/wiki/Concepts#criteria).
 
 ## To build the project
 ```
