@@ -44,8 +44,7 @@ public class InvalidCharacterCriterionBuilder implements RecordCriterionBuilder 
 
   /**
    * Create a CharMatcher object based on Configuration.
-   * 
-   * @param configuration
+   *
    * @return
    */
   private CharMatcher toCharMatcher() {

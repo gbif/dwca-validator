@@ -29,8 +29,8 @@ public class ValidationResult implements EvaluationResult {
 
   /**
    * @param id The identifier is relative to the context.
-   * @param evaluatorKey key of the validator who generated this entry
    * @param evaluationContext
+   * @param evaluationContextDetails
    * @param results
    */
   public ValidationResult(String id, EvaluationContext evaluationContext, String evaluationContextDetails,
