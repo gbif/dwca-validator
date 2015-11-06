@@ -29,12 +29,21 @@ public class EvaluatorChain {
 
   private final List<RecordEvaluator<? extends EvaluationResult>> evaluatorList = Lists.newArrayList();
   // we need to keep a reference on all DatasetCriterion to release resources
-  private final List<DatasetCriterion> datasetCriteria;
+  private final List<DatasetCriterion> datasetCriteria = Lists.newArrayList();
 
+  /**
+   *
+   * @param recordCriteriaList can be null
+   * @param datasetCriteria can be null
+   */
   public EvaluatorChain(List<ValidationCriterion> recordCriteriaList, List<DatasetCriterion> datasetCriteria) {
-    this.evaluatorList.addAll(ImmutableList.copyOf(recordCriteriaList));
-    this.datasetCriteria = ImmutableList.copyOf(datasetCriteria);
-    this.evaluatorList.addAll(datasetCriteria);
+    if(recordCriteriaList != null) {
+      this.evaluatorList.addAll(ImmutableList.copyOf(recordCriteriaList));
+    }
+    if(datasetCriteria != null){
+      this.datasetCriteria.addAll(ImmutableList.copyOf(datasetCriteria));
+    }
+    this.evaluatorList.addAll(this.datasetCriteria);
   }
 
   /**
