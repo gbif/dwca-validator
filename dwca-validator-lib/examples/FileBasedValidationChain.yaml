@@ -5,7 +5,7 @@ recordCriteria:
  - !completenessCriterion
    - !completenessCriterionConfiguration
      term						: !dwcTerm 'country'
-     rowTypeRestriction			: 'http://rs.tdwg.org/dwc/terms/Occurrence'
+     rowTypeRestriction			: !dwcTerm 'Occurrence'
      
 # The dictionary file must exist, path can be absolute or relative to the app location
  - !controlledVocabularyCriterion
