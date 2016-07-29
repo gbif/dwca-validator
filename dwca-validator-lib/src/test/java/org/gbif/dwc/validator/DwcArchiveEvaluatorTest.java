@@ -7,8 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import org.apache.commons.io.FileUtils;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -20,14 +21,16 @@ import static org.junit.Assert.fail;
  */
 public class DwcArchiveEvaluatorTest {
 
+  @Rule
+  public TemporaryFolder tempFolder = new TemporaryFolder();
+
   /**
    * Simply test that we can extract an archive and call the appropriate method in ArchiveValidator.
    */
   @Test
-  public void testValidateArchive() {
+  public void testValidateArchive() throws IOException {
 
-    File testDwcFolder = new File("test-dwca-" + System.currentTimeMillis());
-    testDwcFolder.mkdir();
+    File testDwcFolder = tempFolder.newFolder("test-dwca-" + System.currentTimeMillis());
 
     try {
       FileEvaluator validator = Evaluators.defaultChain(testDwcFolder).build();
@@ -49,13 +52,6 @@ public class DwcArchiveEvaluatorTest {
     } catch (CriterionBuilderException e) {
       e.printStackTrace();
       fail();
-    }
-
-    // delete test folder
-    try {
-      FileUtils.forceDelete(testDwcFolder);
-    } catch (IOException e) {
-      e.printStackTrace();
     }
   }
 
