@@ -1,15 +1,26 @@
 Idea for internal GBIF validation API
 
 # POST /record
-Post a single record with Terms as post parameters.
+Post a single record with map of Terms as JSON.
+
+Possible request:
+```
+{
+  "occurrence": { "occurrenceId" : "ABCD-1",
+  "countryCode":"XYZ"
+  },
+  "options": {"minimumLevel":"WARNING"}
+}
+```
+In the following example "occurrence" represents the row type.
 
 Possible response:
 ```
 {
-  "results":[{"evaluation_id" : "GI-1",
-    "evaluation_type" : "IBE",
+  "results":[{"evaluationId" : "GI-1",
+    "evaluationType" : "IBE",
     "result" : "FAILED",
-    "details" : {"issue_flags":"COUNTRY_CODE_INVALID"}
+    "details" : {"issueFlags":"COUNTRY_CODE_INVALID", "relatedData" : {"countryCode":"XYZ"}}
     }
   ]
 }
