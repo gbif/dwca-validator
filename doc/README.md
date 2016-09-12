@@ -22,3 +22,15 @@
     • Dataset level: would be this dataset indexed by GBIF? In summary what data issues were found in this dataset? Would this dataset usable in a particular context (fitness-for-use)?
     
     • Occurrence record level: what data issues were found in this record? What data interpretation would GBIF performed on this record? Is there any way of how this record can be improved?
+    
+    
+# Glossary
+    
+## Parser
+A parser is a software component that takes input data (frequently text) and builds a data structure [1].
+    
+## Interpreter
+An interpreter is a software component that takes structured data as input and put it into a specific context with bouderies and specific meaning.
+
+
+
