@@ -29,3 +29,7 @@ Input data + Criterion produces the evaluation result.
 ```
 boolean result = (4 > -5000 && 4 < 5000);
 ```
+
+## Validation
+The interpretation of the evaluation result. The interpretation is mostly tight to the concept of Fitness For Use where the severity or weight of the evaluation result will be quantified.
+
