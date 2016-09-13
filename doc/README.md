@@ -11,7 +11,7 @@
   •	The current validation libraries do not consider the usage of data quality profiles to assess the usage of datasets in particular use cases (a.k.a. fitness for use)
   
   
-##High-livel Requirements
+##High-level Requirements
 
   •	The validation routines applied in the GBIF platform must be consistent between: occurrence data interpretation, IPT data publishing and data validation as isolated service (similar to the dwca-validator).
   
