@@ -13,13 +13,13 @@
   
 ##High-level Requirements
 
-  •	The validation routines applied in the GBIF platform must be consistent between: occurrence data interpretation, IPT data publishing and data validation as isolated service (similar to the dwca-validator).
+* The validation routines applied in the GBIF platform must be consistent between: occurrence data interpretation, IPT data publishing and data validation as isolated service (similar to the dwca-validator).
   
-  •	A data validation service must help users/publishers to diagnose issues at different levels:
+* A data validation service must help users/publishers to diagnose issues at different levels:
   
-  • Archive/File level: Is this file a valid DwC-A file? Are the fields/columns in this file recognised as indexable terms by GBIF?
+ * Archive/File level: Is this file a valid DwC-A file? Are the fields/columns in this file recognised as indexable terms by GBIF?
   
-  • Dataset level: would be this dataset indexed by GBIF? In summary what data issues were found in this dataset? Would this dataset usable in a particular context (fitness-for-use)?
+ * Dataset level: would be this dataset indexed by GBIF? In summary what data issues were found in this dataset? Would this dataset usable in a particular context (fitness-for-use)?
   
-  • Occurrence record level: what data issues were found in this record? What data interpretation would GBIF performed on this record? Is there any way of how this record can be improved?
+ * Occurrence record level: what data issues were found in this record? What data interpretation would GBIF performed on this record? Is there any way of how this record can be improved?
 
