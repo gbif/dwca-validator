@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.UUID;
 
 import com.google.common.base.Preconditions;
+import com.google.common.io.ByteStreams;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -15,6 +16,7 @@ import org.apache.commons.io.IOUtils;
 public class FileUploadManager {
 
   private final File baseFolder;
+  private final long maxFileSizeInBytes = 1000;
 
   /**
    * @param baseFolder folder from which this manager can create and write files
@@ -40,7 +42,12 @@ public class FileUploadManager {
     File uploadedFile = new File(newFolder, filename);
     if (newFolder.mkdir()) {
       try (FileOutputStream output = new FileOutputStream(uploadedFile)) {
-        IOUtils.copy(inputStream, output);
+        InputStream limitedIn = ByteStreams.limit(inputStream, maxFileSizeInBytes);
+        long byteCopied = IOUtils.copyLarge(limitedIn, output);
+
+        if(byteCopied == maxFileSizeInBytes){
+          throw new IOException("File limit exceeded");
+        }
       }
     } else {
       throw new IOException("can not create folder " + newFolder.getAbsolutePath());

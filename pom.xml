@@ -135,6 +135,11 @@
         <version>${dropwizard.version}</version>
       </dependency>
       <dependency>
+        <groupId>io.dropwizard</groupId>
+        <artifactId>dropwizard-assets</artifactId>
+        <version>${dropwizard.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.glassfish.jersey.media</groupId>
         <artifactId>jersey-media-multipart</artifactId>
         <version>${jersey-media-multipart.version}</version>

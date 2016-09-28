@@ -63,6 +63,10 @@
       <artifactId>dropwizard-core</artifactId>
     </dependency>
     <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-assets</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.glassfish.jersey.media</groupId>
       <artifactId>jersey-media-multipart</artifactId>
     </dependency>
